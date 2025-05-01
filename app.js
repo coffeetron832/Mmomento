@@ -128,3 +128,99 @@ async function guardarPerfil(uid) {
   registroExtra.style.display = 'none';
 }
 
+// Función para guardar los datos del perfil en Firestore
+function guardarPerfil(usuarioId, nombre, bio, foto) {
+  const db = firebase.firestore();
+  const usuarioRef = db.collection('usuarios').doc(usuarioId);
+
+  usuarioRef.set({
+    nombre: nombre,
+    bio: bio,
+    foto: foto,
+  }, { merge: true }) // merge: true asegura que solo se actualicen los datos, sin sobrescribir todo
+  .then(() => {
+    console.log('Perfil actualizado correctamente');
+  })
+  .catch((error) => {
+    console.error('Error actualizando el perfil: ', error);
+  });
+}
+
+// Función para obtener los datos del perfil y mostrarlos
+function cargarPerfil(usuarioId) {
+  const db = firebase.firestore();
+  const usuarioRef = db.collection('usuarios').doc(usuarioId);
+
+  usuarioRef.get().then((doc) => {
+    if (doc.exists) {
+      const usuario = doc.data();
+      // Mostrar datos del perfil
+      document.getElementById('foto-perfil').src = usuario.foto || 'default-avatar.jpg'; // Foto por defecto
+      document.getElementById('nombre-usuario').textContent = usuario.nombre || 'Sin nombre';
+      document.getElementById('bio-usuario').textContent = usuario.bio || 'No hay descripción';
+
+      // Mostrar el perfil
+      document.getElementById('perfil-usuario').style.display = 'block';
+    } else {
+      console.log("No se encontró el perfil");
+    }
+  }).catch((error) => {
+    console.error("Error obteniendo el perfil:", error);
+  });
+}
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // Usuario está autenticado, cargar su perfil
+    cargarPerfil(user.uid);
+  } else {
+    // No está autenticado
+    console.log('Usuario no autenticado');
+  }
+});
+
+<!-- Formulario para editar el perfil (nombre, bio, foto) -->
+<section id="registro-extra" style="display: none;">
+  <h3>Editar Perfil</h3>
+  <input type="text" id="nombre" placeholder="Tu nombre">
+  <input type="text" id="bio" placeholder="Tu biografía">
+  <input type="file" id="foto-perfil-input" accept="image/*">
+  <button id="guardar-perfil">Guardar perfil</button>
+</section>
+
+// Subir la foto de perfil al Storage
+function subirFotoPerfil(file) {
+  const storageRef = firebase.storage().ref();
+  const fotoRef = storageRef.child('fotos-perfil/' + file.name);
+  const uploadTask = fotoRef.put(file);
+
+  uploadTask.on('state_changed', function(snapshot) {
+    // Progreso de la carga (opcional)
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Progreso: ' + progress + '%');
+  }, function(error) {
+    console.error("Error al subir la foto: ", error);
+  }, function() {
+    // La foto fue subida exitosamente
+    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+      console.log('Foto subida a: ', downloadURL);
+      // Actualiza la URL de la foto en Firestore
+      guardarPerfil(firebase.auth().currentUser.uid, document.getElementById('nombre').value, document.getElementById('bio').value, downloadURL);
+    });
+  });
+}
+
+// Llamar a esta función cuando el usuario haga clic en "Guardar perfil"
+document.getElementById('guardar-perfil').addEventListener('click', function() {
+  const fotoInput = document.getElementById('foto-perfil-input');
+  const nombre = document.getElementById('nombre').value;
+  const bio = document.getElementById('bio').value;
+  
+  if (fotoInput.files[0]) {
+    subirFotoPerfil(fotoInput.files[0]);
+  } else {
+    // Si no sube foto, solo actualizar los datos
+    guardarPerfil(firebase.auth().currentUser.uid, nombre, bio, 'default-avatar.jpg');
+  }
+});
+
