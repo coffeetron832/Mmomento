@@ -1,4 +1,4 @@
-// Configura Firebase
+// Configuración Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBAAPW2_kuwfNLV3hI1FzhaOUGfJpvv7vQ",
   authDomain: "momento-40bd7.firebaseapp.com",
@@ -13,91 +13,102 @@ const auth = firebase.auth();
 const storage = firebase.storage();
 const db = firebase.firestore();
 
-// Autenticación anónima
+const imagenInput = document.getElementById("imagen");
+const descripcionInput = document.getElementById("descripcion");
+const subirBtn = document.getElementById("subir");
+const momentosDiv = document.getElementById("momentos");
+const userInfo = document.getElementById("user-info");
+const logoutBtn = document.getElementById("logout");
+const destacadoDiv = document.getElementById("momento-destacado");
+
+let currentUser = null;
+
+// Autenticación anónima automática
 auth.onAuthStateChanged(user => {
-  if (user) {
-    document.getElementById("user-info").innerText = `Hola, usuario #${user.uid.slice(0, 6)}`;
-    document.getElementById("logout").style.display = "inline-block";
-    cargarMomentos();
-  } else {
+  if (!user) {
     auth.signInAnonymously();
+  } else {
+    currentUser = user;
+    userInfo.textContent = `Usuario: ${user.uid}`;
+    logoutBtn.style.display = "inline";
+    cargarMomentos();
   }
 });
 
-document.getElementById("logout").onclick = () => auth.signOut();
+logoutBtn.addEventListener("click", () => {
+  auth.signOut();
+});
 
-// Subir imagen
-document.getElementById("subir").addEventListener("click", async () => {
-  const archivo = document.getElementById("imagen").files[0];
-  const descripcion = document.getElementById("descripcion").value.trim();
+// Subir momento
+subirBtn.addEventListener("click", async () => {
+  const file = imagenInput.files[0];
+  const descripcion = descripcionInput.value.trim().slice(0, 30);
+  if (!file || !descripcion) return alert("Imagen y descripción requeridas");
 
-  if (!archivo || !descripcion) return alert("Sube una imagen y agrega descripción.");
+  const storageRef = storage.ref(`momentos/${Date.now()}_${file.name}`);
+  await storageRef.put(file);
+  const url = await storageRef.getDownloadURL();
 
-  const id = Date.now();
-  const ref = storage.ref(`momentos/${id}-${archivo.name}`);
-  await ref.put(archivo);
-  const url = await ref.getDownloadURL();
+  const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
   await db.collection("momentos").add({
+    uid: currentUser.uid,
     url,
     descripcion,
-    usuario: auth.currentUser.uid,
-    creado: firebase.firestore.FieldValue.serverTimestamp(),
-    expira: Date.now() + 12 * 60 * 60 * 1000,
-    reacciones: { ilumina: 0, reviviria: 0 }
+    timestamp,
+    reacciones: {
+      ilumina: 0,
+      reviviria: 0
+    },
+    duracion: 12
   });
 
-  document.getElementById("descripcion").value = "";
-  document.getElementById("imagen").value = "";
+  imagenInput.value = "";
+  descripcionInput.value = "";
+  cargarMomentos();
 });
 
 // Cargar momentos
-async function cargarMomentos() {
-  const contenedor = document.getElementById("momentos");
-  contenedor.innerHTML = "";
-  const snap = await db.collection("momentos").orderBy("creado", "desc").get();
+function cargarMomentos() {
+  db.collection("momentos").orderBy("timestamp", "desc").get().then(snapshot => {
+    momentosDiv.innerHTML = "";
+    let destacado = null;
+    snapshot.forEach(doc => {
+      const momento = doc.data();
+      const tiempoTranscurrido = (Date.now() - momento.timestamp?.toDate()?.getTime()) / 3600000;
+      if (tiempoTranscurrido > momento.duracion) {
+        doc.ref.delete(); // Borrar si venció
+        return;
+      }
 
-  let destacado = null;
-  let másLikes = 0;
+      const div = document.createElement("div");
+      div.className = "momento";
+      div.innerHTML = `
+        <img src="${momento.url}" alt="momento" />
+        <p>${momento.descripcion}</p>
+        <div class="reacciones">
+          <button class="reaccion-btn" onclick="reaccionar('${doc.id}', 'ilumina')">✨ Me ilumina (${momento.reacciones.ilumina})</button>
+          <button class="reaccion-btn" onclick="retoRevivir('${doc.id}', ${momento.reacciones.reviviria})">⏳ Lo reviviría (${momento.reacciones.reviviria})</button>
+        </div>
+      `;
+      momentosDiv.appendChild(div);
+      if (!destacado) destacado = div.cloneNode(true);
+    });
 
-  snap.forEach(doc => {
-    const data = doc.data();
-    if (Date.now() > data.expira) return;
-
-    const div = document.createElement("div");
-    div.className = "momento";
-    div.innerHTML = `
-      <img src="${data.url}" />
-      <p>${data.descripcion}</p>
-      <div class="reacciones">
-        <button onclick="reaccionar('${doc.id}', 'ilumina')">🌟 Me ilumina (${data.reacciones?.ilumina || 0})</button>
-        <button onclick="reaccionar('${doc.id}', 'reviviria')">🔁 Lo reviviría (${data.reacciones?.reviviria || 0})</button>
-      </div>
-    `;
-    contenedor.appendChild(div);
-
-    const total = (data.reacciones?.ilumina || 0) + (data.reacciones?.reviviria || 0);
-    if (total > másLikes) {
-      másLikes = total;
-      destacado = div.cloneNode(true);
-    }
+    destacadoDiv.innerHTML = "";
+    if (destacado) destacadoDiv.appendChild(destacado);
   });
-
-  const dest = document.getElementById("momento-destacado");
-  dest.innerHTML = destacado ? destacado.outerHTML : "<p>Aún no hay uno destacado.</p>";
 }
 
 // Reaccionar
-window.reaccionar = async (id, tipo) => {
+function reaccionar(id, tipo) {
   const ref = db.collection("momentos").doc(id);
-  const doc = await ref.get();
-  const data = doc.data();
-
-  const nuevas = {
-    ...data.reacciones,
-    [tipo]: (data.reacciones?.[tipo] || 0) + 1
-  };
-
-  await ref.update({ reacciones: nuevas });
+  ref.update({ [`reacciones.${tipo}`]: firebase.firestore.FieldValue.increment(1) });
   cargarMomentos();
-};
+}
+
+// Reto de “Lo reviviría”
+function retoRevivir(id, cantidad) {
+  alert("¡Reto activado! Si te vuelve a pasar algo así, debes subirlo nuevamente 🌀");
+  reaccionar(id, 'reviviria');
+}
