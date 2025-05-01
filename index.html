@@ -6,7 +6,7 @@
   <title>Momento</title>
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-storage-compat.js"></script>
@@ -28,6 +28,14 @@
       <button id="subir">Publicar</button>
     </section>
 
+    <!-- NUEVA SECCIÓN DE REGISTRO EXTRA -->
+    <section id="registro-extra" style="display: none;">
+      <h2>Tu perfil</h2>
+      <input type="text" id="nombre" placeholder="Tu nombre" />
+      <input type="file" id="fotoPerfil" accept="image/*" />
+      <button id="guardarPerfil">Guardar perfil</button>
+    </section>
+
     <section id="destacado">
       <h3>Momento del Día</h3>
       <div id="momento-destacado"></div>
@@ -43,7 +51,6 @@
     <p>&copy; 2025 Momento</p>
   </footer>
 
-  <!-- App principal -->
   <script src="app.js"></script>
 </body>
 </html>
