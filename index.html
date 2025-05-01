@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Momento</title>
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Firebase SDKs -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-storage-compat.js"></script>
@@ -17,30 +16,31 @@
     <h1>Momento</h1>
     <p class="lema">Atrapa el ahora, compártelo.</p>
     <div id="user-info"></div>
+    <button id="login">Iniciar sesión con Google</button>
     <button id="logout" style="display: none;">Cerrar sesión</button>
   </header>
 
-  <!-- Sección de perfil del usuario (aparece después de iniciar sesión) -->
-<div id="perfil-usuario" style="display: none;">
-  <img id="foto-perfil" src="" alt="Foto de perfil" width="80" height="80" style="border-radius: 50%;" />
-  <h3 id="nombre-usuario"></h3>
-  <p id="bio-usuario"></p>
-</div>
-  
   <main>
+    <section id="perfil-usuario">
+      <h2>Tu Perfil</h2>
+      <img id="foto-perfil" src="default-avatar.jpg" alt="Foto de perfil" width="100" />
+      <p><strong>Nombre:</strong> <span id="nombre-usuario">---</span></p>
+      <p><strong>Descripción:</strong> <span id="bio-usuario">---</span></p>
+    </section>
+
+    <section id="registro-extra">
+      <h3>Completa tu perfil</h3>
+      <input type="file" id="foto-perfil-input" accept="image/*" />
+      <input type="text" id="nombre" placeholder="Tu nombre" />
+      <input type="text" id="bio" placeholder="Algo sobre ti" maxlength="100" />
+      <button id="guardar-perfil">Guardar perfil</button>
+    </section>
+
     <section id="formulario">
       <h2>Sube tu momento</h2>
       <input type="file" id="imagen" accept="image/*" />
       <input type="text" id="descripcion" maxlength="30" placeholder="Describe brevemente tu momento"/>
       <button id="subir">Publicar</button>
-    </section>
-
-    <!-- NUEVA SECCIÓN DE REGISTRO EXTRA -->
-    <section id="registro-extra" style="display: none;">
-      <h2>Tu perfil</h2>
-      <input type="text" id="nombre" placeholder="Tu nombre" />
-      <input type="file" id="fotoPerfil" accept="image/*" />
-      <button id="guardarPerfil">Guardar perfil</button>
     </section>
 
     <section id="destacado">
