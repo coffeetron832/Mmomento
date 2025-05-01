@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momento</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Momento</h1>
+    <p class="lema">Atrapa el ahora, compártelo.</p>
+    <div id="user-info"></div>
+    <button id="logout" style="display: none;">Cerrar sesión</button>
+  </header>
+
+  <main>
+    <section id="formulario">
+      <h2>Sube tu momento</h2>
+      <input type="file" id="imagen" accept="image/*" />
+      <input type="text" id="descripcion" maxlength="30" placeholder="Describe brevemente tu momento"/>
+      <button id="subir">Publicar</button>
+    </section>
+
+    <section id="destacado">
+      <h3>Momento del Día</h3>
+      <div id="momento-destacado"></div>
+    </section>
+
+    <section id="feed">
+      <h3>Momentos Recientes</h3>
+      <div id="momentos"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Momento</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
