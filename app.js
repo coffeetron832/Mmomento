@@ -1,4 +1,4 @@
-// 1. CONFIGURACIÓN DE FIREBASE
+// Configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBAAPW2_kuwfNLV3hI1FzhaOUGfJpvv7vQ",
   authDomain: "momento-40bd7.firebaseapp.com",
@@ -8,120 +8,75 @@ const firebaseConfig = {
   appId: "1:576930270515:web:1fa7ce310ff577ec5ec246"
 };
 
-// Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const storage = firebase.storage();
-const firestore = firebase.firestore();
+const db = firebase.firestore();
 
-// 2. REFERENCIAS DEL DOM
-const imagenInput = document.getElementById('imagen');
-const descripcionInput = document.getElementById('descripcion');
-const subirButton = document.getElementById('subir');
-const momentosDiv = document.getElementById('momentos');
-const momentoDestacado = document.getElementById('momento-destacado');
-const userInfo = document.getElementById('user-info');
-const logoutButton = document.getElementById('logout');
+// Autenticación anónima
+auth.signInAnonymously().catch(console.error);
 
-// BOTÓN PARA INICIAR SESIÓN (creado dinámicamente si no existe)
-let loginButton = document.getElementById('login');
-if (!loginButton) {
-  loginButton = document.createElement('button');
-  loginButton.id = 'login';
-  loginButton.textContent = 'Iniciar sesión';
-  document.querySelector('header').appendChild(loginButton);
+// Referencias a elementos
+const imagenInput = document.getElementById("imagen");
+const descripcionInput = document.getElementById("descripcion");
+const subirBtn = document.getElementById("subir");
+const momentosContainer = document.getElementById("momentos");
+
+// Subir imagen y descripción
+subirBtn.addEventListener("click", async () => {
+  const file = imagenInput.files[0];
+  const descripcion = descripcionInput.value.trim();
+
+  if (!file || !descripcion) {
+    alert("Por favor, selecciona una imagen y escribe una descripción.");
+    return;
+  }
+
+  const storageRef = storage.ref("momentos/" + Date.now() + "_" + file.name);
+  const snapshot = await storageRef.put(file);
+  const url = await snapshot.ref.getDownloadURL();
+
+  await db.collection("momentos").add({
+    url,
+    descripcion,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  imagenInput.value = "";
+  descripcionInput.value = "";
+
+  cargarMomentos();
+});
+
+// Cargar momentos
+async function cargarMomentos() {
+  momentosContainer.innerHTML = "";
+  const snapshot = await db.collection("momentos").orderBy("timestamp", "desc").get();
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const { url, descripcion } = data;
+
+    momentosContainer.innerHTML += `
+      <div class="momento">
+        <img src="${url}" alt="momento" />
+        <p>${descripcion}</p>
+        <div class="reacciones">
+          <button class="ilumina">✨ Me ilumina</button>
+          <button class="revivir">🔁 Lo reviviría</button>
+        </div>
+      </div>
+    `;
+  });
 }
 
-// 3. INICIO DE SESIÓN
-loginButton.addEventListener('click', () => {
-  const email = prompt("Correo:");
-  const password = prompt("Contraseña:");
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      const user = userCredential.user;
-      userInfo.textContent = `Bienvenido, ${user.email}`;
-      loginButton.style.display = 'none';
-      logoutButton.style.display = 'block';
-    })
-    .catch(error => {
-      alert("Error al iniciar sesión: " + error.message);
-    });
-});
-
-// 4. CERRAR SESIÓN
-logoutButton.addEventListener('click', () => {
-  auth.signOut().then(() => {
-    userInfo.textContent = '';
-    loginButton.style.display = 'block';
-    logoutButton.style.display = 'none';
-  });
-});
-
-// 5. DETECTAR CAMBIOS EN AUTENTICACIÓN
-auth.onAuthStateChanged(user => {
-  if (user) {
-    userInfo.textContent = `Bienvenido, ${user.email}`;
-    loginButton.style.display = 'none';
-    logoutButton.style.display = 'block';
-  } else {
-    userInfo.textContent = '';
-    loginButton.style.display = 'block';
-    logoutButton.style.display = 'none';
+// Reto al presionar "Lo reviviría"
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("revivir")) {
+    alert("Te comprometiste a subir este momento cuando te suceda algo similar. ¡Aprovecha el ahora!");
   }
 });
 
-// 6. SUBIDA DE MOMENTO
-subirButton.addEventListener('click', () => {
-  const archivo = imagenInput.files[0];
-  const descripcion = descripcionInput.value;
-
-  if (archivo && descripcion) {
-    const nombreArchivo = `${Date.now()}-${archivo.name}`;
-    const refStorage = storage.ref(`momentos/${nombreArchivo}`);
-    const uploadTask = refStorage.put(archivo);
-
-    uploadTask.on('state_changed', null, error => {
-      console.error("Error al subir la imagen:", error);
-    }, async () => {
-      const imagenUrl = await uploadTask.snapshot.ref.getDownloadURL();
-
-      await firestore.collection('momentos').add({
-        descripcion,
-        imagenUrl,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      imagenInput.value = '';
-      descripcionInput.value = '';
-    });
-
-  } else {
-    alert("Debes subir una imagen y escribir una descripción.");
-  }
+// Cargar momentos al iniciar
+auth.onAuthStateChanged(() => {
+  cargarMomentos();
 });
-
-// 7. MOSTRAR MOMENTOS EN TIEMPO REAL
-firestore.collection('momentos')
-  .orderBy('timestamp', 'desc')
-  .onSnapshot(snapshot => {
-    momentosDiv.innerHTML = '';
-    let primero = true;
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const div = document.createElement('div');
-      div.classList.add('momento');
-      div.innerHTML = `
-        <img src="${data.imagenUrl}" alt="Imagen del momento" />
-        <p>${data.descripcion}</p>
-      `;
-
-      if (primero) {
-        momentoDestacado.innerHTML = div.innerHTML;
-        primero = false;
-      } else {
-        momentosDiv.appendChild(div);
-      }
-    });
-  });
