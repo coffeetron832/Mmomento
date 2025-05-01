@@ -136,7 +136,7 @@ function mostrarMomentos() {
 }
 
 // Función para agregar un nuevo momento
-document.getElementById('subir').addEventListener('click', function() {
+document.getElementById('subir').addEventListener('click', function () {
   const imagenInput = document.getElementById('imagen');
   const descripcionInput = document.getElementById('descripcion');
 
@@ -144,19 +144,17 @@ document.getElementById('subir').addEventListener('click', function() {
     const file = imagenInput.files[0];
     const descripcion = descripcionInput.value;
 
-    // Subir la imagen a Firebase Storage
     const storageRef = firebase.storage().ref();
     const fotoRef = storageRef.child('momentos/' + file.name);
     const uploadTask = fotoRef.put(file);
 
-    uploadTask.on('state_changed', function(snapshot) {
+    uploadTask.on('state_changed', function (snapshot) {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       console.log('Progreso de la carga: ' + progress + '%');
-    }, function(error) {
+    }, function (error) {
       console.error('Error al subir el momento:', error);
-    }, function() {
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        // Guardar el momento en Firestore
+    }, function () {
+      uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
         const db = firebase.firestore();
         db.collection('momentos').add({
           foto: downloadURL,
@@ -164,7 +162,9 @@ document.getElementById('subir').addEventListener('click', function() {
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
           console.log('Momento guardado exitosamente');
-          mostrarMomentos();  // Actualiza el feed
+          mostrarMomentos();
+          imagenInput.value = '';
+          descripcionInput.value = '';
         }).catch((error) => {
           console.error('Error guardando el momento:', error);
         });
@@ -174,6 +174,7 @@ document.getElementById('subir').addEventListener('click', function() {
     alert('Por favor, selecciona una imagen y escribe una descripción.');
   }
 });
+
 
 // Función para cerrar sesión
 logoutButton.addEventListener('click', function () {
