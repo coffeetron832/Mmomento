@@ -1,152 +1,49 @@
-// 1. Configuración de Firebase
+// Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_MESSAGING_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyBAAPW2_kuwfNLV3hI1FzhaOUGfJpvv7vQ",
+  authDomain: "momento-40bd7.firebaseapp.com",
+  projectId: "momento-40bd7",
+  storageBucket: "momento-40bd7.firebasestorage.app",
+  messagingSenderId: "576930270515",
+  appId: "1:576930270515:web:1fa7ce310ff577ec5ec246"
 };
-
 firebase.initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
-const storage = firebase.storage();
-const db = firebase.firestore();
+// Variables de elementos HTML
+const loginButton = document.getElementById('login');
+const logoutButton = document.getElementById('logout');
+const userInfoDiv = document.getElementById('user-info');
+const perfilUsuarioDiv = document.getElementById('perfil-usuario');
+const momentosDiv = document.getElementById('momentos');
+const registroExtraSection = document.getElementById('registro-extra');
 
-// 2. Elementos del DOM
-const subirBtn = document.getElementById('subir');
-const imagenInput = document.getElementById('imagen');
-const descripcionInput = document.getElementById('descripcion');
-const momentosContainer = document.getElementById('momentos');
-const destacadoContainer = document.getElementById('momento-destacado');
-const logoutBtn = document.getElementById('logout');
-const userInfo = document.getElementById('user-info');
-
-const nombreInput = document.getElementById('nombre');
-const fotoPerfilInput = document.getElementById('fotoPerfil');
-const guardarPerfilBtn = document.getElementById('guardarPerfil');
-const registroExtra = document.getElementById('registro-extra');
-
-// 3. Subir imagen y guardar momento
-subirBtn.addEventListener('click', async () => {
-  const file = imagenInput.files[0];
-  const descripcion = descripcionInput.value;
-  const user = auth.currentUser;
-  if (!file || !descripcion || !user) return alert("Faltan campos o no has iniciado sesión.");
-
-  const ref = storage.ref(`momentos/${Date.now()}_${file.name}`);
-  await ref.put(file);
-  const url = await ref.getDownloadURL();
-
-  await db.collection('momentos').add({
-    url,
-    descripcion,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    uid: user.uid
-  });
-
-  descripcionInput.value = '';
-  imagenInput.value = '';
-  cargarMomentos();
+// Función para gestionar el inicio de sesión de Google
+loginButton.addEventListener('click', function () {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      console.log("Usuario autenticado:", user);
+      mostrarUsuario(user);
+    })
+    .catch((error) => {
+      console.error("Error al iniciar sesión:", error);
+    });
 });
 
-// 4. Cargar momentos y momento destacado
-async function cargarMomentos() {
-  momentosContainer.innerHTML = '';
-  destacadoContainer.innerHTML = '';
+// Función para mostrar la información del usuario después del login
+function mostrarUsuario(user) {
+  userInfoDiv.innerHTML = `
+    <p>Bienvenido, ${user.displayName}!</p>
+    <p>Email: ${user.email}</p>
+  `;
+  loginButton.style.display = 'none';
+  logoutButton.style.display = 'block';
 
-  const snapshot = await db.collection('momentos').orderBy('timestamp', 'desc').get();
-
-  snapshot.forEach((doc, i) => {
-    const data = doc.data();
-    const contenedor = document.createElement('div');
-    contenedor.className = 'momento';
-
-    contenedor.innerHTML = `
-      <img src="${data.url}" />
-      <p>${data.descripcion}</p>
-      <div class="reacciones">
-        <button class="ilumina">✨ Me ilumina</button>
-        <button class="revivir" onclick="retarme('${doc.id}')">🔁 Lo reviviría</button>
-      </div>
-    `;
-
-    if (i === 0) {
-      destacadoContainer.appendChild(contenedor.cloneNode(true));
-    }
-
-    momentosContainer.appendChild(contenedor);
-  });
+  cargarPerfil(user.uid);
 }
 
-// 5. Reacción tipo reto
-function retarme(id) {
-  alert(`¡Has elegido revivir este momento! Sube algo similar y etiquétalo.`);
-}
-
-// 6. Autenticación
-auth.onAuthStateChanged(async user => {
-  if (user) {
-    logoutBtn.style.display = 'inline-block';
-    userInfo.innerHTML = `Conectado como: ${user.email}`;
-    mostrarRegistroExtra(user.uid);
-    cargarMomentos();
-  } else {
-    logoutBtn.style.display = 'none';
-    userInfo.innerHTML = 'No has iniciado sesión.';
-    registroExtra.style.display = 'none';
-  }
-});
-
-logoutBtn.addEventListener('click', () => auth.signOut());
-
-// 7. Mostrar campos extra para nombre y foto de perfil
-function mostrarRegistroExtra(uid) {
-  registroExtra.style.display = 'block';
-  guardarPerfilBtn.onclick = () => guardarPerfil(uid);
-}
-
-// 8. Guardar nombre y foto de perfil
-async function guardarPerfil(uid) {
-  const nombre = nombreInput.value;
-  const archivo = fotoPerfilInput.files[0];
-  let urlFoto = '';
-
-  if (!nombre || !archivo) return alert("Completa todos los campos.");
-
-  const ref = storage.ref(`perfiles/${uid}_${archivo.name}`);
-  await ref.put(archivo);
-  urlFoto = await ref.getDownloadURL();
-
-  await db.collection('usuarios').doc(uid).set({
-    nombre,
-    urlFoto
-  });
-
-  alert("Perfil guardado exitosamente.");
-  registroExtra.style.display = 'none';
-}
-
-// Función para guardar los datos del perfil en Firestore
-function guardarPerfil(usuarioId, nombre, bio, foto) {
-  const db = firebase.firestore();
-  const usuarioRef = db.collection('usuarios').doc(usuarioId);
-
-  usuarioRef.set({
-    nombre: nombre,
-    bio: bio,
-    foto: foto,
-  }, { merge: true }) // merge: true asegura que solo se actualicen los datos, sin sobrescribir todo
-  .then(() => {
-    console.log('Perfil actualizado correctamente');
-  })
-  .catch((error) => {
-    console.error('Error actualizando el perfil: ', error);
-  });
-}
-
-// Función para obtener los datos del perfil y mostrarlos
+// Función para cargar el perfil del usuario desde Firestore
 function cargarPerfil(usuarioId) {
   const db = firebase.firestore();
   const usuarioRef = db.collection('usuarios').doc(usuarioId);
@@ -154,13 +51,10 @@ function cargarPerfil(usuarioId) {
   usuarioRef.get().then((doc) => {
     if (doc.exists) {
       const usuario = doc.data();
-      // Mostrar datos del perfil
-      document.getElementById('foto-perfil').src = usuario.foto || 'default-avatar.jpg'; // Foto por defecto
+      document.getElementById('foto-perfil').src = usuario.foto || 'default-avatar.jpg';
       document.getElementById('nombre-usuario').textContent = usuario.nombre || 'Sin nombre';
       document.getElementById('bio-usuario').textContent = usuario.bio || 'No hay descripción';
-
-      // Mostrar el perfil
-      document.getElementById('perfil-usuario').style.display = 'block';
+      perfilUsuarioDiv.style.display = 'block';
     } else {
       console.log("No se encontró el perfil");
     }
@@ -169,48 +63,44 @@ function cargarPerfil(usuarioId) {
   });
 }
 
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // Usuario está autenticado, cargar su perfil
-    cargarPerfil(user.uid);
-  } else {
-    // No está autenticado
-    console.log('Usuario no autenticado');
-  }
-});
+// Función para registrar o actualizar el perfil del usuario
+function guardarPerfil(usuarioId, nombre, bio, foto) {
+  const db = firebase.firestore();
+  const usuarioRef = db.collection('usuarios').doc(usuarioId);
 
-<!-- Formulario para editar el perfil (nombre, bio, foto) -->
-<section id="registro-extra" style="display: none;">
-  <h3>Editar Perfil</h3>
-  <input type="text" id="nombre" placeholder="Tu nombre">
-  <input type="text" id="bio" placeholder="Tu biografía">
-  <input type="file" id="foto-perfil-input" accept="image/*">
-  <button id="guardar-perfil">Guardar perfil</button>
-</section>
+  usuarioRef.set({
+    nombre: nombre,
+    bio: bio,
+    foto: foto,
+  }, { merge: true })
+  .then(() => {
+    console.log('Perfil actualizado correctamente');
+  })
+  .catch((error) => {
+    console.error('Error actualizando el perfil: ', error);
+  });
+}
 
-// Subir la foto de perfil al Storage
+// Función para subir la foto de perfil al almacenamiento de Firebase
 function subirFotoPerfil(file) {
   const storageRef = firebase.storage().ref();
   const fotoRef = storageRef.child('fotos-perfil/' + file.name);
   const uploadTask = fotoRef.put(file);
 
   uploadTask.on('state_changed', function(snapshot) {
-    // Progreso de la carga (opcional)
     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
     console.log('Progreso: ' + progress + '%');
   }, function(error) {
     console.error("Error al subir la foto: ", error);
   }, function() {
-    // La foto fue subida exitosamente
     uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
       console.log('Foto subida a: ', downloadURL);
-      // Actualiza la URL de la foto en Firestore
       guardarPerfil(firebase.auth().currentUser.uid, document.getElementById('nombre').value, document.getElementById('bio').value, downloadURL);
     });
   });
 }
 
-// Llamar a esta función cuando el usuario haga clic en "Guardar perfil"
+// Función para manejar el evento de guardar perfil (nombre, bio y foto)
 document.getElementById('guardar-perfil').addEventListener('click', function() {
   const fotoInput = document.getElementById('foto-perfil-input');
   const nombre = document.getElementById('nombre').value;
@@ -219,8 +109,91 @@ document.getElementById('guardar-perfil').addEventListener('click', function() {
   if (fotoInput.files[0]) {
     subirFotoPerfil(fotoInput.files[0]);
   } else {
-    // Si no sube foto, solo actualizar los datos
     guardarPerfil(firebase.auth().currentUser.uid, nombre, bio, 'default-avatar.jpg');
   }
 });
 
+// Función para mostrar los momentos (recientes)
+function mostrarMomentos() {
+  const db = firebase.firestore();
+  const momentosRef = db.collection('momentos').orderBy('timestamp', 'desc').limit(10);
+
+  momentosRef.get().then((querySnapshot) => {
+    momentosDiv.innerHTML = '';
+    querySnapshot.forEach((doc) => {
+      const momento = doc.data();
+      const momentoElement = document.createElement('div');
+      momentoElement.classList.add('momento');
+      momentoElement.innerHTML = `
+        <img src="${momento.foto}" alt="Momento" width="200" />
+        <p>${momento.descripcion}</p>
+      `;
+      momentosDiv.appendChild(momentoElement);
+    });
+  }).catch((error) => {
+    console.error("Error obteniendo los momentos:", error);
+  });
+}
+
+// Función para agregar un nuevo momento
+document.getElementById('subir').addEventListener('click', function() {
+  const imagenInput = document.getElementById('imagen');
+  const descripcionInput = document.getElementById('descripcion');
+
+  if (imagenInput.files[0] && descripcionInput.value.trim() !== '') {
+    const file = imagenInput.files[0];
+    const descripcion = descripcionInput.value;
+
+    // Subir la imagen a Firebase Storage
+    const storageRef = firebase.storage().ref();
+    const fotoRef = storageRef.child('momentos/' + file.name);
+    const uploadTask = fotoRef.put(file);
+
+    uploadTask.on('state_changed', function(snapshot) {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Progreso de la carga: ' + progress + '%');
+    }, function(error) {
+      console.error('Error al subir el momento:', error);
+    }, function() {
+      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        // Guardar el momento en Firestore
+        const db = firebase.firestore();
+        db.collection('momentos').add({
+          foto: downloadURL,
+          descripcion: descripcion,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          console.log('Momento guardado exitosamente');
+          mostrarMomentos();  // Actualiza el feed
+        }).catch((error) => {
+          console.error('Error guardando el momento:', error);
+        });
+      });
+    });
+  } else {
+    alert('Por favor, selecciona una imagen y escribe una descripción.');
+  }
+});
+
+// Función para cerrar sesión
+logoutButton.addEventListener('click', function () {
+  firebase.auth().signOut().then(() => {
+    console.log('Sesión cerrada');
+    loginButton.style.display = 'block';
+    logoutButton.style.display = 'none';
+    userInfoDiv.innerHTML = '';
+    perfilUsuarioDiv.style.display = 'none';
+  }).catch((error) => {
+    console.error('Error cerrando sesión:', error);
+  });
+});
+
+// Comprobación de estado de autenticación al cargar la página
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    mostrarUsuario(user);
+    mostrarMomentos();
+  } else {
+    console.log('No autenticado');
+  }
+});
