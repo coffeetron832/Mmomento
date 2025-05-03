@@ -41,6 +41,13 @@
       <input type="file" id="imagen" accept="image/*" />
       <input type="text" id="descripcion" maxlength="30" placeholder="Describe brevemente tu momento"/>
       <button id="subir">Publicar</button>
+
+      <!-- Barra de progreso -->
+      <div id="progress-container" style="display: none;">
+        <p>Cargando...</p>
+        <div id="progress-bar" style="width: 0%; background-color: #4caf50; height: 20px;"></div>
+        <span id="progress-percent">0%</span>
+      </div>
     </section>
 
     <section id="destacado">
