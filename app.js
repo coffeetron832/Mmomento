@@ -127,11 +127,58 @@ function mostrarMomentos() {
       momentoElement.innerHTML = `
         <img src="${momento.foto}" alt="Momento" width="200" />
         <p>${momento.descripcion}</p>
+        <div id="reacciones-${doc.id}">
+          <button class="reaccion" onclick="agregarReaccion('${doc.id}', 'Me ilumina')">Me ilumina</button>
+          <button class="reaccion" onclick="agregarReaccion('${doc.id}', 'Lo reviviría')">Lo reviviría</button>
+        </div>
+        <div id="reacciones-list-${doc.id}"></div>
       `;
       momentosDiv.appendChild(momentoElement);
+      cargarReacciones(doc.id);  // Cargar reacciones para ese momento
     });
   }).catch((error) => {
     console.error("Error obteniendo los momentos:", error);
+  });
+}
+
+// Función para agregar una reacción
+function agregarReaccion(momentoId, reaccion) {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert('Debes iniciar sesión para reaccionar');
+    return;
+  }
+
+  const db = firebase.firestore();
+  const reaccionesRef = db.collection('momentos').doc(momentoId).collection('reacciones');
+  reaccionesRef.add({
+    userId: user.uid,
+    reaccion: reaccion,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    console.log('Reacción agregada');
+    cargarReacciones(momentoId);  // Recargar las reacciones
+  }).catch((error) => {
+    console.error('Error agregando reacción:', error);
+  });
+}
+
+// Función para cargar las reacciones de un momento
+function cargarReacciones(momentoId) {
+  const db = firebase.firestore();
+  const reaccionesRef = db.collection('momentos').doc(momentoId).collection('reacciones');
+  
+  reaccionesRef.get().then((querySnapshot) => {
+    const reaccionesList = document.getElementById(`reacciones-list-${momentoId}`);
+    reaccionesList.innerHTML = '';
+    querySnapshot.forEach((doc) => {
+      const reaccion = doc.data();
+      const reaccionElement = document.createElement('div');
+      reaccionElement.innerHTML = `${reaccion.reaccion} (por ${reaccion.userId})`;
+      reaccionesList.appendChild(reaccionElement);
+    });
+  }).catch((error) => {
+    console.error("Error obteniendo las reacciones:", error);
   });
 }
 
@@ -175,7 +222,6 @@ document.getElementById('subir').addEventListener('click', function () {
   }
 });
 
-
 // Función para cerrar sesión
 logoutButton.addEventListener('click', function () {
   firebase.auth().signOut().then(() => {
@@ -198,3 +244,4 @@ firebase.auth().onAuthStateChanged(function(user) {
     console.log('No autenticado');
   }
 });
+
