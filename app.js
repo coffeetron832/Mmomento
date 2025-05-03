@@ -16,6 +16,7 @@ const userInfoDiv = document.getElementById('user-info');
 const perfilUsuarioDiv = document.getElementById('perfil-usuario');
 const momentosDiv = document.getElementById('momentos');
 const registroExtraSection = document.getElementById('registro-extra');
+const progresoCarga = document.getElementById('progreso-carga'); // Añadido para mostrar el progreso
 
 // Función para gestionar el inicio de sesión de Google
 loginButton.addEventListener('click', function () {
@@ -89,6 +90,7 @@ function subirFotoPerfil(file) {
 
   uploadTask.on('state_changed', function(snapshot) {
     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    progresoCarga.style.width = progress + '%'; // Actualización del progreso visual
     console.log('Progreso: ' + progress + '%');
   }, function(error) {
     console.error("Error al subir la foto: ", error);
@@ -197,6 +199,7 @@ document.getElementById('subir').addEventListener('click', function () {
 
     uploadTask.on('state_changed', function (snapshot) {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      progresoCarga.style.width = progress + '%'; // Actualización del progreso visual
       console.log('Progreso de la carga: ' + progress + '%');
     }, function (error) {
       console.error('Error al subir el momento:', error);
