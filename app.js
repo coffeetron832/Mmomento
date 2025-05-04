@@ -179,9 +179,55 @@ function cargarReacciones(momentoId) {
   });
 }
 
+// Comprobación de estado de autenticación al cargar la página
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    mostrarUsuario(user);
+    mostrarMomentos();
+  } else {
+    console.log('No autenticado');
+    // Si el usuario no está autenticado, se muestra el feed normal
+    mostrarMomentos();
+  }
+});
+
+
 // Función para agregar un nuevo momento
 document.getElementById('subir').addEventListener('click', function () {
   const imagenInput = document.getElementById('imagen');
   const descripcionInput = document.getElementById('descripcion');
 
-  if (imagen
+  if (imagenInput.files[0] && descripcionInput.value.trim() !== '') {
+    const file = imagenInput.files[0];
+    const descripcion = descripcionInput.value;
+
+    const storageRef = firebase.storage().ref();
+    const fotoRef = storageRef.child('momentos/' + file.name);
+    const uploadTask = fotoRef.put(file);
+
+    uploadTask.on('state_changed', function (snapshot) {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Progreso de la carga: ' + progress + '%');
+    }, function (error) {
+      console.error('Error al subir el momento:', error);
+    }, function () {
+      uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+        const db = firebase.firestore();
+        db.collection('momentos').add({
+          foto: downloadURL,
+          descripcion: descripcion,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          console.log('Momento guardado exitosamente');
+          mostrarMomentos();
+          imagenInput.value = '';
+          descripcionInput.value = '';
+        }).catch((error) => {
+          console.error('Error guardando el momento:', error);
+        });
+      });
+    });
+  } else {
+    alert('Por favor, selecciona una imagen y escribe una descripción.');
+  }
+});
