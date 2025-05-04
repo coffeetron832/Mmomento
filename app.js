@@ -22,6 +22,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const editarPerfilButton = document.getElementById('editar-perfil');
   const nuevoMomentoButton = document.getElementById('nuevo-momento');
 
+  editarPerfilButton.addEventListener('click', () => {
+  console.log('Botón "Editar Perfil" presionado');
+  const nuevoNombre = prompt("Introduce tu nuevo nombre:");
+  const nuevaBio = prompt("Introduce tu nueva biografía:");
+
+  if (nuevoNombre && nuevaBio) {
+    const user = auth.currentUser;
+    console.log(`Actualizando perfil para ${user.uid}`);
+    db.collection('usuarios').doc(user.uid).set({
+      nombre: nuevoNombre,
+      bio: nuevaBio
+    }, { merge: true })
+    .then(() => {
+      console.log('Perfil actualizado correctamente');
+      mostrarUsuario(user); // Actualiza el perfil en pantalla
+    })
+    .catch((error) => console.error('Error actualizando el perfil:', error));
+  } else {
+    alert("Por favor, completa ambos campos.");
+  }
+});
+  
   // Iniciar sesión con Google
   loginButton.addEventListener('click', () => {
     const provider = new firebase.auth.GoogleAuthProvider();
