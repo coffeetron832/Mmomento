@@ -3,47 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Red Social - Momento</title>
+    <title>Momento - Red Social</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Bienvenido a Momento</h1>
-        <p class="lema">"Comparte lo mejor de ti"</p>
+        <h1>Momento</h1>
         <button id="login">Iniciar sesión</button>
         <button id="logout" style="display: none;">Cerrar sesión</button>
     </header>
 
-    <section id="user-info"></section>
+    <main>
+        <section id="perfil-usuario" style="display: none;">
+            <h2>Perfil</h2>
+            <img id="foto-perfil" src="default-avatar.jpg" alt="Foto de perfil">
+            <p id="nombre-usuario">Sin nombre</p>
+            <p id="bio-usuario">No hay descripción</p>
+            <button id="editar-perfil">Editar</button>
+        </section>
 
-    <section id="perfil-usuario" style="display: none;">
-        <h2>Perfil de usuario</h2>
-        <img id="foto-perfil" src="default-avatar.jpg" alt="Foto de perfil">
-        <p id="nombre-usuario">Sin nombre</p>
-        <p id="bio-usuario">No hay descripción</p>
-        <input type="file" id="foto-perfil-input" />
-        <input type="text" id="nombre" placeholder="Nuevo nombre" />
-        <textarea id="bio" placeholder="Actualiza tu biografía"></textarea>
-        <button id="guardar-perfil">Guardar Perfil</button>
-    </section>
-
-    <section id="feed">
-        <h2>Momentos Recientes</h2>
-        <div id="momentos"></div>
-        <input type="file" id="imagen" />
-        <input type="text" id="descripcion" placeholder="Añadir una descripción" />
-        <button id="subir">Subir Momento</button>
-    </section>
+        <section id="feed">
+            <h2>Momentos</h2>
+            <div id="momentos"></div>
+            <button id="nuevo-momento">Nuevo Momento</button>
+        </section>
+    </main>
 
     <footer>
-        <p>Desarrollado por Pontónj</p>
+        <p>&copy; 2025 - Momento</p>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-storage.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
 </body>
 </html>
 
