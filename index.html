@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momento - Atrapa el ahora, compártelo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Momento</h1>
+    <p class="tagline">Atrapa el ahora, compártelo.</p>
+    <button id="logoutBtn" class="hidden">Cerrar sesión</button>
+  </header>
 
+  <section id="authSection">
+    <h2>Ingresa a tu cuenta</h2>
+    <form id="authForm">
+      <input type="email" id="email" placeholder="Correo electrónico" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
+      <button type="submit">Ingresar / Registrarse</button>
+    </form>
+  </section>
+
+  <section id="uploadSection" class="hidden">
+    <h2>Sube tu momento</h2>
+    <form id="momentForm">
+      <input type="file" id="imageInput" accept="image/*" required />
+      <input type="text" id="captionInput" placeholder="Escribe algo (máx 30 caracteres)" maxlength="30" required />
+      <button type="submit">Publicar Momento</button>
+    </form>
+  </section>
+
+  <section id="momentsFeed">
+    <h2>Momentos de hoy</h2>
+    <div id="momentsContainer"></div>
+  </section>
+</body>
+</html>
