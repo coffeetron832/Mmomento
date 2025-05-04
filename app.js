@@ -9,18 +9,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-// Configuración de Firebase (usa variables de entorno para ocultar credenciales)
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID
-};
-
-firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
@@ -30,6 +18,8 @@ const loginButton = document.getElementById('login');
 const logoutButton = document.getElementById('logout');
 const perfilUsuarioDiv = document.getElementById('perfil-usuario');
 const momentosDiv = document.getElementById('momentos');
+const editarPerfilButton = document.getElementById('editar-perfil');
+const nuevoMomentoButton = document.getElementById('nuevo-momento');
 
 // Iniciar sesión con Google
 loginButton.addEventListener('click', () => {
@@ -93,4 +83,62 @@ auth.onAuthStateChanged((user) => {
     perfilUsuarioDiv.style.display = 'none';
     mostrarMomentos();
   }
+});
+
+// Funcionalidad para "Editar Perfil"
+editarPerfilButton.addEventListener('click', () => {
+  const nuevoNombre = prompt("Introduce tu nuevo nombre:");
+  const nuevaBio = prompt("Introduce tu nueva biografía:");
+
+  if (nuevoNombre && nuevaBio) {
+    const user = auth.currentUser;
+    db.collection('usuarios').doc(user.uid).set({
+      nombre: nuevoNombre,
+      bio: nuevaBio
+    }, { merge: true })
+    .then(() => {
+      console.log('Perfil actualizado');
+      mostrarUsuario(user); // Actualiza el perfil en pantalla
+    })
+    .catch((error) => console.error('Error actualizando el perfil:', error));
+  } else {
+    alert("Por favor, completa ambos campos.");
+  }
+});
+
+// Funcionalidad para "Nuevo Momento"
+nuevoMomentoButton.addEventListener('click', () => {
+  const descripcion = prompt("Escribe una descripción para tu momento:");
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+
+  fileInput.onchange = (event) => {
+    const file = event.target.files[0];
+    if (file && descripcion) {
+      const storageRef = storage.ref(`momentos/${file.name}`);
+      const uploadTask = storageRef.put(file);
+
+      uploadTask.on('state_changed', null, (error) => {
+        console.error('Error subiendo la imagen:', error);
+      }, () => {
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          db.collection('momentos').add({
+            foto: downloadURL,
+            descripcion: descripcion,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          })
+          .then(() => {
+            console.log('Nuevo momento agregado');
+            mostrarMomentos(); // Actualiza el feed
+          })
+          .catch((error) => console.error('Error guardando el momento:', error));
+        });
+      });
+    } else {
+      alert("Por favor, selecciona una imagen y escribe una descripción.");
+    }
+  };
+
+  fileInput.click();
 });
