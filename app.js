@@ -1,14 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-  
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+/ Importar funciones desde Firebase SDK
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBAAPW2_kuwfNLV3hI1FzhaOUGfJpvv7vQ",
   authDomain: "momento-40bd7.firebaseapp.com",
@@ -18,39 +12,43 @@ const firebaseConfig = {
   appId: "1:576930270515:web:1fa7ce310ff577ec5ec246"
 };
 
-// Inicializar Firebase
+
+ // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-// Referencias a servicios de Firebase
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
-
-// Resto de tu código...
-console.log("Firebase inicializado correctamente");
-  
-// Referencias a los elementos HTML
+// Referencias a elementos del DOM
 const loginButton = document.getElementById('login');
 const logoutButton = document.getElementById('logout');
 const nuevoMomentoButton = document.getElementById('nuevo-momento');
 const perfilUsuarioDiv = document.getElementById('perfil-usuario');
 const nombreUsuario = document.getElementById('nombre-usuario');
 
-// Función para iniciar sesión
+// Iniciar sesión con Google
 loginButton.addEventListener('click', () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider)
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
     .then((result) => {
-      console.log('Usuario autenticado:', result.user);
       mostrarUsuario(result.user);
     })
     .catch((error) => {
       console.error('Error al iniciar sesión:', error);
-      alert('No se pudo iniciar sesión. Revisa la consola para más detalles.');
+      alert('No se pudo iniciar sesión.');
     });
 });
 
-// Función para mostrar los datos del usuario
+// Cerrar sesión
+logoutButton.addEventListener('click', () => {
+  signOut(auth)
+    .then(() => {
+      perfilUsuarioDiv.style.display = 'none';
+      loginButton.style.display = 'block';
+      logoutButton.style.display = 'none';
+    });
+});
+
+// Mostrar perfil
 function mostrarUsuario(user) {
   perfilUsuarioDiv.style.display = 'block';
   nombreUsuario.textContent = user.displayName || 'Sin nombre';
@@ -58,36 +56,30 @@ function mostrarUsuario(user) {
   logoutButton.style.display = 'block';
 }
 
-// Función para subir un momento (prototipo)
-nuevoMomentoButton.addEventListener('click', () => {
-  const descripcion = prompt('Describe tu momento:');
-  if (!descripcion) {
-    alert('Por favor, escribe una descripción para tu momento.');
-    return;
-  }
-
-  const momento = {
-    descripcion,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  db.collection('momentos').add(momento)
-    .then(() => {
-      alert('Momento subido con éxito.');
-    })
-    .catch((error) => {
-      console.error('Error al subir el momento:', error);
-      alert('No se pudo subir el momento. Revisa la consola para más detalles.');
-    });
-});
-
-// Verificar el estado de autenticación
-auth.onAuthStateChanged((user) => {
+// Escuchar cambios en autenticación
+onAuthStateChanged(auth, (user) => {
   if (user) {
     mostrarUsuario(user);
   } else {
     perfilUsuarioDiv.style.display = 'none';
     loginButton.style.display = 'block';
     logoutButton.style.display = 'none';
+  }
+});
+
+// Subir nuevo momento
+nuevoMomentoButton.addEventListener('click', async () => {
+  const descripcion = prompt('Describe tu momento:');
+  if (!descripcion) return alert('Debes escribir una descripción.');
+
+  try {
+    await addDoc(collection(db, 'momentos'), {
+      descripcion,
+      timestamp: serverTimestamp()
+    });
+    alert('Momento subido con éxito.');
+  } catch (error) {
+    console.error('Error al subir el momento:', error);
+    alert('No se pudo subir el momento.');
   }
 });
