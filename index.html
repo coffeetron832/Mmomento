@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Momento - Red Social</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momento</title>
+  <link rel="stylesheet" href="styles.css" />
 
-  <!-- Firebase v8 SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <!-- Firebase CDN (sin módulos) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <header>
@@ -19,14 +19,11 @@
   </header>
 
   <main>
-    <section id="perfil-usuario" style="display: none;">
-      <h2>Perfil</h2>
-      <img id="foto-perfil" src="default-avatar.jpg" alt="Foto de perfil">
-      <p id="nombre-usuario">Sin nombre</p>
-      <button id="editar-perfil">Editar</button>
+    <section id="perfil" style="display: none;">
+      <p><strong>Usuario:</strong> <span id="nombre-usuario">Desconocido</span></p>
     </section>
 
-    <section id="feed">
+    <section>
       <h2>Momentos</h2>
       <div id="momentos"></div>
       <button id="nuevo-momento">Nuevo Momento</button>
@@ -35,6 +32,12 @@
 
   <footer>
     <p>&copy; 2025 - Momento</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
   </footer>
 
   <script src="app.js"></script>
