@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Momento</title>
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Firebase CDN (sin módulos) -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Momento - Red Social Simple</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase SDK v9 (modular) con compatibilidad -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -20,13 +19,12 @@
 
   <main>
     <section id="perfil" style="display: none;">
-      <p><strong>Usuario:</strong> <span id="nombre-usuario">Desconocido</span></p>
+      <p>Bienvenido, <strong id="nombre-usuario">Usuario</strong></p>
     </section>
 
     <section>
-      <h2>Momentos</h2>
-      <div id="momentos"></div>
       <button id="nuevo-momento">Nuevo Momento</button>
+      <div id="momentos"></div>
     </section>
   </main>
 
@@ -37,6 +35,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
   </footer>
 
