@@ -9,225 +9,88 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-const app = firebase.initializeApp(firebaseConfig);
+// Configuración de Firebase (usa variables de entorno para ocultar credenciales)
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
+};
+
+firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// Variables de elementos HTML
+// Elementos HTML
 const loginButton = document.getElementById('login');
 const logoutButton = document.getElementById('logout');
-const userInfoDiv = document.getElementById('user-info');
 const perfilUsuarioDiv = document.getElementById('perfil-usuario');
 const momentosDiv = document.getElementById('momentos');
 
-// Función para gestionar el inicio de sesión de Google
-loginButton.addEventListener('click', function () {
+// Iniciar sesión con Google
+loginButton.addEventListener('click', () => {
   const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider)
+  auth.signInWithPopup(provider)
     .then((result) => {
-      const user = result.user;
-      console.log("Usuario autenticado:", user);
-      mostrarUsuario(user);
+      console.log('Usuario autenticado');
+      mostrarUsuario(result.user);
     })
-    .catch((error) => {
-      console.error("Error al iniciar sesión:", error);
+    .catch((error) => console.error('Error al iniciar sesión:', error));
+});
+
+// Cerrar sesión
+logoutButton.addEventListener('click', () => {
+  auth.signOut()
+    .then(() => {
+      console.log('Sesión cerrada');
+      perfilUsuarioDiv.style.display = 'none';
+      logoutButton.style.display = 'none';
+      loginButton.style.display = 'block';
     });
 });
 
-// Función para mostrar la información del usuario después del login
+// Mostrar la información del usuario
 function mostrarUsuario(user) {
-  userInfoDiv.innerHTML = `
-    <p>Bienvenido, ${user.displayName}!</p>
-    <p>Email: ${user.email}</p>
-  `;
+  perfilUsuarioDiv.style.display = 'block';
+  document.getElementById('foto-perfil').src = user.photoURL || 'default-avatar.jpg';
+  document.getElementById('nombre-usuario').textContent = user.displayName || 'Sin nombre';
+  document.getElementById('bio-usuario').textContent = 'Bienvenido a Momento';
   loginButton.style.display = 'none';
   logoutButton.style.display = 'block';
-  cargarPerfil(user.uid);
 }
 
-// Función para cargar el perfil del usuario desde Firestore
-function cargarPerfil(usuarioId) {
-  const usuarioRef = db.collection('usuarios').doc(usuarioId);
-
-  usuarioRef.get().then((doc) => {
-    if (doc.exists) {
-      const usuario = doc.data();
-      document.getElementById('foto-perfil').src = usuario.foto || 'default-avatar.jpg';
-      document.getElementById('nombre-usuario').textContent = usuario.nombre || 'Sin nombre';
-      document.getElementById('bio-usuario').textContent = usuario.bio || 'No hay descripción';
-      perfilUsuarioDiv.style.display = 'block';
-    } else {
-      console.log("No se encontró el perfil");
-    }
-  }).catch((error) => {
-    console.error("Error obteniendo el perfil:", error);
-  });
-}
-
-// Función para registrar o actualizar el perfil del usuario
-function guardarPerfil(usuarioId, nombre, bio, foto) {
-  const usuarioRef = db.collection('usuarios').doc(usuarioId);
-
-  usuarioRef.set({
-    nombre: nombre,
-    bio: bio,
-    foto: foto,
-  }, { merge: true })
-  .then(() => {
-    console.log('Perfil actualizado correctamente');
-  })
-  .catch((error) => {
-    console.error('Error actualizando el perfil: ', error);
-  });
-}
-
-// Función para subir la foto de perfil al almacenamiento de Firebase
-function subirFotoPerfil(file) {
-  const fotoRef = storage.ref().child('fotos-perfil/' + file.name);
-  const uploadTask = fotoRef.put(file);
-
-  uploadTask.on('state_changed', function(snapshot) {
-    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    console.log('Progreso: ' + progress + '%');
-  }, function(error) {
-    console.error("Error al subir la foto: ", error);
-  }, function() {
-    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-      console.log('Foto subida a: ', downloadURL);
-      guardarPerfil(firebase.auth().currentUser.uid, document.getElementById('nombre').value, document.getElementById('bio').value, downloadURL);
-    });
-  });
-}
-
-// Función para manejar el evento de guardar perfil (nombre, bio y foto)
-document.getElementById('guardar-perfil').addEventListener('click', function() {
-  const fotoInput = document.getElementById('foto-perfil-input');
-  const nombre = document.getElementById('nombre').value;
-  const bio = document.getElementById('bio').value;
-  
-  if (fotoInput.files[0]) {
-    subirFotoPerfil(fotoInput.files[0]);
-  } else {
-    guardarPerfil(firebase.auth().currentUser.uid, nombre, bio, 'default-avatar.jpg');
-  }
-});
-
-// Función para mostrar los momentos (recientes)
+// Mostrar momentos
 function mostrarMomentos() {
-  const momentosRef = db.collection('momentos').orderBy('timestamp', 'desc').limit(10);
-
-  momentosRef.get().then((querySnapshot) => {
-    momentosDiv.innerHTML = '';
-    querySnapshot.forEach((doc) => {
-      const momento = doc.data();
-      const momentoElement = document.createElement('div');
-      momentoElement.classList.add('momento');
-      momentoElement.innerHTML = `
-        <img src="${momento.foto}" alt="Momento" width="200" />
-        <p>${momento.descripcion}</p>
-        <div id="reacciones-${doc.id}">
-          <button class="reaccion" onclick="agregarReaccion('${doc.id}', 'Me ilumina')">Me ilumina</button>
-          <button class="reaccion" onclick="agregarReaccion('${doc.id}', 'Lo reviviría')">Lo reviviría</button>
-        </div>
-        <div id="reacciones-list-${doc.id}"></div>
-      `;
-      momentosDiv.appendChild(momentoElement);
-      cargarReacciones(doc.id);  // Cargar reacciones para ese momento
-    });
-  }).catch((error) => {
-    console.error("Error obteniendo los momentos:", error);
-  });
+  momentosDiv.innerHTML = '<p>Cargando momentos...</p>';
+  db.collection('momentos').orderBy('timestamp', 'desc').limit(10)
+    .get()
+    .then((querySnapshot) => {
+      momentosDiv.innerHTML = '';
+      querySnapshot.forEach((doc) => {
+        const momento = doc.data();
+        const momentoElement = document.createElement('div');
+        momentoElement.innerHTML = `
+          <img src="${momento.foto}" alt="Momento">
+          <p>${momento.descripcion}</p>
+        `;
+        momentosDiv.appendChild(momentoElement);
+      });
+    })
+    .catch((error) => console.error('Error cargando momentos:', error));
 }
 
-// Función para agregar una reacción
-function agregarReaccion(momentoId, reaccion) {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    alert('Debes iniciar sesión para reaccionar');
-    return;
-  }
-
-  const reaccionesRef = db.collection('momentos').doc(momentoId).collection('reacciones');
-  reaccionesRef.add({
-    userId: user.uid,
-    reaccion: reaccion,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => {
-    console.log('Reacción agregada');
-    cargarReacciones(momentoId);  // Recargar las reacciones
-  }).catch((error) => {
-    console.error('Error agregando reacción:', error);
-  });
-}
-
-// Función para cargar las reacciones de un momento
-function cargarReacciones(momentoId) {
-  const reaccionesRef = db.collection('momentos').doc(momentoId).collection('reacciones');
-  
-  reaccionesRef.get().then((querySnapshot) => {
-    const reaccionesList = document.getElementById(`reacciones-list-${momentoId}`);
-    reaccionesList.innerHTML = '';
-    querySnapshot.forEach((doc) => {
-      const reaccion = doc.data();
-      const reaccionElement = document.createElement('div');
-      reaccionElement.innerHTML = `${reaccion.reaccion} (por ${reaccion.userId})`;
-      reaccionesList.appendChild(reaccionElement);
-    });
-  }).catch((error) => {
-    console.error("Error obteniendo las reacciones:", error);
-  });
-}
-
-// Comprobación de estado de autenticación al cargar la página
-firebase.auth().onAuthStateChanged(function(user) {
+// Estado de autenticación
+auth.onAuthStateChanged((user) => {
   if (user) {
     mostrarUsuario(user);
     mostrarMomentos();
   } else {
-    console.log('No autenticado');
-    // Si el usuario no está autenticado, se muestra el feed normal
+    console.log('Usuario no autenticado');
+    perfilUsuarioDiv.style.display = 'none';
     mostrarMomentos();
-  }
-});
-
-
-// Función para agregar un nuevo momento
-document.getElementById('subir').addEventListener('click', function () {
-  const imagenInput = document.getElementById('imagen');
-  const descripcionInput = document.getElementById('descripcion');
-
-  if (imagenInput.files[0] && descripcionInput.value.trim() !== '') {
-    const file = imagenInput.files[0];
-    const descripcion = descripcionInput.value;
-
-    const storageRef = firebase.storage().ref();
-    const fotoRef = storageRef.child('momentos/' + file.name);
-    const uploadTask = fotoRef.put(file);
-
-    uploadTask.on('state_changed', function (snapshot) {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Progreso de la carga: ' + progress + '%');
-    }, function (error) {
-      console.error('Error al subir el momento:', error);
-    }, function () {
-      uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-        const db = firebase.firestore();
-        db.collection('momentos').add({
-          foto: downloadURL,
-          descripcion: descripcion,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => {
-          console.log('Momento guardado exitosamente');
-          mostrarMomentos();
-          imagenInput.value = '';
-          descripcionInput.value = '';
-        }).catch((error) => {
-          console.error('Error guardando el momento:', error);
-        });
-      });
-    });
-  } else {
-    alert('Por favor, selecciona una imagen y escribe una descripción.');
   }
 });
