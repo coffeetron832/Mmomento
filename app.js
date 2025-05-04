@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+  
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,13 +19,16 @@ const firebaseConfig = {
 };
 
 // Inicializar Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 // Referencias a servicios de Firebase
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
+// Resto de tu código...
+console.log("Firebase inicializado correctamente");
+  
 // Referencias a los elementos HTML
 const loginButton = document.getElementById('login');
 const logoutButton = document.getElementById('logout');
