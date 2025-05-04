@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Momento - Red Social</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momento - Red Social</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Momento</h1>
-    <button id="login">Iniciar sesión</button>
-    <button id="logout" style="display: none;">Cerrar sesión</button>
-  </header>
-
+    <header>
+        <h1>Momento</h1>
+        <button id="login">Iniciar sesión</button>
+        <button id="logout" style="display: none;">Cerrar sesión</button>
+    </header>
+  
   <main>
     <section id="perfil-usuario" style="display: none;">
       <h2>Perfil</h2>
