@@ -19,93 +19,78 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 // Referencias a elementos HTML
-const loginButton = document.getElementById('login');
-const logoutButton = document.getElementById('logout');
-const nuevoMomentoButton = document.getElementById('nuevo-momento');
-const perfilUsuarioDiv = document.getElementById('perfil-usuario');
+const loginBtn = document.getElementById('login');
+const logoutBtn = document.getElementById('logout');
 const nombreUsuario = document.getElementById('nombre-usuario');
+const perfil = document.getElementById('perfil');
+const nuevoMomentoBtn = document.getElementById('nuevo-momento');
 const momentosDiv = document.getElementById('momentos');
 
-// Función para iniciar sesión
-loginButton.addEventListener('click', () => {
+// Iniciar sesión con Google
+loginBtn.addEventListener('click', () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
-    .then((result) => {
-      console.log('Usuario autenticado:', result.user);
-      mostrarUsuario(result.user);
+    .then(result => {
+      const user = result.user;
+      nombreUsuario.textContent = user.displayName;
+      perfil.style.display = 'block';
+      loginBtn.style.display = 'none';
+      logoutBtn.style.display = 'inline-block';
+      cargarMomentos(); // Cargar momentos al iniciar sesión
     })
-    .catch((error) => {
-      console.error('Error al iniciar sesión:', error);
+    .catch(err => {
+      console.error('Error al iniciar sesión:', err);
+      alert('Error al iniciar sesión.');
     });
 });
 
-// Función para mostrar datos del usuario
-function mostrarUsuario(user) {
-  perfilUsuarioDiv.style.display = 'block';
-  nombreUsuario.textContent = user.displayName || 'Sin nombre';
-  loginButton.style.display = 'none';
-  logoutButton.style.display = 'block';
-}
+// Cerrar sesión
+logoutBtn.addEventListener('click', () => {
+  auth.signOut();
+});
 
-// Función para cerrar sesión
-logoutButton.addEventListener('click', () => {
-  auth.signOut().then(() => {
-    perfilUsuarioDiv.style.display = 'none';
-    loginButton.style.display = 'block';
-    logoutButton.style.display = 'none';
+// Escuchar cambios de estado
+auth.onAuthStateChanged(user => {
+  if (user) {
+    nombreUsuario.textContent = user.displayName;
+    perfil.style.display = 'block';
+    loginBtn.style.display = 'none';
+    logoutBtn.style.display = 'inline-block';
+    cargarMomentos(); // Cargar momentos si ya hay sesión iniciada
+  } else {
+    perfil.style.display = 'none';
+    loginBtn.style.display = 'inline-block';
+    logoutBtn.style.display = 'none';
+    momentosDiv.innerHTML = ''; // Limpiar momentos si se cierra sesión
+  }
+});
+
+// Agregar momento
+nuevoMomentoBtn.addEventListener('click', () => {
+  const descripcion = prompt('Escribe tu momento:');
+  if (!descripcion) return;
+
+  db.collection('momentos').add({
+    descripcion,
+    fecha: new Date()
+  }).then(() => {
+    alert('Momento guardado.');
+    cargarMomentos();
+  }).catch(err => {
+    console.error('Error guardando momento:', err);
   });
 });
 
-// Función para agregar un nuevo momento
-nuevoMomentoButton.addEventListener('click', () => {
-  const descripcion = prompt('Describe tu momento:');
-  if (!descripcion) {
-    alert('Por favor, escribe una descripción para tu momento.');
-    return;
-  }
-
-  const momento = {
-    descripcion,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  db.collection('momentos').add(momento)
-    .then(() => {
-      alert('Momento subido con éxito.');
-      cargarMomentos();
-    })
-    .catch((error) => {
-      console.error('Error al subir el momento:', error);
-    });
-});
-
-// Función para cargar momentos
+// Mostrar momentos
 function cargarMomentos() {
-  db.collection('momentos').orderBy('timestamp', 'desc').get()
-    .then((querySnapshot) => {
-      momentosDiv.innerHTML = '';
-      querySnapshot.forEach((doc) => {
+  momentosDiv.innerHTML = '';
+  db.collection('momentos').orderBy('fecha', 'desc').limit(10).get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
         const momento = doc.data();
-        const momentoDiv = document.createElement('div');
-        momentoDiv.classList.add('momento');
-        momentoDiv.textContent = momento.descripcion;
-        momentosDiv.appendChild(momentoDiv);
+        const div = document.createElement('div');
+        div.textContent = `${momento.descripcion} (${momento.fecha.toDate().toLocaleString()})`;
+        momentosDiv.appendChild(div);
       });
-    })
-    .catch((error) => {
-      console.error('Error al cargar momentos:', error);
     });
 }
-
-// Verificar el estado de autenticación
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    mostrarUsuario(user);
-    cargarMomentos();
-  } else {
-    perfilUsuarioDiv.style.display = 'none';
-    loginButton.style.display = 'block';
-    logoutButton.style.display = 'none';
-  }
-});
-
