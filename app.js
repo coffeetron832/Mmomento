@@ -1,14 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Configuración de Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyBAAPW2_kuwfNLV3hI1FzhaOUGfJpvv7vQ",
-    authDomain: "momento-40bd7.firebaseapp.com",
-    projectId: "momento-40bd7",
-    storageBucket: "momento-40bd7.firebasestorage.app",
-    messagingSenderId: "576930270515",
-    appId: "1:576930270515:web:1fa7ce310ff577ec5ec246"
-  };
-  firebase.initializeApp(firebaseConfig);
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBAAPW2_kuwfNLV3hI1FzhaOUGfJpvv7vQ",
+  authDomain: "momento-40bd7.firebaseapp.com",
+  projectId: "momento-40bd7",
+  storageBucket: "momento-40bd7.firebasestorage.app",
+  messagingSenderId: "576930270515",
+  appId: "1:576930270515:web:1fa7ce310ff577ec5ec246"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
   const auth = firebase.auth();
   const db = firebase.firestore();
