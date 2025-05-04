@@ -3,33 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Momento</title>
+    <title>Red Social - Momento</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
-    <script src="app.js" defer></script>
 </head>
 <body>
-    <div id="login-section">
-        <button id="login">Iniciar sesión con Google</button>
-        <button id="logout" style="display:none;">Cerrar sesión</button>
-    </div>
+    <header>
+        <h1>Bienvenido a Momento</h1>
+        <p class="lema">"Comparte lo mejor de ti"</p>
+        <button id="login">Iniciar sesión</button>
+        <button id="logout" style="display: none;">Cerrar sesión</button>
+    </header>
 
-    <div id="user-info"></div>
+    <section id="user-info"></section>
 
-    <div id="perfil-usuario" style="display:none;">
+    <section id="perfil-usuario" style="display: none;">
+        <h2>Perfil de usuario</h2>
         <img id="foto-perfil" src="default-avatar.jpg" alt="Foto de perfil">
-        <p id="nombre-usuario"></p>
-        <p id="bio-usuario"></p>
-    </div>
+        <p id="nombre-usuario">Sin nombre</p>
+        <p id="bio-usuario">No hay descripción</p>
+        <input type="file" id="foto-perfil-input" />
+        <input type="text" id="nombre" placeholder="Nuevo nombre" />
+        <textarea id="bio" placeholder="Actualiza tu biografía"></textarea>
+        <button id="guardar-perfil">Guardar Perfil</button>
+    </section>
 
-    <div id="momento-form">
-        <input type="file" id="imagen" accept="image/*">
-        <textarea id="descripcion" placeholder="Descripción del momento"></textarea>
+    <section id="feed">
+        <h2>Momentos Recientes</h2>
+        <div id="momentos"></div>
+        <input type="file" id="imagen" />
+        <input type="text" id="descripcion" placeholder="Añadir una descripción" />
         <button id="subir">Subir Momento</button>
-    </div>
+    </section>
+
+    <footer>
+        <p>Desarrollado por Juancho</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-storage.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
 
     <div id="momentos" class="momentos-feed"></div>
 </body>
