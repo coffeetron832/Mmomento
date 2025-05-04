@@ -14,162 +14,73 @@ const firebaseConfig = {
   appId: "1:576930270515:web:1fa7ce310ff577ec5ec246"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Inicializar Firebase
+firebase.initializeApp(firebaseConfig);
 
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-  const storage = firebase.storage();
+// Referencias a servicios de Firebase
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-  // Elementos HTML
-  const loginButton = document.getElementById('login');
-  const logoutButton = document.getElementById('logout');
-  const perfilUsuarioDiv = document.getElementById('perfil-usuario');
-  const momentosDiv = document.getElementById('momentos');
-  const editarPerfilButton = document.getElementById('editar-perfil');
-  const nuevoMomentoButton = document.getElementById('nuevo-momento');
+// Referencias a los elementos HTML
+const loginButton = document.getElementById('login');
+const logoutButton = document.getElementById('logout');
+const nuevoMomentoButton = document.getElementById('nuevo-momento');
+const perfilUsuarioDiv = document.getElementById('perfil-usuario');
+const nombreUsuario = document.getElementById('nombre-usuario');
 
-  editarPerfilButton.addEventListener('click', () => {
-  console.log('Botón "Editar Perfil" presionado');
-  const nuevoNombre = prompt("Introduce tu nuevo nombre:");
-  const nuevaBio = prompt("Introduce tu nueva biografía:");
-
-  if (nuevoNombre && nuevaBio) {
-    const user = auth.currentUser;
-    console.log(`Actualizando perfil para ${user.uid}`);
-    db.collection('usuarios').doc(user.uid).set({
-      nombre: nuevoNombre,
-      bio: nuevaBio
-    }, { merge: true })
-    .then(() => {
-      console.log('Perfil actualizado correctamente');
-      mostrarUsuario(user); // Actualiza el perfil en pantalla
+// Función para iniciar sesión
+loginButton.addEventListener('click', () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      console.log('Usuario autenticado:', result.user);
+      mostrarUsuario(result.user);
     })
-    .catch((error) => console.error('Error actualizando el perfil:', error));
-  } else {
-    alert("Por favor, completa ambos campos.");
-  }
+    .catch((error) => {
+      console.error('Error al iniciar sesión:', error);
+      alert('No se pudo iniciar sesión. Revisa la consola para más detalles.');
+    });
 });
-  
-  // Iniciar sesión con Google
-  loginButton.addEventListener('click', () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then((result) => {
-        console.log('Usuario autenticado');
-        mostrarUsuario(result.user);
-      })
-      .catch((error) => console.error('Error al iniciar sesión:', error));
-  });
 
-  // Cerrar sesión
-  logoutButton.addEventListener('click', () => {
-    auth.signOut()
-      .then(() => {
-        console.log('Sesión cerrada');
-        perfilUsuarioDiv.style.display = 'none';
-        logoutButton.style.display = 'none';
-        loginButton.style.display = 'block';
-      });
-  });
+// Función para mostrar los datos del usuario
+function mostrarUsuario(user) {
+  perfilUsuarioDiv.style.display = 'block';
+  nombreUsuario.textContent = user.displayName || 'Sin nombre';
+  loginButton.style.display = 'none';
+  logoutButton.style.display = 'block';
+}
 
-  // Mostrar la información del usuario
-  function mostrarUsuario(user) {
-    perfilUsuarioDiv.style.display = 'block';
-    document.getElementById('foto-perfil').src = user.photoURL || 'default-avatar.jpg';
-    document.getElementById('nombre-usuario').textContent = user.displayName || 'Sin nombre';
-    document.getElementById('bio-usuario').textContent = 'Bienvenido a Momento';
-    loginButton.style.display = 'none';
-    logoutButton.style.display = 'block';
+// Función para subir un momento (prototipo)
+nuevoMomentoButton.addEventListener('click', () => {
+  const descripcion = prompt('Describe tu momento:');
+  if (!descripcion) {
+    alert('Por favor, escribe una descripción para tu momento.');
+    return;
   }
 
-  // Mostrar momentos
-  function mostrarMomentos() {
-    momentosDiv.innerHTML = '<p>Cargando momentos...</p>';
-    db.collection('momentos').orderBy('timestamp', 'desc').limit(10)
-      .get()
-      .then((querySnapshot) => {
-        momentosDiv.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-          const momento = doc.data();
-          const momentoElement = document.createElement('div');
-          momentoElement.innerHTML = `
-            <img src="${momento.foto}" alt="Momento">
-            <p>${momento.descripcion}</p>
-          `;
-          momentosDiv.appendChild(momentoElement);
-        });
-      })
-      .catch((error) => console.error('Error cargando momentos:', error));
+  const momento = {
+    descripcion,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  db.collection('momentos').add(momento)
+    .then(() => {
+      alert('Momento subido con éxito.');
+    })
+    .catch((error) => {
+      console.error('Error al subir el momento:', error);
+      alert('No se pudo subir el momento. Revisa la consola para más detalles.');
+    });
+});
+
+// Verificar el estado de autenticación
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    mostrarUsuario(user);
+  } else {
+    perfilUsuarioDiv.style.display = 'none';
+    loginButton.style.display = 'block';
+    logoutButton.style.display = 'none';
   }
-
-  // Estado de autenticación
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      mostrarUsuario(user);
-      mostrarMomentos();
-    } else {
-      console.log('Usuario no autenticado');
-      perfilUsuarioDiv.style.display = 'none';
-      mostrarMomentos();
-    }
-  });
-
-  // Funcionalidad para "Editar Perfil"
-  editarPerfilButton.addEventListener('click', () => {
-    const nuevoNombre = prompt("Introduce tu nuevo nombre:");
-    const nuevaBio = prompt("Introduce tu nueva biografía:");
-
-    if (nuevoNombre && nuevaBio) {
-      const user = auth.currentUser;
-      db.collection('usuarios').doc(user.uid).set({
-        nombre: nuevoNombre,
-        bio: nuevaBio
-      }, { merge: true })
-      .then(() => {
-        console.log('Perfil actualizado');
-        mostrarUsuario(user); // Actualiza el perfil en pantalla
-      })
-      .catch((error) => console.error('Error actualizando el perfil:', error));
-    } else {
-      alert("Por favor, completa ambos campos.");
-    }
-  });
-
-  // Funcionalidad para "Nuevo Momento"
-  nuevoMomentoButton.addEventListener('click', () => {
-    const descripcion = prompt("Escribe una descripción para tu momento:");
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-
-    fileInput.onchange = (event) => {
-      const file = event.target.files[0];
-      if (file && descripcion) {
-        const storageRef = storage.ref(`momentos/${file.name}`);
-        const uploadTask = storageRef.put(file);
-
-        uploadTask.on('state_changed', null, (error) => {
-          console.error('Error subiendo la imagen:', error);
-        }, () => {
-          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            db.collection('momentos').add({
-              foto: downloadURL,
-              descripcion: descripcion,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-              console.log('Nuevo momento agregado');
-              mostrarMomentos(); // Actualiza el feed
-            })
-            .catch((error) => console.error('Error guardando el momento:', error));
-          });
-        });
-      } else {
-        alert("Por favor, selecciona una imagen y escribe una descripción.");
-      }
-    };
-
-    fileInput.click();
-  });
 });
