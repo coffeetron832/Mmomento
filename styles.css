@@ -253,6 +253,45 @@ body.dark-mode .dark-mode-button {
   background-color: #0d8ddb;
 }
 
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.like-btn,
+.delete-btn {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.like-btn {
+  background-color: #ff6b6b;
+  color: #fff;
+}
+
+.like-btn:hover {
+  background-color: #e14c4c;
+}
+
+.like-count {
+  font-weight: bold;
+  align-self: center;
+}
+
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #cc0000;
+}
+
 /* Oculta el modal cuando se acepta */
 body.terms-accepted .modal {
   display: none;
