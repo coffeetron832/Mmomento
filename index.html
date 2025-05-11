@@ -1,18 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Momento - ¿Cómo te fue hoy?</title>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body style="font-family: 'Poppins', sans-serif;">
+  <!-- Modal de Términos -->
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <h2>Términos de Uso</h2>
+      <p style="margin-top: 1rem; text-align: justify;">
+        Al acceder a esta plataforma, reconoces y aceptas lo siguiente:
+      </p>
+      <ul style="text-align: left; margin: 1rem 0; padding-left: 1.2rem;">
+        <li>Las imágenes que compartas estarán disponibles únicamente por un periodo máximo de <strong>4 horas</strong>.</li>
+        <li>No se requiere registro de usuario ni se almacena información personal de manera permanente.</li>
+        <li>Eres <strong>plenamente responsable</strong> del contenido que publiques, el cual deberá cumplir con las normativas legales vigentes y respetar los derechos de terceros.</li>
+      </ul>
+      <button id="acceptTerms">Aceptar y continuar</button>
+    </div>
+  </div>
+
+  <!-- Formularios de autenticación -->
+  <div id="authForms">
+    <form id="registerForm">
+      <h3>Regístrate</h3>
+      <input type="text" name="username" placeholder="Usuario" required />
+      <input type="password" name="password" placeholder="Contraseña" required />
+      <button type="submit">Registrar</button>
+    </form>
+
+    <form id="loginForm">
+      <h3>Iniciar sesión</h3>
+      <input type="text" name="username" placeholder="Usuario" required />
+      <input type="password" name="password" placeholder="Contraseña" required />
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
   <!-- Franja arcoíris animada -->
   <div class="banner"></div>
 
+  <!-- Contenedor principal -->
   <div class="container">
     <h1>Sube tu momento del día</h1>
+    <!-- Formulario de subida solo visible si está autenticado -->
     <form id="uploadForm" enctype="multipart/form-data">
       <input type="text" name="username" placeholder="Tu nombre de usuario" required />
       <input type="file" name="image" accept="image/*" required />
@@ -23,34 +58,16 @@
     <div id="gallery"></div>
   </div>
 
-  <!-- justo dentro de <body> -->
-<div id="termsModal" class="modal">
-  <div class="modal-content">
-    <h2>Términos de Uso</h2>
-    <p style="margin-top: 1rem; text-align: justify;">
-      Al acceder a esta plataforma, reconoces y aceptas lo siguiente:
-      <ul style="text-align: left; margin: 1rem 0; padding-left: 1.2rem;">
-        <li>Las imágenes que compartas estarán disponibles únicamente por un periodo máximo de <strong>4 horas</strong>.</li>
-        <li>No se requiere registro de usuario ni se almacena información personal de manera permanente.</li>
-        <li>Eres <strong>plenamente responsable</strong> del contenido que publiques, el cual deberá cumplir con las normativas legales vigentes y respetar los derechos de terceros.</li>
-      </ul>
-      Al continuar, confirmas que has leído y comprendido estas condiciones.
-    </p>
-    <button id="acceptTerms">Aceptar y continuar</button>
-  </div>
-</div>
-
-
-  
-  <!-- Footer con enlaces y botón de modo oscuro -->
-  <footer style="text-align:center; margin-top: 3rem; font-size: 0.9rem;">
+  <!-- Footer con enlaces y modo oscuro -->
+  <footer>
     <a href="condiciones.html">Condiciones</a> ·
     <a href="privacidad.html">Privacidad</a> ·
     <a href="ayuda.html">Ayuda</a> ·
     <a href="acerca.html">Acerca de</a> ·
-    <button id="toggleDarkMode" class="dark-mode-button">🌓</button> <!-- Botón de modo oscuro -->
+    <button id="toggleDarkMode" class="dark-mode-button">🌓</button>
   </footer>
 
   <script src="app.js"></script>
 </body>
 </html>
+
