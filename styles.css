@@ -109,12 +109,13 @@ button.dark-mode {
   color: #ffffff;
 }
 
-/* Modo oscuro específico para botones */
 body.dark-mode button {
   background-color: var(--button-bg-dark);
 }
 
-body.dark-mode input[type="text"], body.dark-mode input[type="file"], body.dark-mode button {
+body.dark-mode input[type="text"],
+body.dark-mode input[type="file"],
+body.dark-mode button {
   border: 1px solid #555555;
   background-color: #333333;
   color: #ffffff;
@@ -153,13 +154,11 @@ footer a:hover {
   margin-left: 10px;
 }
 
-/* Estilo para el botón cuando está en modo oscuro */
 body.dark-mode .dark-mode-button {
   color: #e0e0e0;
 }
 
-/* Estilos para el cambio de color del botón en hover */
-"".dark-mode-button:hover {
+.dark-mode-button:hover {
   color: #1da1f2;
 }
 
@@ -204,17 +203,58 @@ body.dark-mode .dark-mode-button {
   }
 }
 
+/* ——— Modal de Condiciones de Uso ——— */
 .modal {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
 }
+
 .modal-content {
-  background: white; padding: 1.5rem; border-radius: 8px; max-width: 90%; text-align: center;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 90%;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
+
+.modal-content h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
 #acceptTerms {
-  margin-top: 1rem; padding: 0.5rem 1rem; font-size: 1rem;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #1da1f2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-body.terms-accepted #termsModal {
+
+#acceptTerms:hover {
+  background-color: #0d8ddb;
+}
+
+/* Oculta el modal cuando se acepta */
+body.terms-accepted .modal {
   display: none;
 }
+
