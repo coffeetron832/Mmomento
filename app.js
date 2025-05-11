@@ -95,3 +95,17 @@ document.getElementById('toggleDarkMode').addEventListener('click', () => {
     ? '🌞 Modo claro'
     : '🌓 Modo oscuro';
 });
+
+// Al cargar la página
+window.addEventListener("DOMContentLoaded", () => {
+  if (!localStorage.getItem("termsAccepted")) {
+    document.body.classList.remove("terms-accepted");
+  } else {
+    document.body.classList.add("terms-accepted");
+  }
+
+  document.getElementById("acceptTerms").addEventListener("click", () => {
+    localStorage.setItem("termsAccepted", "true");
+    document.body.classList.add("terms-accepted");
+  });
+});
