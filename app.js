@@ -46,6 +46,28 @@ async function loadImages() {
       <p style="text-align:center;">${img.username}</p>
     `;
 
+    const buttonRow = div.querySelector('.button-row');
+
+    // Botón 🔥 de like
+    const likeKey = `likes_${img.id}`;
+    let likes = parseInt(localStorage.getItem(likeKey) || "0", 10);
+
+    const likeBtn = document.createElement('button');
+    likeBtn.className = 'like-btn';
+    likeBtn.textContent = "🔥";
+    const countSpan = document.createElement('span');
+    countSpan.className = 'like-count';
+    countSpan.textContent = likes;
+
+    likeBtn.addEventListener('click', () => {
+      likes++;
+      localStorage.setItem(likeKey, likes);
+      countSpan.textContent = likes;
+    });
+
+    buttonRow.appendChild(likeBtn);
+    buttonRow.appendChild(countSpan);
+    
     // Mostrar botón Eliminar solo si incluiste este ID en localStorage
     if (myImages.includes(img.id)) {
       const delButton = document.createElement("button");
