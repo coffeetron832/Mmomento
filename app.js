@@ -11,12 +11,12 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
   });
 
   if (res.ok) {
-    const result = await res.json(); // Esperamos: { success: true, id: <número> }
+    const result = await res.json(); // Esperamos: { success: true, id: <número>, image_url: "..." }
     alert("Imagen subida con éxito");
 
     // Guardar el ID de la imagen subida en localStorage
     let myImages = JSON.parse(localStorage.getItem("myImages") || "[]");
-    myImages.push(result.id); // Usa result.id
+    myImages.push(result.id);
     localStorage.setItem("myImages", JSON.stringify(myImages));
 
     e.target.reset();
@@ -26,7 +26,7 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
   }
 });
 
-// Carga la galería y muestra el botón Eliminar solo para tus imágenes
+// Carga la galería, muestra likes y botón Eliminar
 async function loadImages() {
   const res = await fetch(`${backendURL}/images`);
   console.log("GET /images status:", res.status);
@@ -43,32 +43,51 @@ async function loadImages() {
     div.className = 'gallery-item';
     div.innerHTML = `
       <img src="${img.image_url}" alt="${img.username}" />
-      <p style="text-align:center;">${img.username}</p>
+      <p style="text-align:center;">@${img.username}</p>
+      <div class="button-row"></div>
     `;
 
-    // Mostrar botón Eliminar solo si incluiste este ID en localStorage
-    if (myImages.includes(img.id)) {
-      const delButton = document.createElement("button");
-      delButton.textContent = "Eliminar";
-      delButton.style = "display: block; margin: 0.5rem auto; background-color: red; color: white;";
+    const row = div.querySelector('.button-row');
 
-      delButton.onclick = async () => {
-        // Llamada DELETE al backend
+    // — Botón 🔥 de like —
+    const likeKey = `likes_${img.id}`;
+    let likes = parseInt(localStorage.getItem(likeKey) || "0", 10);
+
+    const likeBtn = document.createElement('button');
+    likeBtn.className = 'like-btn';
+    likeBtn.textContent = "🔥";
+
+    const likeCount = document.createElement('span');
+    likeCount.className = 'like-count';
+    likeCount.textContent = likes;
+
+    likeBtn.addEventListener('click', () => {
+      likes++;
+      localStorage.setItem(likeKey, likes);
+      likeCount.textContent = likes;
+    });
+
+    row.appendChild(likeBtn);
+    row.appendChild(likeCount);
+
+    // — Botón Eliminar (solo para tus imágenes) —
+    if (myImages.includes(img.id)) {
+      const delBtn = document.createElement("button");
+      delBtn.className = 'delete-btn';
+      delBtn.textContent = "Eliminar";
+      delBtn.addEventListener('click', async () => {
         const resDelete = await fetch(`${backendURL}/delete/${img.id}`, {
           method: "DELETE"
         });
-
         if (resDelete.ok) {
-          // Actualizar localStorage sin este ID
-          const updatedImages = myImages.filter(imageId => imageId !== img.id);
-          localStorage.setItem("myImages", JSON.stringify(updatedImages));
+          const updated = myImages.filter(id => id !== img.id);
+          localStorage.setItem("myImages", JSON.stringify(updated));
           loadImages();
         } else {
           alert("Error al eliminar la imagen");
         }
-      };
-
-      div.appendChild(delButton);
+      });
+      row.appendChild(delBtn);
     }
 
     gallery.appendChild(div);
@@ -86,24 +105,23 @@ document.getElementById('uploadForm').addEventListener('drop', e => {
   if (e.target.type === 'text') e.preventDefault();
 });
 
-// Modo oscuro
+// Toggle Modo Oscuro
 document.getElementById('toggleDarkMode').addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
-  const button = document.getElementById('toggleDarkMode');
-  button.classList.toggle('dark-mode');
-  button.textContent = document.body.classList.contains('dark-mode')
+  const btn = document.getElementById('toggleDarkMode');
+  btn.classList.toggle('dark-mode');
+  btn.textContent = document.body.classList.contains('dark-mode')
     ? '🌞 Modo claro'
     : '🌓 Modo oscuro';
 });
 
-// Al cargar la página
+// Modal de términos
 window.addEventListener("DOMContentLoaded", () => {
-  if (!localStorage.getItem("termsAccepted")) {
-    document.body.classList.remove("terms-accepted");
-  } else {
+  if (localStorage.getItem("termsAccepted")) {
     document.body.classList.add("terms-accepted");
+  } else {
+    document.body.classList.remove("terms-accepted");
   }
-
   document.getElementById("acceptTerms").addEventListener("click", () => {
     localStorage.setItem("termsAccepted", "true");
     document.body.classList.add("terms-accepted");
