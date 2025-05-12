@@ -12,20 +12,27 @@ function initAuthenticatedUI() {
 }
 
 // Modal de términos
-document.addEventListener("DOMContentLoaded", () => {
-  // Mostrar u ocultar modal según aceptación
-  if (localStorage.getItem("termsAccepted")) {
-    document.body.classList.add("terms-accepted");
-  } else {
-    document.body.classList.remove("terms-accepted");
-  }
-  document.getElementById("acceptTerms").addEventListener("click", () => {
-    localStorage.setItem("termsAccepted", "true");
-    document.body.classList.add("terms-accepted");
-  });
+function initTermsModal() {
+  const termsModal = document.getElementById("termsModal");
+  const acceptBtn = document.getElementById("acceptTerms");
 
-  // Inicialización UI y carga de imágenes
-  initAuthenticatedUI();
+  // Mostrar u ocultar modal según almacenamiento
+  if (localStorage.getItem("termsAccepted") === "true") {
+    termsModal.style.display = "none";
+  } else {
+    termsModal.style.display = "flex";
+  }
+
+  // Listener de aceptación
+  acceptBtn.addEventListener("click", () => {
+    console.log("Términos aceptados");
+    localStorage.setItem("termsAccepted", "true");
+    termsModal.style.display = "none";
+  });
+}
+
+// Inicializa visibilidad de auth/upload y modal
+function initAuthenticatedUI() {();
   loadImages();
 });
 
@@ -163,9 +170,3 @@ async function loadImages() {
 document.getElementById("toggleDarkMode").onclick = () => {
   document.body.classList.toggle("dark-mode");
 };
-
-// Dark mode toggle
-document.getElementById("toggleDarkMode").onclick = () => {
-  document.body.classList.toggle("dark-mode");
-};
-
