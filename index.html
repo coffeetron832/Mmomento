@@ -1,95 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
   <title>Momento - ¿Cómo te fue hoy?</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="font-family: 'Poppins', sans-serif;">
+  <!-- Franja arcoíris animada -->
+  <div class="banner"></div>
 
-  <!-- Modal de Términos de Uso -->
-<div id="termsModal" style="
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-">
-  <div style="
-    background-color: white;
-    padding: 20px;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    text-align: center;
-  ">
-    <h2>Términos de Uso</h2>
-    <p>Al entrar aceptas que las imágenes duran 4 horas, debes crear una cuenta para publicar y eres responsable de lo que subas.</p>
-    <button id="acceptTermsButton" style="
-      margin-top: 15px;
-      background-color: #1da1f2;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    ">Aceptar y continuar</button>
+  <div class="container">
+    <h1>Sube tu momento del día</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="text" name="username" placeholder="Tu nombre de usuario" required />
+      <input type="file" name="image" accept="image/*" required />
+      <button type="submit">Subir imagen</button>
+    </form>
+
+    <h2>Últimos momentos</h2>
+    <div id="gallery"></div>
+  </div>
+
+  <!-- justo dentro de <body> -->
+<div id="termsModal" class="modal">
+  <div class="modal-content">
+    <h2>Condiciones de Uso</h2>
+    <p>Al entrar aceptas que las imágenes duran 4 horas, no hay registro y eres responsable de lo que subas.</p>
+    <button id="acceptTerms">Acepto</button>
   </div>
 </div>
 
-  <!-- Header con formularios de auth -->
-  <header class="header">
-    <div class="auth-container" id="authForms">
-      <form id="registerForm" class="auth-form">
-        <h3>Regístrate</h3>
-        <input type="text" name="username" placeholder="Usuario" required />
-        <input type="password" name="password" placeholder="Contraseña" required />
-        <button type="submit">Registrar</button>
-      </form>
-      <form id="loginForm" class="auth-form">
-        <h3>Iniciar sesión</h3>
-        <input type="text" name="username" placeholder="Usuario" required />
-        <input type="password" name="password" placeholder="Contraseña" required />
-        <button type="submit">Entrar</button>
-      </form>
-    </div>
-  </header>
-
-  <!-- Banner -->
-  <div class="banner"></div>
-
-  <!-- Main -->
-  <main class="container">
-    <section class="upload-section">
-      <h1>Sube tu momento del día</h1>
-      <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required />
-        <button type="submit">Subir imagen</button>
-      </form>
-    </section>
-
-    <section class="gallery-section">
-      <h2>Últimos momentos</h2>
-      <div id="gallery"></div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <nav class="footer-nav">
-      <a href="condiciones.html">Condiciones</a>
-      <a href="privacidad.html">Privacidad</a>
-      <a href="ayuda.html">Ayuda</a>
-      <a href="acerca.html">Acerca de</a>
-    </nav>
-    <button id="toggleDarkMode" class="dark-mode-button">🌓</button>
+  
+  <!-- Footer con enlaces y botón de modo oscuro -->
+  <footer style="text-align:center; margin-top: 3rem; font-size: 0.9rem;">
+    <a href="condiciones.html">Condiciones</a> ·
+    <a href="privacidad.html">Privacidad</a> ·
+    <a href="ayuda.html">Ayuda</a> ·
+    <a href="acerca.html">Acerca de</a> ·
+    <button id="toggleDarkMode" class="dark-mode-button">🌓</button> <!-- Botón de modo oscuro -->
   </footer>
 
   <script src="app.js"></script>
 </body>
 </html>
-
