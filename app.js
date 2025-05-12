@@ -1,7 +1,6 @@
 const backendURL = "https://calm-aback-vacuum.glitch.me/"; // ← Pega tu URL aquí
 
-// Helper para token
-function getAuthToken() {
+// Helper para tokenunction getAuthToken() {
   return localStorage.getItem("token");
 }
 
@@ -14,22 +13,24 @@ function initAuthenticatedUI() {
 
 // Modal de términos
 document.addEventListener("DOMContentLoaded", () => {
+  // Mostrar u ocultar modal según aceptación
   if (localStorage.getItem("termsAccepted")) {
     document.body.classList.add("terms-accepted");
   } else {
     document.body.classList.remove("terms-accepted");
   }
-  document.getElementById("acceptTerms").onclick = () => {
+  document.getElementById("acceptTerms").addEventListener("click", () => {
     localStorage.setItem("termsAccepted", "true");
     document.body.classList.add("terms-accepted");
-  };
+  });
 
+  // Inicialización UI y carga de imágenes
   initAuthenticatedUI();
   loadImages();
 });
 
-// Registro
-document.getElementById("registerForm").addEventListener("submit", async e => {
+// Registro de usuario
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
   const res = await fetch(`${backendURL}/api/register`, {
@@ -38,12 +39,16 @@ document.getElementById("registerForm").addEventListener("submit", async e => {
     body: JSON.stringify({ username: fd.get("username"), password: fd.get("password") })
   });
   const data = await res.json();
-  alert(res.ok ? "Registro exitoso" : data.message || "Error al registrar");
-  if (res.ok) e.target.reset();
+  if (res.ok) {
+    alert("Registro exitoso. Ahora inicia sesión.");
+    e.target.reset();
+  } else {
+    alert(data.message || "Error al registrar");
+  }
 });
 
-// Login
-document.getElementById("loginForm").addEventListener("submit", async e => {
+// Login de usuario
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
   const res = await fetch(`${backendURL}/api/login`, {
@@ -52,9 +57,12 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
     body: JSON.stringify({ username: fd.get("username"), password: fd.get("password") })
   });
   const data = await res.json();
-  if (res.ok) {
+
+  if (res.ok && data.token) {
+    // Guarda el token y actualiza UI
     localStorage.setItem("token", data.token);
-    alert("Sesión iniciada");
+    alert("Sesión iniciada correctamente");
+    e.target.reset();
     initAuthenticatedUI();
     loadImages();
   } else {
@@ -62,11 +70,12 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
   }
 });
 
-// Subir imagen
-document.getElementById("uploadForm").addEventListener("submit", async e => {
+// Subir imagen (protegido)
+document.getElementById("uploadForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const token = getAuthToken();
-  if (!token) return alert("Debes iniciar sesión");
+  if (!token) return alert("Debes iniciar sesión para subir imágenes");
+
   const formData = new FormData(e.target);
   const res = await fetch(`${backendURL}/upload`, {
     method: "POST",
@@ -75,80 +84,85 @@ document.getElementById("uploadForm").addEventListener("submit", async e => {
   });
   if (res.ok) {
     const { id } = await res.json();
-    let arr = JSON.parse(localStorage.getItem("myImages")||"[]");
-    arr.push(id);
-    localStorage.setItem("myImages", JSON.stringify(arr));
-    alert("Imagen subida");
+    let myImgs = JSON.parse(localStorage.getItem("myImages") || "[]");
+    myImgs.push(id);
+    localStorage.setItem("myImages", JSON.stringify(myImgs));
+    alert("Imagen subida con éxito");
     e.target.reset();
     loadImages();
   } else {
-    const d=await res.json();
-    alert(d.error||"Error al subir");
+    const err = await res.json();
+    alert(err.error || "Error al subir");
   }
 });
 
-// Cargar galería
+// Cargar galería y botones
 async function loadImages() {
   const res = await fetch(`${backendURL}/images`);
   const imgs = await res.json();
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
-  const myImgs = JSON.parse(localStorage.getItem("myImages")||"[]");
+  const myImgs = JSON.parse(localStorage.getItem("myImages") || "[]");
   const token = getAuthToken();
 
   imgs.forEach(img => {
-    const div = document.createElement("div");
-    div.className = "gallery-item";
-    div.innerHTML = `
+    const el = document.createElement("div");
+    el.className = "gallery-item";
+    el.innerHTML = `
       <img src="${img.image_url}" alt="${img.username}" />
-      <p style="text-align:center">@${img.username}</p>
+      <p style="text-align:center;">@${img.username}</p>
       <div class="button-row"></div>
     `;
-    const row = div.querySelector(".button-row");
+    const row = el.querySelector(".button-row");
 
-    // Like
+    // Botón like
     const key = `likes_${img.id}`;
-    let likes = parseInt(localStorage.getItem(key)||"0",10);
-    const btnL = document.createElement("button");
-    btnL.className="like-btn";
-    btnL.textContent="🔥";
-    const cnt = document.createElement("span");
-    cnt.className="like-count";
-    cnt.textContent=likes;
-    btnL.onclick = () => {
-      if (!token) return alert("Inicia sesión");
+    let likes = parseInt(localStorage.getItem(key) || "0", 10);
+    const likeBtn = document.createElement("button");
+    likeBtn.className = "like-btn";
+    likeBtn.textContent = "🔥";
+    const count = document.createElement("span");
+    count.className = "like-count";
+    count.textContent = likes;
+    likeBtn.onclick = () => {
+      if (!token) return alert("Debes iniciar sesión para dar like");
       likes++;
       localStorage.setItem(key, likes);
-      cnt.textContent = likes;
+      count.textContent = likes;
     };
-    row.appendChild(btnL);
-    row.appendChild(cnt);
+    row.appendChild(likeBtn);
+    row.appendChild(count);
 
-    // Eliminar
+    // Botón eliminar
     if (token && myImgs.includes(img.id)) {
-      const btnD = document.createElement("button");
-      btnD.className="delete-btn";
-      btnD.textContent="Eliminar";
-      btnD.onclick = async () => {
+      const delBtn = document.createElement("button");
+      delBtn.className = "delete-btn";
+      delBtn.textContent = "Eliminar";
+      delBtn.onclick = async () => {
         const resD = await fetch(`${backendURL}/delete/${img.id}`, {
-          method:"DELETE",
-          headers:{"Authorization":`Bearer ${token}`}
+          method: "DELETE",
+          headers: { "Authorization": `Bearer ${token}` }
         });
         if (resD.ok) {
-          let upd = myImgs.filter(x=>x!==img.id);
-          localStorage.setItem("myImages", JSON.stringify(upd));
+          const newArr = myImgs.filter(i => i !== img.id);
+          localStorage.setItem("myImages", JSON.stringify(newArr));
           loadImages();
         } else {
-          const d=await resD.json();
-          alert(d.error||"Error al eliminar");
+          const err = await resD.json();
+          alert(err.error || "Error al eliminar");
         }
       };
-      row.appendChild(btnD);
+      row.appendChild(delBtn);
     }
 
-    gallery.appendChild(div);
+    gallery.appendChild(el);
   });
 }
+
+// Toggle modo oscuro
+document.getElementById("toggleDarkMode").onclick = () => {
+  document.body.classList.toggle("dark-mode");
+};
 
 // Dark mode toggle
 document.getElementById("toggleDarkMode").onclick = () => {
