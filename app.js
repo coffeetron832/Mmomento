@@ -1,11 +1,10 @@
 const backendURL = "https://calm-aback-vacuum.glitch.me/"; // ← Pega tu URL aquí
 
-// Helper para token
-enfunction getAuthToken() {
+// Helper para tokenunction getAuthToken() {
   return localStorage.getItem("token");
 }
 
-// Inicializa la UI de auth/upload
+// Inicializa visibilidad de auth/upload
 function initAuthenticatedUI() {
   const token = getAuthToken();
   document.getElementById("authForms").style.display = token ? "none" : "flex";
@@ -90,12 +89,12 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
   }
 });
 
-// Cargar galería\async function loadImages() {
+// Cargar galería
+async function loadImages() {
   const res = await fetch(`${backendURL}/images`);
   const imgs = await res.json();
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
-
   const myImgs = JSON.parse(localStorage.getItem("myImages") || "[]");
   const token = getAuthToken();
 
@@ -109,9 +108,9 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
     `;
     const row = div.querySelector(".button-row");
 
-    // Like button
-    const likeKey = `likes_${img.id}`;
-    let likes = parseInt(localStorage.getItem(likeKey) || "0", 10);
+    // Like
+    const key = `likes_${img.id}`;
+    let likes = parseInt(localStorage.getItem(key) || "0", 10);
     const likeBtn = document.createElement("button");
     likeBtn.className = "like-btn";
     likeBtn.textContent = "🔥";
@@ -121,13 +120,13 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
     likeBtn.onclick = () => {
       if (!token) return alert("Debes iniciar sesión para dar like");
       likes++;
-      localStorage.setItem(likeKey, likes);
+      localStorage.setItem(key, likes);
       likeCount.textContent = likes;
     };
     row.appendChild(likeBtn);
     row.appendChild(likeCount);
 
-    // Delete button
+    // Eliminar
     if (token && myImgs.includes(img.id)) {
       const delBtn = document.createElement("button");
       delBtn.className = "delete-btn";
@@ -148,7 +147,6 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
       };
       row.appendChild(delBtn);
     }
-
     gallery.appendChild(div);
   });
 }
@@ -158,7 +156,7 @@ document.getElementById("toggleDarkMode").onclick = () => {
   document.body.classList.toggle("dark-mode");
 };
 
-// Events on DOM load
+// DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
   initTermsModal();
   initAuthenticatedUI();
