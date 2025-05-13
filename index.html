@@ -3,27 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galería Temporal</title>
+  <title>Momento</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="banner"></div>
 
   <div class="container">
-    <h1>Galería Temporal</h1>
+    <h1>Sube tu momento de hoy</h1>
 
-    <form id="uploadForm">
-      <input type="text" name="username" placeholder="Tu nombre o apodo" required />
-      <input type="file" name="image" accept="image/*" required />
-      <button type="submit">Subir Imagen</button>
-    </form>
+    <section id="auth">
+      <form id="registerForm">
+        <h2>Registro</n2>
+        <input type="text" id="regUsername" placeholder="Usuario" required />
+        <input type="email" id="regEmail" placeholder="Email (opcional)" />
+        <input type="password" id="regPassword" placeholder="Contraseña" required />
+        <button type="submit">Registrarse</button>
+      </form>
 
-    <section id="gallery"></section>
+      <form id="loginForm">
+        <h2>Inicio de sesión</h2>
+        <input type="text" id="loginUsername" placeholder="Usuario" required />
+        <input type="password" id="loginPassword" placeholder="Contraseña" required />
+        <button type="submit">Iniciar Sesión</button>
+      </form>
+    </section>
+
+    <section id="uploadSection" style="display:none;">
+      <form id="uploadForm">
+        <input type="file" id="imageInput" name="image" accept="image/*" required />
+        <button type="submit">Subir Imagen</button>
+      </form>
+    </section>
+
+    <section id="gallery">
+      <!-- Tarjetas de imagen -->
+    </section>
   </div>
 
   <footer>
     <p>Las imágenes se eliminan automáticamente después de 4 horas.</p>
-    <p>Una producción de pont0n_j. ©2025</p>
+    <p>Una producción de pont0n_ j. ©2025</p>
   </footer>
  <!-- Footer con enlaces y botón de modo oscuro -->
   <footer style="text-align:center; margin-top: 3rem; font-size: 0.9rem;">
@@ -33,7 +53,8 @@
     <a href="acerca.html">Acerca de</a> ·
    
   </footer>
-
+  
+  <div id="toastContainer"></div>
   <script src="app.js"></script>
 </body>
 </html>
