@@ -10,11 +10,12 @@
   <div class="banner"></div>
 
   <div class="container">
-    <h1>Sube tu momento de hoy</h1>
+    <h1>Sube tu momento <3. </h1>
 
-    <section id="auth">
+    <!-- Sección de autenticación -->
+    <section id="authSection">
       <form id="registerForm">
-        <h2>Registro</n2>
+        <h2>Registro</h2>
         <input type="text" id="regUsername" placeholder="Usuario" required />
         <input type="email" id="regEmail" placeholder="Email (opcional)" />
         <input type="password" id="regPassword" placeholder="Contraseña" required />
@@ -22,13 +23,14 @@
       </form>
 
       <form id="loginForm">
-        <h2>Inicio de sesión</h2>
+        <h2>Login</h2>
         <input type="text" id="loginUsername" placeholder="Usuario" required />
         <input type="password" id="loginPassword" placeholder="Contraseña" required />
         <button type="submit">Iniciar Sesión</button>
       </form>
     </section>
 
+    <!-- Sección de subida, inicialmente oculta -->
     <section id="uploadSection" style="display:none;">
       <form id="uploadForm">
         <input type="file" id="imageInput" name="image" accept="image/*" required />
@@ -36,9 +38,8 @@
       </form>
     </section>
 
-    <section id="gallery">
-      <!-- Tarjetas de imagen -->
-    </section>
+    <!-- Galería -->
+    <section id="gallery"></section>
   </div>
 
   <footer>
@@ -54,7 +55,9 @@
    
   </footer>
   
+  <!-- Contenedor para toasts -->
   <div id="toastContainer"></div>
+
   <script src="app.js"></script>
 </body>
 </html>
