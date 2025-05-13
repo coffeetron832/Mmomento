@@ -1,15 +1,5 @@
 const backendURL = "https://calm-aback-vacuum.glitch.me/"; // ← Pega tu URL aquí
 
-// Inicializa UI
-function initUI() {
-  // Aquí podrías ocultar elementos si es necesario
-}
-
-// Función para alternar modo oscuro
-define toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
-}
-
 // Subida de imagen
 document.getElementById("uploadForm").addEventListener("submit", async e => {
   e.preventDefault();
@@ -18,39 +8,42 @@ document.getElementById("uploadForm").addEventListener("submit", async e => {
     method: "POST",
     body: formData
   });
+
   if (res.ok) {
     const { id } = await res.json();
-    let arr = JSON.parse(localStorage.getItem("myImages") || "[]");
-    arr.push(id);
-    localStorage.setItem("myImages", JSON.stringify(arr));
-    alert("Imagen subida");
+    let stored = JSON.parse(localStorage.getItem("myImages") || "[]");
+    stored.push(id);
+    localStorage.setItem("myImages", JSON.stringify(stored));
+    alert("Imagen subida con éxito");
     e.target.reset();
     loadImages();
   } else {
-    const d = await res.json();
-    alert(d.error || "Error al subir");
+    const err = await res.json();
+    alert(err.error || "Error al subir la imagen");
   }
 });
 
 // Cargar galería
 async function loadImages() {
   const res = await fetch(`${backendURL}/images`);
-  const imgs = await res.json();
+  const images = await res.json();
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
 
-  const myImgs = JSON.parse(localStorage.getItem("myImages") || "[]");
+  const stored = JSON.parse(localStorage.getItem("myImages") || "[]");
 
-  imgs.forEach(img => {
+  images.forEach(img => {
     const div = document.createElement("div");
     div.className = "gallery-item";
     div.innerHTML = `
       <img src="${img.image_url}" alt="${img.username}" />
-      <p style="text-align:center">@${img.username}</p>
+      <p>@${img.username}</p>
       <div class="button-row"></div>
     `;
+    const row = div.querySelector(".button-row");
 
-    // Like button\ n    const key = `likes_${img.id}`;
+    // Like
+    const key = `likes_${img.id}`;
     let likes = parseInt(localStorage.getItem(key) || "0", 10);
     const likeBtn = document.createElement("button");
     likeBtn.className = "like-btn";
@@ -63,9 +56,10 @@ async function loadImages() {
       localStorage.setItem(key, likes);
       likeCount.textContent = likes;
     };
+    row.append(likeBtn, likeCount);
 
-    // Delete button
-    if (myImgs.includes(img.id)) {
+    // Delete
+    if (stored.includes(img.id)) {
       const delBtn = document.createElement("button");
       delBtn.className = "delete-btn";
       delBtn.textContent = "Eliminar";
@@ -74,33 +68,23 @@ async function loadImages() {
           method: "DELETE"
         });
         if (resD.ok) {
-          const updated = myImgs.filter(i => i !== img.id);
+          const updated = stored.filter(x => x !== img.id);
           localStorage.setItem("myImages", JSON.stringify(updated));
           loadImages();
         } else {
-          const d = await resD.json();
-          alert(d.error || "Error al eliminar");
+          const err = await resD.json();
+          alert(err.error || "Error al eliminar la imagen");
         }
       };
-      div.querySelector(".button-row").append(delBtn);
+      row.append(delBtn);
     }
-
-    // Append like controls
-    const row = div.querySelector(".button-row");
-    row.append(likeBtn, likeCount);
 
     gallery.appendChild(div);
   });
 }
 
-// Inicialización al cargar DOM
-window.addEventListener("DOMContentLoaded", () => {
-  initUI();
-  loadImages();
-  // Bind toggleDarkMode al botón
-  document.getElementById("toggleDarkMode").addEventListener("click", toggleDarkMode);
-});
-
+// Al cargar la página
+window.addEventListener("DOMContentLoaded", loadImages);
 
 
 // Toggle modo oscuro
