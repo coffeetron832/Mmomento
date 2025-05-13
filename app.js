@@ -25,25 +25,36 @@ document.getElementById('registerForm').onsubmit = async e => {
   else showToast(data.error||'Error al registrar', true);
 };
 
-// Login
-document.getElementById('loginForm').onsubmit = async e => {
+// Login de usuario
+const loginForm = document.getElementById('loginForm');
+loginForm.onsubmit = async e => {
   e.preventDefault();
   const username = document.getElementById('loginUsername').value;
   const password = document.getElementById('loginPassword').value;
-  const res = await fetch(`${backendURL}/api/login`, {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({username,password})
-  });
-  const data = await res.json();
-  if(res.ok) {
-    authToken = data.token;
-    showToast('Sesión iniciada ✔️');
-    document.getElementById('authSection').style.display = 'none';
-    document.getElementById('uploadSection').style.display = 'block';
-    loadImages();
-  } else showToast(data.error||'Error al iniciar', true);
+  console.log('Intentando login con', username);
+  try {
+    const res = await fetch(`${backendURL}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    console.log('Respuesta login status:', res.status);
+    const data = await res.json();
+    console.log('Datos login:', data);
+    if (res.ok && data.token) {
+      authToken = data.token;
+      showToast('Sesión iniciada ✔️');
+      document.getElementById('authSection').style.display = 'none';
+      document.getElementById('uploadSection').style.display = 'block';
+      loadImages();
+    } else {
+      showToast(data.error || 'Error al iniciar sesión', true);
+    }
+  } catch (err) {
+    console.error('Error en login fetch:', err);
+    showToast('Error de red al iniciar sesión', true);
+  }
 };
-
 // Subir imagen
 document.getElementById('uploadForm').onsubmit = async e => {
   e.preventDefault();
