@@ -1,39 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="UTF-8">
-  <title>Momento - ¿Cómo te fue hoy?</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Momentol</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body style="font-family: 'Poppins', sans-serif;">
-  <!-- Franja arcoíris animada -->
+<body>
   <div class="banner"></div>
 
   <div class="container">
     <h1>Sube tu momento del día</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-      <input type="text" name="username" placeholder="Tu nombre de usuario" required />
+
+    <form id="uploadForm">
+      <input type="text" name="username" placeholder="Tu nombre o apodo" required />
       <input type="file" name="image" accept="image/*" required />
-      <button type="submit">Subir imagen</button>
+      <button type="submit">Subir Imagen</button>
     </form>
 
-    <h2>Últimos momentos</h2>
-    <div id="gallery"></div>
+    <section id="gallery"></section>
+
+    <button id="toggleDarkMode" class="dark-mode-button">🌓 Modo Oscuro</button>
   </div>
 
-  <!-- justo dentro de <body> -->
-<div id="termsModal" class="modal">
-  <div class="modal-content">
-    <h2>Condiciones de Uso</h2>
-    <p>Al entrar aceptas que las imágenes duran 4 horas, no hay registro y eres responsable de lo que subas.</p>
-    <button id="acceptTerms">Acepto</button>
-  </div>
-</div>
-
-  
-  <!-- Footer con enlaces y botón de modo oscuro -->
+  <footer>
+    <p>Las imágenes se eliminan automáticamente después de 4 horas.</p>
+  </footer>
+ <!-- Footer con enlaces y botón de modo oscuro -->
   <footer style="text-align:center; margin-top: 3rem; font-size: 0.9rem;">
     <a href="condiciones.html">Condiciones</a> ·
     <a href="privacidad.html">Privacidad</a> ·
@@ -43,5 +36,6 @@
   </footer>
 
   <script src="app.js"></script>
+
 </body>
 </html>
