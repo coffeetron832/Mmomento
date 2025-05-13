@@ -1,93 +1,92 @@
 const backendURL = "https://calm-aback-vacuum.glitch.me/"; // ← Pega tu URL aquí
 
-// Subida de imagen
-document.getElementById("uploadForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const res = await fetch(`${backendURL}/upload`, {
-    method: "POST",
-    body: formData
-  });
+// Helpers
+function showToast(msg, isError=false) {
+  const div = document.createElement('div');
+  div.className = 'toast' + (isError? ' toast-error':'');
+  div.textContent = msg;
+  document.getElementById('toastContainer').append(div);
+  setTimeout(() => div.remove(), 3000);
+}
 
-  if (res.ok) {
-    const { id } = await res.json();
-    let stored = JSON.parse(localStorage.getItem("myImages") || "[]");
-    stored.push(id);
-    localStorage.setItem("myImages", JSON.stringify(stored));
-    alert("Imagen subida con éxito");
-    e.target.reset();
-    loadImages();
-  } else {
-    const err = await res.json();
-    alert(err.error || "Error al subir la imagen");
-  }
-});
+// Registro
+document.getElementById('registerForm').onsubmit = async e => {
+  e.preventDefault();
+  const username = e.target.querySelector('#regUsername').value;
+  const email    = e.target.querySelector('#regEmail').value;
+  const password = e.target.querySelector('#regPassword').value;
+  const res = await fetch(`${backendURL}/api/register`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({username,email,password})
+  });
+  const d = await res.json();
+  if(res.ok) showToast('Registrado ✔️'); else showToast(d.error,true);
+};
+
+// Login
+document.getElementById('loginForm').onsubmit = async e => {
+  e.preventDefault();
+  const username = e.target.querySelector('#loginUsername').value;
+  const password = e.target.querySelector('#loginPassword').value;
+  const res = await fetch(`${backendURL}/api/login`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({username,password})
+  });
+  const d = await res.json();
+  if(res.ok){
+    authToken = d.token;
+    document.getElementById('uploadSection').style.display = 'block';
+    showToast('Bienvenido ✔️');
+  } else showToast(d.error,true);
+};
+
+// Subir imagen
+document.getElementById('uploadForm').onsubmit = async e => {
+  e.preventDefault();
+  const file = e.target.querySelector('#imageInput').files[0];
+  const fd = new FormData(); fd.append('image',file);
+  const res = await fetch(`${backendURL}/upload`,{
+    method:'POST', headers:{Authorization:`Bearer ${authToken}`}, body:fd
+  });
+  const d = await res.json();
+  if(res.ok){ showToast('Subida ✔️'); loadImages(); }
+  else showToast(d.error,true);
+};
 
 // Cargar galería
-async function loadImages() {
+async function loadImages(){
   const res = await fetch(`${backendURL}/images`);
-  const images = await res.json();
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-
-  const stored = JSON.parse(localStorage.getItem("myImages") || "[]");
-
-  images.forEach(img => {
-    const div = document.createElement("div");
-    div.className = "gallery-item";
+  const imgs = await res.json();
+  const gallery = document.getElementById('gallery');
+  gallery.innerHTML = '';
+  imgs.forEach(img => {
+    const div = document.createElement('div'); div.className='gallery-item';
     div.innerHTML = `
-      <img src="${img.image_url}" alt="${img.username}" />
+      <img src="${img.image_url}" alt="" />
       <p>@${img.username}</p>
-      <div class="button-row"></div>
-    `;
-    const row = div.querySelector(".button-row");
+      <div class="button-row">
+        <button class="like-btn" data-id="${img.id}">🔥</button>
+        <span>${img.likes}</span>
+      </div>`;
+    gallery.append(div);
+  });
+  attachLikeHandlers();
+}
 
-    // Like
-    const key = `likes_${img.id}`;
-    let likes = parseInt(localStorage.getItem(key) || "0", 10);
-    const likeBtn = document.createElement("button");
-    likeBtn.className = "like-btn";
-    likeBtn.textContent = "🔥";
-    const likeCount = document.createElement("span");
-    likeCount.className = "like-count";
-    likeCount.textContent = likes;
-    likeBtn.onclick = () => {
-      likes++;
-      localStorage.setItem(key, likes);
-      likeCount.textContent = likes;
-    };
-    row.append(likeBtn, likeCount);
-
-    // Delete
-    if (stored.includes(img.id)) {
-      const delBtn = document.createElement("button");
-      delBtn.className = "delete-btn";
-      delBtn.textContent = "Eliminar";
-      delBtn.onclick = async () => {
-        const resD = await fetch(`${backendURL}/delete/${img.id}`, {
-          method: "DELETE"
-        });
-        if (resD.ok) {
-          const updated = stored.filter(x => x !== img.id);
-          localStorage.setItem("myImages", JSON.stringify(updated));
-          loadImages();
-        } else {
-          const err = await resD.json();
-          alert(err.error || "Error al eliminar la imagen");
-        }
-      };
-      row.append(delBtn);
+// Likes
+tmp function attachLikeHandlers(){
+  document.querySelectorAll('.like-btn').forEach(btn=>{
+    btn.onclick = async()=>{
+      const id = btn.dataset.id;
+      const res = await fetch(`${backendURL}/api/like/${id}`,{
+        method:'POST', headers:{Authorization:`Bearer ${authToken}`}
+      });
+      const d = await res.json();
+      if(res.ok){ btn.nextElementSibling.textContent = d.totalLikes; showToast('¡Like!'); btn.disabled=true; }
+      else showToast(d.error,true);
     }
-
-    gallery.appendChild(div);
   });
 }
 
-// Al cargar la página
-window.addEventListener("DOMContentLoaded", loadImages);
-
-
-// Toggle modo oscuro
-document.getElementById("toggleDarkMode").onclick = () => {
-  document.body.classList.toggle("dark-mode");
-};
+// Init
+window.onload = loadImages;
