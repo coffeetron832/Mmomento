@@ -1,4 +1,4 @@
-const backendURL = "https://calm-aback-vacuum.glitch.me/"; // ← Pega tu URL aquí
+const backendURL = "https://calm-aback-vacuum.glitch.me"; // ← Pega tu URL aquí
 let authToken = null;
 
 // Mostrar notificaciones
