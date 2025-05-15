@@ -58,4 +58,3 @@ otpVerifyForm.onsubmit = async (e) => {
     console.error('Error al verificar OTP:', err);
   }
 };
-
