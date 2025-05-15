@@ -2,52 +2,28 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Momento – Autenticación OTP con Nombre</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; background: #f5f5f5; }
-    form { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    input, button { width: 100%; padding: 0.6rem; margin-top: 0.5rem; }
-    #uploadSection { display: none; }
-    #gallery { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1rem; }
-    .gallery-item { background: #fff; padding:0.5rem; border-radius:6px; text-align:center; }
-    .gallery-item img { max-width:100%; border-radius:6px; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momento - Red de imágenes</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <main>
+    <h1>Verificación por OTP</h1>
 
-  <h1>Momento 📸</h1>
-
-  <div id="authSection">
-    <h2>Inicia sesión con OTP</h2>
-
-    <form id="otpRequestForm">
-      <input type="text" id="nameInput" placeholder="Tu nombre" required />
-      <input type="email" id="contact" placeholder="Tu correo electrónico" required />
+    <!-- Formulario para solicitar el OTP -->
+    <form id="otp-request-form">
+      <label for="email">Correo electrónico:</label>
+      <input type="email" id="email" required />
       <button type="submit">Enviar código</button>
     </form>
 
-    <form id="otpVerifyForm" style="display:none;">
-      <input type="text" id="otpCode" placeholder="Ingresa el código OTP" required />
-      <button type="submit">Verificar y continuar</button>
+    <!-- Formulario para verificar el OTP -->
+    <form id="otp-verify-form">
+      <label for="otp">Código OTP:</label>
+      <input type="text" id="otp" required />
+      <button type="submit">Verificar código</button>
     </form>
-  </div>
-
-  <div id="uploadSection">
-    <h2>Subir tu momento</h2>
-    <form id="uploadForm" enctype="multipart/form-data">
-      <input type="file" id="imageInput" accept="image/*" required />
-      <button type="submit">Subir imagen</button>
-    </form>
-
-    <h2>Galería pública</h2>
-    <div id="gallery"></div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
-  <div id="toastContainer"></div>
+  </main>
 
   <script src="app.js"></script>
 </body>
