@@ -2,60 +2,51 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Momento</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Momento – Autenticación OTP con Nombre</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; background: #f5f5f5; }
+    form { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 0.6rem; margin-top: 0.5rem; }
+    #uploadSection { display: none; }
+    #gallery { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1rem; }
+    .gallery-item { background: #fff; padding:0.5rem; border-radius:6px; text-align:center; }
+    .gallery-item img { max-width:100%; border-radius:6px; }
+  </style>
 </head>
 <body>
-  <div class="banner"></div>
 
-  <div class="container">
-    <h1>Sube tu momento <3. </h1>
+  <h1>Momento 📸</h1>
 
-    <!-- Sección de autenticación -->
-    <section id="authSection">
-      <form id="registerForm">
-        <h2>Registro</h2>
-        <input type="text" id="regUsername" placeholder="Usuario" required />
-        <input type="email" id="regEmail" placeholder="Email (opcional)" />
-        <input type="password" id="regPassword" placeholder="Contraseña" required />
-        <button type="submit">Registrarse</button>
-      </form>
+  <div id="authSection">
+    <h2>Inicia sesión con OTP</h2>
 
-      <form id="loginForm">
-        <h2>Login</h2>
-        <input type="text" id="loginUsername" placeholder="Usuario" required />
-        <input type="password" id="loginPassword" placeholder="Contraseña" required />
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-    </section>
+    <form id="otpRequestForm">
+      <input type="text" id="nameInput" placeholder="Tu nombre" required />
+      <input type="email" id="contact" placeholder="Tu correo electrónico" required />
+      <button type="submit">Enviar código</button>
+    </form>
 
-    <!-- Sección de subida, inicialmente oculta -->
-    <section id="uploadSection" style="display:none;">
-      <form id="uploadForm">
-        <input type="file" id="imageInput" name="image" accept="image/*" required />
-        <button type="submit">Subir Imagen</button>
-      </form>
-    </section>
-
-    <!-- Galería -->
-    <section id="gallery"></section>
+    <form id="otpVerifyForm" style="display:none;">
+      <input type="text" id="otpCode" placeholder="Ingresa el código OTP" required />
+      <button type="submit">Verificar y continuar</button>
+    </form>
   </div>
 
-  <footer>
-    <p>Las imágenes se eliminan automáticamente después de 4 horas.</p>
-    <p>Una producción de pont0n_ j. ©2025</p>
-  </footer>
- <!-- Footer con enlaces y botón de modo oscuro -->
-  <footer style="text-align:center; margin-top: 3rem; font-size: 0.9rem;">
-    <a href="condiciones.html">Condiciones</a> ·
-    <a href="privacidad.html">Privacidad</a> ·
-    <a href="ayuda.html">Ayuda</a> ·
-    <a href="acerca.html">Acerca de</a> ·
-   
-  </footer>
-  
-  <!-- Contenedor para toasts -->
+  <div id="uploadSection">
+    <h2>Subir tu momento</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="imageInput" accept="image/*" required />
+      <button type="submit">Subir imagen</button>
+    </form>
+
+    <h2>Galería pública</h2>
+    <div id="gallery"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
   <div id="toastContainer"></div>
 
   <script src="app.js"></script>
