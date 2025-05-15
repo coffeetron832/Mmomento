@@ -1,112 +1,141 @@
-const backendURL = "https://calm-aback-vacuum.glitch.me"; // ← Pega tu URL aquí
-let authToken = null;
+const backendURL = 'https://calm-aback-vacuum.glitch.me/'; // Asegúrate de poner la URL correcta
 
-// Mostrar notificaciones
-function showToast(msg, isError=false) {
-  const d = document.createElement('div');
-  d.className = 'toast' + (isError ? ' toast-error' : '');
-  d.textContent = msg;
-  document.getElementById('toastContainer').append(d);
-  setTimeout(() => d.remove(), 3000);
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const otpRequestForm = document.getElementById('otpRequestForm');
+  const otpVerifyForm  = document.getElementById('otpVerifyForm');
+  const authSection    = document.getElementById('authSection');
+  const uploadSection  = document.getElementById('uploadSection');
+  const gallery        = document.getElementById('gallery');
+  let sessionToken     = null;
 
-// Registro
-document.getElementById('registerForm').onsubmit = async e => {
-  e.preventDefault();
-  const username = document.getElementById('regUsername').value;
-  const email    = document.getElementById('regEmail').value;
-  const password = document.getElementById('regPassword').value;
-  const res = await fetch(`${backendURL}/api/register`, {
-    method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({username,email,password})
-  });
-  const data = await res.json();
-  if(res.ok) { showToast('Registro exitoso ✔️'); e.target.reset(); }
-  else showToast(data.error||'Error al registrar', true);
-};
+  // 1) Solicitar OTP
+  otpRequestForm.onsubmit = async e => {
+    e.preventDefault();
+    const name    = document.getElementById('nameInput').value.trim();
+    const contact = document.getElementById('contact').value.trim();
 
-// Login de usuario
-const loginForm = document.getElementById('loginForm');
-loginForm.onsubmit = async e => {
-  e.preventDefault();
-  const username = document.getElementById('loginUsername').value;
-  const password = document.getElementById('loginPassword').value;
-  console.log('Intentando login con', username);
-  try {
-    const res = await fetch(`${backendURL}/api/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    console.log('Respuesta login status:', res.status);
-    const data = await res.json();
-    console.log('Datos login:', data);
-    if (res.ok && data.token) {
-      authToken = data.token;
-      showToast('Sesión iniciada ✔️');
-      document.getElementById('authSection').style.display = 'none';
-      document.getElementById('uploadSection').style.display = 'block';
-      loadImages();
-    } else {
-      showToast(data.error || 'Error al iniciar sesión', true);
-    }
-  } catch (err) {
-    console.error('Error en login fetch:', err);
-    showToast('Error de red al iniciar sesión', true);
-  }
-};
-// Subir imagen
-document.getElementById('uploadForm').onsubmit = async e => {
-  e.preventDefault();
-  const file = document.getElementById('imageInput').files[0];
-  const fd = new FormData(); fd.append('image', file);
-  const res = await fetch(`${backendURL}/upload`, {
-    method:'POST', headers:{Authorization:`Bearer ${authToken}`}, body:fd
-  });
-  const data = await res.json();
-  if(res.ok) { showToast('Imagen subida ✔️'); loadImages(); }
-  else showToast(data.error||'Error al subir', true);
-};
-
-// Cargar galería
-async function loadImages() {
-  const res = await fetch(`${backendURL}/images`);
-  const imgs = await res.json();
-  const gallery = document.getElementById('gallery');
-  gallery.innerHTML = '';
-
-  imgs.forEach(img => {
-    const div = document.createElement('div'); div.className='gallery-item';
-    div.innerHTML = `
-      <img src="${img.image_url}" alt="" />
-      <p>@${img.username}</p>
-      <div class='button-row'>
-        <button class='like-btn' data-id='${img.id}'>🔥</button>
-        <span>${img.likes}</span>
-      </div>
-    `;
-    gallery.append(div);
-  });
-  attachLikeHandlers();
-}
-
-// Likes
-function attachLikeHandlers() {
-  document.querySelectorAll('.like-btn').forEach(btn => {
-    btn.onclick = async () => {
-      const id = btn.dataset.id;
-      const res = await fetch(`${backendURL}/api/like/${id}`, {
-        method:'POST', headers:{Authorization:`Bearer ${authToken}`}
+    try {
+      const res = await fetch(`${backendURL}/api/otp/request`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ name, contact })
       });
-      const d = await res.json();
-      if(res.ok) {
-        btn.nextElementSibling.textContent = d.totalLikes;
-        showToast('¡Like registrado!');
-        btn.disabled = true;
-      } else showToast(d.error, true);
-    };
-  });
-}
+      const data = await res.json();
+      if (res.ok) {
+        alert('Código enviado a tu correo');
+        otpRequestForm.style.display = 'none';
+        otpVerifyForm.style.display  = 'block';
+      } else {
+        alert(data.error || 'Error al solicitar código');
+      }
+    } catch (err) {
+      console.error('Error al solicitar OTP:', err);
+      alert('Error de conexión');
+    }
+  };
+
+  // 2) Verificar OTP
+  otpVerifyForm.onsubmit = async e => {
+    e.preventDefault();
+    const code = document.getElementById('otpCode').value.trim();
+
+    try {
+      const res = await fetch(`${backendURL}/api/otp/verify`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ code })
+      });
+      const data = await res.json();
+      if (res.ok && data.token) {
+        sessionToken = data.token;
+        alert('Autenticación exitosa');
+        authSection.style.display   = 'none';
+        uploadSection.style.display = 'block';
+        loadImages();
+      } else {
+        alert(data.error || 'Código inválido');
+      }
+    } catch (err) {
+      console.error('Error al verificar OTP:', err);
+      alert('Error de conexión');
+    }
+  };
+
+  // 3) Subir imagen
+  document.getElementById('uploadForm').onsubmit = async e => {
+    e.preventDefault();
+    const file = document.getElementById('imageInput').files[0];
+    if (!file) return alert('Selecciona una imagen');
+    const fd = new FormData();
+    fd.append('image', file);
+
+    try {
+      const res = await fetch(`${backendURL}/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${sessionToken}` },
+        body: fd
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Imagen subida con éxito');
+        loadImages();
+        e.target.reset();
+      } else {
+        alert(data.error || 'Error al subir imagen');
+      }
+    } catch (err) {
+      console.error('Error al subir:', err);
+      alert('Error de conexión al subir');
+    }
+  };
+
+  // 4) Cargar galería
+  async function loadImages() {
+    try {
+      const res = await fetch(`${backendURL}/images`);
+      const imgs = await res.json();
+      gallery.innerHTML = '';
+      imgs.forEach(img => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.innerHTML = `
+          <img src="${img.image_url}" alt="moment" />
+          <p><strong>${img.username}</strong></p>
+          <p>❤️ ${img.likes}</p>
+          <button class="like-btn" data-id="${img.id}">Me gusta</button>
+        `;
+        gallery.appendChild(div);
+      });
+      attachLikeHandlers();
+    } catch (err) {
+      console.error('Error al cargar la galería:', err);
+    }
+  }
+
+  // 5) Likes
+  function attachLikeHandlers() {
+    document.querySelectorAll('.like-btn').forEach(btn => {
+      btn.onclick = async () => {
+        const id = btn.dataset.id;
+        try {
+          const res = await fetch(`${backendURL}/api/like/${id}`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${sessionToken}` }
+          });
+          const data = await res.json();
+          if (res.ok) {
+            loadImages();
+          } else {
+            alert(data.error || 'Error al dar like');
+          }
+        } catch (err) {
+          console.error('Error en like:', err);
+          alert('Error de conexión al dar like');
+        }
+      };
+    });
+  }
+});
 
 // Inicio
 document.addEventListener('DOMContentLoaded', () => {
