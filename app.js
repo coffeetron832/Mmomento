@@ -103,8 +103,3 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-    alert('OTP verificado correctamente');
-  } catch (err) {
-    console.error('Error al verificar OTP:', err);
-  }
-};
