@@ -1,74 +1,128 @@
-/* Reset básico */
-* {
-  box-sizing: border-box;
+body {
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-}
-
-/* Fondo general */
-body {
-  background-color: #f0f4f8;
-  padding: 2rem;
+  background: #eef;
+  height: 100vh;
   display: flex;
+  flex-direction: column;
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+  background: #fff;
+  font-size: 0.9rem;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
 }
 
-/* Contenedor principal */
-main {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-}
-
-/* Título */
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-  color: #333333;
-}
-
-/* Formularios */
-form {
-  margin-bottom: 1.5rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: #444444;
-}
-
-input[type="email"],
-input[type="text"] {
-  width: 100%;
-  padding: 0.7rem;
-  margin-bottom: 1rem;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-/* Botones */
-button {
-  width: 100%;
-  padding: 0.8rem;
-  font-size: 1rem;
-  background-color: #007bff;
+.menu a,
+.menu button {
+  text-decoration: none;
+  color: #333;
+  background: #f9f9f9;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
   border: none;
-  border-radius: 6px;
-  color: white;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+}
+
+.menu button:hover,
+.menu a:hover {
+  background: #e0e0e0;
+}
+
+main {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  max-width: 900px;
+  margin: auto;
+  font-size: 0.95rem;
+}
+
+.mensaje {
+  margin: 0.5rem 0;
+  color: #d00;
+  font-weight: 600;
+}
+
+form {
+  margin: 1rem 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+input,
+button {
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #4caf50;
+  color: #fff;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background: #45a047;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.image-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+  width: 100%;
+  display: block;
+}
+
+.image-info {
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.image-info span {
+  display: block;
+  color: #555;
+}
+
+.image-card button {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-top: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.image-card button:hover {
+  background: #fee;
+}
+
+/* Estilo adicional para el botón de Reportar */
+.report-button {
+  background: #ffdddd;
+  color: #b00000;
+  font-size: 0.85rem;
+  border-top: 1px solid #fbb;
+  border-radius: 0 0 8px 8px;
+}
+
+.report-button:hover {
+  background: #fbb;
+  color: #800;
 }
