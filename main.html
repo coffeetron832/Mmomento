@@ -2,23 +2,60 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Subida de Imágenes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📸 Galería</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="rainbow-bar animated"></div>
+  <nav class="menu">
+    <a href="acerca.html">ℹ️ Acerca</a>
+    <a href="condiciones.html">📜 Términos</a>
+    <a href="ayuda.html">❓ Ayuda</a>
+    <a href="privacidad.html">🔒 Privacidad</a>
+    <button id="logout-btn">🚪 Salir</button>
+  </nav>
   <main>
-    <h1>Sube tus momentos</h1>
-    <button id="logout-btn">Cerrar sesión</button>
-
+    <h1>Momentos📷</h1>
+    <div id="mensaje" class="mensaje"></div>
     <form id="image-upload-form">
-      <label for="image">Selecciona una imagen:</label>
-      <input type="file" id="image" required />
-      <button type="submit">Subir</button>
+      <label>Selecciona imagen:</label>
+      <input type="file" id="image" accept="image/*" />
+      <button type="submit">Subir 📤</button>
     </form>
-
-    <section id="gallery"></section>
+    <section id="gallery" class="gallery"></section>
   </main>
 
-  <script src="main.js"></script>
+  <!-- Primero auth.js para tener funciones de auth -->
+  <script src="auth.js"></script>
+  <!-- Después app.js con lógica de la galería -->
+  <script src="app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const valid = await asegurarSesion();
+      if (!valid) return; // redirige a login si no está autenticado
+
+      const token = localStorage.getItem('token');
+      try {
+        const res = await fetch('https://tu-backend.com/api/imagenes', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('No autorizado');
+        const imagenes = await res.json();
+        console.log(imagenes);
+        // Aquí renderiza las imágenes en #gallery
+      } catch (e) {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      }
+
+      // Manejo botón salir
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
 </body>
 </html>
