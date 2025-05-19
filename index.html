@@ -2,9 +2,109 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Momento</title>
-  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #F7F4EF;
+      font-family: 'Inter', sans-serif;
+      color: #1A1A1A;
+    }
+
+    @keyframes moverDegradadoTexto {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-family: 'EB Garamond', serif;
+      font-weight: 900;
+      font-size: 3.5rem;
+      text-align: center;
+      margin-top: 2rem;
+      color: #1A1A1A;
+    }
+
+    /* Degradado animado para "Momento" */
+    .degradado-momento {
+      background: linear-gradient(
+        90deg,
+        #4C4CFF,
+        #9966FF,
+        #FF6FD8
+      );
+      background-size: 400% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: moverDegradadoTexto 8s ease infinite;
+      display: inline-block;
+    }
+
+    nav.menu {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1rem;
+      background-color: rgba(26, 26, 26, 0.05);
+      font-weight: 600;
+    }
+
+    nav.menu a {
+      color: #1A1A1A;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    nav.menu a:hover {
+      color: #4C4CFF;
+    }
+
+    main {
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    form {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    input, button {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #4C4CFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #9966FF;
+    }
+
+    .mensaje {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: #FF6FD8;
+    }
+  </style>
 </head>
 <body>
   <nav class="menu">
@@ -13,9 +113,13 @@
     <a href="ayuda.html">❓ Ayuda</a>
     <a href="privacidad.html">🔒 Privacidad</a>
   </nav>
+
   <main>
-    <h1>¡Bienvenido a Momento!</h1>
+    <h1>
+      ¡Bienvenido a <span class="degradado-momento">Momento</span>!
+    </h1>
     <div id="mensaje" class="mensaje"></div>
+
     <form id="otp-request-form">
       <label>Nombre de usuario:</label>
       <input type="text" id="username" required autocomplete="off" />
@@ -23,12 +127,15 @@
       <input type="email" id="email" required autocomplete="off" />
       <button type="submit">Enviar código 📧</button>
     </form>
+
     <form id="otp-verify-form">
       <label>Código OTP:</label>
       <input type="text" id="otp" required autocomplete="off" />
       <button type="submit">Verificar ✔️</button>
     </form>
   </main>
+
   <script src="app.js"></script>
 </body>
 </html>
+
