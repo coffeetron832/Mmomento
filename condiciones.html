@@ -1,43 +1,89 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Condiciones de uso - Momento</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
   <style>
     body {
-      font-family: 'Manrope', sans-serif;
+      font-family: 'Inter', sans-serif;
+      background-color: #F7F4EF;
+      color: #1A1A1A;
       margin: 0;
       min-height: 100vh;
       padding: 2rem 1rem;
-      background: linear-gradient(to bottom, #23074d, #cc5333);
-      color: #fff;
     }
+
     main {
       max-width: 700px;
       margin: auto;
-      line-height: 1.6;
+      line-height: 1.7;
     }
+
     h1 {
+      font-family: 'EB Garamond', serif;
       text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 0.8rem;
+      position: relative;
+    }
+
+    h1::after {
+      content: "";
+      display: block;
+      width: 200px;
+      height: 6px;
+      margin: 10px auto 0;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #4C4CFF, #9966FF, #FF6FD8, #4C4CFF);
+      background-size: 400% 100%;
+      animation: moverDegradado 6s ease infinite;
+    }
+
+    h2 {
+      font-family: 'EB Garamond', serif;
+      margin-top: 2.5rem;
       font-size: 2rem;
     }
-    h2 {
-      margin-top: 2rem;
-      font-size: 1.5rem;
+
+    ul {
+      padding-left: 1.2rem;
+      margin-top: 1rem;
     }
+
+    li {
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: #1A1A1A;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
     footer {
       text-align: center;
-      margin-top: 2rem;
-      font-size: 0.9rem;
+      margin-top: 3rem;
+      font-size: 0.95rem;
     }
+
     a.back-link {
-      color: #fff;
+      color: #1A1A1A;
       text-decoration: none;
       font-weight: bold;
     }
+
     a.back-link:hover {
       text-decoration: underline;
+    }
+
+    @keyframes moverDegradado {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
   </style>
 </head>
@@ -46,7 +92,7 @@
     <h1>Condiciones de uso</h1>
     <p>Bienvenido a Momento, un lugar para compartir imágenes efímeras y auténticas, sin vueltas ni complicaciones. Pero, ojo, que aunque todo sea simple, hay reglas — porque la libertad también tiene su límite.</p>
     <ul>
-      <li><strong>Contenido:</strong> Las imágenes que subas son tuyas y solo tuyas... (continúa tu texto)...</li>
+      <li><strong>Contenido:</strong> Las imágenes que subas son tuyas y solo tuyas...</li>
       <li><strong>Responsabilidad:</strong> Momento no es responsable de lo que publiques...</li>
       <li><strong>Eliminación automática:</strong> Cada imagen dura exactamente 4 horas...</li>
       <li><strong>Sin registro:</strong> No hay cuentas ni registros...</li>
@@ -58,7 +104,7 @@
       <li><strong>Protección de datos personales:</strong> No almacenamos datos personales...</li>
       <li><strong>Uso del sitio:</strong> El acceso y uso del sitio está permitido para personas mayores...</li>
     </ul>
-    <p>Para cualquier duda legal o solicitud, puedes contactarnos en <a href="mailto:soporte@momento.com" style="color:#fff;">soporte@momento.com</a>.</p>
+    <p>Para cualquier duda legal o solicitud, puedes contactarnos en <a href="mailto:soporte@momento.com">soporte@momento.com</a>.</p>
     <footer>
       <a href="main.html" class="back-link">← Volver a la galería</a>
     </footer>
@@ -70,4 +116,5 @@
   </script>
 </body>
 </html>
+
 
