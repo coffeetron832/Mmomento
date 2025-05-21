@@ -2,9 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Acerca de - Momento</title>
-
-  <!-- Google Fonts -->
+  <title>¿Qué es Momento?</title>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
@@ -23,23 +21,27 @@
     h1 {
       font-family: 'EB Garamond', serif;
       text-align: center;
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       margin-bottom: 0.8rem;
       position: relative;
     }
 
     h1::after {
-  content: "";
-  display: block;
-  width: 200px;
-  height: 6px;
-  margin: 10px auto 0;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #4C4CFF, #9966FF, #FF6FD8, #4C4CFF);
-  background-size: 400% 100%;
-  animation: moverDegradado 6s ease infinite;
-}
+      content: "";
+      display: block;
+      width: 200px;
+      height: 6px;
+      margin: 10px auto 0;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #4C4CFF, #9966FF, #FF6FD8, #4C4CFF);
+      background-size: 400% 100%;
+      animation: moverDegradado 6s ease infinite;
+    }
 
+    p {
+      margin-top: 1.2rem;
+      font-size: 1.1rem;
+    }
 
     .resaltado {
       background: #ffffffcc;
@@ -63,42 +65,34 @@
       text-decoration: underline;
     }
 
-    p {
-      margin-top: 1.2rem;
-      font-size: 1.1rem;
-    }
-    
     @keyframes moverDegradado {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
   </style>
 </head>
 <body>
-  <h1>¿Qué carajos es Momento?</h1>
+  <h1>Bienvenido a Momento</h1>
 
-  <p><strong>Momento</strong> nació para que subas una imagen. Así de simple.</p>
+  <p><strong>Momento</strong> es un espacio donde lo efímero tiene valor. Aquí puedes compartir una imagen que solo vivirá por 3 horas, pero puede causar impacto eterno.</p>
 
-  <p>La imagen desaparece en 4 horas. Así como las ganas de hacer ejercicio después de inscribirte al gimnasio.</p>
+  <p>¿Tienes un descuento fugaz, una foto de tu mascota o un lanzamiento musical de tu próximo álbum que merece atención hoy? <span class="resaltado">Este es tu lugar.</span></p>
 
-  <p>No pedimos registro, no recolectamos tus datos, no queremos tu alma. Solo un nombre visible para que la gente sepa que tú fuiste quien compartió el momento.</p>
+  <p>No necesitas crear una cuenta. Solo dinos cómo te llamas hoy y publica. Así de simple. Así de humano.</p>
 
-  <p>Comparte lo que existe solo por ahora.</p>
+  <p>Momento nació para personas como tu o como yo, para negocios locales, artistas, colectivos, marcas independientes que valoran lo que <em>está pasando ahora</em>. Aquí no hay algoritmos que entierren tu mensaje. Lo que subes, se ve. Sin filtro. Sin distracción.</p>
+
+  <p>Y cuando desaparece... también lo hace con estilo.</p>
+
+  <p>¿Quieres mostrar algo que importa solo por un instante? Entonces, <strong>hazlo con Momento</strong>.</p>
 
   <footer>
-    <a href="main.html" class="back-link">← Volver a la página principal.</a>
+    <a href="index.html" class="back-link">← Volver al inicio</a>
   </footer>
 
   <script>
-    console.log('Acerca: público');
+    console.log('Momento: Acerca del proyecto cargado correctamente.');
   </script>
 </body>
 </html>
