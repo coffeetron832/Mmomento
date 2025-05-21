@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Momento</title>
+  <title>Bienvenido a Momento!</title>
+
+  <!-- Aplicar clase dark-mode solo si usuario la activó explícitamente -->
+  <script>
+    (function() {
+      const valor = localStorage.getItem('modoOscuro');
+      if (valor === 'true') {
+        document.documentElement.classList.add('dark-mode');
+      }
+    })();
+  </script>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
@@ -15,6 +25,13 @@
       background-color: #F7F4EF;
       font-family: 'Inter', sans-serif;
       color: #1A1A1A;
+      transition: background-color 0.4s, color 0.4s;
+    }
+
+    /* Modo oscuro via clase en <html> */
+    html.dark-mode body {
+      background-color: #121212;
+      color: #f5f5f5;
     }
 
     @keyframes moverDegradadoTexto {
@@ -29,17 +46,11 @@
       font-size: 3.5rem;
       text-align: center;
       margin-top: 2rem;
-      color: #1A1A1A;
+      color: inherit;
     }
 
-    /* Degradado animado para "Momento" */
     .degradado-momento {
-      background: linear-gradient(
-        90deg,
-        #4C4CFF,
-        #9966FF,
-        #FF6FD8
-      );
+      background: linear-gradient(90deg, #4C4CFF, #9966FF, #FF6FD8);
       background-size: 400% 100%;
       background-clip: text;
       -webkit-background-clip: text;
@@ -51,14 +62,16 @@
     nav.menu {
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 1.5rem;
       padding: 1rem;
       background-color: rgba(26, 26, 26, 0.05);
       font-weight: 600;
+      position: relative;
     }
 
     nav.menu a {
-      color: #1A1A1A;
+      color: inherit;
       text-decoration: none;
       transition: color 0.3s ease;
     }
@@ -104,20 +117,268 @@
       margin-bottom: 1.5rem;
       color: #FF6FD8;
     }
+
+    #modal-bienvenida {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #modal-bienvenida .contenido {
+      background: #ffffff;
+      color: #1A1A1A;
+      max-width: 420px;
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Modo oscuro para modal */
+    html.dark-mode #modal-bienvenida .contenido {
+      background: #2A2A2A;
+      color: #f5f5f5;
+    }
+
+    #modal-bienvenida h2 {
+      font-family: 'EB Garamond', serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    #modal-bienvenida p {
+      margin: 0.5rem 0;
+    }
+
+    #cerrar-modal {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #4C4CFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    #cerrar-modal:hover {
+      background-color: #9966FF;
+    }
+
+    .slogan {
+      text-align: center;
+      margin-top: 2rem;
+      padding-bottom: 1rem;
+      font-size: 0.9rem;
+      font-style: italic;
+      opacity: 0.6;
+      font-family: 'EB Garamond', serif;
+    }
+
+    /* Reemplaza todo lo que tienes de .toggle-container y .toggle-input por esto */
+
+/* Reposicionamiento y tamaño */
+.toggle-container {
+  --knob-size: 1.15em;
+  position: absolute;
+  top: 1.3rem;
+  right: 3rem;
+  width: calc(var(--knob-size) + 0.9em);
+  height: var(--knob-size);
+  z-index: 3;
+}
+
+/* Input cubriendo todo */
+.toggle-input {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Detalles del handle y base (mantén las reglas de Uiverse aquí abajo) */
+.toggle-handle { /* … */ }
+.toggle-handle-knob { /* … */ }
+/* etc. */
+
+/* Efectos sutiles */
+.toggle-input + .toggle-handle-wrapper .toggle-handle {
+  filter: brightness(0.95);
+}
+.toggle-input:hover ~ .toggle-base {
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+  
+    
+    
+/* Estos dos siguen igual para que la animación al :checked funcione */
+.toggle-input:checked {
+  /* nota: aquí podemos limpiar el transform rotado si no lo quieres... */
+}
+
+.toggle-input:checked + .toggle-handle-wrapper > .toggle-handle {
+  transform: rotate(25deg);
+}
+
+.toggle-input:checked ~ .toggle-base .toggle-base-inside::after {
+  opacity: 1;
+}
+
+
+.toggle-handle-wrapper {
+  position: absolute;
+  z-index: 1;
+  bottom: -135%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
+  mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
+  width: 200%;
+  overflow: hidden;
+}
+
+.toggle-handle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotate(-25deg);
+  transform-origin: bottom center;
+  transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
+}
+
+.toggle-input:checked + .toggle-handle-wrapper > .toggle-handle {
+  transform: rotate(25deg);
+}
+
+.toggle-handle-knob {
+  position: relative;
+  z-index: 1;
+  border-radius: 50%;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  background-image: radial-gradient(farthest-corner at 70% 30%, #fedee2 4%, #d63534 12% 24%, #a81a1a 50% 65%, #d63534 75%);
+  transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
+}
+
+.toggle-input:checked + .toggle-handle-wrapper .toggle-handle-knob {
+  transform: rotate(-90deg);
+}
+
+/* toggle handle knob hover inner shadow */
+.toggle-handle-knob::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 8px 2px rgb(255 255 255 / .4);
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+@media (hover: hover) {
+  .toggle-input:hover + .toggle-handle-wrapper .toggle-handle-knob::after,
+  .toggle-input:focus-visible + .toggle-handle-wrapper .toggle-handle-knob::after {
+    opacity: 1;
+  }
+}
+
+.toggle-handle-bar-wrapper {
+  position: relative;
+  width: .5em;
+  height: 3em;
+}
+
+.toggle-handle-bar {
+  position: absolute;
+  top: calc(var(--knob-size) / 2 * -1);
+  left: 0;
+  width: 100%;
+  height: calc(100% + var(--knob-size) / 2);
+  background-image: linear-gradient(to right, #777475, #a4a4a4, #fff 45% 55%, #a4a4a4, #777475);
+  background-position-x: .06125em;
+  transition: background-position-x .24s cubic-bezier(.65, 1.35, .5, 1);
+  box-shadow: inset 0 1em .25em rgb(0 0 0 / .4);
+}
+
+.toggle-input:checked + .toggle-handle-wrapper .toggle-handle-bar {
+  background-position-x: -.06125em;
+}
+
+.toggle-base {
+  position: relative;
+  border-radius: 3.125em;
+  padding: .25em;
+  width: 3.5em;
+  height: 1.125em;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, #fff, #d7d7d7);
+  box-shadow: 0 -.25em .5em #fff, 0 .25em .5em #d7d7d7;
+}
+
+.toggle-base-inside {
+  position: relative;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #a6a6a6, #7d7d7d);
+  box-shadow: inset 0 .0625em rgb(255 255 255 / .2), inset 0 -.03125em rgb(255 255 255 / 1), inset 0 -.0625em .25em rgb(0 0 0 / .1);
+}
+
+/* toggle base inside active */
+.toggle-base-inside::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #5ab054, #438c3c);
+  box-shadow: inherit;
+  opacity: 0;
+  transition: opacity .24s cubic-bezier(.65, 1.35, .5, 1);
+}
+
+.toggle-input:checked ~ .toggle-base .toggle-base-inside::after {
+  opacity: 1;
+}
   </style>
 </head>
 <body>
+
   <nav class="menu">
     <a href="acerca.html">ℹ️ Acerca</a>
     <a href="condiciones.html">📜 Términos</a>
     <a href="ayuda.html">❓ Ayuda</a>
     <a href="privacidad.html">🔒 Privacidad</a>
+
+    <!-- From Uiverse.io by njesenberger --> 
+<div class="toggle-container">
+  <input class="toggle-input" type="checkbox">
+  <div class="toggle-handle-wrapper">
+    <div class="toggle-handle">
+      <div class="toggle-handle-knob"></div>
+      <div class="toggle-handle-bar-wrapper">
+        <div class="toggle-handle-bar"></div>
+      </div>
+    </div>
+  </div>
+  <div class="toggle-base">
+    <div class="toggle-base-inside"></div>
+  </div>
+</div>
+
   </nav>
 
   <main>
-    <h1>
-      ¡Bienvenido a <span class="degradado-momento">Momento</span>!
-    </h1>
+    <h1><span class="degradado-momento">Momento</span></h1>
     <div id="mensaje" class="mensaje"></div>
 
     <form id="otp-request-form">
@@ -134,6 +395,42 @@
       <button type="submit">Verificar ✔️</button>
     </form>
   </main>
+
+  <div id="modal-bienvenida">
+    <div class="contenido">
+      <h2>👋 Bienvenido a Momento</h2>
+      <p><strong>Momento</strong> es un espacio para compartir imágenes que solo existen hoy.</p>
+      <p>No hay seguidores, ni perfiles, ni me gusta.</p>
+      <p>Solo lo que pasa <strong>ahora</strong>. Las imágenes se borran a las 3 horas.</p>
+      <button id="cerrar-modal">Entendido</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Selecciona el toggle de Uiverse
+  const toggle = document.querySelector('.toggle-input');
+
+  // 1) Estado inicial según localStorage
+  const modoGuardado = localStorage.getItem('modoOscuro') === 'true';
+  toggle.checked = modoGuardado;
+  document.documentElement.classList.toggle('dark-mode', modoGuardado);
+
+  // 2) Escucha cambios para alternar clase y guardar preferencia
+  toggle.addEventListener('change', () => {
+    const activo = toggle.checked;
+    document.documentElement.classList.toggle('dark-mode', activo);
+    localStorage.setItem('modoOscuro', activo);
+  });
+});
+</script>
+
+
+  <div class="slogan">Redefining what’s worth looking at.</div>
+</body>
+</html>
+
 
   <script src="app.js"></script>
 </body>
