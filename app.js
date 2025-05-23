@@ -1,72 +1,78 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const backendURL     = 'https://calm-aback-vacuum.glitch.me';
-  const otpRequestForm = document.getElementById('otp-request-form');
-  const otpVerifyForm  = document.getElementById('otp-verify-form');
+  const backendURL     = 'https://momento-backend-production.up.railway.app';
+  const registerForm   = document.getElementById('register-form');
+  const loginForm      = document.getElementById('login-form');
   const uploadForm     = document.getElementById('image-upload-form');
   const galleryDiv     = document.getElementById('gallery');
   const logoutBtn      = document.getElementById('logout-btn');
   const mensajeDiv     = document.getElementById('mensaje');
   let jwtToken         = localStorage.getItem('token') || null;
 
-  // ===== Login =====
-  if (otpRequestForm && otpVerifyForm) {
-    otpVerifyForm.style.display = 'none';
-
-    otpRequestForm.onsubmit = async e => {
+  // ===== Registro =====
+  if (registerForm) {
+    registerForm.onsubmit = async e => {
       e.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const email    = document.getElementById('email').value.trim();
+      const username = document.getElementById('reg-username').value.trim();
+      const email    = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value.trim();
       mensajeDiv.textContent = '';
 
-      if (!username || !email) {
-        mensajeDiv.textContent = 'Por favor, ingresa usuario y correo';
+      if (!username || !email || !password) {
+        mensajeDiv.textContent = 'Todos los campos son obligatorios';
         return;
       }
 
       try {
-        const res = await fetch(`${backendURL}/api/otp/request`, {
+        const res = await fetch(`${backendURL}/api/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email })
+          body: JSON.stringify({ username, email, password })
         });
         const data = await res.json();
-        mensajeDiv.textContent = data.message || data.error || 'Error inesperado';
-        if (res.ok) {
-          otpRequestForm.style.display = 'none';
-          otpVerifyForm.style.display  = 'block';
-        }
+        mensajeDiv.textContent = data.message || data.error || 'Respuesta inesperada';
       } catch (err) {
-        mensajeDiv.textContent = 'Error de conexión al solicitar OTP';
+        mensajeDiv.textContent = 'Error al registrar usuario';
         console.error(err);
       }
     };
+    return;
+  }
 
-    otpVerifyForm.onsubmit = async e => {
+  // ===== Login =====
+  if (loginForm) {
+    loginForm.onsubmit = async e => {
       e.preventDefault();
-      const email = document.getElementById('email').value;
-      const otp   = document.getElementById('otp').value;
+      const email    = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
       mensajeDiv.textContent = '';
+
+      if (!email || !password) {
+        mensajeDiv.textContent = 'Ingresa correo y contraseña';
+        return;
+      }
+
       try {
-        const res = await fetch(`${backendURL}/api/otp/verify`, {
+        const res = await fetch(`${backendURL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, otp })
+          body: JSON.stringify({ email, password })
         });
         const data = await res.json();
         if (res.ok && data.token) {
           localStorage.setItem('token', data.token);
           window.location.href = 'main.html';
         } else {
-          mensajeDiv.textContent = data.error || 'Código incorrecto';
+          mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
         }
-      } catch {
-        mensajeDiv.textContent = 'Error de conexión';
+      } catch (err) {
+        mensajeDiv.textContent = 'Error al iniciar sesión';
+        console.error(err);
       }
     };
     return;
   }
 
-  // ===== Main =====
+  // ===== Main (cargar galería y subir imagen) =====
   if (uploadForm && galleryDiv) {
     if (!jwtToken) return window.location.href = 'index.html';
 
@@ -121,25 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <span>Expira: ${new Date(img.expiraEn).toLocaleString()}</span>
           `;
 
-          // Botón Eliminar
           const delBtn = document.createElement('button');
           delBtn.textContent = '🗑️ Eliminar';
-          delBtn.disabled = false;
-          delBtn.onclick = () => {
-            if (!confirm(`¿Eliminar esta imagen de ${img.usuario}?`)) return;
-            delBtn.disabled = true;
-            eliminarImagen(img.filename, delBtn);
-          };
+          delBtn.onclick = () => eliminarImagen(img.filename, delBtn);
 
-          // Botón Reportar
           const reportBtn = document.createElement('button');
           reportBtn.textContent = '🚩 Reportar';
-          reportBtn.disabled = false;
-          reportBtn.onclick = () => {
-            if (!confirm(`¿Reportar esta imagen de ${img.usuario}?`)) return;
-            reportBtn.disabled = true;
-            reportarImagen(img.filename, reportBtn);
-          };
+          reportBtn.onclick = () => reportarImagen(img.filename, reportBtn);
 
           card.append(image, info, delBtn, reportBtn);
           galleryDiv.appendChild(card);
@@ -149,12 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    /**
-     * Elimina una imagen y refresca la galería.
-     * @param {string} filename 
-     * @param {HTMLButtonElement} btn 
-     */
     async function eliminarImagen(filename, btn) {
+      btn.disabled = true;
       try {
         const res = await fetch(`${backendURL}/api/eliminar/${filename}`, {
           method: 'DELETE',
@@ -162,24 +152,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await res.json();
         mensajeDiv.textContent = data.mensaje || data.error;
-        if (res.ok) {
-          setTimeout(() => loadGallery(), 300);
-        } else {
-          btn.disabled = false;
-        }
+        if (res.ok) setTimeout(loadGallery, 300);
+        else btn.disabled = false;
       } catch (err) {
-        mensajeDiv.textContent = 'Error de conexión';
+        mensajeDiv.textContent = 'Error eliminando imagen';
         console.error(err);
         btn.disabled = false;
       }
     }
 
-    /**
-     * Reporta una imagen al backend.
-     * @param {string} filename 
-     * @param {HTMLButtonElement} btn 
-     */
     async function reportarImagen(filename, btn) {
+      btn.disabled = true;
       try {
         const res = await fetch(`${backendURL}/api/reportar`, {
           method: 'POST',
@@ -193,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mensajeDiv.textContent = data.message || data.error || 'Respuesta inesperada';
         if (!res.ok) btn.disabled = false;
       } catch (err) {
-        mensajeDiv.textContent = 'Error de conexión al reportar';
+        mensajeDiv.textContent = 'Error al reportar imagen';
         console.error(err);
         btn.disabled = false;
       }
