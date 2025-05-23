@@ -17,38 +17,9 @@
     <p id="register-message" style="font-weight:bold; margin-top: 1rem;"></p>
   </form>
 
-  <script>
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const messageEl = document.getElementById('register-message');
-      messageEl.textContent = 'Procesando...';
-
-      const username = document.getElementById('reg-username').value;
-      const email = document.getElementById('reg-email').value;
-      const password = document.getElementById('reg-password').value;
-
-      try {
-        const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password }),
-        });
-        const data = await res.json();
-
-        if (data.success) {
-          messageEl.style.color = 'green';
-          messageEl.textContent = data.message || 'Registro exitoso.';
-          e.target.reset();
-        } else {
-          messageEl.style.color = 'red';
-          messageEl.textContent = data.message || 'Error en el registro.';
-        }
-      } catch (error) {
-        messageEl.style.color = 'red';
-        messageEl.textContent = 'Error de conexión. Intenta de nuevo más tarde.';
-      }
-    });
-  </script>
+  <!-- Aquí se carga la lógica de registro desde un archivo JS externo -->
+  <script type="module" src="register.js"></script>
 </body>
 </html>
+
 
