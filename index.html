@@ -81,6 +81,12 @@
       margin-top: 0.5rem;
       font-weight: bold;
       text-align: center;
+      min-height: 1.4em;
+      color: #f0c;
+    }
+
+    .message.success {
+      color: #4caf50;
     }
   </style>
 </head>
@@ -126,41 +132,68 @@
     // Registro
     document.getElementById('register-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('reg-username').value;
-      const email = document.getElementById('reg-email').value;
-      const password = document.getElementById('reg-password').value;
+      const username = document.getElementById('reg-username').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value.trim();
 
-      const res = await fetch('/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
+      const messageEl = document.getElementById('register-message');
+      messageEl.textContent = '';
+      messageEl.classList.remove('success');
 
-      const data = await res.json();
-      document.getElementById('register-message').textContent = data.message;
-      if (data.success) e.target.reset();
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          messageEl.textContent = data.message || 'Usuario registrado exitosamente.';
+          messageEl.classList.add('success');
+          e.target.reset();
+        } else {
+          messageEl.textContent = data.error || 'Error al registrar.';
+        }
+      } catch (err) {
+        messageEl.textContent = 'Error de conexión con el servidor.';
+      }
     });
 
     // Login
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
 
-      const res = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const messageEl = document.getElementById('login-message');
+      messageEl.textContent = '';
+      messageEl.classList.remove('success');
 
-      const data = await res.json();
-      document.getElementById('login-message').textContent = data.message;
-      if (data.success) {
-        // Guardar token si lo mandas desde backend
-        // localStorage.setItem('token', data.token);
-        window.location.href = '/home.html'; // o donde quieras redirigir
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.token) {
+          messageEl.textContent = 'Inicio de sesión exitoso.';
+          messageEl.classList.add('success');
+          localStorage.setItem('token', data.token);
+          // Redirigir a home o dashboard
+          setTimeout(() => {
+            window.location.href = '/home.html';
+          }, 1000);
+        } else {
+          messageEl.textContent = data.error || 'Credenciales inválidas.';
+        }
+      } catch (err) {
+        messageEl.textContent = 'Error de conexión con el servidor.';
       }
     });
   </script>
 </body>
 </html>
+
