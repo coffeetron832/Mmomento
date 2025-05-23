@@ -2,115 +2,57 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Iniciar Sesión - Momento</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
-      color: #F4F1DE;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-
-    h1 {
-      font-family: 'Georgia', serif;
-      margin-bottom: 1rem;
-    }
-
-    form {
-      background-color: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2rem;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    }
-
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      color: #203A43;
-    }
-
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: #D8A7B1;
-      border: none;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      color: #203A43;
-    }
-
-    button:hover {
-      background-color: #FFF0AE;
-    }
-
-    p.message {
-      margin-top: 0.5rem;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    p.link-register {
-      margin-top: 1rem;
-      text-align: center;
-    }
-
-    p.link-register a {
-      color: #FFF0AE;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    p.link-register a:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
 <body>
   <h1>Iniciar Sesión</h1>
+
   <form id="login-form">
     <input type="email" id="login-email" placeholder="Correo electrónico" required />
     <input type="password" id="login-password" placeholder="Contraseña" required />
     <button type="submit">Ingresar</button>
-    <p class="message" id="login-message"></p>
+    <p id="login-message" style="font-weight:bold; margin-top: 1rem;"></p>
   </form>
-  <p class="link-register">¿No tienes cuenta? <a href="register.html">Regístrate aquí</a></p>
 
   <script>
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const messageEl = document.getElementById('login-message');
+      messageEl.textContent = 'Procesando...';
+
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
 
-      const res = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      try {
+        const res = await fetch('https://tu-app-railway.up.railway.app/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
 
-      const data = await res.json();
-      const messageEl = document.getElementById('login-message');
-      messageEl.textContent = data.message;
-      if (data.success) {
-        // Guardar token JWT si tu backend lo envía
-        // localStorage.setItem('token', data.token);
-        window.location.href = '/home.html'; // Cambia a la página que quieras
+        if (data.success) {
+          messageEl.style.color = 'green';
+          messageEl.textContent = data.message || 'Login exitoso.';
+          localStorage.setItem('token', data.token); // guarda token si hay
+          setTimeout(() => {
+            window.location.href = '/home.html'; // redirige después de 1.5s para que el usuario vea el mensaje
+          }, 1500);
+        } else {
+          messageEl.style.color = 'red';
+          messageEl.textContent = data.message || 'Error en el inicio de sesión.';
+        }
+      } catch (error) {
+        messageEl.style.color = 'red';
+        messageEl.textContent = 'Error de conexión. Intenta de nuevo más tarde.';
       }
+    });
+  </script>
+</body>
+</html>
+
     });
   </script>
 </body>
