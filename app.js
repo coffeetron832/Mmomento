@@ -40,40 +40,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== Login =====
   if (loginForm) {
-    loginForm.onsubmit = async e => {
-      e.preventDefault();
-      const email    = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-      mensajeDiv.textContent = '';
+  loginForm.onsubmit = async e => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+    mensajeDiv.textContent = '';
 
-      if (!email || !password) {
-        mensajeDiv.textContent = 'Ingresa correo y contraseña';
-        return;
+    if (!email || !password) {
+      mensajeDiv.textContent = 'Ingresa correo y contraseña';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${backendURL}/api/auth/login`, {  // CORREGIDO endpoint
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })  // SIN username
+      });
+      const data = await res.json();
+      if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        window.location.href = 'main.html';
+      } else {
+        mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
       }
+    } catch (err) {
+      mensajeDiv.textContent = 'Error al iniciar sesión';
+      console.error(err);
+    }
+  };
+  return;
+}
 
-      try {
-       const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/register', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ username, email, password })
-});
-
-        const data = await res.json();
-        if (res.ok && data.token) {
-          localStorage.setItem('token', data.token);
-          window.location.href = 'main.html';
-        } else {
-          mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
-        }
-      } catch (err) {
-        mensajeDiv.textContent = 'Error al iniciar sesión';
-        console.error(err);
-      }
-    };
-    return;
-  }
 
   // ===== Main (cargar galería y subir imagen) =====
   if (uploadForm && galleryDiv) {
