@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const res = await fetch(`${backendURL}/api/auth/register`, {
+        const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password })
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch(`${backendURL}/api/auth/login`, {  // CORREGIDO endpoint
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })  // SIN username
