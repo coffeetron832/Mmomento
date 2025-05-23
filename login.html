@@ -1,53 +1,105 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iniciar Sesión - Momento</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión | Momento</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+      color: white;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    form {
+      background: rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      width: 90%;
+      max-width: 400px;
+    }
+    input {
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #318F5C;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    #mensaje {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Iniciar Sesión</h1>
-
-  <form id="login-form">
-    <input type="email" id="login-email" placeholder="Correo electrónico" required />
-    <input type="password" id="login-password" placeholder="Contraseña" required />
-    <button type="submit">Ingresar</button>
-    <p id="login-message" style="font-weight:bold; margin-top: 1rem;"></p>
+  <h2>Inicia sesión</h2>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Correo electrónico" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Entrar</button>
+    <div id="mensaje"></div>
   </form>
 
   <script>
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const messageEl = document.getElementById('login-message');
-    messageEl.textContent = 'Procesando...';
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const mensaje = document.getElementById('mensaje');
 
-    try {
-      const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-
-      if (data.success) {
-        messageEl.style.color = 'green';
-        messageEl.textContent = data.message || 'Login exitoso.';
-        localStorage.setItem('token', data.token); // guarda token
-        setTimeout(() => {
-          window.location.href = '/home.html'; // redirige luego de éxito
-        }, 1500);
-      } else {
-        messageEl.style.color = 'red';
-        messageEl.textContent = data.message || 'Error en el inicio de sesión.';
+      if (!email || !password) {
+        mensaje.textContent = 'Por favor completa todos los campos.';
+        mensaje.style.color = 'orange';
+        return;
       }
-    } catch (error) {
-      messageEl.style.color = 'red';
-      messageEl.textContent = 'Error de conexión. Intenta de nuevo más tarde.';
-    }
-  });
-</script>
+
+      try {
+        const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          mensaje.textContent = data.message || 'Inicio exitoso.';
+          mensaje.style.color = 'lightgreen';
+
+          localStorage.setItem('token', data.token);
+          setTimeout(() => {
+            window.location.href = 'subir.html';
+          }, 1000);
+        } else {
+          mensaje.textContent = data.error || 'Error en el inicio de sesión.';
+          mensaje.style.color = 'salmon';
+        }
+
+      } catch (err) {
+        console.error('Error en login:', err);
+        mensaje.textContent = 'Error al conectar con el servidor.';
+        mensaje.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
 
