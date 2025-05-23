@@ -3,22 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Momento - Registro</title>
-  <!-- Incluye aquí tu CSS -->
+  <title>Registro - Momento</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+      color: #F4F1DE;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-family: 'Georgia', serif;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      color: #203A43;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #D8A7B1;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      color: #203A43;
+    }
+
+    button:hover {
+      background-color: #FFF0AE;
+    }
+
+    p.message {
+      margin-top: 0.5rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    p.link-login {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    p.link-login a {
+      color: #FFF0AE;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    p.link-login a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <h1>Registro en Momento</h1>
+  <h1>Crear Cuenta</h1>
   <form id="register-form">
     <input type="text" id="reg-username" placeholder="Usuario" required />
     <input type="email" id="reg-email" placeholder="Correo electrónico" required />
     <input type="password" id="reg-password" placeholder="Contraseña" required />
     <button type="submit">Crear cuenta</button>
-    <p id="register-message"></p>
+    <p class="message" id="register-message"></p>
   </form>
-  <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+  <p class="link-login">¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
 
   <script>
-    // Aquí el JS para el registro, parecido al que ya tienes
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('reg-username').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await res.json();
+      const messageEl = document.getElementById('register-message');
+      messageEl.textContent = data.message;
+      if (data.success) {
+        e.target.reset();
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 2000);
+      }
+    });
   </script>
 </body>
 </html>
+
