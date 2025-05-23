@@ -2,266 +2,165 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bienvenido a Momento!</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momento</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
     :root {
-      --knob-size: 1.1em;
+      --primary-color: #D8A7B1;
+      --secondary-color: #FFF0AE;
+      --bg-light: #F4F1DE;
+      --bg-dark: #2C5364;
+      --text-dark: #203A43;
+      --text-light: #F4F1DE;
     }
 
     body {
       margin: 0;
-      padding: 0;
-      background-color: #F7F4EF;
-      font-family: 'Inter', sans-serif;
-      color: #1A1A1A;
-      transition: background-color 0.4s, color 0.4s;
-    }
-
-    html.dark-mode body {
-      background-color: #121212;
-      color: #f5f5f5;
-    }
-
-    h1 {
-      font-family: 'EB Garamond', serif;
-      font-weight: 900;
-      font-size: 3.5rem;
-      text-align: center;
-      margin-top: 2rem;
-      color: inherit;
-    }
-
-    .degradado-momento {
-      background: linear-gradient(90deg, #4C4CFF, #9966FF, #FF6FD8);
-      background-size: 400% 100%;
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      animation: moverDegradadoTexto 8s ease infinite;
-      display: inline-block;
-    }
-
-    nav.menu {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1rem;
-      background-color: rgba(26, 26, 26, 0.05);
-      font-weight: 600;
-      position: relative;
-    }
-
-    nav.menu a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    nav.menu a:hover {
-      color: #4C4CFF;
-    }
-
-    main {
-      max-width: 500px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-
-    .toggle-container {
-      position: absolute;
-      top: 1.5rem;
-      right: 3rem;
-      width: calc(var(--knob-size) + 1.0em);
-      height: var(--knob-size);
-      z-index: 9;
-    }
-
-    .toggle-input {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      opacity: 0;
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    .toggle-handle-wrapper {
-      position: absolute;
-      z-index: 1;
-      bottom: -135%;
-      -webkit-mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
-      mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
-      width: 200%;
-      overflow: hidden;
-    }
-
-    .toggle-handle {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+      color: var(--text-light);
       display: flex;
       flex-direction: column;
       align-items: center;
-      transform: rotate(-25deg);
-      transform-origin: bottom center;
-      transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .toggle-input:checked + .toggle-handle-wrapper > .toggle-handle {
-      transform: rotate(25deg);
+    body.light-mode {
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--bg-light));
+      color: var(--text-dark);
     }
 
-    .toggle-handle-knob {
-      position: relative;
-      z-index: 1;
-      border-radius: 50%;
-      width: var(--knob-size);
-      height: var(--knob-size);
-      background-image: radial-gradient(farthest-corner at 70% 30%, #fedee2 4%, #d63534 12% 24%, #a81a1a 50% 65%, #d63534 75%);
-      transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
+    h1 {
+      font-size: 3rem;
+      margin-top: 2rem;
+      font-family: 'Georgia', serif;
     }
 
-    .toggle-input:checked + .toggle-handle-wrapper .toggle-handle-knob {
-      transform: rotate(-90deg);
+    .form-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      margin: 1rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     }
 
-    .toggle-handle-knob::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      border-radius: inherit;
+    .form-container input {
       width: 100%;
-      height: 100%;
-      box-shadow: inset 0 0 8px 2px rgb(255 255 255 / .4);
-      opacity: 0;
-      transition: opacity .2s;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
     }
 
-    @media (hover: hover) {
-      .toggle-input:hover + .toggle-handle-wrapper .toggle-handle-knob::after,
-      .toggle-input:focus-visible + .toggle-handle-wrapper .toggle-handle-knob::after {
-        opacity: 1;
-      }
-    }
-
-    .toggle-handle-bar-wrapper {
-      position: relative;
-      width: .5em;
-      height: 3em;
-    }
-
-    .toggle-handle-bar {
-      position: absolute;
-      top: calc(var(--knob-size) / 2 * -1);
-      left: 0;
+    .form-container button {
       width: 100%;
-      height: calc(100% + var(--knob-size) / 2);
-      background-image: linear-gradient(to right, #777475, #a4a4a4, #fff 45% 55%, #a4a4a4, #777475);
-      background-position-x: .06125em;
-      transition: background-position-x .24s cubic-bezier(.65, 1.35, .5, 1);
-      box-shadow: inset 0 1em .25em rgb(0 0 0 / .4);
+      padding: 0.75rem;
+      background-color: var(--primary-color);
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
-    .toggle-input:checked + .toggle-handle-wrapper .toggle-handle-bar {
-      background-position-x: -.06125em;
+    .form-container button:hover {
+      background-color: var(--secondary-color);
     }
 
-    .toggle-base {
-      position: relative;
-      border-radius: 3.125em;
-      padding: .25em;
-      width: 3.0em;
-      height: 0.9em;
-      background-color: #fff;
-      background-image: linear-gradient(to bottom, #fff, #d7d7d7);
-      box-shadow: 0 -.25em .5em #fff, 0 .25em .5em #d7d7d7;
+    .toggle-container {
+      margin: 2rem;
     }
 
-    .toggle-base-inside {
-      position: relative;
-      border-radius: inherit;
-      width: 100%;
-      height: 100%;
-      background-image: linear-gradient(to bottom, #a6a6a6, #7d7d7d);
-      box-shadow: inset 0 .0625em rgb(255 255 255 / .2), inset 0 -.03125em rgb(255 255 255 / 1), inset 0 -.0625em .25em rgb(0 0 0 / .1);
-    }
-
-    .toggle-base-inside::after {
-      content: '';
-      position: absolute;
-      border-radius: inherit;
-      width: 100%;
-      height: 100%;
-      background-image: linear-gradient(to bottom, #5ab054, #438c3c);
-      box-shadow: inherit;
-      opacity: 0;
-      transition: opacity .24s cubic-bezier(.65, 1.35, .5, 1);
-    }
-
-    .toggle-input:checked ~ .toggle-base .toggle-base-inside::after {
-      opacity: 1;
-    }
-
-    @keyframes moverDegradadoTexto {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .message {
+      margin-top: 0.5rem;
+      font-weight: bold;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <nav class="menu">
-    <a href="acerca.html">ℹ️ Acerca</a>
-    <a href="condiciones.html">📜 Términos</a>
-    <a href="ayuda.html">❓ Ayuda</a>
-    <a href="privacidad.html">🔒 Privacidad</a>
+  <h1>Momento</h1>
+  <p style="font-style: italic; font-size: 1.2rem;">Redefining what’s worth looking at.</p>
 
-    <!-- Interruptor modo oscuro -->
-    <div class="toggle-container">
-      <input class="toggle-input" type="checkbox" id="modoOscuroToggle">
-      <div class="toggle-handle-wrapper">
-        <div class="toggle-handle">
-          <div class="toggle-handle-knob"></div>
-          <div class="toggle-handle-bar-wrapper">
-            <div class="toggle-handle-bar"></div>
-          </div>
-        </div>
-      </div>
-      <div class="toggle-base">
-        <div class="toggle-base-inside"></div>
-      </div>
-    </div>
-  </nav>
+  <div class="toggle-container">
+    <label>
+      🌙 Modo oscuro
+      <input type="checkbox" id="theme-toggle">
+    </label>
+  </div>
 
-  <main>
-    <h1><span class="degradado-momento">¡Bienvenido a Momento!</span></h1>
-    <p style="text-align:center;">Explora. Comparte. Inspírate.</p>
-  </main>
+  <div class="form-container">
+    <h2>Registrarse</h2>
+    <form id="register-form">
+      <input type="text" id="reg-username" placeholder="Usuario" required />
+      <input type="email" id="reg-email" placeholder="Correo electrónico" required />
+      <input type="password" id="reg-password" placeholder="Contraseña" required />
+      <button type="submit">Crear cuenta</button>
+      <p class="message" id="register-message"></p>
+    </form>
+  </div>
+
+  <div class="form-container">
+    <h2>Iniciar Sesión</h2>
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="Correo electrónico" required />
+      <input type="password" id="login-password" placeholder="Contraseña" required />
+      <button type="submit">Ingresar</button>
+      <p class="message" id="login-message"></p>
+    </form>
+  </div>
 
   <script>
-    const toggle = document.getElementById('modoOscuroToggle');
-    const root = document.documentElement;
-
-    // Inicializa el estado según localStorage
-    const modoOscuro = localStorage.getItem('modoOscuro');
-    if (modoOscuro === 'true') {
-      root.classList.add('dark-mode');
-      toggle.checked = true;
-    }
-
+    // Modo oscuro
+    const toggle = document.getElementById('theme-toggle');
     toggle.addEventListener('change', () => {
-      if (toggle.checked) {
-        root.classList.add('dark-mode');
-        localStorage.setItem('modoOscuro', 'true');
-      } else {
-        root.classList.remove('dark-mode');
-        localStorage.setItem('modoOscuro', 'false');
+      document.body.classList.toggle('light-mode');
+    });
+
+    // Registro
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('reg-username').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await res.json();
+      document.getElementById('register-message').textContent = data.message;
+      if (data.success) e.target.reset();
+    });
+
+    // Login
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      document.getElementById('login-message').textContent = data.message;
+      if (data.success) {
+        // Guardar token si lo mandas desde backend
+        // localStorage.setItem('token', data.token);
+        window.location.href = '/home.html'; // o donde quieras redirigir
       }
     });
   </script>
 </body>
 </html>
-
