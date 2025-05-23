@@ -28,7 +28,7 @@
       const password = document.getElementById('reg-password').value;
 
       try {
-        const res = await fetch('https://tu-app-railway.up.railway.app/register', {
+        const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password }),
