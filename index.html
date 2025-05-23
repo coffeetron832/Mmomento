@@ -6,194 +6,57 @@
   <title>Momento</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    :root {
-      --primary-color: #D8A7B1;
-      --secondary-color: #FFF0AE;
-      --bg-light: #F4F1DE;
-      --bg-dark: #2C5364;
-      --text-dark: #203A43;
-      --text-light: #F4F1DE;
-    }
-
+    /* Usa aquí el estilo que ya tienes o linkea styles.css */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
-      color: var(--text-light);
+      color: #F4F1DE;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    body.light-mode {
-      background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--bg-light));
-      color: var(--text-dark);
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
 
     h1 {
       font-size: 3rem;
-      margin-top: 2rem;
+      margin-bottom: 0.5rem;
       font-family: 'Georgia', serif;
     }
 
-    .form-container {
-      background-color: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2rem;
+    p.subtitle {
+      font-style: italic;
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    a.button {
+      display: inline-block;
       margin: 1rem;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .form-container input {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-    }
-
-    .form-container button {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: var(--primary-color);
-      border: none;
-      border-radius: 10px;
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      background-color: #D8A7B1;
+      color: #203A43;
       font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 8px rgba(216, 167, 177, 0.5);
     }
 
-    .form-container button:hover {
-      background-color: var(--secondary-color);
-    }
-
-    .toggle-container {
-      margin: 2rem;
-    }
-
-    .message {
-      margin-top: 0.5rem;
-      font-weight: bold;
-      text-align: center;
-      min-height: 1.4em;
-      color: #f0c;
-    }
-
-    .message.success {
-      color: #4caf50;
+    a.button:hover {
+      background-color: #FFF0AE;
+      color: #203A43;
     }
   </style>
 </head>
 <body>
   <h1>Momento</h1>
-  <p style="font-style: italic; font-size: 1.2rem;">Redefining what’s worth looking at.</p>
+  <p class="subtitle">Redefining what’s worth looking at.</p>
 
-  <div class="toggle-container">
-    <label>
-      🌙 Modo oscuro
-      <input type="checkbox" id="theme-toggle">
-    </label>
-  </div>
-
-  <div class="form-container">
-    <h2>Registrarse</h2>
-    <form id="register-form">
-      <input type="text" id="reg-username" placeholder="Usuario" required />
-      <input type="email" id="reg-email" placeholder="Correo electrónico" required />
-      <input type="password" id="reg-password" placeholder="Contraseña" required />
-      <button type="submit">Crear cuenta</button>
-      <p class="message" id="register-message"></p>
-    </form>
-  </div>
-
-  <div class="form-container">
-    <h2>Iniciar Sesión</h2>
-    <form id="login-form">
-      <input type="email" id="login-email" placeholder="Correo electrónico" required />
-      <input type="password" id="login-password" placeholder="Contraseña" required />
-      <button type="submit">Ingresar</button>
-      <p class="message" id="login-message"></p>
-    </form>
-  </div>
-
-  <script>
-    // Modo oscuro
-    const toggle = document.getElementById('theme-toggle');
-    toggle.addEventListener('change', () => {
-      document.body.classList.toggle('light-mode');
-    });
-
-    // Registro
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = document.getElementById('reg-username').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
-      const password = document.getElementById('reg-password').value.trim();
-
-      const messageEl = document.getElementById('register-message');
-      messageEl.textContent = '';
-      messageEl.classList.remove('success');
-
-      try {
-        const res = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password }),
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-          messageEl.textContent = data.message || 'Usuario registrado exitosamente.';
-          messageEl.classList.add('success');
-          e.target.reset();
-        } else {
-          messageEl.textContent = data.error || 'Error al registrar.';
-        }
-      } catch (err) {
-        messageEl.textContent = 'Error de conexión con el servidor.';
-      }
-    });
-
-    // Login
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-
-      const messageEl = document.getElementById('login-message');
-      messageEl.textContent = '';
-      messageEl.classList.remove('success');
-
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-        const data = await res.json();
-
-        if (res.ok && data.token) {
-          messageEl.textContent = 'Inicio de sesión exitoso.';
-          messageEl.classList.add('success');
-          localStorage.setItem('token', data.token);
-          // Redirigir a home o dashboard
-          setTimeout(() => {
-            window.location.href = '/home.html';
-          }, 1000);
-        } else {
-          messageEl.textContent = data.error || 'Credenciales inválidas.';
-        }
-      } catch (err) {
-        messageEl.textContent = 'Error de conexión con el servidor.';
-      }
-    });
-  </script>
+  <a href="register.html" class="button">Crear Cuenta</a>
+  <a href="login.html" class="button">Iniciar Sesión</a>
 </body>
 </html>
 
