@@ -17,44 +17,37 @@
   </form>
 
   <script>
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const messageEl = document.getElementById('login-message');
-      messageEl.textContent = 'Procesando...';
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const messageEl = document.getElementById('login-message');
+    messageEl.textContent = 'Procesando...';
 
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
 
-      try {
-        const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-        const data = await res.json();
+    try {
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-        if (data.success) {
-          messageEl.style.color = 'green';
-          messageEl.textContent = data.message || 'Login exitoso.';
-          localStorage.setItem('token', data.token); // guarda token si hay
-          setTimeout(() => {
-            window.location.href = '/home.html'; // redirige después de 1.5s para que el usuario vea el mensaje
-          }, 1500);
-        } else {
-          messageEl.style.color = 'red';
-          messageEl.textContent = data.message || 'Error en el inicio de sesión.';
-        }
-      } catch (error) {
+      if (data.success) {
+        messageEl.style.color = 'green';
+        messageEl.textContent = data.message || 'Login exitoso.';
+        localStorage.setItem('token', data.token); // guarda token
+        setTimeout(() => {
+          window.location.href = '/home.html'; // redirige luego de éxito
+        }, 1500);
+      } else {
         messageEl.style.color = 'red';
-        messageEl.textContent = 'Error de conexión. Intenta de nuevo más tarde.';
+        messageEl.textContent = data.message || 'Error en el inicio de sesión.';
       }
-    });
-  </script>
-</body>
-</html>
-
-    });
-  </script>
-</body>
-</html>
+    } catch (error) {
+      messageEl.style.color = 'red';
+      messageEl.textContent = 'Error de conexión. Intenta de nuevo más tarde.';
+    }
+  });
+</script>
 
