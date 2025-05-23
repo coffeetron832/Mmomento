@@ -52,11 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const res = await fetch(`${backendURL}/api/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
+       const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/register', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ username, email, password })
+});
+
         const data = await res.json();
         if (res.ok && data.token) {
           localStorage.setItem('token', data.token);
