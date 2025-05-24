@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>📸 Galería - Momento</title>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- Agregamos Patrick Hand para el texto manuscrito -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -132,10 +133,26 @@
 
     .image-card img {
       width: 100%;
+      height: auto;
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 6px;
       border: 10px solid #fff;
-      box-shadow: 0 0 5px #ccc;
       border-bottom: 40px solid #fff;
-      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      object-fit: contain;
+    }
+
+    /* Etiqueta manuscrita en el marco inferior */
+    .polaroid-label {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem;
+      color: #333;
+      margin-top: -30px;
+      margin-bottom: 10px;
+      text-align: center;
+      user-select: none;
+      letter-spacing: 0.03em;
     }
 
     .image-info {
@@ -230,12 +247,16 @@
           image.src = `${API}/uploads/${img.filename}`;
           image.alt = img.filename;
 
+          // Etiqueta manuscrita tipo Polaroid
+          const label = document.createElement('div');
+          label.className = 'polaroid-label';
+          label.textContent = `${img.usuario} - ${new Date(img.fechaSubida).toLocaleDateString()}`;
+
           const info = document.createElement('div');
           info.className = 'image-info';
           info.innerHTML = `
-            <strong>${img.usuario}</strong><br>
-            <span>Subida: ${new Date(img.fechaSubida).toLocaleString()}</span><br>
-            <span>Expira: ${new Date(img.expiraEn).toLocaleString()}</span>
+            Subida: ${new Date(img.fechaSubida).toLocaleTimeString()}<br>
+            Expira: ${new Date(img.expiraEn).toLocaleTimeString()}
           `;
 
           const delBtn = document.createElement('button');
@@ -248,7 +269,7 @@
             loadGallery();
           };
 
-          card.append(image, info, delBtn);
+          card.append(image, label, info, delBtn);
           gallery.appendChild(card);
         });
       }
