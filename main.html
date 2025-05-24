@@ -6,17 +6,172 @@
   <title>📸 Galería - Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    /* ... tu CSS existente ... */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #D8A7B1, #FFF0AE, #F4F1DE);
+      color: #333;
+    }
+
+    nav.menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #ccc;
+      position: relative;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .menu-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 10px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      padding: 10px;
+      z-index: 10;
+    }
+
+    .menu-links a {
+      display: block;
+      padding: 8px 12px;
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .menu-links a:hover {
+      background-color: #f0f0f0;
+    }
+
+    #logout-btn {
+      font-weight: 600;
+      color: #444;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    #logout-btn:hover {
+      color: #318F5C;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-family: 'EB Garamond', serif;
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    form#image-upload-form {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    form#image-upload-form input,
+    form#image-upload-form button {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    form#image-upload-form button {
+      background-color: #318F5C;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    form#image-upload-form button:hover {
+      background-color: #267547;
+    }
+
+    .mensaje {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .image-card {
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .image-card:hover {
+      transform: scale(1.02);
+    }
+
+    .image-card img {
+      width: 100%;
+      border: 10px solid #fff;
+      box-shadow: 0 0 5px #ccc;
+      border-bottom: 40px solid #fff;
+      object-fit: cover;
+    }
+
+    .image-info {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #555;
+      background: #F4F1DE;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .image-card button {
+      margin-top: 8px;
+      background-color: #D9534F;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .image-card button:hover {
+      background-color: #c9302c;
+    }
   </style>
 </head>
 <body>
-  <div class="rainbow-bar animated"></div>
 
   <nav class="menu">
-    <a href="acerca.html">ℹ️ Acerca</a>
-    <a href="condiciones.html">📜 Términos</a>
-    <a href="ayuda.html">❓ Ayuda</a>
-    <a href="privacidad.html">🔒 Privacidad</a>
+    <button class="menu-icon" onclick="toggleMenu()">☰</button>
+    <div class="menu-links" id="dropdown-menu">
+      <a href="acerca.html">ℹ️ Acerca</a>
+      <a href="condiciones.html">📜 Términos</a>
+      <a href="ayuda.html">❓ Ayuda</a>
+      <a href="privacidad.html">🔒 Privacidad</a>
+    </div>
     <button id="logout-btn">🚪 Salir</button>
   </nav>
 
@@ -33,17 +188,20 @@
     <section id="gallery" class="gallery"></section>
   </main>
 
-  <!-- Lógica de autenticación y galería -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('dropdown-menu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+
   <script type="module">
     // --- auth.js simplificado inline ---
     function isLoggedIn() {
       return !!localStorage.getItem('token');
     }
-    // --- fin auth.js ---
 
-    // --- app.js inline adaptado ---
     document.addEventListener('DOMContentLoaded', async () => {
-      // 1) Verificar token solo localmente
       if (!isLoggedIn()) {
         return window.location.href = 'login.html';
       }
@@ -51,19 +209,19 @@
       const token = localStorage.getItem('token');
       const API = 'https://momento-backend-production.up.railway.app';
 
-      // 2) Función para cargar galería
       async function loadGallery() {
         const res = await fetch(`${API}/api/imagenes`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!res.ok) {
-          // token inválido o caducado
           localStorage.removeItem('token');
           return window.location.href = 'login.html';
         }
+
         const imgs = await res.json();
         const gallery = document.getElementById('gallery');
         gallery.innerHTML = '';
+
         imgs.forEach(img => {
           const card = document.createElement('div');
           card.className = 'image-card';
@@ -95,7 +253,6 @@
         });
       }
 
-      // 3) Subida de imágenes
       document.getElementById('image-upload-form').addEventListener('submit', async e => {
         e.preventDefault();
         const file = document.getElementById('image').files[0];
@@ -111,16 +268,14 @@
         loadGallery();
       });
 
-      // 4) Logout
       document.getElementById('logout-btn').addEventListener('click', () => {
         localStorage.removeItem('token');
         window.location.href = 'login.html';
       });
 
-      // Inicializar galería
       loadGallery();
     });
-    // --- fin app.js ---
   </script>
 </body>
 </html>
+
