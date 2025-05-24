@@ -108,7 +108,7 @@
         }
 
         localStorage.setItem('token', data.token);
-        window.location.href = 'main.html';
+        window.location.replace('main.html');
       } catch (err) {
         console.error(err);
         alert('Ocurrió un error al intentar iniciar sesión.');
