@@ -2,76 +2,155 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Momento</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    :root {
-      --color-background: #ECEFF1;
-      --color-secondary: #90A4AE;
-      --color-text: #263238;
-      --color-soft: #CFD8DC;
-      --color-accent: #6D8B74;
-
-      --font-primary: 'Inter', sans-serif;
+    /* Ajustes rápidos para menú hamburguesa y footer fijo */
+    header {
+      width: 100%;
+      background-color: var(--color-background);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
     }
 
-    body {
-      margin: 0;
-      font-family: var(--font-primary);
+    .menu-icon {
+      cursor: pointer;
+      display: inline-block;
+      width: 25px;
+      height: 20px;
+      position: relative;
+    }
+
+    .menu-icon span {
+      background-color: var(--color-text);
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-icon span:nth-child(1) {
+      top: 0;
+    }
+
+    .menu-icon span:nth-child(2) {
+      top: 8px;
+    }
+
+    .menu-icon span:nth-child(3) {
+      top: 16px;
+    }
+
+    nav {
+      position: fixed;
+      top: 60px; /* altura header */
+      right: 0;
       background-color: var(--color-background);
+      width: 200px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      padding: 1rem;
+      border-radius: 0 0 0 10px;
+    }
+
+    nav.open {
+      transform: translateX(0);
+    }
+
+    nav a {
+      display: block;
+      margin: 1rem 0;
       color: var(--color-text);
+      font-weight: 600;
+      text-decoration: none;
+      padding: 0.5rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: var(--color-soft);
+    }
+
+    main {
+      margin-top: 80px; /* espacio para header fijo */
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      text-align: center;
       padding: 2rem;
+      min-height: calc(100vh - 120px);
+      text-align: center;
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      font-weight: 800;
-    }
-
-    p.subtitle {
-      font-style: italic;
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 1rem 0;
+      background-color: var(--color-background);
       color: var(--color-secondary);
-    }
-
-    a.button {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 0.9rem 2rem;
-      border-radius: 12px;
-      background-color: var(--color-accent);
-      color: white;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    a.button:hover {
-      background-color: var(--color-secondary);
-      color: var(--color-text);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      font-style: italic;
+      text-align: center;
+      font-size: 1rem;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
     }
   </style>
 </head>
 <body>
-  <h1>Momento</h1>
-  <p class="subtitle">Redefining what’s worth looking at.</p>
+  <header>
+    <div class="menu-icon" id="menuToggle" aria-label="Abrir menú" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
 
-  <a href="register.html" class="button">Crear Cuenta</a>
-  <a href="login.html" class="button">Iniciar Sesión</a>
+  <nav id="menuNav" aria-label="Menú de navegación">
+    <a href="register.html">Crear Cuenta</a>
+    <a href="login.html">Iniciar Sesión</a>
+  </nav>
+
+  <main>
+    <h1>Momento</h1>
+  </main>
+
+  <footer>
+    Redefining what’s worth looking at.
+  </footer>
+
+  <script>
+    // Toggle menú hamburguesa
+    const menuToggle = document.getElementById('menuToggle');
+    const menuNav = document.getElementById('menuNav');
+
+    function toggleMenu() {
+      menuNav.classList.toggle('open');
+    }
+
+    menuToggle.addEventListener('click', toggleMenu);
+    menuToggle.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+  </script>
 </body>
 </html>
+
 
