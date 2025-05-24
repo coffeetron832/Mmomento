@@ -1,14 +1,32 @@
-// register.js
+// Función para obtener SHA-1 de la contraseña
+async function sha1(str) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  const hashBuffer = await crypto.subtle.digest('SHA-1', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+}
 
-/**
- * Maneja el formulario de registro de usuario.
- * Envía username, email y password al backend y muestra feedback.
- */
+// Función para validar si la contraseña fue comprometida
+async function checkPasswordPwned(password) {
+  const hash = await sha1(password);
+  const prefix = hash.slice(0, 5);
+  const suffix = hash.slice(5);
+
+  const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+  const text = await response.text();
+
+  return text.split('\n').some(line => {
+    const [hashSuffix, count] = line.split(':');
+    return hashSuffix === suffix;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('register-form');
   const messageEl = document.getElementById('register-message');
 
-  form.addEventListener('submit', async e => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const username = document.getElementById('reg-username').value.trim();
@@ -16,11 +34,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = document.getElementById('reg-password').value.trim();
 
     if (!username || !email || !password) {
-      messageEl.textContent = 'Todos los campos son obligatorios';
       messageEl.style.color = 'orange';
+      messageEl.textContent = 'Todos los campos son obligatorios';
       return;
     }
-    messageEl.textContent = 'Procesando...';
+
+    messageEl.style.color = 'black';
+    messageEl.textContent = 'Validando contraseña...';
+
+    try {
+      const pwned = await checkPasswordPwned(password);
+      if (pwned) {
+        messageEl.style.color = 'red';
+        messageEl.textContent = 'La contraseña que elegiste ha sido comprometida en filtraciones. Por favor, usa otra.';
+        return;
+      }
+    } catch (error) {
+      // Si falla la validación, igual dejar pasar para no bloquear registro por error externo
+      console.warn('Error al verificar contraseña comprometida:', error);
+    }
+
+    messageEl.textContent = 'Procesando registro...';
 
     try {
       const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/register', {
@@ -28,20 +62,21 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password })
       });
+
       const data = await res.json();
 
       if (res.ok) {
-        messageEl.textContent = data.message || 'Registro exitoso';
         messageEl.style.color = 'lightgreen';
+        messageEl.textContent = data.message || 'Registro exitoso';
         form.reset();
       } else {
-        messageEl.textContent = data.error || 'Error en el registro';
         messageEl.style.color = 'salmon';
+        messageEl.textContent = data.error || 'Error en el registro';
       }
     } catch (err) {
       console.error('Error en registro:', err);
-      messageEl.textContent = 'Error de conexión';
       messageEl.style.color = 'red';
+      messageEl.textContent = 'Error de conexión';
     }
   });
 });
