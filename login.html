@@ -4,85 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Iniciar Sesión - Momento</title>
-
-  <!-- Google Fonts Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-
-  <!-- Estilos Nordic Fog -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Header y menú hamburguesa -->
-  <header>
-    <div class="menu-icon" id="menuToggle" aria-label="Abrir menú" role="button" tabindex="0">
-      <span></span><span></span><span></span>
-    </div>
-  </header>
+  <h1>Iniciar Sesión</h1>
 
-  <nav id="menuNav" aria-label="Menú de navegación">
-    <a href="index.html">Inicio</a>
-    <a href="about.html">Acerca</a>
-    <a href="help.html">Ayuda</a>
-    <a href="contact.html">Contacto</a>
-    <hr />
-    <a href="register.html">Crear Cuenta</a>
-    <a href="login.html">Iniciar Sesión</a>
-  </nav>
-
-  <!-- Contenido principal -->
-  <main>
-    <h1>Iniciar Sesión</h1>
-
-    <form id="login-form" novalidate>
-      <input 
-        type="email" 
-        id="login-email" 
-        name="email"
-        placeholder="Correo electrónico" 
-        required 
-      />
-      <input 
-        type="password" 
-        id="login-password" 
-        name="password"
-        placeholder="Contraseña" 
-        required 
-      />
-      <button type="submit" class="button">Entrar</button>
-      <p id="login-message" class="message"></p>
-      <p class="link-register">
-        ¿No tienes cuenta? <a href="register.html">Regístrate</a>
-      </p>
-    </form>
-  </main>
-
-  <!-- Footer con eslogan -->
-  <footer>
-    Redefining what’s worth looking at.
-  </footer>
-
-  <!-- Scripts -->
-  <script>
-    // Toggle menú hamburguesa (idéntico al index)
-    const menuToggle = document.getElementById('menuToggle');
-    const menuNav = document.getElementById('menuNav');
-    function toggleMenu() {
-      menuNav.classList.toggle('open');
-    }
-    menuToggle.addEventListener('click', toggleMenu);
-    menuToggle.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleMenu();
-      }
-    });
-  </script>
+  <form id="login-form">
+    <input type="email" id="login-email" placeholder="Correo electrónico" required />
+    <input type="password" id="login-password" placeholder="Contraseña" required />
+    <button type="submit">Entrar</button>
+    <p id="login-message" style="font-weight:bold; margin-top: 1rem;"></p>
+  </form>
 
   <!-- Lógica de login externa -->
   <script type="module" src="login.js"></script>
 </body>
 </html>
-
-
