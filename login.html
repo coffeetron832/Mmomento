@@ -3,20 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iniciar Sesión - Momento</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Login - Momento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #2c5364;
+      background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem 3rem;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      width: 320px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+      color: #cddc39;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1.2rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #cddc39;
+      color: #222;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #afb42b;
+    }
+    #login-message {
+      margin-top: 1rem;
+      min-height: 1.4em;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Iniciar Sesión</h1>
+  <div class="login-container">
+    <h1>Iniciar sesión</h1>
+    <form id="login-form">
+      <label for="login-email">Correo electrónico</label>
+      <input type="email" id="login-email" placeholder="tucorreo@ejemplo.com" required />
 
-  <form id="login-form">
-    <input type="email" id="login-email" placeholder="Correo electrónico" required />
-    <input type="password" id="login-password" placeholder="Contraseña" required />
-    <button type="submit">Entrar</button>
-    <p id="login-message" style="font-weight:bold; margin-top: 1rem;"></p>
-  </form>
+      <label for="login-password">Contraseña</label>
+      <input type="password" id="login-password" placeholder="Tu contraseña" required />
 
-  <!-- Lógica de login externa -->
-  <script type="module" src="login.js"></script>
+      <button type="submit">Entrar</button>
+    </form>
+    <div id="login-message"></div>
+  </div>
+
+  <script src="login.js"></script>
 </body>
 </html>
+
