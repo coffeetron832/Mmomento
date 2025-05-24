@@ -4,14 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>📸 Galería - Momento</title>
-  <!-- Agregamos Patrick Hand para el texto manuscrito -->
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg1: #D8A7B1;
+      --bg2: #FFF0AE;
+      --bg3: #F4F1DE;
+      --accent: #318F5C;
+      --danger: #D9534F;
+    }
+
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom right, #D8A7B1, #FFF0AE, #F4F1DE);
+      background: linear-gradient(to bottom right, var(--bg1), var(--bg2), var(--bg3));
       color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     nav.menu {
@@ -65,10 +75,11 @@
     }
 
     #logout-btn:hover {
-      color: #318F5C;
+      color: var(--accent);
     }
 
     main {
+      flex-grow: 1;
       max-width: 1200px;
       margin: 20px auto;
       padding: 0 20px;
@@ -96,7 +107,7 @@
     }
 
     form#image-upload-form button {
-      background-color: #318F5C;
+      background-color: var(--accent);
       color: white;
       border: none;
       cursor: pointer;
@@ -132,21 +143,19 @@
     }
 
     .image-card img {
-  width: auto;
-  max-width: 100%;
-  max-height: 250px;        /* límite de altura */
-  background: #f4f4f4;
-  padding: 10px;
-  border-radius: 6px;
-  border: 10px solid #fff;
-  border-bottom: 40px solid #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  object-fit: contain;
-  display: block;
-  margin: 0 auto 10px;      /* centrar y separar del label */
-}
+      max-width: 100%;
+      max-height: 250px;
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 6px;
+      border: 10px solid #fff;
+      border-bottom: 40px solid #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 10px;
+    }
 
-    /* Etiqueta manuscrita en el marco inferior */
     .polaroid-label {
       font-family: 'Patrick Hand', cursive;
       font-size: 1rem;
@@ -155,21 +164,20 @@
       margin-bottom: 10px;
       text-align: center;
       user-select: none;
-      letter-spacing: 0.03em;
     }
 
     .image-info {
       margin-top: 10px;
       font-size: 0.9rem;
       color: #555;
-      background: #F4F1DE;
+      background: var(--bg3);
       padding: 6px;
       border-radius: 6px;
     }
 
     .image-card button {
       margin-top: 8px;
-      background-color: #D9534F;
+      background-color: var(--danger);
       color: white;
       border: none;
       padding: 6px 10px;
@@ -184,97 +192,103 @@
 </head>
 <body>
 
-  <nav class="menu">
-    <button class="menu-icon" onclick="toggleMenu()">☰</button>
-    <div class="menu-links" id="dropdown-menu">
+  <nav class="menu" role="navigation" aria-label="Menú principal">
+    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+    <div class="menu-links" id="dropdown-menu" aria-hidden="true">
       <a href="acerca.html">ℹ️ Acerca</a>
       <a href="condiciones.html">📜 Términos</a>
       <a href="ayuda.html">❓ Ayuda</a>
       <a href="privacidad.html">🔒 Privacidad</a>
     </div>
-    <button id="logout-btn">🚪 Salir</button>
+    <button id="logout-btn" aria-label="Cerrar sesión">🚪 Salir</button>
   </nav>
 
   <main>
-    <h1>Momentos📷</h1>
-    <div id="mensaje" class="mensaje"></div>
+    <h1>Momentos 📷</h1>
+    <div id="mensaje" class="mensaje" role="status"></div>
 
-    <form id="image-upload-form">
+    <form id="image-upload-form" aria-label="Formulario para subir imágenes">
       <label for="image">Selecciona imagen:</label>
-      <input type="file" id="image" accept="image/*" required />
+      <input type="file" id="image" name="imagen" accept="image/*" required />
       <button type="submit">Subir 📤</button>
     </form>
 
-    <section id="gallery" class="gallery"></section>
+    <section id="gallery" class="gallery" aria-live="polite"></section>
   </main>
 
   <script>
     function toggleMenu() {
       const menu = document.getElementById('dropdown-menu');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      const visible = menu.style.display === 'block';
+      menu.style.display = visible ? 'none' : 'block';
+      menu.setAttribute('aria-hidden', visible);
     }
   </script>
 
   <script type="module">
-    // --- auth.js simplificado inline ---
     function isLoggedIn() {
       return !!localStorage.getItem('token');
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      if (!isLoggedIn()) {
-        return window.location.href = 'login.html';
-      }
-
       const token = localStorage.getItem('token');
       const API = 'https://momento-backend-production.up.railway.app';
 
+      if (!token) return window.location.href = 'login.html';
+
       async function loadGallery() {
-        const res = await fetch(`${API}/api/imagenes`, {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if (!res.ok) {
-          localStorage.removeItem('token');
-          return window.location.href = 'login.html';
+        try {
+          const res = await fetch(`${API}/api/imagenes`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          if (!res.ok) {
+            localStorage.removeItem('token');
+            return window.location.href = 'login.html';
+          }
+
+          const imgs = await res.json();
+          const gallery = document.getElementById('gallery');
+          gallery.innerHTML = '';
+
+          imgs.forEach(img => {
+            const card = document.createElement('div');
+            card.className = 'image-card';
+
+            const image = document.createElement('img');
+            image.src = `${API}/uploads/${encodeURIComponent(img.filename)}`;
+            image.alt = `Imagen subida por ${img.usuario}`;
+
+            const label = document.createElement('div');
+            label.className = 'polaroid-label';
+            label.textContent = `${img.usuario} - ${new Date(img.fechaSubida).toLocaleDateString()}`;
+
+            const info = document.createElement('div');
+            info.className = 'image-info';
+            info.innerHTML = `
+              Subida: ${new Date(img.fechaSubida).toLocaleTimeString()}<br>
+              Expira: ${new Date(img.expiraEn).toLocaleTimeString()}
+            `;
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = '🗑️ Eliminar';
+            delBtn.onclick = async () => {
+              if (confirm('¿Seguro que deseas eliminar esta imagen?')) {
+                await fetch(`${API}/api/eliminar/${encodeURIComponent(img.filename)}`, {
+                  method: 'DELETE',
+                  headers: { 'Authorization': `Bearer ${token}` }
+                });
+                loadGallery();
+              }
+            };
+
+            card.append(image, label, info, delBtn);
+            gallery.appendChild(card);
+          });
+        } catch (err) {
+          console.error(err);
+          alert("Error cargando la galería.");
         }
-
-        const imgs = await res.json();
-        const gallery = document.getElementById('gallery');
-        gallery.innerHTML = '';
-
-        imgs.forEach(img => {
-          const card = document.createElement('div');
-          card.className = 'image-card';
-
-          const image = document.createElement('img');
-          image.src = `${API}/uploads/${img.filename}`;
-          image.alt = img.filename;
-
-          // Etiqueta manuscrita tipo Polaroid
-          const label = document.createElement('div');
-          label.className = 'polaroid-label';
-          label.textContent = `${img.usuario} - ${new Date(img.fechaSubida).toLocaleDateString()}`;
-
-          const info = document.createElement('div');
-          info.className = 'image-info';
-          info.innerHTML = `
-            Subida: ${new Date(img.fechaSubida).toLocaleTimeString()}<br>
-            Expira: ${new Date(img.expiraEn).toLocaleTimeString()}
-          `;
-
-          const delBtn = document.createElement('button');
-          delBtn.textContent = '🗑️ Eliminar';
-          delBtn.onclick = async () => {
-            await fetch(`${API}/api/eliminar/${img.filename}`, {
-              method: 'DELETE',
-              headers: { 'Authorization': 'Bearer ' + token }
-            });
-            loadGallery();
-          };
-
-          card.append(image, label, info, delBtn);
-          gallery.appendChild(card);
-        });
       }
 
       document.getElementById('image-upload-form').addEventListener('submit', async e => {
@@ -284,12 +298,18 @@
 
         const formData = new FormData();
         formData.append('imagen', file);
-        await fetch(`${API}/api/upload`, {
-          method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + token },
-          body: formData
-        });
-        loadGallery();
+
+        try {
+          await fetch(`${API}/api/upload`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+          });
+          loadGallery();
+        } catch (err) {
+          console.error(err);
+          alert("Error al subir imagen.");
+        }
       });
 
       document.getElementById('logout-btn').addEventListener('click', () => {
