@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('login-form');
   const messageEl = document.getElementById('login-message');
 
+  // Si ya hay token, evitar mostrar login y redirigir directo a main.html
+  const existingToken = localStorage.getItem('token');
+  if (existingToken) {
+    window.location.replace('main.html'); // Reemplaza la página actual para evitar volver a login con flecha atrás
+    return;
+  }
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -33,7 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('token', data.token);
         messageEl.textContent = data.message || 'Login exitoso';
         messageEl.style.color = 'lightgreen';
-        setTimeout(() => window.location.href = 'main.html', 1000);
+        setTimeout(() => {
+          window.location.replace('main.html'); // Reemplaza para evitar que vuelva a login con "atrás"
+        }, 1000);
       } else {
         messageEl.textContent = data.error || 'Credenciales inválidas';
         messageEl.style.color = 'salmon';
