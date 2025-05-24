@@ -1,75 +1,90 @@
-/* styles.css */
+/* styles.css - Estética Nordic Fog */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root {
+  --color-background: #ECEFF1;
+  --color-secondary: #90A4AE;
+  --color-text: #263238;
+  --color-soft: #CFD8DC;
+  --color-accent: #6D8B74;
+
+  --font-primary: 'Inter', sans-serif;
+}
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
-  color: #F4F1DE;
+  font-family: var(--font-primary);
+  background-color: var(--color-background);
+  color: var(--color-text);
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
   padding: 2rem;
+  text-align: center;
 }
 
 h1 {
-  font-family: 'Georgia', serif;
+  font-size: 3rem;
   margin-bottom: 1rem;
-  color: #FFF0AE;
+  font-weight: 800;
 }
 
 a.button {
   display: inline-block;
   margin: 1rem;
-  padding: 1rem 2rem;
-  border-radius: 15px;
-  background-color: #D8A7B1;
-  color: #203A43;
-  font-weight: bold;
+  padding: 0.9rem 2rem;
+  border-radius: 12px;
+  background-color: var(--color-accent);
+  color: white;
+  font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 4px 8px rgba(216, 167, 177, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 a.button:hover {
-  background-color: #FFF0AE;
-  color: #203A43;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 form {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background-color: var(--color-soft);
   border-radius: 20px;
   padding: 2rem;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }
 
 input {
   width: 100%;
   padding: 0.75rem;
   margin: 0.5rem 0;
-  border: none;
+  border: 1px solid var(--color-secondary);
   border-radius: 10px;
   font-size: 1rem;
-  color: #203A43;
+  color: var(--color-text);
+  background-color: #fff;
 }
 
 button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #D8A7B1;
+  background-color: var(--color-accent);
   border: none;
   border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  color: #203A43;
+  color: white;
 }
 
 button:hover {
-  background-color: #FFF0AE;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
 }
 
 p.message {
@@ -78,18 +93,20 @@ p.message {
   text-align: center;
 }
 
-p.link-login, p.link-register {
+p.link-login,
+p.link-register {
   margin-top: 1rem;
   text-align: center;
 }
 
-p.link-login a, p.link-register a {
-  color: #FFF0AE;
+p.link-login a,
+p.link-register a {
+  color: var(--color-accent);
   text-decoration: none;
   font-weight: bold;
 }
 
-p.link-login a:hover, p.link-register a:hover {
+p.link-login a:hover,
+p.link-register a:hover {
   text-decoration: underline;
 }
-
