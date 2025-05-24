@@ -7,7 +7,6 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #2c5364;
       background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
       color: #eee;
       display: flex;
@@ -81,7 +80,17 @@
     <div id="login-message"></div>
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Redirige si ya está logueado
+        window.location.replace('main.html');
+      }
+    });
+  </script>
   <script src="login.js"></script>
 </body>
 </html>
+
 
