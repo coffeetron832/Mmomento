@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>📸 Galería</title>
+  <title>📸 Galería - Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    /* (Todo tu CSS actual permanece igual, ya está muy bien diseñado) */
+    /* ... tu CSS existente ... */
   </style>
 </head>
 <body>
@@ -33,115 +33,94 @@
     <section id="gallery" class="gallery"></section>
   </main>
 
-  <script src="auth.js"></script>
-  <script>
-    async function cargarImagenes(token) {
-      const res = await fetch('https://tu-backend.com/api/imagenes', {
-        headers: { Authorization: 'Bearer ' + token }
-      });
-      if (!res.ok) throw new Error('No autorizado');
-      const imagenes = await res.json();
-      const galeria = document.getElementById('gallery');
-      galeria.innerHTML = ''; // Limpia la galería
-
-      imagenes.forEach(img => {
-        const tarjeta = document.createElement('div');
-        tarjeta.style.border = "1px solid #ccc";
-        tarjeta.style.borderRadius = "8px";
-        tarjeta.style.padding = "0.5rem";
-        tarjeta.style.background = "#fff";
-        tarjeta.style.display = "flex";
-        tarjeta.style.flexDirection = "column";
-        tarjeta.style.alignItems = "center";
-
-        const imagen = document.createElement('img');
-        imagen.src = img.url;
-        imagen.alt = 'Imagen subida';
-        imagen.style.width = "100%";
-        imagen.style.borderRadius = "6px";
-
-        const texto = document.createElement('p');
-        texto.textContent = `${img.usuario} • ${new Date(img.timestamp).toLocaleString()}`;
-        texto.style.fontSize = "0.8rem";
-        texto.style.marginTop = "0.4rem";
-
-        const eliminarBtn = document.createElement('button');
-        eliminarBtn.textContent = '🗑️ Eliminar';
-        eliminarBtn.style.marginTop = "0.5rem";
-        eliminarBtn.style.fontSize = "0.8rem";
-        eliminarBtn.style.cursor = "pointer";
-        eliminarBtn.onclick = async () => {
-          if (confirm("¿Eliminar esta imagen?")) {
-            const delRes = await fetch(`https://tu-backend.com/api/imagenes/${img._id}`, {
-              method: 'DELETE',
-              headers: { Authorization: 'Bearer ' + token }
-            });
-            if (delRes.ok) {
-              tarjeta.remove();
-            } else {
-              alert("No se pudo eliminar.");
-            }
-          }
-        };
-
-        tarjeta.appendChild(imagen);
-        tarjeta.appendChild(texto);
-        tarjeta.appendChild(eliminarBtn);
-        galeria.appendChild(tarjeta);
-      });
+  <!-- Lógica de autenticación y galería -->
+  <script type="module">
+    // --- auth.js simplificado inline ---
+    function isLoggedIn() {
+      return !!localStorage.getItem('token');
     }
+    // --- fin auth.js ---
 
+    // --- app.js inline adaptado ---
     document.addEventListener('DOMContentLoaded', async () => {
-      const valid = await asegurarSesion();
-      if (!valid) return;
-
-      const token = localStorage.getItem('token');
-      try {
-        await cargarImagenes(token);
-      } catch (e) {
-        console.error(e);
-        localStorage.removeItem('token');
-        window.location.href = 'login.html';
+      // 1) Verificar token solo localmente
+      if (!isLoggedIn()) {
+        return window.location.href = 'login.html';
       }
 
-      // Subida de imagen
+      const token = localStorage.getItem('token');
+      const API = 'https://momento-backend-production.up.railway.app';
+
+      // 2) Función para cargar galería
+      async function loadGallery() {
+        const res = await fetch(`${API}/api/imagenes`, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) {
+          // token inválido o caducado
+          localStorage.removeItem('token');
+          return window.location.href = 'login.html';
+        }
+        const imgs = await res.json();
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+        imgs.forEach(img => {
+          const card = document.createElement('div');
+          card.className = 'image-card';
+
+          const image = document.createElement('img');
+          image.src = `${API}/uploads/${img.filename}`;
+          image.alt = img.filename;
+
+          const info = document.createElement('div');
+          info.className = 'image-info';
+          info.innerHTML = `
+            <strong>${img.usuario}</strong><br>
+            <span>Subida: ${new Date(img.fechaSubida).toLocaleString()}</span><br>
+            <span>Expira: ${new Date(img.expiraEn).toLocaleString()}</span>
+          `;
+
+          const delBtn = document.createElement('button');
+          delBtn.textContent = '🗑️ Eliminar';
+          delBtn.onclick = async () => {
+            await fetch(`${API}/api/eliminar/${img.filename}`, {
+              method: 'DELETE',
+              headers: { 'Authorization': 'Bearer ' + token }
+            });
+            loadGallery();
+          };
+
+          card.append(image, info, delBtn);
+          gallery.appendChild(card);
+        });
+      }
+
+      // 3) Subida de imágenes
       document.getElementById('image-upload-form').addEventListener('submit', async e => {
         e.preventDefault();
-        const archivo = document.getElementById('image').files[0];
-        if (!archivo) return alert("Selecciona una imagen.");
+        const file = document.getElementById('image').files[0];
+        if (!file) return;
 
         const formData = new FormData();
-        formData.append('imagen', archivo);
-
-        const res = await fetch('https://tu-backend.com/api/imagenes', {
+        formData.append('imagen', file);
+        await fetch(`${API}/api/upload`, {
           method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + token
-          },
+          headers: { 'Authorization': 'Bearer ' + token },
           body: formData
         });
-
-        if (res.ok) {
-          document.getElementById('mensaje').textContent = "Imagen subida ✅";
-          document.getElementById('image').value = '';
-          await cargarImagenes(token);
-        } else {
-          document.getElementById('mensaje').textContent = "Error al subir imagen ❌";
-        }
+        loadGallery();
       });
 
-      // Salir
+      // 4) Logout
       document.getElementById('logout-btn').addEventListener('click', () => {
         localStorage.removeItem('token');
         window.location.href = 'login.html';
       });
-    });
-  </script>
-</body>
-</html>
 
-      });
+      // Inicializar galería
+      loadGallery();
     });
+    // --- fin app.js ---
   </script>
 </body>
 </html>
