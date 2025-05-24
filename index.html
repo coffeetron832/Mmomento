@@ -41,24 +41,16 @@
       transition: all 0.3s ease;
     }
 
-    .menu-icon span:nth-child(1) {
-      top: 0;
-    }
-
-    .menu-icon span:nth-child(2) {
-      top: 8px;
-    }
-
-    .menu-icon span:nth-child(3) {
-      top: 16px;
-    }
+    .menu-icon span:nth-child(1) { top: 0; }
+    .menu-icon span:nth-child(2) { top: 8px; }
+    .menu-icon span:nth-child(3) { top: 16px; }
 
     nav {
       position: fixed;
       top: 60px; /* altura header */
       right: 0;
       background-color: var(--color-background);
-      width: 200px;
+      width: 220px;
       box-shadow: -2px 0 5px rgba(0,0,0,0.1);
       transform: translateX(100%);
       transition: transform 0.3s ease;
@@ -66,13 +58,11 @@
       border-radius: 0 0 0 10px;
     }
 
-    nav.open {
-      transform: translateX(0);
-    }
+    nav.open { transform: translateX(0); }
 
     nav a {
       display: block;
-      margin: 1rem 0;
+      margin: 0.75rem 0;
       color: var(--color-text);
       font-weight: 600;
       text-decoration: none;
@@ -81,9 +71,7 @@
       transition: background-color 0.3s ease;
     }
 
-    nav a:hover {
-      background-color: var(--color-soft);
-    }
+    nav a:hover { background-color: var(--color-soft); }
 
     main {
       margin-top: 80px; /* espacio para header fijo */
@@ -121,12 +109,20 @@
   </header>
 
   <nav id="menuNav" aria-label="Menú de navegación">
+    <a href="index.html">Inicio</a>
+    <a href="about.html">Acerca</a>
+    <a href="help.html">Ayuda</a>
+    <a href="contact.html">Contacto</a>
+    <hr />
     <a href="register.html">Crear Cuenta</a>
     <a href="login.html">Iniciar Sesión</a>
   </nav>
 
   <main>
     <h1>Momento</h1>
+    <!-- Botones siempre visibles -->
+    <a href="register.html" class="button">Crear Cuenta</a>
+    <a href="login.html" class="button">Iniciar Sesión</a>
   </main>
 
   <footer>
@@ -152,5 +148,3 @@
   </script>
 </body>
 </html>
-
-
