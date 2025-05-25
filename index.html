@@ -85,7 +85,7 @@
       user-select: none;
     }
 
-    footer.slogan {
+    footer {
       margin-top: auto;
       padding: 1rem 0;
       font-family: 'EB Garamond', serif;
@@ -94,6 +94,32 @@
       font-size: 1.1rem;
       color: #708090;
       user-select: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    footer .slogan {
+      margin: 0;
+    }
+
+    footer .links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    footer .links a {
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      color: #1A1A1A;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    footer .links a:hover {
+      color: #5AC8FA;
     }
 
     /* Modal styles */
@@ -174,10 +200,10 @@
   <footer>
     <p class="slogan">© 2025 Momento | Una producción Juan Hoyos Pontón.</p>
     <div class="links">
-      <a href="acerca.html">Acerca</a>
-      <a href="privacidad.html">Privacidad</a>
-      <a href="condiciones.html">Términos</a>
-      <a href="ayuda.html">Ayuda</a>
+      <a href="help.html">Ayuda</a>
+      <a href="privacy.html">Privacidad</a>
+      <a href="terms.html">Términos</a>
+      <a href="contact.html">Contacto</a>
     </div>
   </footer>
 
