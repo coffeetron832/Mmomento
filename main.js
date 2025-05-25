@@ -1,78 +1,127 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const backendURL = 'https://calm-aback-vacuum.glitch.me';
-  const token = localStorage.getItem('token');
-  const uploadForm = document.getElementById('image-upload-form');
-  const gallery = document.getElementById('gallery');
-  const logoutBtn = document.getElementById('logout-btn');
+// main.js
+const API = 'https://momento-backend-production.up.railway.app';
 
-  // Si no hay token, redirigir a login
-  if (!token) {
-    alert('No estás autenticado');
-    // Reemplaza el historial para evitar que el usuario regrese a esta página con el botón atrás
-    window.location.replace('index.html');
-    return;
+/**
+ * Comprueba si hay sesión activa (cookie JWT) en el backend.
+ * @returns {Promise<boolean>}
+ */
+async function checkSession() {
+  try {
+    const res = await fetch(`${API}/api/auth/session`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Error comprobando sesión:', err);
+    return false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const uploadForm = document.getElementById('image-upload-form');
+  const gallery    = document.getElementById('gallery');
+  const logoutBtn  = document.getElementById('logout-btn');
+  const mensaje    = document.getElementById('mensaje');
+
+  // 1) Validar sesión al cargar
+  const sessionValid = await checkSession();
+  if (!sessionValid) {
+    // Redirige al login y reemplaza historial
+    return window.location.replace('login.html');
   }
 
-  // Al cargar la página, reemplazar historial para que login no quede atrás
-  history.replaceState(null, '', window.location.href);
+  // 2) Logout limpia cookie en backend
+  logoutBtn.addEventListener('click', async () => {
+    await fetch(`${API}/api/auth/logout`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+    window.location.replace('login.html');
+  });
 
-  logoutBtn.onclick = () => {
-    localStorage.removeItem('token');
-    // Reemplazar para evitar que vuelva a main.html con atrás
-    window.location.replace('index.html');
-  };
-
-  uploadForm.onsubmit = async e => {
+  // 3) Subida de imágenes
+  uploadForm.addEventListener('submit', async e => {
     e.preventDefault();
-    const file = document.getElementById('image').files[0];
-    if (!file) return alert('Selecciona una imagen');
+    const fileInput = document.getElementById('image');
+    if (!fileInput.files.length) {
+      mensaje.textContent = 'Debes seleccionar una imagen';
+      return;
+    }
 
     const formData = new FormData();
-    formData.append('imagen', file);
+    formData.append('imagen', fileInput.files[0]);
 
     try {
-      const res = await fetch(`${backendURL}/api/upload`, {
+      const res = await fetch(`${API}/api/upload`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
+        credentials: 'include',
         body: formData
       });
       const data = await res.json();
-      alert(data.mensaje || data.error);
-      if (res.ok) loadGallery();
-    } catch (err) {
-      alert('Error al subir imagen');
-      console.error(err);
-    }
-  };
-
-  async function loadGallery() {
-    try {
-      const res = await fetch(`${backendURL}/api/imagenes`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
       if (!res.ok) {
-        alert('Sesión expirada o error en la autenticación');
-        localStorage.removeItem('token');
-        window.location.replace('index.html');
+        mensaje.textContent = data.error || 'Error al subir la imagen';
         return;
       }
+      mensaje.textContent = data.mensaje;
+      uploadForm.reset();
+      loadGallery();
+    } catch (err) {
+      console.error('Error al subir imagen:', err);
+      mensaje.textContent = 'Error de conexión al subir imagen';
+    }
+  });
 
+  // 4) Cargar galería
+  async function loadGallery() {
+    try {
+      const res = await fetch(`${API}/api/imagenes`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+      if (!res.ok) {
+        // Sesión expirada
+        return window.location.replace('login.html');
+      }
       const imgs = await res.json();
       gallery.innerHTML = '';
+      imgs.forEach(img => {
+        const card = document.createElement('div');
+        card.className = 'image-card';
 
-      imgs.forEach(file => {
-        const img = document.createElement('img');
-        img.src = `${backendURL}/uploads/${file}`;
-        img.alt = file;
-        gallery.appendChild(img);
+        const image = document.createElement('img');
+        image.src = `${API}/uploads/${encodeURIComponent(img.filename)}`;
+        image.alt = `Imagen de ${img.usuario}`;
+
+        const label = document.createElement('div');
+        label.className = 'polaroid-label';
+        label.textContent = `${img.usuario} — ${new Date(img.fechaSubida).toLocaleDateString()}`;
+
+        const info = document.createElement('div');
+        info.className = 'image-info';
+        info.textContent =
+          `Subida: ${new Date(img.fechaSubida).toLocaleTimeString()}  Expira: ${new Date(img.expiraEn).toLocaleTimeString()}`;
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '🗑️ Eliminar';
+        delBtn.onclick = async () => {
+          if (!confirm('¿Deseas eliminar esta imagen?')) return;
+          await fetch(`${API}/api/eliminar/${encodeURIComponent(img.filename)}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          loadGallery();
+        };
+
+        card.append(image, label, info, delBtn);
+        gallery.appendChild(card);
       });
     } catch (err) {
       console.error('Error cargando galería:', err);
-      alert('Error cargando la galería');
+      mensaje.textContent = 'Error cargando la galería';
     }
   }
 
+  // Carga inicial
   loadGallery();
 });
-
