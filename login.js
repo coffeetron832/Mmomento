@@ -1,18 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('login-form');
   const messageEl = document.getElementById('login-message');
 
-  // Al cargar, verificamos si hay sesión activa preguntando al backend
-  fetch('https://momento-backend-production.up.railway.app/api/auth/session', {
-    method: 'GET',
-    credentials: 'include'  // para enviar cookie con la petición
-  }).then(res => {
-    if (res.ok) {
-      // Si sesión válida, redirige directo a main.html
-      window.location.replace('main.html');
-    }
-  });
+  // 1) Comprobación de sesión al cargar
+  try {
+    const sessionRes = await fetch(
+      'https://momento-backend-production.up.railway.app/api/auth/session',
+      {
+        method: 'GET',
+        credentials: 'include'
+      }
+    );
 
+    if (sessionRes.ok) {
+      // Sesión válida: redirige YA y no inicializa el formulario
+      return window.location.replace('main.html');
+    }
+  } catch (err) {
+    console.error('Error comprobando sesión:', err);
+    // Si hay error de conexión, dejamos seguir al formulario
+  }
+
+  // 2) Listener de submit de login
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -27,20 +36,20 @@ document.addEventListener('DOMContentLoaded', () => {
     messageEl.textContent = 'Procesando...';
 
     try {
-      const res = await fetch('https://momento-backend-production.up.railway.app/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // importante para que el navegador guarde cookie
-        body: JSON.stringify({ email, password })
-      });
+      const res = await fetch(
+        'https://momento-backend-production.up.railway.app/api/auth/login',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password })
+        }
+      );
       const data = await res.json();
 
       if (res.ok) {
-        messageEl.textContent = data.message || 'Login exitoso';
-        messageEl.style.color = 'lightgreen';
-        setTimeout(() => {
-          window.location.replace('main.html');
-        }, 1000);
+        // Redirige inmediatamente con replace
+        return window.location.replace('main.html');
       } else {
         messageEl.textContent = data.error || 'Credenciales inválidas';
         messageEl.style.color = 'salmon';
