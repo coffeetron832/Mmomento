@@ -65,6 +65,9 @@
       border: none;
       font-size: 1rem;
       cursor: pointer;
+      color: #555;
+      font-family: 'Inter', sans-serif;
+      transition: color 0.3s ease;
     }
     #logout-btn:hover {
       color: var(--accent);
@@ -90,17 +93,29 @@
       padding: 10px;
       margin: 10px;
       border-radius: 8px;
-      border: 1px solid #ccc;
       font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    form#image-upload-form input {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      color: #333;
+      transition: border-color 0.3s ease;
+    }
+    form#image-upload-form input:focus {
+      border-color: var(--accent);
+      outline: none;
     }
     form#image-upload-form button {
-      background-color: var(--accent);
-      color: white;
-      border: none;
+      background-color: #fff;
+      color: #555;
+      border: 1.5px solid #aaa;
       cursor: pointer;
+      transition: border-color 0.3s ease, color 0.3s ease;
     }
     form#image-upload-form button:hover {
-      background-color: #267547;
+      border-color: #777;
+      color: #222;
     }
     .mensaje {
       text-align: center;
@@ -160,6 +175,8 @@
       padding: 6px 10px;
       border-radius: 6px;
       cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease;
     }
     .image-card button:hover {
       background-color: #c9302c;
@@ -202,4 +219,5 @@
   <script src="main.js" type="module"></script>
 </body>
 </html>
+
 
