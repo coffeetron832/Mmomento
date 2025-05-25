@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <meta charset="UTF-8" />
   <meta http-equiv="Cache-Control" content="no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>📸 Galería - Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet" />
@@ -228,101 +228,6 @@
     }
   </script>
 
-  <script type="module">
-    function isLoggedIn() {
-      return !!localStorage.getItem('token');
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      const token = localStorage.getItem('token');
-      const API = 'https://momento-backend-production.up.railway.app';
-
-      if (!token) return window.location.href = 'login.html';
-
-      async function loadGallery() {
-        try {
-          const res = await fetch(`${API}/api/imagenes`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-
-          if (!res.ok) {
-            localStorage.removeItem('token');
-            return window.location.href = 'login.html';
-          }
-
-          const imgs = await res.json();
-          const gallery = document.getElementById('gallery');
-          gallery.innerHTML = '';
-
-          imgs.forEach(img => {
-            const card = document.createElement('div');
-            card.className = 'image-card';
-
-            const image = document.createElement('img');
-            image.src = `${API}/uploads/${encodeURIComponent(img.filename)}`;
-            image.alt = `Imagen subida por ${img.usuario}`;
-
-            const label = document.createElement('div');
-            label.className = 'polaroid-label';
-            label.textContent = `${img.usuario} - ${new Date(img.fechaSubida).toLocaleDateString()}`;
-
-            const info = document.createElement('div');
-            info.className = 'image-info';
-            info.innerHTML = `
-              Subida: ${new Date(img.fechaSubida).toLocaleTimeString()}<br>
-              Expira: ${new Date(img.expiraEn).toLocaleTimeString()}
-            `;
-
-            const delBtn = document.createElement('button');
-            delBtn.textContent = '🗑️ Eliminar';
-            delBtn.onclick = async () => {
-              if (confirm('¿Seguro que deseas eliminar esta imagen?')) {
-                await fetch(`${API}/api/eliminar/${encodeURIComponent(img.filename)}`, {
-                  method: 'DELETE',
-                  headers: { 'Authorization': `Bearer ${token}` }
-                });
-                loadGallery();
-              }
-            };
-
-            card.append(image, label, info, delBtn);
-            gallery.appendChild(card);
-          });
-        } catch (err) {
-          console.error(err);
-          alert("Error cargando la galería.");
-        }
-      }
-
-      document.getElementById('image-upload-form').addEventListener('submit', async e => {
-        e.preventDefault();
-        const file = document.getElementById('image').files[0];
-        if (!file) return;
-
-        const formData = new FormData();
-        formData.append('imagen', file);
-
-        try {
-          await fetch(`${API}/api/upload`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: formData
-          });
-          loadGallery();
-        } catch (err) {
-          console.error(err);
-          alert("Error al subir imagen.");
-        }
-      });
-
-      document.getElementById('logout-btn').addEventListener('click', () => {
-        localStorage.removeItem('token');
-        window.location.href = 'login.html';
-      });
-
-      loadGallery();
-    });
-  </script>
+  <script src="main.js" type="module"></script>
 </body>
 </html>
-
