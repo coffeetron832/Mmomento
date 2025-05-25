@@ -101,16 +101,17 @@
           headers: {
             'Content-Type': 'application/json'
           },
+          credentials: 'include', // <---- Aquí la clave para cookies httpOnly
           body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
 
         if (!res.ok) {
-          return alert(data.msg || 'Credenciales inválidas');
+          return alert(data.error || 'Credenciales inválidas');
         }
 
-        localStorage.setItem('token', data.token);
+        // Token está en cookie httpOnly, solo redirigir
         window.location.replace('main.html');
       } catch (err) {
         console.error(err);
