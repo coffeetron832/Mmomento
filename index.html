@@ -5,82 +5,127 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Momento</title>
 
-  <!-- Fuentes EB Garamond e Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
-    :root {
-      --crema-suave: #FAF3E0;
-      --vino-profundo: #6B2737;
-      --carbon: #2C2C2C;
-      --purpura-humo: #A29BFE;
-      --gris-paloma: #DADADA;
-    }
-
     body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F7F4EF;
+      color: #1A1A1A;
       margin: 0;
-      font-family: 'EB Garamond', serif;
-      background-color: var(--crema-suave);
-      color: var(--carbon);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 2rem 1rem;
       text-align: center;
-      padding: 2rem;
-      position: relative;
     }
 
     h1 {
-      font-size: 3.5rem;
+      font-family: 'EB Garamond', serif;
+      font-size: 3rem;
       margin-bottom: 0.5rem;
-      color: var(--vino-profundo);
-      font-weight: 700;
+      color: #002FA7; /* Cobalt Blue para título */
+      position: relative;
+    }
+
+    /* Franja de degradado animado bajo el título */
+    h1::after {
+      content: "";
+      display: block;
+      width: 220px;
+      height: 6px;
+      margin: 10px auto 0;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #7FFFD4, #5AC8FA, #FFD700, #FF8C00, #000000, #002FA7, #708090);
+      background-size: 400% 100%;
+      animation: moverDegradado 6s ease infinite;
+    }
+
+    @keyframes moverDegradado {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .buttons {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     a.button {
       font-family: 'Inter', sans-serif;
-      display: inline-block;
-      margin: 0.8rem 1rem;
-      padding: 1rem 2.5rem;
-      border-radius: 12px;
-      background-color: var(--purpura-humo);
-      color: var(--crema-suave);
       font-weight: 600;
-      font-size: 1.1rem;
       text-decoration: none;
-      box-shadow: 0 4px 8px rgba(162, 155, 254, 0.5);
-      transition: background-color 0.3s ease, color 0.3s ease;
+      padding: 1rem 2.5rem;
+      border-radius: 15px;
+      background: linear-gradient(90deg, #7FFFD4, #5AC8FA, #FFD700, #FF8C00);
+      color: #1A1A1A;
+      box-shadow: 0 4px 10px rgba(255, 140, 0, 0.4);
+      transition: background-position 0.5s ease, color 0.3s ease;
+      background-size: 400% 100%;
+      display: inline-block;
     }
 
     a.button:hover {
-      background-color: var(--vino-profundo);
-      color: var(--gris-paloma);
-      box-shadow: 0 6px 12px rgba(107, 39, 55, 0.7);
+      background-position: 100% 50%;
+      color: white;
+      box-shadow: 0 6px 15px rgba(0, 47, 167, 0.7);
     }
 
-    footer {
-      position: fixed;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      font-style: italic;
-      color: var(--gris-paloma);
-      font-size: 1rem;
+    p.subtitle {
       font-family: 'EB Garamond', serif;
-      pointer-events: none;
+      font-style: italic;
+      font-size: 1.3rem;
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+      color: #708090; /* Storm - gris azulado para sutilidad */
       user-select: none;
+    }
+
+    footer.slogan {
+      margin-top: auto;
+      padding: 1rem 0;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: #708090;
+      user-select: none;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      a.button {
+        padding: 0.8rem 2rem;
+        font-size: 0.9rem;
+      }
+
+      p.subtitle {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Momento</h1>
 
-  <a href="register.html" class="button">Crear Cuenta</a>
-  <a href="login.html" class="button">Iniciar Sesión</a>
+  <p class="subtitle">Redefining what’s worth looking at.</p>
 
-  <footer>Redefining what’s worth looking at.</footer>
+  <div class="buttons">
+    <a href="register.html" class="button">Crear Cuenta</a>
+    <a href="login.html" class="button">Iniciar Sesión</a>
+  </div>
+
+  <footer class="slogan">
+    Redefining what’s worth looking at.
+  </footer>
 </body>
 </html>
-
