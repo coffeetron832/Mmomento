@@ -26,11 +26,10 @@
       font-family: 'EB Garamond', serif;
       font-size: 3rem;
       margin-bottom: 0.5rem;
-      color: #002FA7; /* Cobalt Blue para título */
+      color: #002FA7;
       position: relative;
     }
 
-    /* Franja de degradado animado bajo el título */
     h1::after {
       content: "";
       display: block;
@@ -57,32 +56,32 @@
       justify-content: center;
     }
 
-    aa.button {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 1rem 2.5rem;
-    border-radius: 15px;
-    background-color: #A9CDEB; /* Azul pastel suave */
-    color: #1A1A1A;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: inline-block;
-  }
+    a.button {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 1rem 2.5rem;
+      border-radius: 15px;
+      background-color: #A9CDEB;
+      color: #1A1A1A;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      display: inline-block;
+    }
 
-  a.button:hover {
-    background-color: #5AC8FA; /* Azul claro industrial */
-    color: white;
-    box-shadow: 0 4px 12px rgba(90, 200, 250, 0.6);
-  }
-    
+    a.button:hover {
+      background-color: #5AC8FA;
+      color: white;
+      box-shadow: 0 4px 12px rgba(90, 200, 250, 0.6);
+    }
+
     p.subtitle {
       font-family: 'EB Garamond', serif;
       font-style: italic;
       font-size: 1.3rem;
       margin-top: 2rem;
       margin-bottom: 3rem;
-      color: #708090; /* Storm - gris azulado para sutilidad */
+      color: #708090;
       user-select: none;
     }
 
@@ -97,19 +96,68 @@
       user-select: none;
     }
 
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2.2rem;
-      }
+    /* Modal styles */
+    #welcome-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
 
-      a.button {
-        padding: 0.8rem 2rem;
-        font-size: 0.9rem;
-      }
+    #welcome-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      color: #1A1A1A;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+    }
 
-      p.subtitle {
-        font-size: 1rem;
-      }
+    #welcome-content h2 {
+      margin-top: 0;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #002FA7;
+    }
+
+    #welcome-content p {
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      color: #444;
+    }
+
+    .welcome-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .welcome-btn {
+      padding: 0.7rem 1.5rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      border: none;
+      border-radius: 8px;
+      background-color: #A9CDEB;
+      color: #1A1A1A;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .welcome-btn:hover {
+      background-color: #5AC8FA;
+      color: white;
+      box-shadow: 0 4px 12px rgba(90, 200, 250, 0.7);
     }
   </style>
 </head>
@@ -122,6 +170,63 @@
     <a href="register.html" class="button">Crear Cuenta</a>
     <a href="login.html" class="button">Iniciar Sesión</a>
   </div>
+
+  <footer class="slogan">
+    © 2025 Momento | Una producción Juan Hoyos Pontón.
+  </footer>
+
+  <!-- Modal de bienvenida -->
+  <div id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" tabindex="-1">
+    <div id="welcome-content">
+      <h2 id="welcome-title">¡Bienvenido a Momento!</h2>
+      <p id="welcome-text">¿Quieres descubrir algo curioso hoy?</p>
+      <div class="welcome-buttons">
+        <button class="welcome-btn" id="btn-sarcastico">No me interesa 🤷‍♂️</button>
+        <button class="welcome-btn" id="btn-agradable">Claro, sorpréndeme 😊</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('welcome-modal');
+    const welcomeText = document.getElementById('welcome-text');
+    const btnSarcastico = document.getElementById('btn-sarcastico');
+    const btnAgradable = document.getElementById('btn-agradable');
+
+    btnSarcastico.addEventListener('click', () => {
+      // Cierra el modal directamente
+      modal.style.display = 'none';
+    });
+
+    btnAgradable.addEventListener('click', () => {
+      // Cambia el texto del modal a algo agradable
+      welcomeText.textContent = "¡Gracias por estar aquí! Que tengas un día lleno de inspiración 🌟";
+      // Opcional: cambiar botones para que sólo quede uno que cierre el modal
+      btnSarcastico.style.display = 'none';
+      btnAgradable.textContent = 'Cerrar';
+      btnAgradable.removeEventListener('click', arguments.callee); // Quitar el listener original
+      btnAgradable.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    });
+
+    // Permite cerrar el modal con clic fuera del contenido
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+    // Cierra el modal con la tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
+
 
   <footer class="slogan">
     © 2025 Momento | Una producción Juan Hoyos Pontón.
