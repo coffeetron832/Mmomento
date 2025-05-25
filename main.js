@@ -2,7 +2,7 @@
 const API = 'https://momento-backend-production.up.railway.app';
 
 /**
- * Comprueba si hay sesión activa (cookie JWT) en el backend.
+ * Comprueba si la cookie JWT está activa en el servidor.
  * @returns {Promise<boolean>}
  */
 async function checkSession() {
@@ -25,13 +25,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const mensaje    = document.getElementById('mensaje');
 
   // 1) Validar sesión al cargar
-  const sessionValid = await checkSession();
-  if (!sessionValid) {
-    // Redirige al login y reemplaza historial
+  if (!(await checkSession())) {
     return window.location.replace('login.html');
   }
 
-  // 2) Logout limpia cookie en backend
+  // 2) Logout
   logoutBtn.addEventListener('click', async () => {
     await fetch(`${API}/api/auth/logout`, {
       method: 'POST',
@@ -43,6 +41,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 3) Subida de imágenes
   uploadForm.addEventListener('submit', async e => {
     e.preventDefault();
+    mensaje.textContent = '';
+
     const fileInput = document.getElementById('image');
     if (!fileInput.files.length) {
       mensaje.textContent = 'Debes seleccionar una imagen';
@@ -52,24 +52,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const formData = new FormData();
     formData.append('imagen', fileInput.files[0]);
 
-    try {
-      const res = await fetch(`${API}/api/upload`, {
-        method: 'POST',
-        credentials: 'include',
-        body: formData
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        mensaje.textContent = data.error || 'Error al subir la imagen';
-        return;
-      }
-      mensaje.textContent = data.mensaje;
-      uploadForm.reset();
-      loadGallery();
-    } catch (err) {
-      console.error('Error al subir imagen:', err);
-      mensaje.textContent = 'Error de conexión al subir imagen';
+    const res = await fetch(`${API}/api/upload`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      mensaje.textContent = data.error || 'Error al subir la imagen';
+      return;
     }
+    mensaje.textContent = data.mensaje;
+    uploadForm.reset();
+    loadGallery();
   });
 
   // 4) Cargar galería
@@ -80,7 +75,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         credentials: 'include'
       });
       if (!res.ok) {
-        // Sesión expirada
         return window.location.replace('login.html');
       }
       const imgs = await res.json();
@@ -99,13 +93,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const info = document.createElement('div');
         info.className = 'image-info';
-        info.textContent =
+        info.textContent = 
           `Subida: ${new Date(img.fechaSubida).toLocaleTimeString()}  Expira: ${new Date(img.expiraEn).toLocaleTimeString()}`;
 
         const delBtn = document.createElement('button');
         delBtn.textContent = '🗑️ Eliminar';
         delBtn.onclick = async () => {
-          if (!confirm('¿Deseas eliminar esta imagen?')) return;
+          if (!confirm('¿Eliminar esta imagen?')) return;
           await fetch(`${API}/api/eliminar/${encodeURIComponent(img.filename)}`, {
             method: 'DELETE',
             credentials: 'include'
@@ -122,6 +116,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Carga inicial
+  // 5) Carga inicial
   loadGallery();
 });
