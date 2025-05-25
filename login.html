@@ -7,33 +7,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iniciar sesión | Momento</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
-      font-family: 'Open Sans', sans-serif;
-      background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
-      color: #fff;
+      font-family: 'Inter', sans-serif;
+      background-color: #F7F4EF;
+      color: #1A1A1A;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
+      padding: 2rem 1rem;
     }
 
     .login-container {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      width: 90%;
+      background: linear-gradient(to right, #ECE9E6, #FFFFFF);
       max-width: 400px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-sizing: border-box;
     }
 
     h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'EB Garamond', serif;
       text-align: center;
+      font-size: 2.8rem;
       margin-bottom: 1rem;
-      font-size: 2rem;
+      position: relative;
+    }
+
+    h1::after {
+      content: "";
+      display: block;
+      width: 200px;
+      height: 6px;
+      margin: 10px auto 0;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #4C4CFF, #9966FF, #FF6FD8, #4C4CFF);
+      background-size: 400% 100%;
+      animation: moverDegradado 6s ease infinite;
+    }
+
+    form {
+      margin-top: 1rem;
     }
 
     input {
@@ -41,50 +60,84 @@
       padding: 0.8rem;
       margin: 0.5rem 0;
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 8px;
       font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
+      background-color: #fff;
+      color: #1A1A1A;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 8px #9966FF;
+    }
+
+    input::placeholder {
+      color: #999;
+      font-style: italic;
     }
 
     button {
       width: 100%;
       padding: 0.8rem;
       margin-top: 1rem;
-      background-color: #318F5C;
+      background-color: #9966FF;
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 8px;
       color: white;
       font-size: 1.1rem;
+      font-family: 'Inter', sans-serif;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #256b45;
+      background-color: #7a4ed9;
     }
 
     .register-link {
       display: block;
       text-align: center;
       margin-top: 1rem;
-      color: #FFF0AE;
+      color: #318F5C;
+      font-weight: 600;
       text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      transition: text-decoration 0.3s ease;
     }
 
     .register-link:hover {
       text-decoration: underline;
+    }
+
+    #login-message {
+      margin-top: 1rem;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      color: #9966FF;
+    }
+
+    @keyframes moverDegradado {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
   </style>
 </head>
 <body>
   <div class="login-container">
     <h1>Inicia sesión en Momento</h1>
-    <form id="login-form">
-  <input type="email" id="email" placeholder="Correo electrónico" required />
-  <input type="password" id="password" placeholder="Contraseña" required />
-  <button type="submit">Iniciar sesión</button>
-</form>
-<div id="login-message" style="margin-top: 1rem; text-align: center;"></div>
-
+    <form id="login-form" autocomplete="off" novalidate>
+      <input type="email" id="email" name="email" placeholder="Correo electrónico" required autocomplete="email" />
+      <input type="password" id="password" name="password" placeholder="Contraseña" required autocomplete="current-password" />
+      <button type="submit">Iniciar sesión</button>
+    </form>
+    <div id="login-message"></div>
+    <a href="register.html" class="register-link">¿No tienes cuenta? Regístrate aquí</a>
+  </div>
 
   <script>
     const API = 'https://momento-backend-production.up.railway.app';
@@ -95,29 +148,36 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
 
+      const loginMessage = document.getElementById('login-message');
+      loginMessage.textContent = '';
+
       try {
         const res = await fetch(`${API}/api/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          credentials: 'include', // <---- Aquí la clave para cookies httpOnly
+          credentials: 'include', // cookies httpOnly
           body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
 
         if (!res.ok) {
-          return alert(data.error || 'Credenciales inválidas');
+          loginMessage.textContent = data.error || 'Credenciales inválidas';
+          loginMessage.style.color = 'red';
+          return;
         }
 
-        // Token está en cookie httpOnly, solo redirigir
+        // Redirigir al usuario a la galería si la autenticación es exitosa
         window.location.replace('main.html');
       } catch (err) {
         console.error(err);
-        alert('Ocurrió un error al intentar iniciar sesión.');
+        loginMessage.textContent = 'Ocurrió un error al intentar iniciar sesión.';
+        loginMessage.style.color = 'red';
       }
     });
   </script>
 </body>
 </html>
+
