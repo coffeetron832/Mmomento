@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const backendURL = 'https://momento-backend-production.up.railway.app';
   const registerForm = document.getElementById('register-form');
-  const loginForm    = document.getElementById('login-form');
-  const uploadForm   = document.getElementById('image-upload-form');
-  const galleryDiv   = document.getElementById('gallery');
-  const logoutBtn    = document.getElementById('logout-btn');
-  const mensajeDiv   = document.getElementById('mensaje');
+  const loginForm = document.getElementById('login-form');
+  const uploadForm = document.getElementById('image-upload-form');
+  const galleryDiv = document.getElementById('gallery');
+  const logoutBtn = document.getElementById('logout-btn');
+  const mensajeDiv = document.getElementById('mensaje');
 
+  // Función para obtener headers
   function getAuthHeaders(isJson = true) {
     const headers = {};
     if (isJson) headers['Content-Type'] = 'application/json';
@@ -15,30 +16,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     return headers;
   }
 
+  // Verifica sesión con token
   async function checkSession() {
     try {
       const res = await fetch(`${backendURL}/api/auth/session`, {
         method: 'GET',
-        headers: getAuthHeaders(false)
+        headers: getAuthHeaders(false),
+        credentials: 'include'  // <--- importante para CORS con credenciales
       });
-      if (!res.ok) {
-        localStorage.removeItem('token'); // Token inválido limpiar sesión
-        return false;
-      }
-      const data = await res.json();
-      console.log('Sesión válida:', data);
-      return true;
+      return res.ok;
     } catch {
       return false;
     }
   }
 
-  // Registro
+  // ===== Registro =====
   if (registerForm) {
     registerForm.addEventListener('submit', async e => {
       e.preventDefault();
       const username = document.getElementById('reg-username').value.trim();
-      const email    = document.getElementById('reg-email').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value.trim();
       mensajeDiv.textContent = '';
 
@@ -51,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`${backendURL}/api/auth/register`, {
           method: 'POST',
           headers: getAuthHeaders(),
+          credentials: 'include',  // <--- aquí también
           body: JSON.stringify({ username, email, password })
         });
         const data = await res.json();
@@ -63,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // Login
+  // ===== Login =====
   if (loginForm) {
     if (await checkSession()) {
       return window.location.replace('main.html');
@@ -84,6 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`${backendURL}/api/auth/login`, {
           method: 'POST',
           headers: getAuthHeaders(),
+          credentials: 'include',  // <--- y aquí también
           body: JSON.stringify({ email, password })
         });
         const data = await res.json();
@@ -92,6 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
           return;
         }
+        // Guarda JWT en localStorage
         localStorage.setItem('token', data.token);
         window.location.replace('main.html');
       } catch (err) {
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // Página principal (subir y mostrar imágenes)
+  // ===== Main (subir imagen, cargar galería) =====
   if (uploadForm && galleryDiv) {
     if (!(await checkSession())) {
       return window.location.replace('login.html');
@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`${backendURL}/api/upload`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+          credentials: 'include',  // <--- importante
           body: formData
         });
         const data = await res.json();
@@ -146,7 +147,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const res = await fetch(`${backendURL}/api/imagenes`, {
           method: 'GET',
-          headers: getAuthHeaders(false)
+          headers: getAuthHeaders(false),
+          credentials: 'include'  // <--- importante
         });
         if (!res.ok) {
           return window.location.replace('login.html');
@@ -175,7 +177,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!confirm('¿Seguro que deseas eliminar esta imagen?')) return;
             await fetch(`${backendURL}/api/eliminar/${encodeURIComponent(img.filename)}`, {
               method: 'DELETE',
-              headers: getAuthHeaders(false)
+              headers: getAuthHeaders(false),
+              credentials: 'include'  // <--- importante
             });
             loadGallery();
           };
@@ -186,6 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await fetch(`${backendURL}/api/reportar`, {
               method: 'POST',
               headers: getAuthHeaders(),
+              credentials: 'include',  // <--- importante
               body: JSON.stringify({ filename: img.filename })
             });
             alert('Reportado');
@@ -199,6 +203,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         mensajeDiv.textContent = 'Error cargando la galería';
       }
     }
+
+    loadGallery();
+  }
+});
+
 
     loadGallery();
   }
