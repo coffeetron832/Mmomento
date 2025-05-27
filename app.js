@@ -1,4 +1,6 @@
 // app.js
+// Frontend using JWT in Authorization header instead of cookies
+
 document.addEventListener('DOMContentLoaded', async () => {
   const backendURL = 'https://momento-backend-production.up.railway.app';
   const registerForm = document.getElementById('register-form');
@@ -8,12 +10,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logoutBtn    = document.getElementById('logout-btn');
   const mensajeDiv   = document.getElementById('mensaje');
 
-  // Helper: verifica sesión con cookie
+  // Helper: build auth headers
+  function getAuthHeaders(isJson = true) {
+    const headers = {};
+    if (isJson) headers['Content-Type'] = 'application/json';
+    const token = localStorage.getItem('token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    return headers;
+  }
+
+  // Helper: verifica sesión por token
   async function checkSession() {
     try {
       const res = await fetch(`${backendURL}/api/auth/session`, {
         method: 'GET',
-        credentials: 'include'
+        headers: getAuthHeaders(false)
       });
       return res.ok;
     } catch {
@@ -38,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const res = await fetch(`${backendURL}/api/auth/register`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify({ username, email, password })
         });
         const data = await res.json();
@@ -53,7 +64,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ===== Login =====
   if (loginForm) {
-    // Si ya hay sesión activa, redirige
     if (await checkSession()) {
       return window.location.replace('main.html');
     }
@@ -72,8 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const res = await fetch(`${backendURL}/api/auth/login`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',  // ¡importante para que guarde la cookie!
+          headers: getAuthHeaders(),
           body: JSON.stringify({ email, password })
         });
         const data = await res.json();
@@ -82,7 +91,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
           return;
         }
-        // Login exitoso → redirige y reemplaza historial
+        // Guarda JWT en localStorage
+        localStorage.setItem('token', data.token);
         window.location.replace('main.html');
       } catch (err) {
         mensajeDiv.textContent = 'Error al iniciar sesión';
@@ -94,25 +104,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ===== Main (cargar galería y subir imagen) =====
   if (uploadForm && galleryDiv) {
-    // 1) Verificar sesión al cargar
     if (!(await checkSession())) {
       return window.location.replace('login.html');
     }
 
-    // 2) Mostrar formularios
     uploadForm.style.display = 'block';
     logoutBtn.style.display = 'block';
 
-    // 3) Logout
-    logoutBtn.addEventListener('click', async () => {
-      await fetch(`${backendURL}/api/auth/logout`, {
-        method: 'POST',
-        credentials: 'include'
-      });
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('token');
       window.location.replace('login.html');
     });
 
-    // 4) Subida de imágenes
+    // Subida de imágenes
     uploadForm.addEventListener('submit', async e => {
       e.preventDefault();
       mensajeDiv.textContent = '';
@@ -127,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const res = await fetch(`${backendURL}/api/upload`, {
           method: 'POST',
-          credentials: 'include',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
           body: formData
         });
         const data = await res.json();
@@ -139,15 +143,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    // 5) Cargar galería
+    // Cargar galería
     async function loadGallery() {
       try {
         const res = await fetch(`${backendURL}/api/imagenes`, {
           method: 'GET',
-          credentials: 'include'
+          headers: getAuthHeaders(false)
         });
         if (!res.ok) {
-          // Sesión expirada o problema
           return window.location.replace('login.html');
         }
         const imgs = await res.json();
@@ -174,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!confirm('¿Seguro que deseas eliminar esta imagen?')) return;
             await fetch(`${backendURL}/api/eliminar/${encodeURIComponent(img.filename)}`, {
               method: 'DELETE',
-              credentials: 'include'
+              headers: getAuthHeaders(false)
             });
             loadGallery();
           };
@@ -184,8 +187,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           reportBtn.onclick = async () => {
             await fetch(`${backendURL}/api/reportar`, {
               method: 'POST',
-              credentials: 'include',
-              headers: { 'Content-Type': 'application/json' },
+              headers: getAuthHeaders(),
               body: JSON.stringify({ filename: img.filename })
             });
             alert('Reportado');
@@ -200,7 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // 6) Carga inicial
+    // Carga inicial
     loadGallery();
   }
 });
