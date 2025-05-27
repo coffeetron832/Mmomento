@@ -1,4 +1,5 @@
-// Función para obtener SHA-1 de la contraseña
+// register.js
+
 async function sha1(str) {
   const encoder = new TextEncoder();
   const data = encoder.encode(str);
@@ -7,7 +8,6 @@ async function sha1(str) {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
 }
 
-// Función para validar si la contraseña fue comprometida
 async function checkPasswordPwned(password) {
   const hash = await sha1(password);
   const prefix = hash.slice(0, 5);
@@ -17,7 +17,7 @@ async function checkPasswordPwned(password) {
   const text = await response.text();
 
   return text.split('\n').some(line => {
-    const [hashSuffix, count] = line.split(':');
+    const [hashSuffix] = line.split(':');
     return hashSuffix === suffix;
   });
 }
@@ -33,13 +33,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('reg-email').value.trim();
     const password = document.getElementById('reg-password').value.trim();
 
+    // Validaciones básicas
     if (!username || !email || !password) {
       messageEl.style.color = 'orange';
       messageEl.textContent = 'Todos los campos son obligatorios';
       return;
     }
 
-    messageEl.style.color = 'black';
+    if (password.length < 8) {
+      messageEl.style.color = 'orange';
+      messageEl.textContent = 'La contraseña debe tener al menos 8 caracteres';
+      return;
+    }
+
+    messageEl.style.color = '#1A1A1A';
     messageEl.textContent = 'Validando contraseña...';
 
     try {
@@ -50,8 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
     } catch (error) {
-      // Si falla la validación, igual dejar pasar para no bloquear registro por error externo
       console.warn('Error al verificar contraseña comprometida:', error);
+      // No bloqueamos al usuario si falla la verificación externa
     }
 
     messageEl.textContent = 'Procesando registro...';
@@ -66,9 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
 
       if (res.ok) {
-        messageEl.style.color = 'lightgreen';
-        messageEl.textContent = data.message || 'Registro exitoso';
-        form.reset();
+        // Guardar token y usuario en localStorage de forma consistente
+        localStorage.setItem('momento_token', data.token);
+        localStorage.setItem('momento_user', data.username || username);
+
+        // Redirigir a la página principal
+        window.location.href = 'main.html';
       } else {
         messageEl.style.color = 'salmon';
         messageEl.textContent = data.error || 'Error en el registro';
