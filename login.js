@@ -23,22 +23,37 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json();
+    const contentType = res.headers.get('content-type');
+    const isJson = contentType && contentType.includes('application/json');
+    const data = isJson ? await res.json() : {};
 
-    if (!res.ok) {
-      loginMessage.textContent = data.error || 'Credenciales inválidas.';
+    if (res.status === 401) {
+      loginMessage.textContent = data.error || 'Correo o contraseña incorrectos.';
       loginMessage.style.color = 'red';
       return;
     }
 
-    // Guardar el token
-    localStorage.setItem('momento_token', data.token);
+    if (!res.ok) {
+      loginMessage.textContent = data.error || 'Error al iniciar sesión.';
+      loginMessage.style.color = 'red';
+      return;
+    }
 
-    // Redirigir a main.html
-    window.location.replace('main.html');
+    if (data.token) {
+      localStorage.setItem('momento_token', data.token);
+      loginMessage.textContent = 'Inicio de sesión exitoso. Redirigiendo...';
+      loginMessage.style.color = 'green';
+
+      setTimeout(() => {
+        window.location.replace('main.html');
+      }, 1000);
+    } else {
+      loginMessage.textContent = 'Respuesta inesperada del servidor.';
+      loginMessage.style.color = 'red';
+    }
   } catch (err) {
-    console.error(err);
-    loginMessage.textContent = 'Ocurrió un error al intentar iniciar sesión.';
+    console.error('Error al intentar iniciar sesión:', err);
+    loginMessage.textContent = 'Ocurrió un error de red o del servidor.';
     loginMessage.style.color = 'red';
   }
 });
