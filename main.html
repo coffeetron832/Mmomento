@@ -50,6 +50,9 @@
       border-radius: 6px;
       padding: 10px;
     }
+    .menu-links.active {
+      display: block;
+    }
     .menu-links a {
       display: block;
       padding: 8px 12px;
@@ -150,6 +153,10 @@
       object-fit: contain;
       display: block;
       margin: 0 auto 10px;
+      transition: transform 0.3s ease;
+    }
+    .image-card:hover img {
+      transform: scale(1.05);
     }
     .polaroid-label {
       font-family: 'Patrick Hand', cursive;
@@ -185,7 +192,7 @@
 </head>
 <body>
   <nav class="menu" role="navigation" aria-label="Menú principal">
-    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+    <button class="menu-icon" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMenu()">☰</button>
     <div class="menu-links" id="dropdown-menu" aria-hidden="true">
       <a href="acerca.html">ℹ️ Acerca</a>
       <a href="condiciones.html">📜 Términos</a>
@@ -195,14 +202,14 @@
     <button id="logout-btn" aria-label="Cerrar sesión">🚪 Salir</button>
   </nav>
 
-  <main>
-    <h1>Momentos 📷</h1>
+  <main aria-labelledby="main-title">
+    <h1 id="main-title">Momentos 📷</h1>
     <div id="mensaje" class="mensaje" role="status"></div>
 
     <form id="image-upload-form" aria-label="Formulario para subir imágenes">
       <label for="image">Selecciona imagen:</label>
       <input type="file" id="image" name="imagen" accept="image/*" required />
-      <button type="submit">Subir 📤</button>
+      <button type="submit" aria-label="Subir imagen">Subir 📤</button>
     </form>
 
     <section id="gallery" class="gallery" aria-live="polite"></section>
@@ -211,12 +218,14 @@
   <script>
     function toggleMenu() {
       const menu = document.getElementById('dropdown-menu');
-      const visible = menu.style.display === 'block';
-      menu.style.display = visible ? 'none' : 'block';
-      menu.setAttribute('aria-hidden', visible);
+      const btn = document.querySelector('.menu-icon');
+      const visible = menu.classList.toggle('active');
+      menu.setAttribute('aria-hidden', !visible);
+      btn.setAttribute('aria-expanded', visible);
     }
   </script>
   <script src="app.js" type="module"></script>
 </body>
 </html>
+
 
