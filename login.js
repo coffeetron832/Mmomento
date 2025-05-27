@@ -1,59 +1,45 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  const form = document.getElementById('login-form');
-  const messageEl = document.getElementById('login-message');
+const API = 'https://momento-backend-production.up.railway.app';
 
-  try {
-    const sessionRes = await fetch(
-      'https://momento-backend-production.up.railway.app/api/auth/session',
-      {
-        method: 'GET',
-        credentials: 'include'
-      }
-    );
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    if (sessionRes.ok) {
-      return window.location.replace('main.html');
-    }
-  } catch (err) {
-    console.error('Error comprobando sesión:', err);
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const loginMessage = document.getElementById('login-message');
+  loginMessage.textContent = '';
+
+  if (!email || !password) {
+    loginMessage.textContent = 'Por favor, completa todos los campos.';
+    loginMessage.style.color = 'red';
+    return;
   }
 
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
+  try {
+    const res = await fetch(`${API}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const data = await res.json();
 
-    if (!email || !password) {
-      messageEl.textContent = 'Ingresa correo y contraseña';
-      messageEl.style.color = 'orange';
+    if (!res.ok) {
+      loginMessage.textContent = data.error || 'Credenciales inválidas.';
+      loginMessage.style.color = 'red';
       return;
     }
-    messageEl.textContent = 'Procesando...';
-    messageEl.style.color = 'white';
 
-    try {
-      const res = await fetch(
-        'https://momento-backend-production.up.railway.app/api/auth/login',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ email, password })
-        }
-      );
-      const data = await res.json();
+    // Guardar el token
+    localStorage.setItem('momento_token', data.token);
 
-      if (res.ok) {
-        window.location.replace('main.html');
-      } else {
-        messageEl.textContent = data.error || 'Credenciales inválidas';
-        messageEl.style.color = 'salmon';
-      }
-    } catch (err) {
-      console.error('Error en login:', err);
-      messageEl.textContent = 'Error de conexión';
-      messageEl.style.color = 'red';
-    }
-  });
+    // Redirigir a main.html
+    window.location.replace('main.html');
+  } catch (err) {
+    console.error(err);
+    loginMessage.textContent = 'Ocurrió un error al intentar iniciar sesión.';
+    loginMessage.style.color = 'red';
+  }
 });
+
