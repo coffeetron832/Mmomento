@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logoutBtn = document.getElementById('logout-btn');
   const mensajeDiv = document.getElementById('mensaje');
 
-  // Función para obtener headers
   function getAuthHeaders(isJson = true) {
     const headers = {};
     if (isJson) headers['Content-Type'] = 'application/json';
@@ -16,13 +15,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     return headers;
   }
 
-  // Verifica sesión con token
   async function checkSession() {
     try {
       const res = await fetch(`${backendURL}/api/auth/session`, {
         method: 'GET',
         headers: getAuthHeaders(false),
-        credentials: 'include'  // <--- importante para CORS con credenciales
+        credentials: 'include'
       });
       return res.ok;
     } catch {
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ===== Registro =====
+  // ==== REGISTRO ====
   if (registerForm) {
     registerForm.addEventListener('submit', async e => {
       e.preventDefault();
@@ -48,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`${backendURL}/api/auth/register`, {
           method: 'POST',
           headers: getAuthHeaders(),
-          credentials: 'include',  // <--- aquí también
+          credentials: 'include',
           body: JSON.stringify({ username, email, password })
         });
         const data = await res.json();
@@ -61,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ===== Login =====
+  // ==== LOGIN ====
   if (loginForm) {
     if (await checkSession()) {
       return window.location.replace('main.html');
@@ -82,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`${backendURL}/api/auth/login`, {
           method: 'POST',
           headers: getAuthHeaders(),
-          credentials: 'include',  // <--- y aquí también
+          credentials: 'include',
           body: JSON.stringify({ email, password })
         });
         const data = await res.json();
@@ -91,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
           return;
         }
-        // Guarda JWT en localStorage
+
         localStorage.setItem('token', data.token);
         window.location.replace('main.html');
       } catch (err) {
@@ -102,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ===== Main (subir imagen, cargar galería) =====
+  // ==== MAIN (GALERÍA Y SUBIDA) ====
   if (uploadForm && galleryDiv) {
     if (!(await checkSession())) {
       return window.location.replace('login.html');
@@ -131,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`${backendURL}/api/upload`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-          credentials: 'include',  // <--- importante
+          credentials: 'include',
           body: formData
         });
         const data = await res.json();
@@ -148,13 +146,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`${backendURL}/api/imagenes`, {
           method: 'GET',
           headers: getAuthHeaders(false),
-          credentials: 'include'  // <--- importante
+          credentials: 'include'
         });
         if (!res.ok) {
           return window.location.replace('login.html');
         }
         const imgs = await res.json();
         galleryDiv.innerHTML = '';
+
         imgs.forEach(img => {
           const card = document.createElement('div');
           card.className = 'image-card';
@@ -178,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await fetch(`${backendURL}/api/eliminar/${encodeURIComponent(img.filename)}`, {
               method: 'DELETE',
               headers: getAuthHeaders(false),
-              credentials: 'include'  // <--- importante
+              credentials: 'include'
             });
             loadGallery();
           };
@@ -189,7 +188,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await fetch(`${backendURL}/api/reportar`, {
               method: 'POST',
               headers: getAuthHeaders(),
-              credentials: 'include',  // <--- importante
+              credentials: 'include',
               body: JSON.stringify({ filename: img.filename })
             });
             alert('Reportado');
@@ -203,11 +202,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         mensajeDiv.textContent = 'Error cargando la galería';
       }
     }
-
-    loadGallery();
-  }
-});
-
 
     loadGallery();
   }
