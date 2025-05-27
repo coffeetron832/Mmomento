@@ -1,6 +1,3 @@
-// app.js
-// Frontend using JWT in Authorization header instead of cookies
-
 document.addEventListener('DOMContentLoaded', async () => {
   const backendURL = 'https://momento-backend-production.up.railway.app';
   const registerForm = document.getElementById('register-form');
@@ -10,7 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logoutBtn    = document.getElementById('logout-btn');
   const mensajeDiv   = document.getElementById('mensaje');
 
-  // Helper: build auth headers
   function getAuthHeaders(isJson = true) {
     const headers = {};
     if (isJson) headers['Content-Type'] = 'application/json';
@@ -19,20 +15,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     return headers;
   }
 
-  // Helper: verifica sesión por token
   async function checkSession() {
     try {
       const res = await fetch(`${backendURL}/api/auth/session`, {
         method: 'GET',
         headers: getAuthHeaders(false)
       });
-      return res.ok;
+      if (!res.ok) {
+        localStorage.removeItem('token'); // Token inválido limpiar sesión
+        return false;
+      }
+      const data = await res.json();
+      console.log('Sesión válida:', data);
+      return true;
     } catch {
       return false;
     }
   }
 
-  // ===== Registro =====
+  // Registro
   if (registerForm) {
     registerForm.addEventListener('submit', async e => {
       e.preventDefault();
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ===== Login =====
+  // Login
   if (loginForm) {
     if (await checkSession()) {
       return window.location.replace('main.html');
@@ -91,7 +92,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
           return;
         }
-        // Guarda JWT en localStorage
         localStorage.setItem('token', data.token);
         window.location.replace('main.html');
       } catch (err) {
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ===== Main (cargar galería y subir imagen) =====
+  // Página principal (subir y mostrar imágenes)
   if (uploadForm && galleryDiv) {
     if (!(await checkSession())) {
       return window.location.replace('login.html');
@@ -116,7 +116,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.location.replace('login.html');
     });
 
-    // Subida de imágenes
     uploadForm.addEventListener('submit', async e => {
       e.preventDefault();
       mensajeDiv.textContent = '';
@@ -143,7 +142,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    // Cargar galería
     async function loadGallery() {
       try {
         const res = await fetch(`${backendURL}/api/imagenes`, {
@@ -202,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // Carga inicial
     loadGallery();
   }
 });
+
