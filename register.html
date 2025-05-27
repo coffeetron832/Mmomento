@@ -114,7 +114,6 @@
   </main>
 
   <script>
-    // Función para obtener SHA-1 de la contraseña
     async function sha1(str) {
       const encoder = new TextEncoder();
       const data = encoder.encode(str);
@@ -123,7 +122,6 @@
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
     }
 
-    // Función para validar si la contraseña fue comprometida
     async function checkPasswordPwned(password) {
       const hash = await sha1(password);
       const prefix = hash.slice(0, 5);
@@ -133,7 +131,7 @@
       const text = await response.text();
 
       return text.split('\n').some(line => {
-        const [hashSuffix, count] = line.split(':');
+        const [hashSuffix] = line.split(':');
         return hashSuffix === suffix;
       });
     }
@@ -166,7 +164,6 @@
             return;
           }
         } catch (error) {
-          // Si falla la validación, no bloquear el registro
           console.warn('Error al verificar contraseña comprometida:', error);
         }
 
@@ -182,9 +179,8 @@
           const data = await res.json();
 
           if (res.ok) {
-            messageEl.style.color = 'green';
-            messageEl.textContent = data.message || 'Registro exitoso';
-            form.reset();
+            localStorage.setItem('token', data.token);
+            window.location.href = 'main.html';
           } else {
             messageEl.style.color = 'salmon';
             messageEl.textContent = data.error || 'Error en el registro';
@@ -199,5 +195,4 @@
   </script>
 </body>
 </html>
-
 
