@@ -1,4 +1,4 @@
-const API_URL = "https://momento-backend-production.up.railway.app"; // Cámbialo si es necesario
+const API_URL = "https://momento-backend-production.up.railway.app/api"; // Cámbialo si es necesario
 
 async function apiRequest(endpoint, method, data, token = null) {
   const config = {
