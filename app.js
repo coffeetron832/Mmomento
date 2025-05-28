@@ -50,7 +50,19 @@ document.addEventListener('DOMContentLoaded', async () => {
           body: JSON.stringify({ username, email, password })
         });
         const data = await res.json();
-        mensajeDiv.textContent = data.message || data.error || 'Respuesta inesperada';
+
+        if (!res.ok) {
+          mensajeDiv.textContent = data.error || 'Error al registrar';
+          return;
+        }
+
+        // ✅ Guardar el token si fue devuelto
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          window.location.replace('main.html');
+        } else {
+          mensajeDiv.textContent = data.message || 'Registro exitoso. Ahora inicia sesión.';
+        }
       } catch (err) {
         mensajeDiv.textContent = 'Error al registrar usuario';
         console.error(err);
@@ -206,4 +218,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadGallery();
   }
 });
-
