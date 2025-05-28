@@ -1,33 +1,38 @@
-/* Fondo con degradado */
+/* Importar fuentes desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&display=swap');
+
+/* Estilo global */
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: #fff;
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6; /* fondo sobrio */
+  color: #1f2937; /* texto gris oscuro */
   min-height: 100vh;
   display: flex;
   justify-content: center;
   padding: 40px 20px;
 }
 
-/* Contenedor central */
+/* Contenedor principal */
 .container {
   max-width: 700px;
   width: 100%;
 }
 
-/* Header */
+/* Encabezado */
 header {
   text-align: center;
   margin-bottom: 40px;
 }
 header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0;
+  font-size: 2.8rem;
+  font-family: 'Grape Nuts', cursive;
+  color: #111827;
+  margin-bottom: 5px;
 }
 header p {
   font-size: 1.1rem;
-  color: #ccc;
+  color: #6b7280;
 }
 
 /* Sección de subida */
@@ -35,37 +40,33 @@ header p {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background: rgba(255, 255, 255, 0.08);
+  background: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
   margin-bottom: 40px;
 }
 .upload-section input,
 .upload-section button {
   padding: 12px;
-  border: none;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 1rem;
 }
-.upload-section input[type="file"] {
-  background: #ffffff10;
-  color: #fff;
-}
+.upload-section input[type="file"],
 .upload-section input[type="text"] {
-  background: #ffffff15;
-  color: #fff;
+  background-color: #f9fafb;
+  color: #111827;
 }
 .upload-section button {
-  background: #00b4db;
-  background: linear-gradient(to right, #0083b0, #00b4db);
+  background-color: #2563eb;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s;
 }
 .upload-section button:hover {
-  opacity: 0.85;
+  background-color: #1d4ed8;
 }
 
 /* Timeline */
@@ -73,6 +74,7 @@ header p {
   font-size: 1.5rem;
   margin-bottom: 20px;
   text-align: center;
+  color: #374151;
 }
 
 #imagesContainer {
@@ -82,10 +84,10 @@ header p {
 }
 
 .image-card {
-  background: rgba(255, 255, 255, 0.07);
+  background: #ffffff;
   border-radius: 10px;
   padding: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,8 +96,6 @@ header p {
 .image-card img {
   max-width: 100%;
   max-height: 400px;
-  width: auto;
-  height: auto;
   object-fit: contain;
   border-radius: 10px;
   display: block;
@@ -105,12 +105,12 @@ header p {
 .image-description {
   margin-top: 10px;
   font-style: italic;
-  color: #eee;
+  color: #4b5563;
   text-align: center;
 }
 
 .image-user {
   margin-top: 8px;
   font-size: 0.85rem;
-  color: #80d0c7;
+  color: #6b7280;
 }
