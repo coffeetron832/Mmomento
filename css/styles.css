@@ -114,3 +114,11 @@ header p {
   font-size: 0.85rem;
   color: #6b7280;
 }
+
+.logo {
+  font-family: 'Grape Nuts', cursive;
+  font-size: 3rem;
+  color: #111827;
+  text-align: center;
+}
+
