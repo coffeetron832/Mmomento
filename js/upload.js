@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("description", description);
 
     try {
-      const res = await fetch("https://momento-backend-production.up.railway.app/api/images", {
+      const res = await fetch("momento-backend-production.up.railway.app/api/images/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
