@@ -1,9 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
+  const imagesContainer = document.getElementById("imagesContainer");
 
+  // Función para crear el HTML de una imagen en el timeline
+  function createImageCard(image) {
+    const div = document.createElement("div");
+    div.className = "image-card";
+
+    const img = document.createElement("img");
+    img.src = image.imageUrl;
+    img.alt = image.description || "Imagen subida";
+
+    const desc = document.createElement("p");
+    desc.className = "image-description";
+    desc.textContent = image.description || "";
+
+    const user = document.createElement("p");
+    user.className = "image-user";
+    user.textContent = `Subido por: ${image.userId.username || image.userId.email || "Anon"}`;
+
+    div.appendChild(img);
+    div.appendChild(desc);
+    div.appendChild(user);
+
+    return div;
+  }
+
+  // Función para cargar imágenes del backend y mostrarlas
+  async function loadImages() {
+    try {
+      const res = await fetch("https://momento-backend-production.up.railway.app/api/images");
+      const images = await res.json();
+      imagesContainer.innerHTML = ""; // limpiar
+      images.forEach(image => {
+        const card = createImageCard(image);
+        imagesContainer.appendChild(card);
+      });
+    } catch (error) {
+      console.error("Error al cargar imágenes:", error);
+    }
+  }
+
+  // Cargar imágenes al inicio
+  loadImages();
+
+  // Evento submit para subir imagen
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Debes iniciar sesión");
@@ -14,11 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const image = document.getElementById("image").files[0];
     const description = document.getElementById("description").value;
 
-    if (!image) {
-      alert("Por favor selecciona una imagen.");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("image", image);
     formData.append("description", description);
@@ -28,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          // No pongas 'Content-Type' aquí para que el navegador lo maneje con FormData
         },
         body: formData,
       });
@@ -37,16 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok) {
         alert("Imagen subida con éxito");
-        // Opcional: limpiar formulario o redirigir
         form.reset();
+        // Agregar imagen recién subida al inicio del timeline
+        const newCard = createImageCard(result);
+        imagesContainer.prepend(newCard);
       } else {
         alert(result.error || "Error al subir la imagen");
       }
-    } catch (error) {
-      console.error("Error en la subida:", error);
-      alert("Error al subir la imagen");
+    } catch (err) {
+      console.error("Error en la subida:", err);
+      alert("Error en la subida de la imagen");
     }
   });
 });
-
-
