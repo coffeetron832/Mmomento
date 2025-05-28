@@ -22,5 +22,33 @@
       </nav>
     </div>
   </header>
+
+  <!-- Modal de bienvenida -->
+  <div id="welcomeModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <p>
+        Lo que ves hoy, mañana ya no existe.<br>
+        Fotos, ideas, ofertas y momentos que desaparecen en 6 horas.<br>
+        Nada se guarda. Todo se vive.
+      </p>
+      <button id="closeModalBtn">Cerrar</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('welcomeModal');
+      const closeBtn = document.getElementById('closeModalBtn');
+
+      if (!localStorage.getItem('welcomeShown')) {
+        modal.style.display = 'flex';
+      }
+
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        localStorage.setItem('welcomeShown', 'true');
+      });
+    });
+  </script>
 </body>
 </html>
