@@ -32,8 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Registro exitoso");
         window.location.href = "upload.html";
       } else {
-        alert(result.message || "Error al registrarse");
-      }
+  alert(result.message || "Error al registrarse");
+  console.error("Error al registrarse:", result);
+}
     });
   }
 });
