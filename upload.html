@@ -2,23 +2,29 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Subir imagen | Momento</title>
+  <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <h2>Sube tu momento</h2>
-  <form id="uploadForm">
-    <input type="file" id="image" accept="image/*" required />
-    <input type="text" id="description" placeholder="Descripción (máx. 100 caracteres)" maxlength="100" required />
-    <button type="submit">Subir</button>
-  </form>
+  <div class="container">
+    <header>
+      <h1>Momento</h1>
+      <p>Redefining what’s worth looking at.</p>
+    </header>
 
-  <hr />
+    <section class="upload-section">
+      <form id="uploadForm">
+        <input type="file" id="image" accept="image/*" required />
+        <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
+        <button type="submit">Subir Momento</button>
+      </form>
+    </section>
 
-  <section id="timeline">
-    <h3>Últimos momentos</h3>
-    <div id="imagesContainer"></div>
-  </section>
+    <section id="timeline">
+      <h2>Últimos Momentos</h2>
+      <div id="imagesContainer"></div>
+    </section>
+  </div>
 
   <script src="js/upload.js"></script>
 </body>
