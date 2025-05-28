@@ -207,3 +207,72 @@ header p,
 .modal-content button:hover {
   background-color: #1d4ed8;
 }
+
+/* --- Carrusel de información --- */
+.info-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.carousel-container {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.carousel-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.carousel-btn:hover {
+  color: #2563eb;
+}
+
+.carousel-message {
+  flex-grow: 1;
+  padding: 10px 20px;
+  transition: opacity 0.4s ease-in-out;
+  opacity: 1;
+}
+
+.carousel-message h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.carousel-message p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #4b5563;
+  text-align: left;
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
+  .carousel-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .carousel-btn {
+    font-size: 1.8rem;
+  }
+  .carousel-message {
+    padding: 20px 10px;
+  }
+  .carousel-message p {
+    text-align: center;
+  }
+}
