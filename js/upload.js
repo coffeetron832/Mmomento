@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const description = document.getElementById("description").value;
 
     if (!image) {
-      alert("Por favor selecciona una imagen");
+      alert("Por favor selecciona una imagen.");
       return;
     }
 
@@ -24,11 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("description", description);
 
     try {
-      const res = await fetch("momento-backend-production.up.railway.app/api/images/upload", {
+      const res = await fetch("https://momento-backend-production.up.railway.app/api/images/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          // ¡No agregues 'Content-Type'! Fetch lo maneja automáticamente con FormData
+          // No pongas 'Content-Type' aquí para que el navegador lo maneje con FormData
         },
         body: formData,
       });
@@ -37,14 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok) {
         alert("Imagen subida con éxito");
-        form.reset(); // Limpia el formulario después de subir
+        // Opcional: limpiar formulario o redirigir
+        form.reset();
       } else {
         alert(result.error || "Error al subir la imagen");
       }
     } catch (error) {
       console.error("Error en la subida:", error);
-      alert("Error de red o del servidor al subir la imagen");
+      alert("Error al subir la imagen");
     }
   });
 });
+
 
