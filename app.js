@@ -9,29 +9,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function getAuthHeaders(isJson = true) {
     const headers = {};
+    if (isJson) headers['Content-Type'] = 'application/json';
     const token = localStorage.getItem('token');
-    console.log('[DEBUG] getAuthHeaders → token en localStorage:', token);
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    if (isJson) {
-      headers['Content-Type'] = 'application/json';
-    }
+    if (token) headers['Authorization'] = `Bearer ${token}`;
     return headers;
   }
 
   async function checkSession() {
-    console.log('[DEBUG] checkSession → llamando a /api/auth/session');
     try {
       const res = await fetch(`${backendURL}/api/auth/session`, {
         method: 'GET',
-        headers: getAuthHeaders(false),
-        credentials: 'include'
+        headers: getAuthHeaders(false)
       });
-      console.log('[DEBUG] checkSession → respuesta status:', res.status);
       return res.ok;
-    } catch (err) {
-      console.error('[DEBUG] checkSession → error:', err);
+    } catch {
       return false;
     }
   }
@@ -51,35 +42,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       try {
-        console.log('[DEBUG] Registro → enviando datos:', { username, email, password });
         const res = await fetch(`${backendURL}/api/auth/register`, {
           method: 'POST',
           headers: getAuthHeaders(),
-          credentials: 'include',
           body: JSON.stringify({ username, email, password })
         });
-        console.log('[DEBUG] Registro → status:', res.status);
         const data = await res.json();
-        console.log('[DEBUG] Registro → respuesta JSON:', data);
-
-        if (!res.ok) {
-          mensajeDiv.textContent = data.error || data.errores?.[0]?.msg || 'Error en el registro';
-          return;
-        }
-
-        if (!data.token) {
-          console.error('[DEBUG] Registro → token no recibido');
-          mensajeDiv.textContent = data.message || 'Registro exitoso, pero no se recibió token.';
-          return;
-        }
-
-        localStorage.setItem('token', data.token);
-        console.log('[DEBUG] Registro → token guardado:', localStorage.getItem('token'));
-        console.log('[DEBUG] Registro → redirigiendo a main.html');
-        window.location.replace('main.html');
+        mensajeDiv.textContent = data.message || data.error || 'Respuesta inesperada';
       } catch (err) {
         mensajeDiv.textContent = 'Error al registrar usuario';
-        console.error('[DEBUG] Registro → excepción:', err);
+        console.error(err);
       }
     });
     return;
@@ -88,7 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ==== LOGIN ====
   if (loginForm) {
     if (await checkSession()) {
-      console.log('[DEBUG] Login → sesión ya iniciada, redirigiendo a main.html');
       return window.location.replace('main.html');
     }
 
@@ -104,35 +75,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       try {
-        console.log('[DEBUG] Login → enviando credenciales:', { email, password });
         const res = await fetch(`${backendURL}/api/auth/login`, {
           method: 'POST',
           headers: getAuthHeaders(),
-          credentials: 'include',
           body: JSON.stringify({ email, password })
         });
-        console.log('[DEBUG] Login → status:', res.status);
         const data = await res.json();
-        console.log('[DEBUG] Login → respuesta JSON:', data);
 
         if (!res.ok) {
           mensajeDiv.textContent = data.error || 'Credenciales incorrectas';
           return;
         }
 
-        if (!data.token) {
-          console.error('[DEBUG] Login → token no recibido');
-          mensajeDiv.textContent = 'Inicio de sesión exitoso, pero no se recibió token.';
-          return;
-        }
-
         localStorage.setItem('token', data.token);
-        console.log('[DEBUG] Login → token guardado:', localStorage.getItem('token'));
-        console.log('[DEBUG] Login → redirigiendo a main.html');
         window.location.replace('main.html');
       } catch (err) {
         mensajeDiv.textContent = 'Error al iniciar sesión';
-        console.error('[DEBUG] Login → excepción:', err);
+        console.error(err);
       }
     });
     return;
@@ -141,7 +100,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ==== MAIN (GALERÍA Y SUBIDA) ====
   if (uploadForm && galleryDiv) {
     if (!(await checkSession())) {
-      console.log('[DEBUG] Main → sesión no válida, redirigiendo a login.html');
       return window.location.replace('login.html');
     }
 
@@ -150,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('token');
-      console.log('[DEBUG] Logout → token eliminado');
       window.location.replace('login.html');
     });
 
@@ -166,39 +123,30 @@ document.addEventListener('DOMContentLoaded', async () => {
       formData.append('imagen', file);
 
       try {
-        console.log('[DEBUG] Subida → enviando imagen');
         const res = await fetch(`${backendURL}/api/upload`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-          credentials: 'include',
           body: formData
         });
-        console.log('[DEBUG] Subida → status:', res.status);
         const data = await res.json();
-        console.log('[DEBUG] Subida → respuesta JSON:', data);
         mensajeDiv.textContent = data.mensaje || data.error;
         if (res.ok) loadGallery();
       } catch (err) {
         mensajeDiv.textContent = 'Error de conexión';
-        console.error('[DEBUG] Subida → excepción:', err);
+        console.error(err);
       }
     });
 
     async function loadGallery() {
       try {
-        console.log('[DEBUG] loadGallery → solicitando imágenes');
         const res = await fetch(`${backendURL}/api/imagenes`, {
           method: 'GET',
-          headers: getAuthHeaders(false),
-          credentials: 'include'
+          headers: getAuthHeaders(false)
         });
-        console.log('[DEBUG] loadGallery → status:', res.status);
         if (!res.ok) {
-          console.log('[DEBUG] loadGallery → sesión inválida, redirigiendo a login.html');
           return window.location.replace('login.html');
         }
         const imgs = await res.json();
-        console.log('[DEBUG] loadGallery → imágenes recibidas:', imgs);
         galleryDiv.innerHTML = '';
 
         imgs.forEach(img => {
@@ -221,11 +169,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           delBtn.textContent = '🗑️ Eliminar';
           delBtn.onclick = async () => {
             if (!confirm('¿Seguro que deseas eliminar esta imagen?')) return;
-            console.log('[DEBUG] Eliminar → filename:', img.filename);
             await fetch(`${backendURL}/api/eliminar/${encodeURIComponent(img.filename)}`, {
               method: 'DELETE',
-              headers: getAuthHeaders(false),
-              credentials: 'include'
+              headers: getAuthHeaders(false)
             });
             loadGallery();
           };
@@ -233,11 +179,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           const reportBtn = document.createElement('button');
           reportBtn.textContent = '🚩 Reportar';
           reportBtn.onclick = async () => {
-            console.log('[DEBUG] Reportar → filename:', img.filename);
             await fetch(`${backendURL}/api/reportar`, {
               method: 'POST',
               headers: getAuthHeaders(),
-              credentials: 'include',
               body: JSON.stringify({ filename: img.filename })
             });
             alert('Reportado');
@@ -247,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           galleryDiv.appendChild(card);
         });
       } catch (err) {
-        console.error('[DEBUG] loadGallery → excepción:', err);
+        console.error('Error cargando galería:', err);
         mensajeDiv.textContent = 'Error cargando la galería';
       }
     }
@@ -255,3 +199,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadGallery();
   }
 });
+
