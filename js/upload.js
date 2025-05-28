@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Debes iniciar sesión");
@@ -13,60 +14,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const image = document.getElementById("image").files[0];
     const description = document.getElementById("description").value;
 
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("description", description);
-
-    const res = await fetch("https://   /api/images", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-
-    const result = await res.json();
-    if (res.ok) {
-      alert("Imagen subida con éxito");
-    } else {
-      alert(result.message || "Error al subir la imagen");
-    }
-  });
-});
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("uploadForm");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Debes iniciar sesión");
-      window.location.href = "login.html";
+    if (!image) {
+      alert("Por favor selecciona una imagen");
       return;
     }
 
-    const image = document.getElementById("image").files[0];
-    const description = document.getElementById("description").value;
-
     const formData = new FormData();
     formData.append("image", image);
     formData.append("description", description);
 
-    const res = await fetch("https://momento-backend.up.railway.app/api/images", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    try {
+      const res = await fetch("https://momento-backend-production.up.railway.app/api/images", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // ¡No agregues 'Content-Type'! Fetch lo maneja automáticamente con FormData
+        },
+        body: formData,
+      });
 
-    const result = await res.json();
-    if (res.ok) {
-      alert("Imagen subida con éxito");
-    } else {
-      alert(result.message || "Error al subir la imagen");
+      const result = await res.json();
+
+      if (res.ok) {
+        alert("Imagen subida con éxito");
+        form.reset(); // Limpia el formulario después de subir
+      } else {
+        alert(result.error || "Error al subir la imagen");
+      }
+    } catch (error) {
+      console.error("Error en la subida:", error);
+      alert("Error de red o del servidor al subir la imagen");
     }
   });
 });
-
 
