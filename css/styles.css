@@ -33,24 +33,12 @@ header h1,
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
-  border-right: 2px solid rgba(255,255,255,0.75);
-  animation: typing 3.5s steps(10) forwards, blink-caret 0.75s step-end infinite;
 }
 header p,
 .tagline {
   font-size: 1.2rem;
   color: #4b5563;
   margin: 10px 0 30px;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: rgba(255,255,255,0.75); }
 }
 
 /* Sección de subida */
@@ -292,41 +280,11 @@ header p,
 }
 
 .logo {
-  position: relative;
   display: inline-block;
   padding: 10px 25px;
   font-size: 2.5rem;
   font-weight: bold;
-  color: white;
+  color: #111827;
   border-radius: 12px;
-  z-index: 0;
-  overflow: hidden;
   cursor: default;
-}
-
-.logo::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(270deg, #8e2de2, #4a00e0, #11998e, #38ef7d, #f7971e, #ffd200);
-  background-size: 1200% 1200%;
-  animation: gradientMove 25s ease infinite;
-  border-radius: 12px;
-  filter: brightness(0.85);
-  z-index: -1;
-}
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
