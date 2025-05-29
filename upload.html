@@ -9,7 +9,13 @@
   <div class="container">
     <header>
       <h1>Momento</h1>
-      <p>Redefining what’s worth looking at.</p>
+
+      <!-- Navegación condicional -->
+      <nav class="main-nav">
+        <a href="login.html" id="loginLink">Iniciar sesión</a>
+        <a href="register.html" id="registerLink">Registrarse</a>
+        <a href="#" id="logoutBtn" style="display: none;">Cerrar sesión</a>
+      </nav>
     </header>
 
     <section class="upload-section">
@@ -27,5 +33,30 @@
   </div>
 
   <script src="js/upload.js"></script>
+
+  <!-- Script para mostrar/ocultar botones según el estado del usuario -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginLink = document.getElementById('loginLink');
+      const registerLink = document.getElementById('registerLink');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      const userToken = localStorage.getItem('userToken');
+
+      if (userToken) {
+        // Usuario autenticado: ocultar login y registro, mostrar logout
+        loginLink.style.display = 'none';
+        registerLink.style.display = 'none';
+        logoutBtn.style.display = 'inline';
+
+        logoutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('welcomeShown');
+          window.location.href = 'login.html'; // Redirige al login
+        });
+      }
+    });
+  </script>
 </body>
 </html>
