@@ -2,11 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
 
-  // Obtén userId del localStorage (debes guardarlo al login)
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
-  // Crear el HTML de una imagen en el timeline
   function createImageCard(image) {
     const div = document.createElement("div");
     div.className = "image-card";
@@ -21,14 +19,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const user = document.createElement("p");
     user.className = "image-user";
-    user.textContent = `Subido por: ${image.userId.username || image.userId.email || "Anon"}`;
+
+    // Para evitar error, chequea si userId viene con username o email
+    if (image.userId) {
+      if (typeof image.userId === "object") {
+        user.textContent = `Subido por: ${image.userId.username || image.userId.email || "Anon"}`;
+      } else {
+        // Si solo es string (id), poner algo genérico
+        user.textContent = "Subido por: Usuario";
+      }
+    } else {
+      user.textContent = "Subido por: Anónimo";
+    }
 
     div.appendChild(img);
     div.appendChild(desc);
     div.appendChild(user);
 
-    // Si la imagen pertenece al usuario logueado, agregar botón eliminar
-    if (userId && image.userId._id === userId) {
+    // Botón eliminar solo si el usuario logueado es el dueño
+    if (userId && image.userId && ((image.userId._id && image.userId._id === userId) || image.userId === userId)) {
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "Eliminar";
       deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
@@ -38,12 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
     return div;
   }
 
-  // Cargar imágenes del backend y mostrarlas
   async function loadImages() {
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images");
       const images = await res.json();
-      imagesContainer.innerHTML = ""; // limpiar
+      imagesContainer.innerHTML = "";
       images.forEach(image => {
         const card = createImageCard(image);
         imagesContainer.appendChild(card);
@@ -53,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Eliminar imagen
   async function deleteImage(imageId, element) {
     try {
       const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${imageId}`, {
@@ -76,10 +83,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Cargar imágenes al inicio
+  // Verificar token antes de cargar imágenes
+  if (!token) {
+    alert("Debes iniciar sesión");
+    window.location.href = "login.html";
+    return;
+  }
+
   loadImages();
 
-  // Evento submit para subir imagen
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -110,7 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.ok) {
         alert("Imagen subida con éxito");
         form.reset();
-        // Agregar imagen recién subida al inicio del timeline
         const newCard = createImageCard(result);
         imagesContainer.prepend(newCard);
       } else {
@@ -122,3 +133,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
