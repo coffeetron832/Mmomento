@@ -2,7 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
 
-  // Función para crear el HTML de una imagen en el timeline
+  // Obtén userId del localStorage (debes guardarlo al login)
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+
+  // Crear el HTML de una imagen en el timeline
   function createImageCard(image) {
     const div = document.createElement("div");
     div.className = "image-card";
@@ -23,10 +27,18 @@ document.addEventListener("DOMContentLoaded", () => {
     div.appendChild(desc);
     div.appendChild(user);
 
+    // Si la imagen pertenece al usuario logueado, agregar botón eliminar
+    if (userId && image.userId._id === userId) {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Eliminar";
+      deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
+      div.appendChild(deleteBtn);
+    }
+
     return div;
   }
 
-  // Función para cargar imágenes del backend y mostrarlas
+  // Cargar imágenes del backend y mostrarlas
   async function loadImages() {
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images");
@@ -41,13 +53,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Eliminar imagen
+  async function deleteImage(imageId, element) {
+    try {
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${imageId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (res.ok) {
+        alert("Imagen eliminada exitosamente");
+        element.remove();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Error al eliminar la imagen");
+      }
+    } catch (err) {
+      console.error("Error al eliminar imagen:", err);
+      alert("Error al eliminar la imagen");
+    }
+  }
+
   // Cargar imágenes al inicio
   loadImages();
 
   // Evento submit para subir imagen
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+
     if (!token) {
       alert("Debes iniciar sesión");
       window.location.href = "login.html";
