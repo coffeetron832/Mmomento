@@ -17,18 +17,21 @@
       </nav>
     </header>
 
-    <section class="upload-section">
-      <form id="uploadForm">
-        <input type="file" id="image" accept="image/*" required />
-        <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
-        <button type="submit">Subir Momento</button>
-      </form>
-    </section>
+    <!-- Contenedor para dividir en dos columnas -->
+    <div class="main-content">
+      <section class="upload-section">
+        <form id="uploadForm">
+          <input type="file" id="image" accept="image/*" required />
+          <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
+          <button type="submit">Subir Momento</button>
+        </form>
+      </section>
 
-    <section id="timeline">
-      <h2>Últimos Momentos</h2>
-      <div id="imagesContainer"></div>
-    </section>
+      <section id="timeline">
+        <h2>Últimos Momentos</h2>
+        <div id="imagesContainer"></div>
+      </section>
+    </div>
   </div>
 
   <script src="js/upload.js"></script>
@@ -56,3 +59,4 @@
   </script>
 </body>
 </html>
+
