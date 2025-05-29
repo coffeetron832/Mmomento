@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="container">
-    <header>
+    <header style="flex-basis: 100%; text-align: center; margin-bottom: 40px;">
       <h1 class="logo">Momento</h1>
       <p class="tagline">Redefining what’s worth looking at.</p>
 
@@ -37,20 +37,19 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = document.getElementById('logoutBtn');
-      const userToken = localStorage.getItem('token'); // Cambiado a 'token'
+      const userToken = localStorage.getItem('token');
 
       if (userToken) {
         logoutBtn.style.display = 'inline';
 
         logoutBtn.addEventListener('click', (e) => {
           e.preventDefault();
-          localStorage.removeItem('token'); // Cambiado a 'token'
-          localStorage.removeItem('user');  // También eliminar la info de usuario para limpiar sesión
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
           localStorage.removeItem('welcomeShown');
           window.location.href = 'login.html';
         });
       } else {
-        // Si no hay sesión, redirigir a login
         window.location.href = 'login.html';
       }
     });
