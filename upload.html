@@ -35,15 +35,17 @@
 
   <script src="js/upload.js"></script>
 
-  <!-- Script para manejar estado de sesión -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const loginLink = document.getElementById('loginLink');
       const registerLink = document.getElementById('registerLink');
       const logoutBtn = document.getElementById('logoutBtn');
+      const imagesContainer = document.getElementById('imagesContainer');
 
       const userToken = localStorage.getItem('userToken');
+      const currentUserId = localStorage.getItem('userId'); // asumimos que guardás userId aquí
 
+      // Mostrar/Ocultar links según sesión
       if (userToken) {
         loginLink.style.display = 'none';
         registerLink.style.display = 'none';
@@ -52,10 +54,86 @@
         logoutBtn.addEventListener('click', (e) => {
           e.preventDefault();
           localStorage.removeItem('userToken');
+          localStorage.removeItem('userId');
           localStorage.removeItem('welcomeShown');
           window.location.href = 'login.html';
         });
+      } else {
+        // Si no hay token, redirigir a login para subir imágenes
+        window.location.href = 'login.html';
       }
+
+      // Función para renderizar imágenes con botón eliminar para el dueño
+      function renderImages(images) {
+        imagesContainer.innerHTML = '';
+
+        images.forEach(image => {
+          const div = document.createElement('div');
+          div.className = 'image-item';
+
+          div.innerHTML = `
+            <img src="${image.imageUrl}" alt="Imagen" width="300" />
+            <p>${image.description || ''}</p>
+          `;
+
+          // Obtener userId de la imagen (puede venir como objeto o string)
+          const imageUserId = typeof image.userId === 'object' ? image.userId._id : image.userId;
+
+          if (currentUserId === imageUserId) {
+            const btnDelete = document.createElement('button');
+            btnDelete.textContent = 'Eliminar';
+            btnDelete.onclick = () => deleteImage(image._id, div);
+            div.appendChild(btnDelete);
+          }
+
+          imagesContainer.appendChild(div);
+        });
+      }
+
+      // Función para eliminar imagen (API DELETE)
+      async function deleteImage(imageId, elementToRemove) {
+        if (!confirm('¿Estás seguro de eliminar esta imagen?')) return;
+
+        try {
+          const res = await fetch(`/api/images/${imageId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${userToken}`
+            }
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            alert(data.message);
+            elementToRemove.remove();
+          } else {
+            alert('Error: ' + (data.error || 'No se pudo eliminar la imagen'));
+          }
+        } catch (error) {
+          alert('Error en la conexión');
+          console.error(error);
+        }
+      }
+
+      // Cargar imágenes desde backend
+      async function loadImages() {
+        try {
+          const res = await fetch('/api/images');
+          const images = await res.json();
+          renderImages(images);
+        } catch (error) {
+          console.error('Error al cargar imágenes:', error);
+        }
+      }
+
+      loadImages();
+
+      // --- Opcional: manejar la subida de imagen desde aquí (si no está en upload.js) ---
+      // const uploadForm = document.getElementById('uploadForm');
+      // uploadForm.addEventListener('submit', async (e) => {
+      //   e.preventDefault();
+      //   // Código para subir la imagen con fetch POST, con token, etc.
+      // });
     });
   </script>
 </body>
