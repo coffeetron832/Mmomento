@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await apiRequest("/auth/login", "POST", { email, password });
       if (result.token) {
         localStorage.setItem("token", result.token);
-        // Guardar también la info del usuario en localStorage
+        // Guardar también la info del usuario en localStorage como JSON
         localStorage.setItem("user", JSON.stringify(result.user));
         alert("Sesión iniciada");
         window.location.href = "upload.html";
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await apiRequest("/auth/register", "POST", { name, email, password });
       if (result.token) {
         localStorage.setItem("token", result.token);
-        // Guardar también la info del usuario en localStorage
+        // Guardar también la info del usuario en localStorage como JSON
         localStorage.setItem("user", JSON.stringify(result.user));
         alert("Registro exitoso");
         window.location.href = "upload.html";
@@ -42,3 +42,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
