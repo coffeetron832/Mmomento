@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     div.className = "image-card";
 
     const img = document.createElement("img");
-    img.src = image.imageUrl;
+    img.src = image.imageUrl || image.url || ""; // asegurar url
     img.alt = image.description || "Imagen subida";
 
     const desc = document.createElement("p");
@@ -20,13 +20,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const user = document.createElement("p");
     user.className = "image-user";
 
-    // Para evitar error, chequea si userId viene con username o email
+    // Mostrar usuario o anónimo
     if (image.userId) {
       if (typeof image.userId === "object") {
         user.textContent = `Subido por: ${image.userId.username || image.userId.email || "Anon"}`;
-      } else {
-        // Si solo es string (id), poner algo genérico
+      } else if (typeof image.userId === "string") {
+        // Si es string pero no tiene info extra
         user.textContent = "Subido por: Usuario";
+      } else {
+        user.textContent = "Subido por: Anónimo";
       }
     } else {
       user.textContent = "Subido por: Anónimo";
@@ -37,9 +39,17 @@ document.addEventListener("DOMContentLoaded", () => {
     div.appendChild(user);
 
     // Botón eliminar solo si el usuario logueado es el dueño
-    if (userId && image.userId && ((image.userId._id && image.userId._id === userId) || image.userId === userId)) {
+    if (userId && image.userId && 
+      ((image.userId._id && image.userId._id === userId) || image.userId === userId)) {
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "Eliminar";
+      deleteBtn.style.marginTop = "10px";
+      deleteBtn.style.padding = "8px 12px";
+      deleteBtn.style.backgroundColor = "#dc2626";
+      deleteBtn.style.color = "white";
+      deleteBtn.style.border = "none";
+      deleteBtn.style.borderRadius = "8px";
+      deleteBtn.style.cursor = "pointer";
       deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
       div.appendChild(deleteBtn);
     }
@@ -50,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadImages() {
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images");
+      if (!res.ok) throw new Error("Error al obtener imágenes");
       const images = await res.json();
       imagesContainer.innerHTML = "";
       images.forEach(image => {
@@ -58,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } catch (error) {
       console.error("Error al cargar imágenes:", error);
+      imagesContainer.innerHTML = "<p style='color: red;'>Error al cargar imágenes.</p>";
     }
   }
 
@@ -101,7 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const image = document.getElementById("image").files[0];
+    const imageInput = document.getElementById("image");
+    if (!imageInput.files.length) {
+      alert("Por favor selecciona una imagen para subir.");
+      return;
+    }
+    const image = imageInput.files[0];
     const description = document.getElementById("description").value;
 
     const formData = new FormData();
