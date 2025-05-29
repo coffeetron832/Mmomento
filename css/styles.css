@@ -1,8 +1,7 @@
-/* --- Tu código existente --- */
-/* Importar fuentes desde Google Fonts */
+/* --- Importar fuentes desde Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&display=swap');
 
-/* Estilo global */
+/* --- Estilo global --- */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -14,14 +13,18 @@ body {
   padding: 40px 20px;
 }
 
-/* Contenedor principal */
+/* --- Contenedor principal --- */
 .container {
-  max-width: 700px;
+  max-width: 1000px;
   width: 100%;
+  display: flex;
+  gap: 30px;
+  padding: 0 20px;
 }
 
-/* Encabezado general */
+/* --- Encabezado general --- */
 header {
+  flex-basis: 100%;
   text-align: center;
   margin-bottom: 40px;
 }
@@ -41,7 +44,11 @@ header p,
   margin: 10px 0 30px;
 }
 
-/* Sección de subida */
+/* --- Sección de subida (columna izquierda) --- */
+.upload-section {
+  flex: 1;
+  max-width: 350px;
+}
 .upload-section form {
   display: flex;
   flex-direction: column;
@@ -75,18 +82,28 @@ header p,
   background-color: #1d4ed8;
 }
 
-/* Timeline */
+/* --- Timeline (columna derecha) --- */
+#timeline {
+  flex: 1.6;
+  display: flex;
+  flex-direction: column;
+}
 #timeline h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
-  text-align: center;
+  text-align: left;
   color: #374151;
 }
 #imagesContainer {
   display: flex;
   flex-direction: column;
   gap: 25px;
+  overflow-y: auto;
+  max-height: 80vh;
+  padding-right: 10px;
 }
+
+/* --- Estilos para cada tarjeta de imagen --- */
 .image-card {
   background: #ffffff;
   border-radius: 10px;
@@ -116,7 +133,7 @@ header p,
   color: #6b7280;
 }
 
-/* Pantalla de inicio (landing) */
+/* --- Pantalla de inicio (landing) --- */
 .landing-container {
   min-height: 100vh;
   display: flex;
@@ -128,7 +145,7 @@ header p,
   text-align: center;
 }
 
-/* Navegación principal */
+/* --- Navegación principal --- */
 .main-nav {
   display: flex;
   gap: 20px;
@@ -145,7 +162,7 @@ header p,
   color: #1d4ed8;
 }
 
-/* Responsive */
+/* --- Responsive general --- */
 @media (max-width: 600px) {
   header h1,
   .logo {
@@ -178,7 +195,6 @@ header p,
   z-index: 9999;
   padding: 20px;
 }
-
 .modal-content {
   background-color: #ffffff;
   padding: 25px 35px;
@@ -192,7 +208,6 @@ header p,
   font-size: 1.1rem;
   line-height: 1.5;
 }
-
 .modal-content button {
   margin-top: 20px;
   padding: 10px 18px;
@@ -205,7 +220,6 @@ header p,
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .modal-content button:hover {
   background-color: #1d4ed8;
 }
@@ -220,7 +234,6 @@ header p,
   border-top: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
 }
-
 .carousel-container {
   max-width: 700px;
   width: 100%;
@@ -229,7 +242,6 @@ header p,
   justify-content: space-between;
   gap: 20px;
 }
-
 .carousel-btn {
   background: none;
   border: none;
@@ -241,28 +253,23 @@ header p,
 .carousel-btn:hover {
   color: #2563eb;
 }
-
 .carousel-message {
   flex-grow: 1;
   padding: 10px 20px;
   transition: opacity 0.4s ease-in-out;
   opacity: 1;
 }
-
 .carousel-message h2 {
   font-size: 1.5rem;
   margin-bottom: 10px;
   color: #111827;
 }
-
 .carousel-message p {
   font-size: 1rem;
   line-height: 1.6;
   color: #4b5563;
   text-align: left;
 }
-
-/* Responsivo */
 @media (max-width: 700px) {
   .carousel-container {
     flex-direction: column;
@@ -279,6 +286,7 @@ header p,
   }
 }
 
+/* --- Logo refinado --- */
 .logo {
   display: inline-block;
   padding: 10px 25px;
@@ -287,4 +295,23 @@ header p,
   color: #111827;
   border-radius: 12px;
   cursor: default;
+}
+
+/* --- Responsive columns: ajustar en pantallas pequeñas --- */
+@media (max-width: 800px) {
+  .container {
+    flex-direction: column;
+    max-width: 700px;
+    padding: 0 10px;
+  }
+  .upload-section,
+  #timeline {
+    max-width: 100%;
+    flex: none;
+  }
+  #imagesContainer {
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+  }
 }
