@@ -290,7 +290,6 @@ header p,
   cursor: default;
 }
 
-/* Pseudo-elemento para el fondo degradado animado */
 .logo::before {
   content: "";
   position: absolute;
@@ -298,13 +297,14 @@ header p,
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(270deg, #ff6ec4, #7873f5, #4ade80, #facc15, #ef4444);
-  background-size: 1000% 1000%;
-  animation: gradientMove 20s ease infinite;
+  background: linear-gradient(270deg, #8e2de2, #4a00e0, #11998e, #38ef7d, #f7971e, #ffd200);
+  background-size: 1200% 1200%;
+  animation: gradientMove 25s ease infinite;
   border-radius: 12px;
-  filter: brightness(0.8);
+  filter: brightness(0.85);
   z-index: -1;
 }
+
 
 @keyframes gradientMove {
   0% {
