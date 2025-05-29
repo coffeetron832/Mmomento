@@ -37,14 +37,14 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = document.getElementById('logoutBtn');
-      const userToken = localStorage.getItem('userToken');
+      const userToken = localStorage.getItem('token'); // Cambiado aquí
 
       if (userToken) {
         logoutBtn.style.display = 'inline';
 
         logoutBtn.addEventListener('click', (e) => {
           e.preventDefault();
-          localStorage.removeItem('userToken');
+          localStorage.removeItem('token'); // Cambiado aquí
           localStorage.removeItem('welcomeShown');
           window.location.href = 'login.html';
         });
