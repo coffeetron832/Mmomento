@@ -317,3 +317,33 @@ header p,
   cursor: default;
 }
 
+/* --- NUEVO: División estilo columnas como Twitter --- */
+.two-column-layout {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Columna izquierda: Formulario de subida */
+.left-column {
+  flex: 1;
+  max-width: 350px;
+}
+
+/* Columna derecha: Timeline */
+.right-column {
+  flex: 2;
+}
+
+/* Responsive para móviles */
+@media (max-width: 900px) {
+  .two-column-layout {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .left-column,
+  .right-column {
+    max-width: 100%;
+  }
+}
