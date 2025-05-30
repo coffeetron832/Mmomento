@@ -7,7 +7,9 @@
 </head>
 <body>
   <div class="container">
-    <header style="flex-basis: 100%; text-align: center; margin-bottom: 40px;">
+    <header style="text-align: center; margin-bottom: 30px;">
+      <h1 class="logo">Momento</h1>
+      <p class="tagline">Redefining what’s worth looking at.</p>
 
       <!-- Navegación simplificada -->
       <nav id="sessionNav" class="main-nav">
@@ -15,9 +17,10 @@
       </nav>
     </header>
 
-    <!-- Contenedor para dividir en dos columnas -->
-    <div class="main-content">
-      <section class="upload-section">
+    <!-- Layout en columnas -->
+    <div class="two-column-layout">
+      <!-- Columna izquierda: Formulario de subida -->
+      <section class="left-column upload-section">
         <form id="uploadForm">
           <input type="file" id="image" accept="image/*" required />
           <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
@@ -25,7 +28,8 @@
         </form>
       </section>
 
-      <section id="timeline">
+      <!-- Columna derecha: Timeline -->
+      <section class="right-column" id="timeline">
         <h2>Últimos Momentos</h2>
         <div id="imagesContainer"></div>
       </section>
@@ -46,7 +50,7 @@
         logoutBtn.addEventListener('click', (e) => {
           e.preventDefault();
           localStorage.removeItem('token');
-          localStorage.removeItem('user');
+          localStorage.removeItem('userId');
           localStorage.removeItem('welcomeShown');
           window.location.href = 'login.html';
         });
