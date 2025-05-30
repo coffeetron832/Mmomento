@@ -450,25 +450,18 @@ button:hover,
   margin-bottom: 0.5rem;
 }
 
-.slogan-underline {
+.tagline-underline {
   height: 4px;
-  width: 180px;
-  margin: 0 auto;
+  width: 160px;
+  margin: 4px auto 16px auto;
   border-radius: 2px;
-  background: linear-gradient(90deg, #ff7e5f, #feb47b, #ffeaa7, #ffecd2);
-  animation: gradientMove 5s infinite linear;
+  background: linear-gradient(90deg, #fbbf24, #f87171, #fb923c, #facc15, #fcd34d);
+  background-size: 300% auto;
+  animation: underlineMove 4s linear infinite;
 }
 
-/* Animación para que el degradado se mueva */
-@keyframes gradientMove {
-  0% {
-    background-position: 0%;
-  }
-  100% {
-    background-position: 100%;
-  }
-}
-
-.slogan-underline {
-  background-size: 200% auto;
+/* Animación del degradado */
+@keyframes underlineMove {
+  0% { background-position: 0% center; }
+  100% { background-position: 100% center; }
 }
