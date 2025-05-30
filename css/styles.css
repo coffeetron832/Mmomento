@@ -83,25 +83,29 @@ header p,
   color: #111827;
 }
 
-/* Frosted Glass Button Style para todos los botones */
-button {
-  background: rgba(37, 99, 235, 0.25);
+/* Frosted glass para todos los botones */
+button,
+.upload-section button,
+.modal-content button,
+.main-nav a.button-style {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
   font-weight: 600;
-  padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
   cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-button:hover {
-  background: rgba(37, 99, 235, 0.35);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+button:hover,
+.upload-section button:hover,
+.modal-content button:hover,
+.main-nav a.button-style:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Timeline */
