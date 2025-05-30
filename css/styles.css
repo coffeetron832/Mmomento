@@ -330,6 +330,11 @@ button:hover,
   }
 }
 
+.carousel-message {
+  text-align: center;
+  flex-grow: 1;
+}
+
 
 .carousel-container {
   max-width: 700px;
