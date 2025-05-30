@@ -273,12 +273,14 @@ button:hover,
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 50%, #fff3e0 100%);
+  padding: 30px 20px; /* Reduce el padding para hacerlo más pequeño */
+  background-color: #ffffff; /* Fondo blanco sólido */
   border-top: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(255, 235, 179, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+  max-width: 700px; /* Limitar ancho máximo */
+  margin: 0 auto; /* Centrar horizontalmente */
 }
 
 .carousel-container {
