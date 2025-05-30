@@ -443,3 +443,32 @@ button:hover,
   background-color: rgba(37, 99, 235, 0.4);
   color: white;
 }
+
+.slogan {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.slogan-underline {
+  height: 4px;
+  width: 180px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b, #ffeaa7, #ffecd2);
+  animation: gradientMove 5s infinite linear;
+}
+
+/* Animación para que el degradado se mueva */
+@keyframes gradientMove {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 100%;
+  }
+}
+
+.slogan-underline {
+  background-size: 200% auto;
+}
