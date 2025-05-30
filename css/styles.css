@@ -270,30 +270,24 @@ button:hover,
 
 /* --- Carrusel de información --- */
 .info-carousel {
-  position: relative; /* para posicionar el pseudo */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px 20px;
+  position: relative;
   background-color: #ffffff;
-  border-radius: 16px; /* borde un poco más redondeado */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 30px 20px;
   max-width: 700px;
   margin: 0 auto;
-  z-index: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  z-index: 0;
 }
 
 /* Pseudo elemento para el borde animado */
 .info-carousel::before {
   content: '';
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border-radius: 20px; /* un poco más redondeado para borde */
-  padding: 4px; /* ancho del borde */
+  inset: 0; /* top, right, bottom, left = 0 */
+  border-radius: 20px;
+  padding: 4px; /* grosor del borde */
   background: linear-gradient(
     270deg,
     #ff71ce,
@@ -313,7 +307,17 @@ button:hover,
   z-index: -1;
 }
 
-/* Animación que mueve el fondo del degradado para dar efecto */
+/* Segundo pseudo para el fondo blanco real dentro del borde */
+.info-carousel::after {
+  content: '';
+  position: absolute;
+  inset: 4px; /* dejar espacio para el borde */
+  background-color: #ffffff;
+  border-radius: 16px;
+  z-index: -1;
+}
+
+/* Animación de movimiento del degradado */
 @keyframes gradientMove {
   0% {
     background-position: 0% 50%;
