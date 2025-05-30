@@ -83,29 +83,26 @@ header p,
   color: #111827;
 }
 
-/* Frosted glass para todos los botones */
-button,
-.upload-section button,
-.modal-content button,
-.main-nav a.button-style {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+/* --- BOTONES CON ESTILO FROSTED GLASS --- */
+button, .upload-section button, .modal-content button, .carousel-btn {
+  background: rgba(173, 216, 230, 0.25); /* azul claro con baja opacidad */
+  border: 1px solid rgba(173, 216, 230, 0.5);
+  color: #1e3a8a; /* azul oscuro para buen contraste */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 12px 20px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
+  text-shadow: 0 0 2px rgba(255,255,255,0.8);
 }
 
-button:hover,
-.upload-section button:hover,
-.modal-content button:hover,
-.main-nav a.button-style:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.4);
+button:hover, .upload-section button:hover, .modal-content button:hover, .carousel-btn:hover {
+  background: rgba(173, 216, 230, 0.4);
+  color: #12306b;
+  box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
 }
 
 /* Timeline */
