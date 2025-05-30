@@ -7,6 +7,17 @@
   font-family: 'Grape Nuts', cursive;
 }
 
+/* Página principal: centrar logo y eslogan */
+.hero-content {
+  text-align: center;
+}
+.hero-content .tagline {
+  text-align: center;
+}
+.logo {
+  font-family: 'Grape Nuts', cursive;
+}
+
 /* --- Estilo global --- */
 body {
   margin: 0;
