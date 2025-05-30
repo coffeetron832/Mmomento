@@ -1,76 +1,76 @@
-/* --- Tu código existente --- */
-/* Importar fuentes desde Google Fonts */
+/* --- Importar fuentes desde Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&display=swap');
 
-/* Estilo global */
+/* --- Estilo global --- */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background-color: #f3f4f6;
   color: #1f2937;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
   padding: 40px 20px;
 }
 
-/* Contenedor principal */
+/* --- Contenedor principal: dos columnas --- */
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   width: 100%;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
 }
 
-/* Encabezado general */
-header {
-  text-align: center;
-  margin-bottom: 40px;
+/* --- Columna izquierda: logo, frases, cerrar sesión --- */
+.left-column {
+  flex: 1;
+  max-width: 350px;
+  box-sizing: border-box;
 }
-header h1,
-.logo {
+.left-column header {
+  text-align: left;
+  margin-bottom: 20px;
+}
+.left-column .logo {
   font-size: 3.5rem;
   font-family: 'Grape Nuts', cursive;
   color: #111827;
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
 }
-header p,
-.tagline {
-  font-size: 1.2rem;
+.left-column .tagline,
+.left-column p {
+  font-size: 1.1rem;
   color: #4b5563;
-  margin: 10px 0 30px;
+  margin: 10px 0;
 }
-
-/* --- Layout de columnas (tipo Twitter) --- */
-.two-column-layout {
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  align-items: flex-start;
-  background-color: #ffffff;
-  padding: 20px;
+.left-column #logoutBtn {
+  margin-top: 20px;
+  display: inline-block;
+  background: rgba(173, 216, 230, 0.25);
+  border: 1px solid rgba(173, 216, 230, 0.5);
+  color: #1e3a8a;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
+  text-shadow: 0 0 2px rgba(255,255,255,0.8);
+}
+.left-column #logoutBtn:hover {
+  background: rgba(173, 216, 230, 0.4);
+  color: #12306b;
 }
 
-/* Columna izquierda: Formulario */
-.left-column {
-  flex: 1;
-  max-width: 350px;
-}
-
-/* Columna derecha: Timeline */
+/* --- Columna derecha: timeline --- */
 .right-column {
   flex: 2;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-  margin-bottom: 40px;
+  box-sizing: border-box;
 }
 
-/* Sección de subida */
+/* --- Sección de subida: formulario --- */
 .upload-section form {
   display: flex;
   flex-direction: column;
@@ -94,8 +94,11 @@ header p,
   color: #111827;
 }
 
-/* --- BOTONES CON ESTILO FROSTED GLASS --- */
-button, .upload-section button, .modal-content button, .carousel-btn {
+/* --- Botones con estilo frosted glass --- */
+button,
+.upload-section button,
+.modal-content button,
+.main-nav a.button-style {
   background: rgba(173, 216, 230, 0.25);
   border: 1px solid rgba(173, 216, 230, 0.5);
   color: #1e3a8a;
@@ -109,14 +112,22 @@ button, .upload-section button, .modal-content button, .carousel-btn {
   box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
   text-shadow: 0 0 2px rgba(255,255,255,0.8);
 }
-
-button:hover, .upload-section button:hover, .modal-content button:hover, .carousel-btn:hover {
+button:hover,
+.upload-section button:hover,
+.modal-content button:hover,
+.main-nav a.button-style:hover {
   background: rgba(173, 216, 230, 0.4);
   color: #12306b;
   box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
 }
 
-/* Timeline */
+/* --- Timeline: contenedor e ítems --- */
+.right-column #timeline {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
 #timeline h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
@@ -142,8 +153,6 @@ button:hover, .upload-section button:hover, .modal-content button:hover, .carous
   max-height: 400px;
   object-fit: contain;
   border-radius: 10px;
-  display: block;
-  margin: 0 auto;
 }
 .image-description {
   margin-top: 10px;
@@ -157,7 +166,7 @@ button:hover, .upload-section button:hover, .modal-content button:hover, .carous
   color: #6b7280;
 }
 
-/* Navegación principal */
+/* --- Navegación principal --- */
 .main-nav {
   display: flex;
   gap: 20px;
@@ -174,9 +183,9 @@ button:hover, .upload-section button:hover, .modal-content button:hover, .carous
   color: #1d4ed8;
 }
 
-/* Responsive */
+/* --- Responsive --- */
 @media (max-width: 900px) {
-  .two-column-layout {
+  .container {
     flex-direction: column;
     gap: 30px;
   }
@@ -204,8 +213,6 @@ button:hover, .upload-section button:hover, .modal-content button:hover, .carous
   }
 }
 
-/* Otros estilos de botones y modal... (no modificados, conservados) */
-/* ... (continúa sin cambios desde aquí) */
 
 
 /* --- Estilos para modal de bienvenida --- */
