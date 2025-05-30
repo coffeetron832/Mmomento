@@ -274,9 +274,12 @@ button:hover,
   justify-content: center;
   align-items: center;
   padding: 60px 20px;
-  background-color: #ffffff;
+  /* Antes: background-color: #ffffff; */
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
   border-top: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
+  border-radius: 12px; /* Opcional: bordes redondeados para suavizar */
+  box-shadow: 0 4px 15px rgba(253, 160, 133, 0.3); /* Opcional: sombra cálida */
 }
 
 .carousel-container {
