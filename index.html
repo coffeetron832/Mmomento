@@ -10,6 +10,31 @@
 
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .legal-links {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .legal-links button {
+      background-color: transparent;
+      border: 1.5px solid #2563eb;
+      color: #2563eb;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .legal-links button:hover {
+      background-color: #2563eb;
+      color: white;
+    }
+  </style>
 </head>
 <body>
   <header class="hero">
@@ -20,6 +45,12 @@
         <a href="login.html">Iniciar sesión</a>
         <a href="register.html">Registrarse</a>
       </nav>
+
+      <!-- Botones legales -->
+      <div class="legal-links">
+        <button onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
+        <button onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
+      </div>
     </div>
   </header>
 
@@ -27,7 +58,7 @@
   <div id="welcomeModal" class="modal" style="display:none;">
     <div class="modal-content">
       <p>
-       Este es un lugar en donde nada es para siempre, así que disfruta lo que ves.<br>
+        Este es un lugar en donde nada es para siempre, así que disfruta lo que ves.<br>
         Vuelve pronto, porque siempre habrá algo nuevo.<br>
       </p>
       <button id="closeModalBtn">Cerrar</button>
@@ -110,3 +141,4 @@ Para quienes entienden que lo valioso… no dura.`
   </script>
 </body>
 </html>
+
