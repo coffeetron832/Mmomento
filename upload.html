@@ -7,47 +7,46 @@
 </head>
 <body>
   <div class="container">
-    <header style="text-align: center; margin-bottom: 30px;">
-      <h1 class="logo">Momento</h1>
-      <p>Estas imágenes desaparecerán en 6 horas⏳.</p>
-      <p>Cada una representa algo distinto: arte 🎨, inspiración, promociones 📢, ideas, emociones.</p>
+    
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="left-column">
+      <header>
+        <h1 class="logo">Momento</h1>
+        <p>Estas imágenes desaparecerán en 6 horas⏳.</p>
+        <p>Cada una representa algo distinto: arte 🎨, inspiración, promociones 📢, ideas, emociones.</p>
+      </header>
 
-      <!-- Navegación simplificada -->
-      <nav id="sessionNav" class="main-nav">
-        <a href="#" id="logoutBtn" style="display: none;">Cerrar sesión</a>
-      </nav>
-    </header>
-
-    <!-- Layout en columnas -->
-    <div class="two-column-layout">
-      <!-- Columna izquierda: Formulario de subida -->
-      <section class="left-column upload-section">
+      <!-- Botón cerrar sesión -->
+      <a href="#" id="logoutBtn">Cerrar sesión</a>
+      
+      <!-- Formulario de subida -->
+      <section class="upload-section">
         <form id="uploadForm">
           <input type="file" id="image" accept="image/*" required />
           <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
           <button type="submit">Subir Momento</button>
         </form>
       </section>
+    </div>
 
-      <!-- Columna derecha: Timeline -->
-      <section class="right-column" id="timeline">
+    <!-- COLUMNA DERECHA -->
+    <div class="right-column">
+      <section id="timeline">
         <h2>Últimos Momentos📸</h2>
         <div id="imagesContainer"></div>
       </section>
     </div>
+    
   </div>
 
   <script src="js/upload.js"></script>
-
-  <!-- Script para manejar estado de sesión -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = document.getElementById('logoutBtn');
       const userToken = localStorage.getItem('token');
 
       if (userToken) {
-        logoutBtn.style.display = 'inline';
-
+        logoutBtn.style.display = 'inline-block';
         logoutBtn.addEventListener('click', (e) => {
           e.preventDefault();
           localStorage.removeItem('token');
@@ -62,4 +61,5 @@
   </script>
 </body>
 </html>
+
 
