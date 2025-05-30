@@ -11,6 +11,13 @@
 .hero-content {
   text-align: center;
 }
+.hero-content .logo {
+  font-size: 4rem; /* Aumenta o ajusta según lo que necesites */
+  font-family: 'Grape Nuts', cursive;
+  color: #111827;
+  margin: 0;
+}
+
 .hero-content .tagline {
   text-align: center;
 }
