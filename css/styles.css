@@ -377,3 +377,30 @@ button:hover, .upload-section button:hover, .modal-content button:hover, .carous
   box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
   text-decoration: none;
 }
+
+/* Estilos para los botones legales en index.html */
+.legal-links {
+  margin-top: 30px; /* Más espacio para separar de los botones de login y registro */
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.legal-links button {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  border: 1.5px solid #2563eb;
+  color: #60a5fa; /* azul claro */
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.legal-links button:hover {
+  background-color: rgba(37, 99, 235, 0.4);
+  color: white;
+}
