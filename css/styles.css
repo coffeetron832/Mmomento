@@ -270,21 +270,31 @@ button:hover,
 
 /* --- Carrusel de información --- */
 .info-carousel {
+  position: relative; /* para posicionar el pseudo */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 30px 20px;
   background-color: #ffffff;
-  border-radius: 12px;
+  border-radius: 16px; /* borde un poco más redondeado */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   max-width: 700px;
   margin: 0 auto;
+  z-index: 0;
+  overflow: hidden;
+}
 
-  /* Borde animado degradado vaporwave */
-  border: 4px solid;
-  border-image-slice: 1;
-  border-width: 4px;
-  border-image-source: linear-gradient(
+/* Pseudo elemento para el borde animado */
+.info-carousel::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 20px; /* un poco más redondeado para borde */
+  padding: 4px; /* ancho del borde */
+  background: linear-gradient(
     270deg,
     #ff71ce,
     #01cdfe,
@@ -292,39 +302,27 @@ button:hover,
     #b967ff,
     #ff71ce
   );
-  animation: vaporwaveBorder 6s linear infinite;
+  background-size: 800% 800%;
+  animation: gradientMove 8s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
 }
 
-@keyframes vaporwaveBorder {
+/* Animación que mueve el fondo del degradado para dar efecto */
+@keyframes gradientMove {
   0% {
-    border-image-source: linear-gradient(
-      270deg,
-      #ff71ce,
-      #01cdfe,
-      #05ffa1,
-      #b967ff,
-      #ff71ce
-    );
+    background-position: 0% 50%;
   }
   50% {
-    border-image-source: linear-gradient(
-      450deg,
-      #ff71ce,
-      #01cdfe,
-      #05ffa1,
-      #b967ff,
-      #ff71ce
-    );
+    background-position: 100% 50%;
   }
   100% {
-    border-image-source: linear-gradient(
-      270deg,
-      #ff71ce,
-      #01cdfe,
-      #05ffa1,
-      #b967ff,
-      #ff71ce
-    );
+    background-position: 0% 50%;
   }
 }
 
