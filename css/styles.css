@@ -455,14 +455,20 @@ button:hover,
   width: 160px;
   margin: 6px auto 20px auto;
   border-radius: 9999px;
-  background: linear-gradient(90deg, #fbbf24, #fb7185, #38bdf8, #34d399, #fbbf24);
-  background-size: 200% auto;
-  animation: underlineMove 5s ease-in-out infinite alternate;
-  box-shadow: 0 0 6px rgba(251, 191, 36, 0.4);
+  background: linear-gradient(
+    90deg,
+    #ff71ce,   /* Pink neon */
+    #01cdfe,   /* Aqua blue */
+    #05ffa1,   /* Mint green */
+    #b967ff,   /* Purple */
+    #ff71ce    /* Loop to pink */
+  );
+  background-size: 300% auto;
+  animation: underlineMove 6s ease-in-out infinite alternate;
+  box-shadow: 0 0 10px rgba(255, 113, 206, 0.6);
 }
 
 @keyframes underlineMove {
   0% { background-position: 0% center; }
   100% { background-position: 100% center; }
 }
-
