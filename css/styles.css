@@ -175,7 +175,6 @@ button:hover,
   width: 100%;
 }
 
-
 /* Imagen dentro de la tarjeta */
 .image-card img {
   width: 100%;
@@ -191,7 +190,8 @@ button:hover,
   color: #444;
 }
 
-.delete-btn {
+/* Botón eliminar con mayor especificidad */
+.image-card .delete-btn {
   background: rgba(255, 0, 0, 0.8); /* Rojo semitransparente */
   color: white;
   border: none;
@@ -204,11 +204,9 @@ button:hover,
   transition: background-color 0.3s ease;
   align-self: flex-start;
 }
-
-.delete-btn:hover {
+.image-card .delete-btn:hover {
   background: rgba(255, 0, 0, 1);
 }
-
 
 /* --- Navegación principal --- */
 .main-nav {
@@ -256,8 +254,6 @@ button:hover,
     padding: 10px;
   }
 }
-
-
 
 /* --- Estilos para modal de bienvenida --- */
 .modal {
@@ -355,7 +351,6 @@ button:hover,
   flex-grow: 1;
 }
 
-
 .carousel-container {
   max-width: 700px;
   width: 100%; /* Usar todo el ancho posible */
@@ -380,149 +375,3 @@ button:hover,
 }
 
 .carousel-message {
-  flex-grow: 1;
-  padding: 10px 20px;
-  transition: opacity 0.4s ease-in-out;
-  opacity: 1;
-}
-
-.carousel-message h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #111827;
-}
-
-.carousel-message p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #4b5563;
-  text-align: center; /* Cambiado a centrado */
-}
-
-/* Responsivo */
-@media (max-width: 700px) {
-  .carousel-container {
-    flex-direction: column;
-    text-align: center;
-  }
-  .carousel-btn {
-    font-size: 1.8rem;
-    margin: 10px 0; /* Ajuste vertical para móviles */
-  }
-  .carousel-message {
-    padding: 20px 10px;
-  }
-  .carousel-message p {
-    text-align: center;
-  }
-}
-
-
-.logo {
-  display: inline-block;
-  padding: 10px 25px;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #111827;
-  border-radius: 12px;
-  cursor: default;
-}
-
-/* --- NUEVO: División estilo columnas como Twitter --- */
-.two-column-layout {
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* Columna izquierda: Formulario de subida */
-.left-column {
-  flex: 1;
-  max-width: 350px;
-}
-
-/* Columna derecha: Timeline */
-.right-column {
-  flex: 2;
-}
-
-/* Responsive para móviles */
-@media (max-width: 900px) {
-  .two-column-layout {
-    flex-direction: column;
-    gap: 30px;
-  }
-  .left-column,
-  .right-column {
-    max-width: 100%;
-  }
-}
-
-/* Estilos para enlaces dentro de contenido legal */
-.content-section a {
-  color: #2563eb;
-  text-decoration: none;
-  word-break: break-word;
-}
-
-.content-section a:hover {
-  text-decoration: underline;
-}
-
-.btn-frosted {
-  background: rgba(173, 216, 230, 0.25);
-  border: 1px solid rgba(173, 216, 230, 0.5);
-  color: #1e3a8a;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
-  text-shadow: 0 0 2px rgba(255,255,255,0.8);
-  text-decoration: none;
-  display: inline-block;
-}
-
-.btn-frosted:hover {
-  background: rgba(173, 216, 230, 0.4);
-  color: #12306b;
-  box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
-  text-decoration: none;
-}
-
-/* Estilos para los botones legales en index.html */
-.legal-links {
-  margin-top: 30px; /* Más espacio para separar de los botones de login y registro */
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.legal-links button {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-  border: 1.5px solid #2563eb;
-  color: #60a5fa; /* azul claro */
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.legal-links button:hover {
-  background-color: rgba(37, 99, 235, 0.4);
-  color: white;
-}
-
-.slogan {
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
