@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Mostrar email o "Anónimo"
   const uploader = image.userId;
-  if (uploader && typeof uploader === "object" && (uploader.email || uploader.username)) {
-    user.textContent = `Subido por: ${uploader.email || uploader.username}`;
+  if (uploader && uploader.email) {
+    user.textContent = `Subido por: ${uploader.email}`;
   } else {
     user.textContent = "Subido por: Anónimo";
   }
@@ -32,11 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
   div.appendChild(desc);
   div.appendChild(user);
 
-  // Verificar si es el dueño
-  const currentUserId = localStorage.getItem("userId");
-  const imageOwnerId = (typeof uploader === "object" && uploader._id) ? uploader._id : uploader;
+  // Verificar si es el dueño para mostrar botón eliminar
+  const currentUserId = localStorage.getItem("userId");  // Id del usuario actual
+  const imageOwnerId = uploader ? uploader._id || uploader : null; // Id dueño imagen
 
-  if (currentUserId && imageOwnerId && currentUserId === imageOwnerId) {
+  if (currentUserId && imageOwnerId && currentUserId === imageOwnerId.toString()) {
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "🗑 Eliminar";
     deleteBtn.className = "delete-btn";
@@ -46,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   return div;
 }
-
 
   async function loadImages() {
     try {
