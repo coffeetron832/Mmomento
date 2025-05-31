@@ -2,50 +2,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
 
-  const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
- function createImageCard(image) {
-  const div = document.createElement("div");
-  div.className = "image-card";
+  // ✅ Obtener el ID del usuario desde el objeto 'user' guardado en localStorage
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const currentUserId = user._id || user.id || null;
 
-  const img = document.createElement("img");
-  img.src = image.imageUrl || image.url || "";
-  img.alt = image.description || "Imagen subida";
+  function createImageCard(image) {
+    const div = document.createElement("div");
+    div.className = "image-card";
 
-  const desc = document.createElement("p");
-  desc.className = "image-description";
-  desc.textContent = image.description || "";
+    const img = document.createElement("img");
+    img.src = image.imageUrl || image.url || "";
+    img.alt = image.description || "Imagen subida";
 
-  const user = document.createElement("p");
-  user.className = "image-user";
+    const desc = document.createElement("p");
+    desc.className = "image-description";
+    desc.textContent = image.description || "";
 
-  // Mostrar email o "Anónimo"
-  const uploader = image.userId;
-  if (uploader && uploader.email) {
-    user.textContent = `Subido por: ${uploader.email}`;
-  } else {
-    user.textContent = "Subido por: Anónimo";
+    const userInfo = document.createElement("p");
+    userInfo.className = "image-user";
+
+    // Mostrar email o "Anónimo"
+    const uploader = image.userId;
+    if (uploader && uploader.email) {
+      userInfo.textContent = `Subido por: ${uploader.email}`;
+    } else {
+      userInfo.textContent = "Subido por: Anónimo";
+    }
+
+    div.appendChild(img);
+    div.appendChild(desc);
+    div.appendChild(userInfo);
+
+    // ✅ Verificar si el usuario logueado es el dueño de la imagen
+    const imageOwnerId = uploader ? uploader._id || uploader : null;
+    if (currentUserId && imageOwnerId && currentUserId === imageOwnerId.toString()) {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "🗑 Eliminar";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
+      div.appendChild(deleteBtn);
+    }
+
+    return div;
   }
-
-  div.appendChild(img);
-  div.appendChild(desc);
-  div.appendChild(user);
-
-  // Verificar si es el dueño para mostrar botón eliminar
-  const currentUserId = localStorage.getItem("userId");  // Id del usuario actual
-  const imageOwnerId = uploader ? uploader._id || uploader : null; // Id dueño imagen
-
-  if (currentUserId && imageOwnerId && currentUserId === imageOwnerId.toString()) {
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "🗑 Eliminar";
-    deleteBtn.className = "delete-btn";
-    deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
-    div.appendChild(deleteBtn);
-  }
-
-  return div;
-}
 
   async function loadImages() {
     try {
@@ -140,4 +141,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
