@@ -163,59 +163,52 @@ button:hover,
   flex-direction: column;
   gap: 25px;
 }
+/* Estilo para la tarjeta que contiene cada imagen */
 .image-card {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.image-card img {
-  max-width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 10px;
-}
-.image-description {
-  margin-top: 10px;
-  font-style: italic;
-  color: #4b5563;
-  text-align: center;
-}
-.image-user {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-/* --- Botón eliminar imagen --- */
-.btn-delete-image {
-  background: rgba(255, 99, 71, 0.25); /* tomate claro translúcido */
-  border: 1.5px solid rgba(255, 99, 71, 0.5); /* borde rojo suave */
-  color: #b91c1c; /* rojo oscuro */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  border: 1px solid #ddd;
   border-radius: 12px;
-  padding: 8px 16px;
-  font-weight: 700;
+  padding: 12px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagen dentro de la tarjeta */
+.image-card img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Texto de descripción y usuario */
+.image-description,
+.image-user {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Botón de eliminar con estilo frosted glass y rojo */
+.btn-frosted {
+  background-color: rgba(220, 38, 38, 0.85); /* rojo semi-transparente */
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 10px rgba(255, 99, 71, 0.3);
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.6);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  user-select: none;
-  align-self: center; /* si está en flex container para centrar */
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+  margin-top: 10px;
+  font-weight: bold;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
 }
 
-.btn-delete-image:hover {
-  background: rgba(220, 20, 60, 0.4); /* rojo más intenso en hover */
-  color: #7f1d1d;
-  box-shadow: 0 6px 15px rgba(220, 20, 60, 0.5);
+.btn-frosted:hover {
+  background-color: rgba(185, 28, 28, 0.95); /* rojo más oscuro */
+  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.6);
 }
-
 
 /* --- Navegación principal --- */
 .main-nav {
