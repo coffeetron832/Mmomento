@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
-
   const token = localStorage.getItem("token");
 
-  // ✅ Obtener el ID del usuario desde el objeto 'user' guardado en localStorage (versión segura)
+  // ✅ Obtener ID del usuario desde localStorage
   let user = {};
   try {
     const userRaw = localStorage.getItem("user");
@@ -15,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const currentUserId = user._id || user.id || null;
 
+  // 🧩 Renderiza una tarjeta con imagen, descripción, autor y botón de eliminar
   function createImageCard(image) {
     const div = document.createElement("div");
     div.className = "image-card";
@@ -30,9 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const userInfo = document.createElement("p");
     userInfo.className = "image-user";
 
+    // Soportar userId como objeto o string
     const uploader = image.userId;
-    if (uploader && uploader.email) {
-      userInfo.textContent = `Subido por: ${uploader.email}`;
+    let imageOwnerId = null;
+
+    if (typeof uploader === "object" && uploader !== null) {
+      imageOwnerId = uploader._id || uploader.id || null;
+      userInfo.textContent = uploader.email
+        ? `Subido por: ${uploader.email}`
+        : "Subido por: Anónimo";
+    } else if (typeof uploader === "string") {
+      imageOwnerId = uploader;
+      // Mostramos "Tú" si el usuario actual subió la imagen
+      userInfo.textContent = currentUserId === uploader
+        ? "Subido por: Tú"
+        : "Subido por: Usuario desconocido";
     } else {
       userInfo.textContent = "Subido por: Anónimo";
     }
@@ -41,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     div.appendChild(desc);
     div.appendChild(userInfo);
 
-    const imageOwnerId = uploader ? uploader._id || uploader : null;
+    // Mostrar botón eliminar solo si es del usuario actual
     if (currentUserId && imageOwnerId && currentUserId === imageOwnerId.toString()) {
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "🗑 Eliminar";
@@ -53,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return div;
   }
 
+  // 🚀 Cargar imágenes al iniciar
   async function loadImages() {
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images");
@@ -69,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 🗑 Eliminar imagen
   async function deleteImage(imageId, element) {
     try {
       const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${imageId}`, {
@@ -91,22 +105,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 🚫 Redirige si no hay token
   if (!token) {
     alert("Debes iniciar sesión");
     window.location.href = "login.html";
     return;
   }
 
+  // ✅ Cargar imágenes existentes al iniciar
   loadImages();
 
+  // 📤 Manejar envío del formulario
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    if (!token) {
-      alert("Debes iniciar sesión");
-      window.location.href = "login.html";
-      return;
-    }
 
     const imageInput = document.getElementById("image");
     if (!imageInput.files.length) {
@@ -146,4 +157,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
