@@ -453,6 +453,57 @@ button:hover,
   color: #000;
 }
 
+/* Media query para tablets y pantallas medianas */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .left-section, .right-section {
+    width: 100% !important;
+    padding: 10px 0;
+  }
+
+  .btn-frosted {
+    padding: 10px 16px;
+    font-size: 1rem;
+  }
+
+  .carousel-message h2 {
+    font-size: 1.4rem;
+  }
+  .carousel-message p {
+    font-size: 1rem;
+  }
+
+  .main-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+}
+
+/* Media query para móviles pequeños */
+@media (max-width: 480px) {
+  .carousel-btn {
+    font-size: 1.5rem;
+    padding: 8px 12px;
+  }
+
+  .carousel-message h2 {
+    font-size: 1.2rem;
+  }
+
+  .carousel-message p {
+    font-size: 0.9rem;
+  }
+}
+
 .carousel-btn:focus {
   outline: 2px solid #000;
   outline-offset: 2px;
