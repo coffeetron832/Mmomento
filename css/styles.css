@@ -163,16 +163,18 @@ button:hover,
   flex-direction: column;
   gap: 25px;
 }
-/* Estilo para la tarjeta que contiene cada imagen */
 .image-card {
-  position: relative;
-  border: 1px solid #ddd;
-  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.1);
   padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
   margin-bottom: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
+
 
 /* Imagen dentro de la tarjeta */
 .image-card img {
@@ -189,26 +191,24 @@ button:hover,
   color: #444;
 }
 
-/* Botón de eliminar con estilo frosted glass y rojo */
-.btn-frosted {
-  background-color: rgba(220, 38, 38, 0.85); /* rojo semi-transparente */
+.delete-btn {
+  background: rgba(255, 0, 0, 0.8); /* Rojo semitransparente */
   color: white;
-  padding: 8px 14px;
   border: none;
-  border-radius: 8px;
+  padding: 6px 12px;
+  margin-top: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
-  margin-top: 10px;
   font-weight: bold;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
 }
 
-.btn-frosted:hover {
-  background-color: rgba(185, 28, 28, 0.95); /* rojo más oscuro */
-  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.6);
+.delete-btn:hover {
+  background: rgba(255, 0, 0, 1);
 }
+
 
 /* --- Navegación principal --- */
 .main-nav {
