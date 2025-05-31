@@ -402,8 +402,8 @@ button:hover,
 }
 
 .carousel-message {
-  text-align: center;
-  flex-grow: 1;
+  transition: opacity 0.4s ease-in-out;
+  opacity: 1;
 }
 
 .carousel-container {
@@ -448,10 +448,3 @@ button:hover,
   width: 100%;  /* ancho completo */
   box-sizing: border-box;
 }
-
-
-.carousel-message {
-  transition: opacity 0.4s ease-in-out;
-  opacity: 1;
-}
-
