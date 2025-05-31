@@ -4,8 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const token = localStorage.getItem("token");
 
-  // ✅ Obtener el ID del usuario desde el objeto 'user' guardado en localStorage
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  // ✅ Obtener el ID del usuario desde el objeto 'user' guardado en localStorage (versión segura)
+  let user = {};
+  try {
+    const userRaw = localStorage.getItem("user");
+    user = userRaw && userRaw !== "undefined" ? JSON.parse(userRaw) : {};
+  } catch (e) {
+    console.warn("Usuario en localStorage mal formado o ausente");
+    user = {};
+  }
   const currentUserId = user._id || user.id || null;
 
   function createImageCard(image) {
@@ -23,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const userInfo = document.createElement("p");
     userInfo.className = "image-user";
 
-    // Mostrar email o "Anónimo"
     const uploader = image.userId;
     if (uploader && uploader.email) {
       userInfo.textContent = `Subido por: ${uploader.email}`;
@@ -35,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
     div.appendChild(desc);
     div.appendChild(userInfo);
 
-    // ✅ Verificar si el usuario logueado es el dueño de la imagen
     const imageOwnerId = uploader ? uploader._id || uploader : null;
     if (currentUserId && imageOwnerId && currentUserId === imageOwnerId.toString()) {
       const deleteBtn = document.createElement("button");
@@ -86,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Verificar token antes de cargar imágenes
   if (!token) {
     alert("Debes iniciar sesión");
     window.location.href = "login.html";
@@ -109,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Por favor selecciona una imagen para subir.");
       return;
     }
+
     const image = imageInput.files[0];
     const description = document.getElementById("description").value;
 
@@ -141,5 +146,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
 
