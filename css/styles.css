@@ -406,67 +406,55 @@ button:hover,
   line-height: 1.5;
 }
 
-/* --- Carrusel de información actualizado --- */
-.info-carousel {
-  position: relative;
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 30px 24px;
-  margin-top: 20px;
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.1),
-    inset 0 0 15px rgba(59, 130, 246, 0.2);
-  color: #1e3a8a;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1.15rem;
-  overflow: hidden;
-  user-select: none;
-}
-
-.info-carousel {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  font-family: 'Inter', sans-serif;
-}
-
+/* Contenedor del carrusel */
 .carousel-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: #222;
-  color: #eee;
-  padding: 20px;
-  border-radius: 10px;
-  position: relative;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
+/* Contenedor del mensaje con transición */
 .carousel-message {
-  flex-grow: 1;
-  padding: 0 20px;
-  user-select: none;
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  color: #222; /* color oscuro pero suave */
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 140px; /* para evitar salto al cambiar contenido */
+  transition: opacity 0.5s ease;
+  opacity: 1;
 }
 
-.carousel-arrow {
+/* Título del mensaje */
+.carousel-message h2 {
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+  color: #333;
+}
+
+/* Botones de navegación simples */
+.carousel-btn {
   background: transparent;
   border: none;
-  color: #eee;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  color: #666;
   cursor: pointer;
+  padding: 0.3rem 0.6rem;
   transition: color 0.3s ease;
-  user-select: none;
 }
 
-.carousel-arrow:hover {
-  color: #fff;
+.carousel-btn:hover {
+  color: #000;
 }
 
-.carousel-arrow.left {
-  margin-right: 10px;
-}
-
-.carousel-arrow.right {
-  margin-left: 10px;
+.carousel-btn:focus {
+  outline: 2px solid #000;
+  outline-offset: 2px;
 }
 
