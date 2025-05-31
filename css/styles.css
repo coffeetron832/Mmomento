@@ -406,7 +406,7 @@ button:hover,
   line-height: 1.5;
 }
 
-/* --- Carrusel de información --- */
+/* --- Carrusel de información actualizado --- */
 .info-carousel {
   position: relative;
   background-color: #ffffff;
@@ -424,7 +424,7 @@ button:hover,
   user-select: none;
 }
 
-/* Degradado animado */
+/* Fondo animado degradado (se mantiene) */
 .info-carousel::before {
   content: '';
   position: absolute;
@@ -442,21 +442,64 @@ button:hover,
   z-index: 0;
 }
 
-/* Texto encima del degradado */
 .info-carousel > * {
   position: relative;
   z-index: 1;
 }
 
-/* Animación de movimiento del gradiente */
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+/* Transición para cambio de mensajes */
+.carousel-message {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 30px 24px;
+  text-align: center;
 }
+.carousel-message.active {
+  opacity: 1;
+  position: relative;
+}
+
+/* Flechas de navegación */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #1e3a8a;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+.carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.2);
+}
+
+.carousel-arrow.left {
+  left: 15px;
+}
+.carousel-arrow.right {
+  right: 15px;
+}
+
+/* Quitar efecto frosted glass de botones */
+.action-buttons,
+button,
+.upload-section button,
+.modal-content button,
+.main-nav a.button-style,
+#logoutBtn {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #e0f2fe; /* azul claro opaco */
+  border: 1px solid #93c5fd;
+  color: #1e3a8a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-shadow: none;
+}
+
