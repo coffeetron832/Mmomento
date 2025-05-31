@@ -1,3 +1,4 @@
+document.getElementById('currentYear').textContent = new Date().getFullYear();
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
