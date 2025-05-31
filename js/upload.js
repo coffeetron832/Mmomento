@@ -5,57 +5,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
-  function createImageCard(image) {
-    const div = document.createElement("div");
-    div.className = "image-card";
+ function createImageCard(image) {
+  const div = document.createElement("div");
+  div.className = "image-card";
 
-    const img = document.createElement("img");
-    img.src = image.imageUrl || image.url || ""; // asegurar url
-    img.alt = image.description || "Imagen subida";
+  const img = document.createElement("img");
+  img.src = image.imageUrl || image.url || "";
+  img.alt = image.description || "Imagen subida";
 
-    const desc = document.createElement("p");
-    desc.className = "image-description";
-    desc.textContent = image.description || "";
+  const desc = document.createElement("p");
+  desc.className = "image-description";
+  desc.textContent = image.description || "";
 
-    const user = document.createElement("p");
-    user.className = "image-user";
+  const user = document.createElement("p");
+  user.className = "image-user";
 
-    // Mostrar usuario o anónimo
-    if (image.userId) {
-      if (typeof image.userId === "object") {
-        user.textContent = `Subido por: ${image.userId.username || image.userId.email || "Anon"}`;
-      } else if (typeof image.userId === "string") {
-        // Si es string pero no tiene info extra
-        user.textContent = "Subido por: Usuario";
-      } else {
-        user.textContent = "Subido por: Anónimo";
-      }
-    } else {
-      user.textContent = "Subido por: Anónimo";
-    }
-
-    div.appendChild(img);
-    div.appendChild(desc);
-    div.appendChild(user);
-
-    // Botón eliminar solo si el usuario logueado es el dueño
-    if (userId && image.userId && 
-      ((image.userId._id && image.userId._id === userId) || image.userId === userId)) {
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "Eliminar";
-      deleteBtn.style.marginTop = "10px";
-      deleteBtn.style.padding = "8px 12px";
-      deleteBtn.style.backgroundColor = "#dc2626";
-      deleteBtn.style.color = "white";
-      deleteBtn.style.border = "none";
-      deleteBtn.style.borderRadius = "8px";
-      deleteBtn.style.cursor = "pointer";
-      deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
-      div.appendChild(deleteBtn);
-    }
-
-    return div;
+  // Mostrar email o "Anónimo"
+  const uploader = image.userId;
+  if (uploader && typeof uploader === "object" && (uploader.email || uploader.username)) {
+    user.textContent = `Subido por: ${uploader.email || uploader.username}`;
+  } else {
+    user.textContent = "Subido por: Anónimo";
   }
+
+  div.appendChild(img);
+  div.appendChild(desc);
+  div.appendChild(user);
+
+  // Verificar si es el dueño
+  const currentUserId = localStorage.getItem("userId");
+  const imageOwnerId = (typeof uploader === "object" && uploader._id) ? uploader._id : uploader;
+
+  if (currentUserId && imageOwnerId && currentUserId === imageOwnerId) {
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑 Eliminar";
+    deleteBtn.className = "delete-btn";
+    deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
+    div.appendChild(deleteBtn);
+  }
+
+  return div;
+}
+
 
   async function loadImages() {
     try {
