@@ -110,6 +110,17 @@ Para quienes entienden que lo valioso… no dura.`
         messageContainer.innerHTML = `<h2>${messages[index].title}</h2><p>${messages[index].content}</p>`;
       }
 
+      function renderMessage(index) {
+  // Aplicamos efecto fade out, luego cambiamos contenido y fade in
+  messageContainer.style.opacity = 0;
+
+  setTimeout(() => {
+    messageContainer.innerHTML = `<h2>${messages[index].title}</h2><p>${messages[index].content}</p>`;
+    messageContainer.style.opacity = 1;
+  }, 300);
+}
+
+
       prevBtn.addEventListener('click', () => {
         currentMessage = (currentMessage - 1 + messages.length) % messages.length;
         renderMessage(currentMessage);
@@ -119,6 +130,8 @@ Para quienes entienden que lo valioso… no dura.`
         currentMessage = (currentMessage + 1) % messages.length;
         renderMessage(currentMessage);
       });
+
+      
 
       // Mostrar primer mensaje al cargar
       renderMessage(currentMessage);
