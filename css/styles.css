@@ -7,22 +7,18 @@
   font-family: 'Grape Nuts', cursive;
 }
 
-/* Página principal: centrar logo y eslogan */
+/* Página Principal: centrar logo y eslogan */
 .hero-content {
   text-align: center;
 }
 .hero-content .logo {
-  font-size: 4rem; /* Aumenta o ajusta según lo que necesites */
+  font-size: 4rem;
   font-family: 'Grape Nuts', cursive;
   color: #111827;
   margin: 0;
 }
-
 .hero-content .tagline {
   text-align: center;
-}
-.logo {
-  font-family: 'Grape Nuts', cursive;
 }
 
 /* --- Estilo global --- */
@@ -35,7 +31,63 @@ body {
   padding: 40px 20px;
 }
 
-/* --- Contenedor principal: dos columnas --- */
+/* --- Página Principal: Layout de columnas 60/40 --- */
+.main-container {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 40px;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+.left-section {
+  flex: 0 0 60%;
+  box-sizing: border-box;
+}
+.right-section {
+  flex: 0 0 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+/* Logo grande en página principal */
+.right-section .logo {
+  font-size: 4rem;
+  margin: 0;
+}
+/* Botones de acción: iniciar sesión y registrarse */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.action-buttons a,
+.action-buttons button {
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  font-size: 1rem;
+  text-decoration: none;
+}
+/* Enlaces legales: Política de Privacidad y Términos */
+.legal-links {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.legal-links a {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+}
+
+/* --- Contenedor principal original (upload.html): dos columnas --- */
 .container {
   max-width: 1200px;
   width: 100%;
@@ -43,9 +95,10 @@ body {
   display: flex;
   gap: 40px;
   align-items: flex-start;
+  box-sizing: border-box;
 }
 
-/* --- Columna izquierda: logo, frases, cerrar sesión --- */
+/* --- Columna izquierda (upload.html): logo, frases, cerrar sesión --- */
 .left-column {
   flex: 1;
   max-width: 350px;
@@ -88,13 +141,13 @@ body {
   color: #12306b;
 }
 
-/* --- Columna derecha: timeline --- */
+/* --- Columna derecha (upload.html): timeline --- */
 .right-column {
   flex: 2;
   box-sizing: border-box;
 }
 
-/* --- Sección de subida: formulario --- */
+/* --- Sección de subida (upload.html): formulario --- */
 .upload-section form {
   display: flex;
   flex-direction: column;
@@ -145,7 +198,7 @@ button:hover,
   box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
 }
 
-/* --- Timeline: contenedor e ítems --- */
+/* --- Timeline items (upload.html) --- */
 .right-column #timeline {
   background: #ffffff;
   padding: 20px;
@@ -182,7 +235,7 @@ button:hover,
   object-fit: cover;
 }
 
-/* Texto de descripción y usuario */
+/* Texto de descripcción y usuario */
 .image-description,
 .image-user {
   margin: 8px 0;
@@ -192,7 +245,7 @@ button:hover,
 
 /* Botón eliminar con mayor especificidad */
 .image-card .delete-btn {
-  background: rgba(255, 0, 0, 0.8); /* Rojo semitransparente */
+  background: rgba(255, 0, 0, 0.8);
   color: white;
   border: none;
   padding: 6px 12px;
@@ -227,12 +280,14 @@ button:hover,
 
 /* --- Responsive --- */
 @media (max-width: 900px) {
-  .container {
+  .container, .main-container {
     flex-direction: column;
     gap: 30px;
   }
   .left-column,
-  .right-column {
+  .right-column,
+  .left-section,
+  .right-section {
     max-width: 100%;
   }
 }
@@ -301,9 +356,9 @@ button:hover,
 .info-carousel::before {
   content: '';
   position: absolute;
-  inset: 0; /* top, right, bottom, left = 0 */
+  inset: 0;
   border-radius: 20px;
-  padding: 4px; /* grosor del borde */
+  padding: 4px;
   background: linear-gradient(
     270deg,
     #ff71ce,
@@ -323,11 +378,11 @@ button:hover,
   z-index: -1;
 }
 
-/* Segundo pseudo para el fondo blanco real dentro del borde */
+/* Segundo pseudo para el fondo blanco real dentro del borde ---*/
 .info-carousel::after {
   content: '';
   position: absolute;
-  inset: 4px; /* dejar espacio para el borde */
+  inset: 4px;
   background-color: #ffffff;
   border-radius: 16px;
   z-index: -1;
@@ -353,10 +408,10 @@ button:hover,
 
 .carousel-container {
   max-width: 700px;
-  width: 100%; /* Usar todo el ancho posible */
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centrar el contenido horizontalmente */
+  justify-content: center;
   gap: 20px;
 }
 
@@ -367,7 +422,7 @@ button:hover,
   color: #6b7280;
   cursor: pointer;
   transition: color 0.3s;
-  margin: 0 10px; /* Espacio lateral entre botones y texto */
+  margin: 0 10px;
 }
 
 .carousel-btn:hover {
@@ -375,3 +430,7 @@ button:hover,
 }
 
 .carousel-message {
+  transition: opacity 0.4s ease-in-out;
+  opacity: 1;
+}
+
