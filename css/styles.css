@@ -217,22 +217,40 @@ button:hover,
   gap: 25px;
 }
 .image-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 12px;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
-  margin-bottom: 20px;
+  position: relative;
+  background: white;
+  padding: 15px 15px 40px 15px; /* más espacio abajo tipo polaroid */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   width: 100%;
+  max-width: 350px; /* opcional para que no quede gigante */
+  margin: 0 auto 30px auto; /* margen abajo para separar */
+  box-sizing: border-box;
 }
 
-/* Imagen dentro de la tarjeta */
 .image-card img {
+  display: block;
   width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
+  height: auto;
+  border-radius: 6px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 0 auto;
+}
+
+/* Cinta tipo polaroid - pseudo elemento */
+.image-card::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 60px;
+  height: 15px;
+  background: #f9d342; /* amarillo mostaza para la cinta */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transform: rotate(-10deg);
+  border-radius: 3px;
+  z-index: 10;
 }
 
 /* Texto de descripcción y usuario */
