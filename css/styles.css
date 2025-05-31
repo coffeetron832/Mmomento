@@ -296,24 +296,6 @@ button:hover,
   color: #444;
 }
 
-/* Botón eliminar con mayor especificidad */
-.image-card .delete-btn {
-  background: rgba(255, 0, 0, 0.8);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  margin-top: 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-  align-self: flex-start;
-}
-.image-card .delete-btn:hover {
-  background: rgba(255, 0, 0, 1);
-}
-
 /* --- Navegación principal --- */
 .main-nav {
   display: flex;
@@ -397,51 +379,44 @@ button:hover,
   position: relative;
   background-color: #ffffff;
   border-radius: 16px;
-  padding: 30px 20px;
-  max-width: 700px;
-  margin: 0 auto;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 30px 24px;
+  margin-top: 20px;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.1),
+    inset 0 0 15px rgba(59, 130, 246, 0.2);
+  color: #1e3a8a;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
   overflow: hidden;
-  z-index: 0;
+  user-select: none;
 }
 
-/* Pseudo elemento para el borde animado */
+/* Degradado animado */
 .info-carousel::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  padding: 4px;
-  background: linear-gradient(
-    270deg,
-    #ff71ce,
-    #01cdfe,
-    #05ffa1,
-    #b967ff,
-    #ff71ce
-  );
-  background-size: 800% 800%;
-  animation: gradientMove 8s linear infinite;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
+  top: -25%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  background: linear-gradient(270deg, #93c5fd, #3b82f6, #60a5fa, #3b82f6, #93c5fd);
+  background-size: 600% 600%;
+  animation: gradientMove 16s linear infinite;
+  opacity: 0.15;
+  filter: blur(18px);
   pointer-events: none;
-  z-index: -1;
+  border-radius: 20px;
+  z-index: 0;
 }
 
-/* Segundo pseudo para el fondo blanco real dentro del borde ---*/
-.info-carousel::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  background-color: #ffffff;
-  border-radius: 16px;
-  z-index: -1;
+/* Texto encima del degradado */
+.info-carousel > * {
+  position: relative;
+  z-index: 1;
 }
 
-/* Animación de movimiento del degradado */
+/* Animación de movimiento del gradiente */
 @keyframes gradientMove {
   0% {
     background-position: 0% 50%;
@@ -452,52 +427,4 @@ button:hover,
   100% {
     background-position: 0% 50%;
   }
-}
-
-.carousel-message {
-  transition: opacity 0.4s ease-in-out;
-  opacity: 1;
-}
-
-.carousel-container {
-  max-width: 700px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.carousel-btn {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #6b7280;
-  cursor: pointer;
-  transition: color 0.3s;
-  margin: 0 10px;
-}
-
-.carousel-btn:hover {
-  color: #2563eb;
-}
-
-/* Separar botones */
-.main-nav {
-  margin-bottom: 30px; /* espacio entre grupos de botones */
-}
-
-/* Contenedor izquierdo (carrusel) */
-.left-section {
-  flex: 0 0 60%; /* ocupa 60% ancho */
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch; /* para que los hijos ocupen toda altura posible */
-}
-
-/* Carrusel */
-.info-carousel {
-  flex-grow: 1; /* ocupa todo el espacio vertical disponible */
-  width: 100%;  /* ancho completo */
-  box-sizing: border-box;
 }
