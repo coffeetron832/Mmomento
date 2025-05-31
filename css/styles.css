@@ -424,82 +424,49 @@ button:hover,
   user-select: none;
 }
 
-/* Fondo animado degradado (se mantiene) */
-.info-carousel::before {
-  content: '';
-  position: absolute;
-  top: -25%;
-  left: -25%;
-  width: 150%;
-  height: 150%;
-  background: linear-gradient(270deg, #93c5fd, #3b82f6, #60a5fa, #3b82f6, #93c5fd);
-  background-size: 600% 600%;
-  animation: gradientMove 16s linear infinite;
-  opacity: 0.15;
-  filter: blur(18px);
-  pointer-events: none;
-  border-radius: 20px;
-  z-index: 0;
+.info-carousel {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
 }
 
-.info-carousel > * {
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #222;
+  color: #eee;
+  padding: 20px;
+  border-radius: 10px;
   position: relative;
-  z-index: 1;
 }
 
-/* Transición para cambio de mensajes */
 .carousel-message {
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 30px 24px;
-  text-align: center;
-}
-.carousel-message.active {
-  opacity: 1;
-  position: relative;
+  flex-grow: 1;
+  padding: 0 20px;
+  user-select: none;
 }
 
-/* Flechas de navegación */
 .carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
-  background: none;
+  background: transparent;
   border: none;
-  color: #1e3a8a;
+  color: #eee;
+  font-size: 2rem;
   cursor: pointer;
-  z-index: 2;
-  transition: transform 0.3s ease;
+  transition: color 0.3s ease;
+  user-select: none;
 }
+
 .carousel-arrow:hover {
-  transform: translateY(-50%) scale(1.2);
+  color: #fff;
 }
 
 .carousel-arrow.left {
-  left: 15px;
-}
-.carousel-arrow.right {
-  right: 15px;
+  margin-right: 10px;
 }
 
-/* Quitar efecto frosted glass de botones */
-.action-buttons,
-button,
-.upload-section button,
-.modal-content button,
-.main-nav a.button-style,
-#logoutBtn {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  background: #e0f2fe; /* azul claro opaco */
-  border: 1px solid #93c5fd;
-  color: #1e3a8a;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-shadow: none;
+.carousel-arrow.right {
+  margin-left: 10px;
 }
 
