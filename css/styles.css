@@ -70,19 +70,6 @@ body.dark-mode a {
   color: #a0cfff;
 }
 
-/* Neon para el logo en modo oscuro */
-body.dark-mode .logo {
-  color: #8be9fd; /* Azul claro estilo neón */
-  text-shadow:
-    0 0 5px #8be9fd,
-    0 0 10px #8be9fd,
-    0 0 20px #8be9fd,
-    0 0 40px #00ffff,
-    0 0 80px #00ffff;
-  transition: all 0.3s ease-in-out;
-}
-
-
 button#darkModeToggle {
   position: fixed;
   top: 1rem;
@@ -96,35 +83,7 @@ button#darkModeToggle {
   z-index: 1000;
 }
 
-@keyframes neonPulse {
-  0%, 100% {
-    text-shadow:
-      0 0 5px #8be9fd,
-      0 0 10px #8be9fd,
-      0 0 20px #8be9fd,
-      0 0 40px #00ffff,
-      0 0 80px #00ffff;
-  }
-  50% {
-    text-shadow:
-      0 0 2px #8be9fd,
-      0 0 5px #8be9fd,
-      0 0 10px #00ffff,
-      0 0 20px #00ffff;
-  }
-}
 
-/* Activar animación solo en modo oscuro */
-body.dark-mode .logo {
-  color: #8be9fd;
-  text-shadow:
-    0 0 5px #8be9fd,
-    0 0 10px #8be9fd,
-    0 0 20px #8be9fd,
-    0 0 40px #00ffff,
-    0 0 80px #00ffff;
-  animation: neonPulse 3s infinite ease-in-out;
-}
 
 /* Estilos para timeline en modo oscuro */
 body.dark-mode .right-column #timeline {
