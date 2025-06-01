@@ -170,6 +170,61 @@ body.dark-mode #timeline h2 {
   color: #e0e0e0;
 }
 
+/* Estilos generales para modo oscuro del formulario */
+form {
+  background-color: #121212; /* Fondo oscuro para el formulario */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #e0e0e0; /* Texto claro */
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Labels con color claro */
+form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #cfcfcf;
+  font-weight: 600;
+}
+
+/* Inputs y textarea para modo oscuro */
+form input[type="text"],
+form input[type="file"],
+form textarea {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #444; /* borde oscuro suave */
+  border-radius: 4px;
+  background-color: #1e1e1e; /* fondo oscuro */
+  color: #eee; /* texto claro */
+  font-size: 1rem;
+}
+
+/* Placeholder más claro */
+form input::placeholder,
+form textarea::placeholder {
+  color: #888;
+}
+
+/* Botón para subir en modo oscuro */
+form button {
+  background-color: #3a86ff; /* azul vibrante */
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #265fd4;
+}
+
 
 /* --- Estilo global --- */
 body {
