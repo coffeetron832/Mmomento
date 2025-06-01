@@ -170,60 +170,60 @@ body.dark-mode #timeline h2 {
   color: #e0e0e0;
 }
 
-/* Estilos generales para modo oscuro del formulario */
-form {
-  background-color: #121212; /* Fondo oscuro para el formulario */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-  color: #e0e0e0; /* Texto claro */
-  max-width: 400px;
-  margin: 0 auto;
+/* --- Formulario modo oscuro --- */
+body.dark-mode .upload-section form {
+  background-color: #1c1c1c; /* fondo más oscuro que el body */
+  border: 1px solid #444; /* borde sutil pero definido */
+  box-shadow: 0 0 12px rgba(139, 233, 253, 0.4); /* ligera iluminación azul neón */
+  color: #e0e0e0; /* texto claro */
 }
 
-/* Labels con color claro */
-form label {
-  display: block;
-  margin-bottom: 8px;
-  color: #cfcfcf;
-  font-weight: 600;
+/* Inputs y textarea en modo oscuro */
+body.dark-mode .upload-section input[type="text"],
+body.dark-mode .upload-section input[type="file"],
+body.dark-mode .upload-section textarea {
+  background-color: #2a2a2a;
+  border: 1px solid #555;
+  color: #ddd;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Inputs y textarea para modo oscuro */
-form input[type="text"],
-form input[type="file"],
-form textarea {
-  width: 100%;
-  padding: 8px 12px;
-  margin-bottom: 15px;
-  border: 1px solid #444; /* borde oscuro suave */
-  border-radius: 4px;
-  background-color: #1e1e1e; /* fondo oscuro */
-  color: #eee; /* texto claro */
-  font-size: 1rem;
+body.dark-mode .upload-section input[type="text"]:focus,
+body.dark-mode .upload-section input[type="file"]:focus,
+body.dark-mode .upload-section textarea:focus {
+  border-color: #3a86ff; /* azul vibrante en focus */
+  outline: none;
+  background-color: #3a3a3a;
+  color: #fff;
 }
 
-/* Placeholder más claro */
-form input::placeholder,
-form textarea::placeholder {
+/* Placeholder más claro para inputs y textarea */
+body.dark-mode .upload-section input::placeholder,
+body.dark-mode .upload-section textarea::placeholder {
   color: #888;
+  opacity: 1;
 }
 
-/* Botón para subir en modo oscuro */
-form button {
+/* Botón en modo oscuro */
+body.dark-mode .upload-section button {
   background-color: #3a86ff; /* azul vibrante */
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 4px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 15px rgba(58, 134, 255, 0.7);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-form button:hover {
+body.dark-mode .upload-section button:hover {
   background-color: #265fd4;
+  box-shadow: 0 6px 20px rgba(38, 95, 212, 0.8);
 }
+
+/* Label para modo oscuro */
+body.dark-mode .upload-section label {
+  color: #a0a0a0;
+  font-weight: 600;
+}
+
 
 
 /* --- Estilo global --- */
