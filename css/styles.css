@@ -82,13 +82,13 @@ button#darkModeToggle {
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 18px;
 }
 
 button#darkModeToggle:hover {
   transform: scale(1.05);
 }
 
-/* Estilo cuando el modo oscuro está activado (el <body> tiene clase .dark) */
 body.dark button#darkModeToggle {
   background-color: #222;
   color: #f0f0f0;
