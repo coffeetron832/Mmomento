@@ -21,6 +21,36 @@
   text-align: center;
 }
 
+body {
+  background-color: white;
+  color: black;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+button#darkModeToggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+body.dark-mode .image-card {
+  background-color: #1e1e1e;
+  border-color: #444;
+}
+
+
 /* --- Estilo global --- */
 body {
   margin: 0;
