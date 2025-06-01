@@ -5,10 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+    body.dark-mode a,
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode p,
+    body.dark-mode button,
+    body.dark-mode input {
+      color: #eee;
+    }
+    body.dark-mode input {
+      background-color: #222;
+      border: 1px solid #555;
+      color: #eee;
+    }
+    body.dark-mode button {
+      background-color: #444;
+      border: none;
+      color: #fff;
+    }
+    body.dark-mode .left-column {
+      background-color: #1c1c1c;
+    }
+    body.dark-mode .right-column {
+      background-color: #222;
+    }
+    #darkModeToggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      background: #ddd;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    body.dark-mode #darkModeToggle {
+      background: #333;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
+  <button id="darkModeToggle">🌓</button>
+
   <div class="container">
-    
     <!-- COLUMNA IZQUIERDA -->
     <div class="left-column">
       <header>
@@ -28,13 +74,12 @@
           <button type="submit">Subir Momento</button>
         </form>
       </section>
-       <footer class="footer-copyright">
-  &copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.
-</footer>
+      
+      <footer class="footer-copyright">
+        &copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.
+      </footer>
     </div>
 
-   
-    
     <!-- COLUMNA DERECHA -->
     <div class="right-column">
       <section id="timeline">
@@ -42,11 +87,24 @@
         <div id="imagesContainer"></div>
       </section>
     </div>
-    
   </div>
 
   <script src="js/upload.js"></script>
   <script>
+    // Mostrar año actual en footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Modo oscuro persistente
+    if(localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+
+    document.getElementById('darkModeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+
+    // Lógica cerrar sesión
     document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = document.getElementById('logoutBtn');
       const userToken = localStorage.getItem('token');
@@ -67,5 +125,4 @@
   </script>
 </body>
 </html>
-
 
