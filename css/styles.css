@@ -45,11 +45,6 @@ button#darkModeToggle {
   z-index: 1000;
 }
 
-body.dark-mode .image-card {
-  background-color: #1e1e1e;
-  border-color: #444;
-}
-
 
 /* --- Estilo global --- */
 body {
