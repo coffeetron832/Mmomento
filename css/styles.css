@@ -672,29 +672,3 @@ button:hover,
   outline: 2px solid #000;
   outline-offset: 2px;
 }
-
-
-.animated-gradient-line {
-  width: 100%;
-  height: 6px;
-  background: linear-gradient(270deg, #3F1521, #22372B, #001960);
-  background-size: 600% 600%;
-  animation: gradientAnimation 8s ease infinite;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 9999;
-}
-
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
