@@ -5,8 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Estilos mínimos para modo oscuro */
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+    body.dark-mode input,
+    body.dark-mode button {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      border: 1px solid #444;
+    }
+    #darkModeToggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      background: #ddd;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    body.dark-mode #darkModeToggle {
+      background: #333;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
+  <button id="darkModeToggle">🌓</button>
+
   <h2>Iniciar sesión</h2>
   <form id="loginForm">
     <input type="email" id="email" placeholder="Correo" required />
@@ -14,6 +44,22 @@
     <button type="submit">Entrar</button>
   </form>
   <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+
+  <script>
+    // Aplicar el modo oscuro guardado al cargar la página
+    const isDarkMode = localStorage.getItem("darkMode") === "true";
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+    }
+
+    // Manejar el botón de modo oscuro
+    const toggleBtn = document.getElementById("darkModeToggle");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      const enabled = document.body.classList.contains("dark-mode");
+      localStorage.setItem("darkMode", enabled);
+    });
+  </script>
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
