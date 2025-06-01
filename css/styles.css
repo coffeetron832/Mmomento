@@ -70,31 +70,6 @@ body.dark-mode a {
   color: #a0cfff;
 }
 
-button#darkModeToggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  padding: 10px 15px;
-  border-radius: 999px;
-  background-color: #f0f0f0;
-  color: #333;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 18px;
-}
-
-button#darkModeToggle:hover {
-  transform: scale(1.05);
-}
-
-body.dark button#darkModeToggle {
-  background-color: #222;
-  color: #f0f0f0;
-}
-
-
 
 /* Estilos para timeline en modo oscuro */
 body.dark-mode .right-column #timeline {
