@@ -10,20 +10,45 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="shortcut icon" href="favicon.ico">
 
-  
   <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* Estilos para el botón modo oscuro */
+    button#darkModeToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background-color: #f0f0f0;
+      color: #333;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18px;
+    }
+
+    button#darkModeToggle:hover {
+      transform: scale(1.05);
+    }
+
+    body.dark button#darkModeToggle {
+      background-color: #222;
+      color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
   <!-- Botón modo oscuro -->
-  <button id="darkModeToggle">🌓 Modo Oscuro</button>
+  <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌙</button>
 
   <!-- Contenedor Principal 60/40 -->
   <div class="main-container">
-
     <!-- Lado izquierdo: Carrusel ocupa 60% -->
     <div class="left-section">
       <section class="info-carousel">
@@ -78,7 +103,7 @@
   <div class="animated-gradient-line"></div>
 
   <script>
-    // Modal de bienvenida
+    // Modal de bienvenida y carrusel
     document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('welcomeModal');
       const closeBtn = document.getElementById('closeModalBtn');
@@ -92,7 +117,6 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
-      // Carrusel de mensajes
       const messages = [
         {
           title: "¿Cómo funciona?",
@@ -138,15 +162,23 @@ Momento es para ti, para que descubras lo nuevo y te animes a ser parte.`
 
       renderMessage(currentMessage);
 
-      // Lógica de modo oscuro
+      // Modo oscuro con cambio de ícono y color en botón
       const toggle = document.getElementById("darkModeToggle");
-      const isDark = localStorage.getItem("darkMode") === "true";
+      const body = document.body;
 
-      if (isDark) document.body.classList.add("dark-mode");
+      // Restaurar estado modo oscuro y texto del botón
+      if (localStorage.getItem("darkMode") === "true") {
+        body.classList.add("dark");
+        toggle.textContent = "☀️";
+      } else {
+        toggle.textContent = "🌙";
+      }
 
-      toggle?.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
+      toggle.addEventListener("click", () => {
+        body.classList.toggle("dark");
+        const isDark = body.classList.contains("dark");
+        localStorage.setItem("darkMode", isDark);
+        toggle.textContent = isDark ? "☀️" : "🌙";
       });
     });
   </script>
