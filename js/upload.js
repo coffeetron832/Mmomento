@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (typeof uploader === "object" && uploader !== null) {
       imageOwnerId = uploader._id || uploader.id || null;
-      userInfo.textContent = uploader.name
-        ? `Subido por: ${uploader.name}`
+      userInfo.textContent = uploader.username
+        ? `Subido por: ${uploader.username}`
         : "Subido por: Anónimo";
     } else if (typeof uploader === "string") {
       imageOwnerId = uploader;
@@ -158,4 +158,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
