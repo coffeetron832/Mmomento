@@ -6,8 +6,42 @@
   <title>Términos y Condiciones | Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Grape+Nuts&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+    body.dark-mode a,
+    body.dark-mode p,
+    body.dark-mode li,
+    body.dark-mode h1,
+    body.dark-mode h2 {
+      color: #eee;
+    }
+    body.dark-mode .main-footer {
+      border-top: 1px solid #444;
+      color: #ccc;
+    }
+    #darkModeToggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      background: #ddd;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    body.dark-mode #darkModeToggle {
+      background: #333;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
+  <button id="darkModeToggle">🌓</button>
+
   <div class="container">
     <header class="main-header">
       <h1 class="logo">Momento</h1>
@@ -60,6 +94,19 @@
       <p>&copy; 2025 Momento</p>
     </footer>
   </div>
+
+  <script>
+    // Aplicar modo oscuro guardado
+    if(localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+
+    // Toggle modo oscuro
+    document.getElementById('darkModeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+  </script>
 </body>
 </html>
 
