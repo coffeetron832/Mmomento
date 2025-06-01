@@ -70,6 +70,18 @@ body.dark-mode a {
   color: #a0cfff;
 }
 
+/* Neon para el logo en modo oscuro */
+body.dark-mode .logo {
+  color: #8be9fd; /* Azul claro estilo neón */
+  text-shadow:
+    0 0 5px #8be9fd,
+    0 0 10px #8be9fd,
+    0 0 20px #8be9fd,
+    0 0 40px #00ffff,
+    0 0 80px #00ffff;
+  transition: all 0.3s ease-in-out;
+}
+
 
 button#darkModeToggle {
   position: fixed;
