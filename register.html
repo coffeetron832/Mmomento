@@ -6,6 +6,7 @@
   <title>Registro | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
   <style>
+    /* Modo oscuro */
     body.dark-mode {
       background-color: #121212;
       color: #ffffff;
@@ -26,31 +27,92 @@
       border: none;
       color: #fff;
     }
-    #darkModeToggle {
+
+    /* Botón modo oscuro */
+    button#darkModeToggle {
       position: fixed;
       top: 10px;
       right: 10px;
-      padding: 6px 10px;
+      padding: 10px 15px;
       border: none;
-      border-radius: 4px;
-      background: #ddd;
+      border-radius: 999px;
+      background-color: #f0f0f0;
+      color: #333;
       cursor: pointer;
+      font-size: 18px;
       z-index: 1000;
+      transition: all 0.3s ease;
     }
-    body.dark-mode #darkModeToggle {
-      background: #333;
-      color: #fff;
+    button#darkModeToggle:hover {
+      transform: scale(1.05);
+    }
+    body.dark-mode button#darkModeToggle {
+      background-color: #222;
+      color: #f0f0f0;
+    }
+
+    /* Estilos básicos para formulario */
+    h2 {
+      text-align: center;
+      margin-top: 2rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+    }
+    form#registerForm {
+      max-width: 320px;
+      margin: 1rem auto 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    form#registerForm input {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+    }
+    form#registerForm input:focus {
+      border-color: #5a9bd8;
+    }
+    form#registerForm button {
+      padding: 0.75rem 1rem;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #5a9bd8;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    form#registerForm button:hover {
+      background-color: #437fc7;
+    }
+    p {
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+    }
+    p a {
+      color: #5a9bd8;
+      text-decoration: none;
+    }
+    p a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <button id="darkModeToggle">🌓</button>
+  <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌙</button>
 
   <h2>Crear cuenta</h2>
   <form id="registerForm">
-    <input type="text" id="name" placeholder="Nombre" required />
-    <input type="email" id="email" placeholder="Correo" required />
-    <input type="password" id="password" placeholder="Contraseña" required />
+    <input type="text" id="name" placeholder="Nombre" required autocomplete="name" />
+    <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
+    <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password" />
     <button type="submit">Registrarse</button>
   </form>
   <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
@@ -59,18 +121,27 @@
   <script src="js/auth.js"></script>
 
   <script>
-    // Aplicar modo oscuro guardado
+    const body = document.body;
+    const toggleBtn = document.getElementById('darkModeToggle');
+
+    // Aplicar modo oscuro guardado al cargar
     if(localStorage.getItem('darkMode') === 'true') {
-      document.body.classList.add('dark-mode');
+      body.classList.add('dark-mode');
+      toggleBtn.textContent = "☀️";
+    } else {
+      toggleBtn.textContent = "🌙";
     }
 
-    // Toggle modo oscuro
-    document.getElementById('darkModeToggle').addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    // Toggle modo oscuro con cambio de icono
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark);
+      toggleBtn.textContent = isDark ? "☀️" : "🌙";
     });
   </script>
 </body>
 </html>
+
 
 
