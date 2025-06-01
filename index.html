@@ -37,7 +37,7 @@
       transform: scale(1.05);
     }
 
-    body.dark button#darkModeToggle {
+    body.dark-mode button#darkModeToggle {
       background-color: #222;
       color: #f0f0f0;
     }
@@ -166,23 +166,21 @@ Momento es para ti, para que descubras lo nuevo y te animes a ser parte.`
       const toggle = document.getElementById("darkModeToggle");
       const body = document.body;
 
-      // Cambiar de 'dark' a 'dark-mode'
-if (localStorage.getItem("darkMode") === "true") {
-  body.classList.add("dark-mode");
-  toggle.textContent = "☀️";
-} else {
-  toggle.textContent = "🌙";
-}
+      // Si ya estaba modo oscuro activado en localStorage, aplicar
+      if (localStorage.getItem("darkMode") === "true") {
+        body.classList.add("dark-mode");
+        toggle.textContent = "☀️";
+      } else {
+        toggle.textContent = "🌙";
+      }
 
-toggle.addEventListener("click", () => {
-  body.classList.toggle("dark-mode");
-  const isDark = body.classList.contains("dark-mode");
-  localStorage.setItem("darkMode", isDark);
-  toggle.textContent = isDark ? "☀️" : "🌙";
-});
-
+      toggle.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+        const isDark = body.classList.contains("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+        toggle.textContent = isDark ? "☀️" : "🌙";
+      });
     });
   </script>
 </body>
 </html>
-
