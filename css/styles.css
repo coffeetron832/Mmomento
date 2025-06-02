@@ -1,39 +1,31 @@
-/* --- Tu código existente y mejorado --- */
-/* Importar fuentes desde Google Fonts */
+/* --- Importar fuentes desde Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&display=swap');
 
-/* Logo: siempre en Grape Nuts */
-.logo {
-  font-family: 'Grape Nuts', cursive;
-}
-
-/* Página Principal: centrar logo y eslogan */
-.hero-content {
-  text-align: center;
-}
-.hero-content .logo {
-  font-size: 4rem;
-  font-family: 'Grape Nuts', cursive;
-  color: #111827;
-  margin: 0;
-}
-.hero-content .tagline {
-  text-align: center;
+/* --- Reset y reglas globales --- */
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background-color: white;
-  color: black;
+  margin: 0;
+  /* En upload.html se usa un padding inline o a través de contenedores, 
+     aquí se establece el estilo global para otras páginas */
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  min-height: 100vh;
+  /* Ajusta el padding global si lo requieres para el layout general */
+  padding: 40px 20px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Estilos generales para modo oscuro */
+/* --- Modo oscuro global --- */
 body.dark-mode {
   background-color: #121212;
   color: #f1f1f1;
 }
 
-/* Asegurar que todos los textos sean visibles */
+/* Para asegurar visibilidad de textos en dark mode */
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
@@ -48,140 +40,55 @@ body.dark-mode .modal-content {
   color: #f1f1f1 !important;
 }
 
-/* Botones modo oscuro */
-body.dark-mode .btn-frosted {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid #ccc;
-}
-
-/* Carrusel en modo oscuro */
-body.dark-mode .carousel-container {
-  background-color: #1e1e1e;
-}
-
-/* Modal modo oscuro */
-body.dark-mode .modal-content {
-  background-color: #1e1e1e;
-  border: 1px solid #444;
-}
-
-/* Opcional: enlaces */
-body.dark-mode a {
-  color: #a0cfff;
-}
-
-
-/* Estilos para timeline en modo oscuro */
-body.dark-mode .right-column #timeline {
-  background-color: #1e1e1e;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
-}
-
-body.dark-mode .image-card {
-  background-color: #2a2a2a;
-  box-shadow:
-    0 12px 25px rgba(0, 0, 0, 0.8),
-    0 0 10px rgba(0, 0, 0, 0.3);
-  background-image:
-    radial-gradient(circle at 10% 10%, #3a3a3a 3%, transparent 4%),
-    radial-gradient(circle at 80% 30%, #3a3a3a 3%, transparent 4%);
-}
-
-body.dark-mode .image-card::before {
-  background: linear-gradient(135deg, #7b664a 0%, #6a553a 50%, #5e4a2e 100%);
-  box-shadow:
-    inset 0 2px 6px rgba(255, 255, 255, 0.1),
-    0 3px 8px rgba(0, 0, 0, 0.7);
-}
-
-body.dark-mode .image-card::after {
-  background: rgba(0, 0, 0, 0.5);
-  filter: blur(2.3px);
-}
-
-body.dark-mode .image-description,
-body.dark-mode .image-user {
-  color: #ccc; /* Texto claro para contraste */
-}
-
-/* Links dentro del timeline, si hay */
-body.dark-mode .image-description a,
-body.dark-mode .image-user a {
-  color: #80bfff;
-  text-decoration: underline;
-}
-
-body.dark-mode #timeline h2 {
-  color: #e0e0e0;
-}
-
-/* --- Formulario modo oscuro --- */
-body.dark-mode .upload-section form {
-  background-color: #1c1c1c; /* fondo más oscuro que el body */
-  border: 1px solid #444; /* borde sutil pero definido */
-  box-shadow: 0 0 12px rgba(139, 233, 253, 0.4); /* ligera iluminación azul neón */
-  color: #e0e0e0; /* texto claro */
-}
-
-/* Inputs y textarea en modo oscuro */
-body.dark-mode .upload-section input[type="text"],
-body.dark-mode .upload-section input[type="file"],
-body.dark-mode .upload-section textarea {
-  background-color: #2a2a2a;
-  border: 1px solid #555;
-  color: #ddd;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-body.dark-mode .upload-section input[type="text"]:focus,
-body.dark-mode .upload-section input[type="file"]:focus,
-body.dark-mode .upload-section textarea:focus {
-  border-color: #3a86ff; /* azul vibrante en focus */
-  outline: none;
-  background-color: #3a3a3a;
-  color: #fff;
-}
-
-/* Placeholder más claro para inputs y textarea */
-body.dark-mode .upload-section input::placeholder,
-body.dark-mode .upload-section textarea::placeholder {
-  color: #888;
-  opacity: 1;
-}
-
-/* Botón en modo oscuro */
-body.dark-mode .upload-section button {
-  background-color: #3a86ff; /* azul vibrante */
-  color: white;
-  border: none;
-  box-shadow: 0 4px 15px rgba(58, 134, 255, 0.7);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-body.dark-mode .upload-section button:hover {
-  background-color: #265fd4;
-  box-shadow: 0 6px 20px rgba(38, 95, 212, 0.8);
-}
-
-/* Label para modo oscuro */
-body.dark-mode .upload-section label {
-  color: #a0a0a0;
+/* --- Botones y elementos frosted glass --- */
+.btn-frosted,
+button,
+.upload-section button,
+.modal-content button,
+.main-nav a.button-style {
+  background: rgba(173, 216, 230, 0.25);
+  border: 1px solid rgba(173, 216, 230, 0.5);
+  color: #1e3a8a;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 12px 20px;
   font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
+  text-shadow: 0 0 2px rgba(255,255,255,0.8);
 }
 
+.btn-frosted:hover,
+button:hover,
+.upload-section button:hover,
+.modal-content button:hover,
+.main-nav a.button-style:hover {
+  background: rgba(173, 216, 230, 0.4);
+  color: #12306b;
+  box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
+}
 
+/* --- Estilos de la tipografía y logo --- */
+.logo {
+  font-family: 'Grape Nuts', cursive;
+}
 
-/* --- Estilo global --- */
-body {
+/* --- Reglas específicas para la Página Principal --- */
+.hero-content {
+  text-align: center;
+}
+.hero-content .logo {
+  font-size: 4rem;
+  color: #111827;
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f3f4f6;
-  color: #1f2937;
-  min-height: 100vh;
-  padding: 40px 20px;
+}
+.hero-content .tagline {
+  text-align: center;
 }
 
-/* --- Página Principal: Layout de columnas 60/40 --- */
+/* --- Layout de columnas generales --- */
 .main-container {
   display: flex;
   max-width: 1200px;
@@ -189,26 +96,21 @@ body {
   margin: 0 auto;
   gap: 40px;
   align-items: flex-start;
-  box-sizing: border-box;
 }
+
 .left-section {
   flex: 0 0 60%;
-  box-sizing: border-box;
 }
+
 .right-section {
   flex: 0 0 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  box-sizing: border-box;
 }
-/* Logo grande en página principal */
-.right-section .logo {
-  font-size: 4rem;
-  margin: 0;
-}
-/* Botones de acción: iniciar sesión y registrarse */
+
+/* --- Estilos para botones de acción (ej.: Iniciar sesión, registrarse) --- */
 .action-buttons {
   display: flex;
   flex-direction: column;
@@ -219,7 +121,7 @@ body {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  margin-bottom: 24px; /* Espacio con los enlaces legales */
+  margin-bottom: 24px;
 }
 
 .action-buttons a,
@@ -241,7 +143,7 @@ body {
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Enlaces legales: Política de Privacidad y Términos */
+/* --- Enlaces legales --- */
 .legal-links {
   display: flex;
   gap: 10px;
@@ -255,81 +157,55 @@ body {
   padding: 8px;
 }
 
+/* --- Estilos para el contenedor de la página upload.html --- */
+/* Ten en cuenta que en upload.html se definen varios estilos en línea
+   para elementos como header, botones, formulario, etc. Aquí se agregan reglas globales 
+   para otros elementos (por ejemplo, timeline) que se usan en todo el sitio. */
 
-/* --- Contenedor principal original (upload.html): dos columnas --- */
-.container {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
-  box-sizing: border-box;
-}
-
-/* --- Columna izquierda (upload.html): logo, frases, cerrar sesión --- */
-/* --- Columna izquierda (upload.html): logo, frases, cerrar sesión --- */
-.left-column {
-  flex: 1;
-  max-width: 350px;
-  box-sizing: border-box;
-  text-align: center; /* Centrar todo el contenido dentro */
-}
-
-.left-column header {
-  margin-bottom: 20px;
-}
-
-.left-column .logo {
-  font-size: 3rem; /* Un poco más pequeño */
-  font-family: 'Grape Nuts', cursive;
-  color: #111827;
-  margin: 0 auto; /* Centrado */
-  display: inline-block;
-}
-
-.left-column .tagline,
-.left-column p {
-  font-size: 0.95rem; /* Tamaño reducido */
-  color: #4b5563;
-  margin: 10px 0;
-  text-align: center; /* Frases centradas */
-}
-
-.left-column #logoutBtn {
-  margin-top: 20px;
-  margin-bottom: 40px; /* espacio extra abajo */
-  display: inline-block;
-  background: rgba(173, 216, 230, 0.25);
-  border: 1px solid rgba(173, 216, 230, 0.5);
-  color: #1e3a8a;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+/* Timeline y cards de imágenes */
+#timeline {
+  background: #ffffff;
+  padding: 20px;
   border-radius: 12px;
-  padding: 12px 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
-  text-shadow: 0 0 2px rgba(255,255,255,0.8);
-  margin-left: auto;
-  margin-right: auto;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+#timeline h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
   text-align: center;
+  color: #374151;
+}
+#imagesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.image-card {
+  position: relative;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}
+.image-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.image-description,
+.image-user {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #444;
 }
 
-.left-column #logoutBtn:hover {
-  background: rgba(173, 216, 230, 0.4);
-  color: #12306b;
-}
-
-
-/* --- Columna derecha (upload.html): timeline --- */
-.right-column {
-  flex: 2;
-  box-sizing: border-box;
-}
-
-/* --- Sección de subida (upload.html): formulario --- */
+/* --- Estilos para secciones de subida (upload-section) --- */
+/* Estos estilos aplican en otras páginas, si usas secciones de subida */
 .upload-section form {
   display: flex;
   flex-direction: column;
@@ -353,85 +229,51 @@ body {
   color: #111827;
 }
 
-/* --- Botones con estilo frosted glass --- */
-button,
-.upload-section button,
-.modal-content button,
-.main-nav a.button-style {
-  background: rgba(173, 216, 230, 0.25);
-  border: 1px solid rgba(173, 216, 230, 0.5);
-  color: #1e3a8a;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 12px 20px;
+/* --- Reglas para inputs, textarea y botones en modo oscuro --- */
+body.dark-mode .upload-section form {
+  background-color: #1c1c1c;
+  border: 1px solid #444;
+  box-shadow: 0 0 12px rgba(139, 233, 253, 0.4);
+  color: #e0e0e0;
+}
+body.dark-mode .upload-section input[type="text"],
+body.dark-mode .upload-section input[type="file"],
+body.dark-mode .upload-section textarea {
+  background-color: #2a2a2a;
+  border: 1px solid #555;
+  color: #ddd;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+body.dark-mode .upload-section input[type="text"]:focus,
+body.dark-mode .upload-section input[type="file"]:focus,
+body.dark-mode .upload-section textarea:focus {
+  border-color: #3a86ff;
+  outline: none;
+  background-color: #3a3a3a;
+  color: #fff;
+}
+body.dark-mode .upload-section input::placeholder,
+body.dark-mode .upload-section textarea::placeholder {
+  color: #888;
+  opacity: 1;
+}
+body.dark-mode .upload-section button {
+  background-color: #3a86ff;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(58, 134, 255, 0.7);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+body.dark-mode .upload-section button:hover {
+  background-color: #265fd4;
+  box-shadow: 0 6px 20px rgba(38, 95, 212, 0.8);
+}
+body.dark-mode .upload-section label {
+  color: #a0a0a0;
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
-  text-shadow: 0 0 2px rgba(255,255,255,0.8);
-}
-button:hover,
-.upload-section button:hover,
-.modal-content button:hover,
-.main-nav a.button-style:hover {
-  background: rgba(173, 216, 230, 0.4);
-  color: #12306b;
-  box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
 }
 
-/* --- Timeline items (upload.html) --- */
-.right-column #timeline {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-}
-#timeline h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #374151;
-}
-#imagesContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-.image-card {
-  position: relative;
-  background: #ffffff; /* blanco puro */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* sombra suave */
-  width: 100%;
-  max-width: 380px;
-  margin: 0 auto;
-  box-sizing: border-box;
-}
-
-.image-card img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: contain;
-  box-shadow: none;
-  margin: 0 auto;
-}
-
-/* Eliminamos .image-card::before y ::after */
-
-/* Texto de descripcción y usuario */
-.image-description,
-.image-user {
-  margin: 8px 0;
-  font-size: 14px;
-  color: #444;
-}
-
-/* --- Navegación principal --- */
+/* --- Navegación Principal --- */
 .main-nav {
   display: flex;
   gap: 20px;
@@ -448,9 +290,82 @@ button:hover,
   color: #1d4ed8;
 }
 
-/* --- Responsive --- */
+/* --- Estilos para el modal de bienvenida --- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(31, 41, 55, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+.modal-content {
+  background-color: #ffffff;
+  padding: 25px 35px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: center;
+  color: #1f2937;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* --- Carrusel --- */
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.carousel-message {
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  color: #222;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 140px;
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+.carousel-message h2 {
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+  color: #333;
+}
+.carousel-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  transition: color 0.3s ease;
+}
+.carousel-btn:hover {
+  color: #000;
+}
+.carousel-btn:focus {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+/* --- Media queries --- */
 @media (max-width: 900px) {
-  .container, .main-container {
+  .container,
+  .main-container {
     flex-direction: column;
     gap: 30px;
   }
@@ -480,134 +395,44 @@ button:hover,
   }
 }
 
-/* --- Estilos para modal de bienvenida --- */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(31, 41, 55, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 20px;
-}
-
-.modal-content {
-  background-color: #ffffff;
-  padding: 25px 35px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  text-align: center;
-  color: #1f2937;
-  font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
-  line-height: 1.5;
-}
-
-/* Contenedor del carrusel */
-.carousel-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 1.5rem 2rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Contenedor del mensaje con transición */
-.carousel-message {
-  flex: 1;
-  font-family: 'Inter', sans-serif;
-  color: #222; /* color oscuro pero suave */
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.6;
-  min-height: 140px; /* para evitar salto al cambiar contenido */
-  transition: opacity 0.5s ease;
-  opacity: 1;
-}
-
-/* Título del mensaje */
-.carousel-message h2 {
-  font-weight: 600;
-  font-size: 1.4rem;
-  margin-bottom: 0.6rem;
-  color: #333;
-}
-
-/* Botones de navegación simples */
-.carousel-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  color: #666;
-  cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  transition: color 0.3s ease;
-}
-
-.carousel-btn:hover {
-  color: #000;
-}
-
-/* Media query para tablets y pantallas medianas */
 @media (max-width: 768px) {
   .main-container {
     flex-direction: column;
     padding: 15px;
   }
-
-  .left-section, .right-section {
+  .left-section,
+  .right-section {
     width: 100% !important;
     padding: 10px 0;
   }
-
   .btn-frosted {
     padding: 10px 16px;
     font-size: 1rem;
   }
-
   .carousel-message h2 {
     font-size: 1.4rem;
   }
   .carousel-message p {
     font-size: 1rem;
   }
-
   .main-nav {
-    display: flex;
     flex-direction: column;
     gap: 10px;
   }
-
   .hero-content {
     text-align: center;
   }
 }
 
-/* Media query para móviles pequeños */
 @media (max-width: 480px) {
   .carousel-btn {
     font-size: 1.5rem;
     padding: 8px 12px;
   }
-
   .carousel-message h2 {
     font-size: 1.2rem;
   }
-
   .carousel-message p {
     font-size: 0.9rem;
   }
-}
-
-.carousel-btn:focus {
-  outline: 2px solid #000;
-  outline-offset: 2px;
 }
