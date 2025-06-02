@@ -477,3 +477,29 @@ body.dark-mode .upload-section label {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   z-index: 90;
 }
+
+/* --- Ajustes para modo oscuro en upload.html --- */
+body.dark-mode #timeline {
+  background-color: #1c1c1c;    /* fondo más oscuro */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.8); /* sombreado más tenue */
+}
+
+body.dark-mode #timeline h2 {
+  color: #e0e0e0;               /* título claro */
+}
+
+body.dark-mode #imagesContainer .image-card {
+  background-color: #252525;    /* fondo de cada card */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .image-description,
+body.dark-mode .image-user {
+  color: #ccc;                  /* texto más claro */
+}
+
+/* Opcional: bordes o separadores */
+body.dark-mode #timeline {
+  border: 1px solid #333;
+}
+
