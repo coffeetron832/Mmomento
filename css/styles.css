@@ -565,3 +565,21 @@ body.dark-mode .modal-content {
   box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   border: 1px solid #444;       /* Borde sutil para separar */
 }
+
+/* Cambiar estilo botones fixed en modo oscuro */
+body.dark-mode.upload-page #darkModeToggle,
+body.dark-mode.upload-page #toggleUploadBtn,
+body.dark-mode.upload-page #logoutBtn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e0e0e0;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode.upload-page #darkModeToggle:hover,
+body.dark-mode.upload-page #toggleUploadBtn:hover,
+body.dark-mode.upload-page #logoutBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
