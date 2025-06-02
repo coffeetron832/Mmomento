@@ -6,194 +6,108 @@
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
   <style>
-    body.dark-mode {
-      background-color: #121212;
-      color: #e0e0e0;
-      transition: background-color 0.3s ease, color 0.3s ease;
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f8f9fa;
     }
 
-    /* Links */
-    body.dark-mode a {
-      color: #81a1c1;
-      text-decoration: underline;
+    header {
+      text-align: center;
+      margin-bottom: 30px;
     }
 
-    /* Inputs y textarea */
-    body.dark-mode input[type="text"],
-    body.dark-mode input[type="email"],
-    body.dark-mode input[type="password"],
-    body.dark-mode input[type="file"] {
-      background-color: #1e1e1e;
-      border: 1.5px solid #555;
-      color: #e0e0e0;
-      padding: 8px 10px;
-      border-radius: 4px;
-      transition: border-color 0.3s ease;
-    }
-    body.dark-mode input[type="text"]:focus,
-    body.dark-mode input[type="email"]:focus,
-    body.dark-mode input[type="password"]:focus,
-    body.dark-mode input[type="file"]:focus {
-      border-color: #81a1c1;
-      outline: none;
+    header h1.logo {
+      font-size: 3rem;
+      margin: 0;
     }
 
-    /* Botones */
-    body.dark-mode button {
-      background-color: #3b4252;
+    #toggleUploadBtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      padding: 10px 15px;
+      background-color: #333;
+      color: #fff;
       border: none;
-      color: #eceff4;
-      padding: 10px 16px;
-      font-weight: 600;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.25s ease;
-    }
-    body.dark-mode button:hover {
-      background-color: #5e81ac;
     }
 
-    /* Contenedores de columnas */
-    body.dark-mode .left-column {
-      background-color: #1f222b;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    body.dark-mode .right-column {
-      background-color: #1a1d26;
-      padding: 20px;
-      border-radius: 8px;
-    }
-
-    /* Timeline container */
-    body.dark-mode #imagesContainer {
-      background-color: #2e3440;
-      padding: 15px;
-      border-radius: 8px;
-      min-height: 200px;
-      color: #d8dee9;
-    }
-
-    /* Header y textos */
-    body.dark-mode header h1.logo,
-    body.dark-mode h1,
-    body.dark-mode h2,
-    body.dark-mode p {
-      color: #eceff4;
-    }
-
-    /* Enlaces como "Cerrar sesión" */
-    body.dark-mode #logoutBtn {
-      display: inline-block;
-      padding: 8px 12px;
-      background-color: #434c5e;
-      color: #d8dee9;
+    #logoutBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #333;
+      color: #fff;
+      padding: 10px 15px;
       text-decoration: none;
       border-radius: 5px;
-      margin: 12px 0;
-      transition: background-color 0.3s ease;
-    }
-    body.dark-mode #logoutBtn:hover {
-      background-color: #81a1c1;
     }
 
-    /* Botón toggle modo oscuro */
-    #darkModeToggle {
+    #uploadFormContainer {
+      display: none;
       position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 999px;
-      background-color: #f0f0f0;
-      color: #333;
-      cursor: pointer;
-      font-size: 18px;
-      z-index: 1000;
-      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    }
-    #darkModeToggle:hover {
-      transform: scale(1.1);
-    }
-    body.dark-mode #darkModeToggle {
-      background-color: #222;
-      color: #f0f0f0;
+      top: 70px;
+      left: 20px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 90;
     }
 
-    /* Contenedor general */
-    .container {
-      display: flex;
-      gap: 20px;
-      max-width: 1200px;
-      margin: 80px auto 40px;
-      padding: 0 20px;
-      flex-wrap: wrap;
-    }
-    .left-column {
-      flex: 1 1 320px;
-      min-width: 320px;
-    }
-    .right-column {
-      flex: 2 1 600px;
-      min-width: 320px;
-    }
-
-    /* Formulario upload */
     form#uploadForm {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 15px;
+      gap: 10px;
+    }
+
+    #imagesContainer {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 600px;
     }
   </style>
 </head>
 <body>
   <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌓</button>
 
-  <div class="container">
-    <!-- COLUMNA IZQUIERDA -->
-    <div class="left-column">
-      <header>
-        <h1 class="logo">Momento</h1>
-        <p>Cada imagen representa algo distinto: arte 🎨, inspiración, promociones 📢, ideas, emociones.</p>
-      </header>
+  <button id="toggleUploadBtn">Subir imagen</button>
+  <a href="#" id="logoutBtn">Cerrar sesión</a>
 
-      <!-- Botón cerrar sesión -->
-      <a href="#" id="logoutBtn">Cerrar sesión</a>
-      
-      <!-- Formulario de subida -->
-      <section class="upload-section">
-        <form id="uploadForm">
-          <input type="file" id="image" accept="image/*" required />
-          <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
-          <button type="submit">Subir Momento</button>
-        </form>
-      </section>
-      
-      <footer class="footer-copyright">
-        &copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.
-      </footer>
-    </div>
+  <header>
+    <h1 class="logo">Momento</h1>
+  </header>
 
-    <!-- COLUMNA DERECHA -->
-    <div class="right-column">
-      <section id="timeline">
-        <h2>Últimos Momentos📸</h2>
-        <div id="imagesContainer"></div>
-      </section>
-    </div>
+  <div id="uploadFormContainer">
+    <form id="uploadForm">
+      <input type="file" id="image" accept="image/*" required />
+      <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
+      <button type="submit">Subir Momento</button>
+    </form>
   </div>
+
+  <section id="timeline">
+    <h2>Últimos Momentos 📸</h2>
+    <div id="imagesContainer"></div>
+  </section>
 
   <script src="js/upload.js"></script>
   <script>
-    // Mostrar año actual en footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    document.getElementById('currentYear')?.textContent = new Date().getFullYear();
 
-    // Aplicar modo oscuro guardado
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
 
-    if(localStorage.getItem('darkMode') === 'true') {
+    if (localStorage.getItem('darkMode') === 'true') {
       body.classList.add('dark-mode');
       toggleBtn.textContent = "☀️";
     } else {
@@ -207,7 +121,6 @@
       toggleBtn.textContent = isDark ? "☀️" : "🌓";
     });
 
-    // Lógica cerrar sesión
     document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = document.getElementById('logoutBtn');
       const userToken = localStorage.getItem('token');
@@ -224,6 +137,14 @@
       } else {
         window.location.href = 'login.html';
       }
+
+      const toggleUploadBtn = document.getElementById('toggleUploadBtn');
+      const uploadFormContainer = document.getElementById('uploadFormContainer');
+
+      toggleUploadBtn.addEventListener('click', () => {
+        const visible = uploadFormContainer.style.display === 'block';
+        uploadFormContainer.style.display = visible ? 'none' : 'block';
+      });
     });
   </script>
 </body>
