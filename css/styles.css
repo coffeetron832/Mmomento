@@ -436,3 +436,44 @@ body.dark-mode .upload-section label {
     font-size: 0.9rem;
   }
 }
+
+.upload-page {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Botones fijos en upload-page */
+.upload-page #darkModeToggle,
+.upload-page #toggleUploadBtn,
+.upload-page #logoutBtn {
+  position: fixed;
+  top: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 100;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  transition: background 0.3s;
+}
+.upload-page #toggleUploadBtn { left: 20px; }
+.upload-page #darkModeToggle { left: 130px; }
+.upload-page #logoutBtn    { right: 20px; text-decoration: none; }
+
+.upload-page #uploadFormContainer {
+  display: none;
+  position: fixed;
+  top: 70px;
+  left: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 90;
+}
