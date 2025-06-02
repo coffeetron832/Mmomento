@@ -1,10 +1,42 @@
+// Mostrar año actual en el footer
 document.getElementById('currentYear').textContent = new Date().getFullYear();
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
   const token = localStorage.getItem("token");
 
-  // ✅ Obtener ID del usuario desde localStorage
+  // 🌙 Aplicar modo oscuro si está activado
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+  }
+
+  // 🔘 Botón de alternar modo oscuro (opcional)
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+  }
+
+  // 👋 Modal de bienvenida (solo una vez por sesión)
+  const hasSeenModal = sessionStorage.getItem('hasSeenModal');
+  const modal = document.getElementById('welcomeModal');
+  const closeModalBtn = document.getElementById('closeModal');
+
+  if (!hasSeenModal && modal) {
+    modal.style.display = 'flex';
+    sessionStorage.setItem('hasSeenModal', 'true');
+  }
+
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => {
+      if (modal) modal.style.display = 'none';
+    });
+  }
+
+  // 🧠 Obtener usuario del localStorage
   let user = {};
   try {
     const userRaw = localStorage.getItem("user");
@@ -15,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const currentUserId = user._id || user.id || null;
 
-  // 🧩 Renderiza una tarjeta con imagen, descripción, autor y botón de eliminar
+  // 🧩 Crear tarjeta de imagen
   function createImageCard(image) {
     const div = document.createElement("div");
     div.className = "image-card";
@@ -31,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const userInfo = document.createElement("p");
     userInfo.className = "image-user";
 
-    // Soportar userId como objeto o string
     const uploader = image.userId;
     let imageOwnerId = null;
 
@@ -42,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
         : "Subido por: Anónimo";
     } else if (typeof uploader === "string") {
       imageOwnerId = uploader;
-      // Mostramos "Tú" si el usuario actual subió la imagen
       userInfo.textContent = currentUserId === uploader
         ? "Subido por: Tú"
         : "Subido por: Usuario desconocido";
@@ -54,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     div.appendChild(desc);
     div.appendChild(userInfo);
 
-    // Mostrar botón eliminar solo si es del usuario actual
+    // 🗑 Botón de eliminar si es del usuario actual
     if (currentUserId && imageOwnerId && currentUserId === imageOwnerId.toString()) {
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "🗑 Eliminar";
@@ -66,7 +96,14 @@ document.addEventListener("DOMContentLoaded", () => {
     return div;
   }
 
-  // 🚀 Cargar imágenes al iniciar
+  // 🚫 Redirige si no hay token
+  if (!token) {
+    alert("Debes iniciar sesión");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // 🚀 Cargar imágenes desde la API
   async function loadImages() {
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images");
@@ -106,17 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 🚫 Redirige si no hay token
-  if (!token) {
-    alert("Debes iniciar sesión");
-    window.location.href = "login.html";
-    return;
-  }
-
-  // ✅ Cargar imágenes existentes al iniciar
-  loadImages();
-
-  // 📤 Manejar envío del formulario
+  // 📤 Envío del formulario
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -157,6 +184,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Error en la subida de la imagen");
     }
   });
+
+  // 🔄 Cargar imágenes existentes al iniciar
+  loadImages();
 });
+
 
 
