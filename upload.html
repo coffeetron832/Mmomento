@@ -5,39 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1.logo {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    #toggleUploadBtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      padding: 10px 15px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #logoutBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #333;
+      color: #fff;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    #uploadFormContainer {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 20px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 90;
+    }
+
+    form#uploadForm {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #imagesContainer {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 600px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Botones superiores -->
-  <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Alternar modo oscuro">🌓</button>
-  <button id="toggleUploadBtn" class="button">Subir imagen</button>
-  <a href="#" id="logoutBtn" class="button logout-button">Cerrar sesión</a>
+  <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌓</button>
 
-  <!-- Logo principal -->
+  <button id="toggleUploadBtn">Subir imagen</button>
+  <a href="#" id="logoutBtn">Cerrar sesión</a>
+
   <header>
     <h1 class="logo">Momento</h1>
   </header>
 
-  <!-- Formulario de subida -->
-  <div id="uploadFormContainer" class="upload-form-container">
+  <div id="uploadFormContainer">
     <form id="uploadForm">
       <input type="file" id="image" accept="image/*" required />
       <input type="text" id="description" placeholder="Escribe una descripción..." maxlength="100" required />
-      <button type="submit" class="submit-button">Subir Momento</button>
+      <button type="submit">Subir Momento</button>
     </form>
   </div>
 
-  <!-- Galería -->
   <section id="timeline">
     <h2>Últimos Momentos 📸</h2>
     <div id="imagesContainer"></div>
   </section>
 
-  <!-- Scripts -->
   <script src="js/upload.js"></script>
   <script>
     document.getElementById('currentYear')?.textContent = new Date().getFullYear();
 
-    // Modo oscuro
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
 
@@ -55,7 +121,6 @@
       toggleBtn.textContent = isDark ? "☀️" : "🌓";
     });
 
-    // Logout y mostrar formulario
     document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = document.getElementById('logoutBtn');
       const userToken = localStorage.getItem('token');
