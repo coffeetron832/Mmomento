@@ -503,3 +503,53 @@ body.dark-mode #timeline {
   border: 1px solid #333;
 }
 
+/* Estilos para upload-page en modo oscuro */
+body.dark-mode.upload-page {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Fondo y bordes del formulario en modo oscuro */
+body.dark-mode.upload-page #uploadFormContainer {
+  background-color: #1c1c1c;
+  border: 1px solid #444;
+  box-shadow: 0 0 12px rgba(139, 233, 253, 0.4);
+}
+
+/* Inputs y textarea del formulario en modo oscuro */
+body.dark-mode.upload-page #uploadFormContainer input[type="file"],
+body.dark-mode.upload-page #uploadFormContainer input[type="text"] {
+  background-color: #2a2a2a;
+  border: 1px solid #555;
+  color: #ddd;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Focus en inputs */
+body.dark-mode.upload-page #uploadFormContainer input[type="file"]:focus,
+body.dark-mode.upload-page #uploadFormContainer input[type="text"]:focus {
+  border-color: #3a86ff;
+  outline: none;
+  background-color: #3a3a3a;
+  color: #fff;
+}
+
+/* Placeholder en modo oscuro */
+body.dark-mode.upload-page #uploadFormContainer input::placeholder {
+  color: #888;
+  opacity: 1;
+}
+
+/* Botón submit en modo oscuro */
+body.dark-mode.upload-page #uploadFormContainer button {
+  background-color: #3a86ff;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(58, 134, 255, 0.7);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode.upload-page #uploadFormContainer button:hover {
+  background-color: #265fd4;
+  box-shadow: 0 6px 20px rgba(38, 95, 212, 0.8);
+}
