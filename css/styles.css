@@ -553,3 +553,15 @@ body.dark-mode.upload-page #uploadFormContainer button:hover {
   background-color: #265fd4;
   box-shadow: 0 6px 20px rgba(38, 95, 212, 0.8);
 }
+
+/* --- Ajustes para modal en modo oscuro --- */
+body.dark-mode .modal {
+  background-color: rgba(20, 20, 20, 0.9); /* Fondo oscuro semi-transparente */
+}
+
+body.dark-mode .modal-content {
+  background-color: #222;       /* Fondo oscuro para el modal */
+  color: #f1f1f1;               /* Texto claro */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  border: 1px solid #444;       /* Borde sutil para separar */
+}
