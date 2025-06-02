@@ -398,77 +398,30 @@ button:hover,
   flex-direction: column;
   gap: 25px;
 }
+
 .image-card {
   position: relative;
-  background: #fffef8; /* tono ligeramente cálido para papel */
-  padding: 22px 22px 50px 22px; /* más espacio abajo */
-  border-radius: 18px;
-  box-shadow:
-    0 12px 25px rgba(0, 0, 0, 0.12),
-    0 0 10px rgba(0, 0, 0, 0.05);
+  background: #ffffff; /* blanco puro */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* sombra suave */
   width: 100%;
   max-width: 380px;
-  margin: 0 auto 32px auto;
+  margin: 0 auto;
   box-sizing: border-box;
-
-  /* Textura tipo papel reciclado sutil */
-  background-image:
-    radial-gradient(circle at 10% 10%, #f5f0e6 3%, transparent 4%),
-    radial-gradient(circle at 80% 30%, #f5f0e6 3%, transparent 4%);
-  background-repeat: repeat;
-  background-size: 50px 50px;
 }
 
 .image-card img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 8px;
   object-fit: contain;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  box-shadow: none;
   margin: 0 auto;
 }
 
-/* Cinta café claro mejorada */
-.image-card::before {
-  content: "";
-  position: absolute;
-  top: 14px;
-  left: 22px;
-  width: 80px;
-  height: 20px;
-
-  /* Degradado para simular textura de papel o tela */
-  background: linear-gradient(135deg, #d2b48c 0%, #c19a6b 50%, #b8860b 100%);
-  border-radius: 5px;
-
-  /* Sombra interior para relieve */
-  box-shadow:
-    inset 0 2px 6px rgba(255, 255, 255, 0.5),
-    0 3px 8px rgba(0, 0, 0, 0.15);
-
-  /* Rotar para darle efecto casual */
-  transform: rotate(-12deg);
-
-  /* Pequeña curvatura con clip-path para simular pliegue */
-  clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
-  z-index: 10;
-}
-
-/* Sombra debajo de la cinta para dar profundidad */
-.image-card::after {
-  content: "";
-  position: absolute;
-  top: 32px;
-  left: 25px;
-  width: 75px;
-  height: 7px;
-  background: rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-  filter: blur(2.3px);
-  transform: rotate(-12deg);
-  z-index: 9;
-}
+/* Eliminamos .image-card::before y ::after */
 
 /* Texto de descripcción y usuario */
 .image-description,
