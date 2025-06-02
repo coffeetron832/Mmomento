@@ -11,12 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add('dark-mode');
   }
 
-  // 🔘 Botón de alternar modo oscuro (opcional)
+  // 🔘 Botón de alternar modo oscuro
   const darkModeToggle = document.getElementById('darkModeToggle');
   if (darkModeToggle) {
+    // Actualizar texto inicial del botón según modo
+    darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? "☀️" : "🌓";
+
     darkModeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark);
+      darkModeToggle.textContent = isDark ? "☀️" : "🌓";
     });
   }
 
@@ -188,6 +193,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔄 Cargar imágenes existentes al iniciar
   loadImages();
 });
-
-
-
