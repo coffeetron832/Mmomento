@@ -21,7 +21,7 @@
 
   <!-- Contenedor del formulario de subida -->
   <div id="uploadFormContainer" style="display:none;">
-    <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/upload">
+    <form id="uploadForm">
       <input type="file" id="image" name="image" accept="image/*" required />
       
       <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required />
@@ -29,7 +29,7 @@
       <label for="duration">Duración de visibilidad:</label>
       <select id="duration" name="duration" required>
         <option value="30">30 minutos</option>
-        <option value="60">1 hora</option>
+        <option value="60" selected>1 hora</option>
         <option value="180">3 horas</option>
         <option value="360">6 horas</option>
       </select>
@@ -80,5 +80,3 @@
   </script>
 </body>
 </html>
-
-
