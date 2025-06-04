@@ -110,11 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🚀 Cargar imágenes desde la API
   async function loadImages() {
     try {
-      const res = await fetch("https://momento-backend-production.up.railway.app/api/images", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+  body: formData,
+});
       if (!res.ok) throw new Error("Error al obtener imágenes");
       const images = await res.json();
       imagesContainer.innerHTML = "";
