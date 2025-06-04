@@ -147,6 +147,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 🔄 Función para cargar círculos del usuario y llenar el selector
+  async function loadUserCircles() {
+    const circlesSelect = document.getElementById('circles');
+    if (!circlesSelect) return;
+
+    circlesSelect.innerHTML = '<option disabled>Cargando círculos...</option>';
+
+    try {
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/circles/user/${currentUserId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("Error al obtener círculos");
+      const circles = await res.json();
+
+      // Limpiar opciones
+      circlesSelect.innerHTML = "";
+      if (circles.length === 0) {
+        circlesSelect.innerHTML = '<option disabled>No tienes círculos</option>';
+      } else {
+        circles.forEach(circle => {
+          const option = document.createElement('option');
+          option.value = circle._id || circle.id;
+          option.textContent = circle.name || "Círculo sin nombre";
+          circlesSelect.appendChild(option);
+        });
+      }
+    } catch (error) {
+      console.error("Error al cargar círculos:", error);
+      circlesSelect.innerHTML = '<option disabled>Error cargando círculos</option>';
+    }
+  }
+
   // 📤 Envío del formulario
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -160,11 +192,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const image = imageInput.files[0];
     const description = document.getElementById("description").value;
     const duration = document.getElementById("duration").value;
+    const visibility = document.getElementById("visibility").value;
+    const circlesSelect = document.getElementById("circles");
 
     const formData = new FormData();
     formData.append("image", image);
     formData.append("description", description);
     formData.append("duration", duration);
+    formData.append("visibility", visibility);
+
+    // Si la visibilidad es "circle", mandar los círculos seleccionados
+    if (visibility === "circle" && circlesSelect) {
+      const selectedCircles = Array.from(circlesSelect.selectedOptions).map(opt => opt.value);
+      if (selectedCircles.length === 0) {
+        alert("Por favor selecciona al menos un círculo para compartir tu Momento.");
+        return;
+      }
+      // Puedes enviarlo como JSON string o como múltiples entradas formData
+      formData.append("circles", JSON.stringify(selectedCircles));
+    }
 
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images/upload", {
@@ -193,5 +239,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔄 Cargar imágenes existentes al iniciar
   loadImages();
+
+  // Exportar función para que pueda ser llamada desde upload.html
+  window.loadUserCircles = loadUserCircles;
 });
+
 
