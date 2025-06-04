@@ -107,16 +107,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 🚀 Cargar imágenes desde la API
+  // 🚀 Cargar imágenes desde la API (GET, no POST y sin formData)
   async function loadImages() {
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-  body: formData,
-});
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error("Error al obtener imágenes");
       const images = await res.json();
       imagesContainer.innerHTML = "";
@@ -218,10 +217,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("https://momento-backend-production.up.railway.app/api/images/upload", {
+      // Cambié la URL, quitar /upload para que coincida con la ruta backend
+      const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
+          // No agregues Content-Type cuando envías formData; el browser lo setea solo
         },
         body: formData,
       });
