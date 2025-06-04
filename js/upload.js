@@ -110,7 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🚀 Cargar imágenes desde la API
   async function loadImages() {
     try {
-      const res = await fetch("https://momento-backend-production.up.railway.app/api/images");
+      const res = await fetch("https://momento-backend-production.up.railway.app/api/images", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       if (!res.ok) throw new Error("Error al obtener imágenes");
       const images = await res.json();
       imagesContainer.innerHTML = "";
@@ -208,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Por favor selecciona al menos un círculo para compartir tu Momento.");
         return;
       }
-      // Puedes enviarlo como JSON string o como múltiples entradas formData
       formData.append("circles", JSON.stringify(selectedCircles));
     }
 
@@ -243,5 +246,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Exportar función para que pueda ser llamada desde upload.html
   window.loadUserCircles = loadUserCircles;
 });
-
-
