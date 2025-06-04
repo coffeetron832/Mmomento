@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔘 Botón de alternar modo oscuro
   const darkModeToggle = document.getElementById('darkModeToggle');
   if (darkModeToggle) {
-    // Actualizar texto inicial del botón según modo
     darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? "☀️" : "🌓";
 
     darkModeToggle.addEventListener('click', () => {
@@ -160,10 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const image = imageInput.files[0];
     const description = document.getElementById("description").value;
+    const duration = document.getElementById("duration").value;
 
     const formData = new FormData();
     formData.append("image", image);
     formData.append("description", description);
+    formData.append("duration", duration);
 
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images/upload", {
@@ -193,3 +194,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔄 Cargar imágenes existentes al iniciar
   loadImages();
 });
+
