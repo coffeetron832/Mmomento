@@ -51,6 +51,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const currentUserId = user._id || user.id || null;
 
+  // ✅ Agregado: mostrar u ocultar selector de círculos
+  const visibilitySelect = document.getElementById("visibility");
+  const circleSelectorContainer = document.getElementById("circleSelectorContainer");
+
+  if (visibilitySelect && circleSelectorContainer) {
+    visibilitySelect.addEventListener("change", () => {
+      if (visibilitySelect.value === "circle") {
+        circleSelectorContainer.style.display = "block";
+        loadUserCircles();
+      } else {
+        circleSelectorContainer.style.display = "none";
+      }
+    });
+  }
+
   // 🧩 Crear tarjeta de imagen
   function createImageCard(image) {
     const div = document.createElement("div");
@@ -107,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 🚀 Cargar imágenes desde la API (GET, no POST y sin formData)
+  // 🚀 Cargar imágenes desde la API
   async function loadImages() {
     try {
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
@@ -152,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 🔄 Función para cargar círculos del usuario y llenar el selector
+  // 🔄 Cargar círculos del usuario
   async function loadUserCircles() {
     const circlesSelect = document.getElementById('circles');
     if (!circlesSelect) return;
@@ -166,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) throw new Error("Error al obtener círculos");
       const circles = await res.json();
 
-      // Limpiar opciones
       circlesSelect.innerHTML = "";
       if (circles.length === 0) {
         circlesSelect.innerHTML = '<option disabled>No tienes círculos</option>';
@@ -206,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("duration", duration);
     formData.append("visibility", visibility);
 
-    // Si la visibilidad es "circle", mandar los círculos seleccionados
     if (visibility === "circle" && circlesSelect) {
       const selectedCircles = Array.from(circlesSelect.selectedOptions).map(opt => opt.value);
       if (selectedCircles.length === 0) {
@@ -217,13 +230,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      // Cambié la URL, quitar /upload para que coincida con la ruta backend
       const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // No agregues Content-Type cuando envías formData; el browser lo setea solo
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -234,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
         const newCard = createImageCard(result);
         imagesContainer.prepend(newCard);
+        if (circleSelectorContainer) circleSelectorContainer.style.display = "none"; // ocultar de nuevo
       } else {
         alert(result.error || "Error al subir la imagen");
       }
@@ -246,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔄 Cargar imágenes existentes al iniciar
   loadImages();
 
-  // Exportar función para que pueda ser llamada desde upload.html
+  // Exportar función (opcional)
   window.loadUserCircles = loadUserCircles;
 });
+
