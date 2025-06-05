@@ -34,14 +34,14 @@
         <option value="360">6 horas</option>
       </select>
 
-      <!-- NUEVO: Selector de visibilidad -->
+      <!-- Selector de visibilidad -->
       <label for="visibility">Visibilidad:</label>
       <select id="visibility" name="visibility" required>
         <option value="public" selected>Público</option>
         <option value="circle">Solo círculos</option>
       </select>
 
-      <!-- NUEVO: Selector de círculos (oculto inicialmente) -->
+      <!-- Selector de círculos (oculto inicialmente) -->
       <div id="circleSelectorContainer" style="display:none;">
         <label for="circles">Selecciona círculos:</label>
         <select id="circles" name="circles" multiple size="3">
@@ -92,28 +92,7 @@
         const isVisible = uploadFormContainer.style.display === 'block';
         uploadFormContainer.style.display = isVisible ? 'none' : 'block';
       });
-
-      // Mostrar u ocultar selector de círculos según visibilidad
-      const visibilitySelect = document.getElementById('visibility');
-      const circleSelectorContainer = document.getElementById('circleSelectorContainer');
-
-      visibilitySelect.addEventListener('change', () => {
-        if (visibilitySelect.value === 'circle') {
-          circleSelectorContainer.style.display = 'block';
-          // Aquí se cargan los círculos con función de upload.js
-          if (typeof loadUserCircles === 'function') loadUserCircles();
-        } else {
-          circleSelectorContainer.style.display = 'none';
-        }
-      });
-
-      // Si la página carga con "circle" seleccionado, mostrar selector y cargar círculos
-      if (visibilitySelect.value === 'circle') {
-        circleSelectorContainer.style.display = 'block';
-        if (typeof loadUserCircles === 'function') loadUserCircles();
-      }
     });
   </script>
 </body>
 </html>
-
