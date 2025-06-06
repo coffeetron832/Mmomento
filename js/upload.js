@@ -259,4 +259,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Exportar función (opcional)
   window.loadUserCircles = loadUserCircles;
 });
-
