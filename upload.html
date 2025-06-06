@@ -1,157 +1,136 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sube tu Momento | Momento</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    /* Botón modo oscuro similar a index.html */
-    button#darkModeToggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      padding: 10px 15px;
-      border-radius: 999px;
-      background-color: #f0f0f0;
-      color: #333;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 18px;
-    }
-    button#darkModeToggle:hover {
-      transform: scale(1.05);
-    }
-    body.dark-mode button#darkModeToggle {
-      background-color: #222;
-      color: #f0f0f0;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sube tu Momento | Momento</title>
+<link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="upload-page">
-  <!-- Botón modo oscuro -->
-  <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌙</button>
-
-  <!-- Botones fijos -->
-  <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
-    <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
-    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button" class="logout-btn">Cerrar sesión</a>
-  </nav>
-
-  <header class="header-fixed" role="banner">
-    <h1 class="logo">Momento</h1>
-    <h2 class="welcome-text">¡Te damos la bienvenida! 👋</h2>
-    <nav class="main-nav" aria-label="Navegación principal">
-      <!-- Enlaces si quieres -->
-    </nav>
-  </header>
-
-  <!-- Contenedor del formulario de subida -->
-  <section id="uploadFormContainer" class="upload-form" aria-hidden="true">
-    <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
-      <!-- campos del formulario -->
-      <fieldset class="upload-section">
-        <label for="image">Selecciona imagen:</label>
-        <input type="file" id="image" name="image" accept="image/*" required aria-required="true" />
-      </fieldset>
-      <fieldset class="upload-section">
-        <label for="description">Descripción:</label>
-        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required aria-required="true" />
-      </fieldset>
-      <fieldset class="upload-section">
-        <label for="duration">Duración de visibilidad:</label>
-        <select id="duration" name="duration" required aria-required="true">
-          <option value="30">30 minutos</option>
-          <option value="60" selected>1 hora</option>
-          <option value="180">3 horas</option>
-          <option value="360">6 horas</option>
-        </select>
-      </fieldset>
-      <fieldset class="upload-section">
-        <label for="visibility">Visibilidad:</label>
-        <select id="visibility" name="visibility" required aria-required="true">
-          <option value="public" selected>Público</option>
-          <option value="circle">Solo círculos</option>
-        </select>
-      </fieldset>
-      <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true">
-        <label for="circles">Selecciona círculos:</label>
-        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true">
-          <!-- Los círculos se cargarán por JS -->
-        </select>
-        <small>Ctrl + clic para seleccionar varios círculos</small>
-      </fieldset>
-      <button type="submit" class="btn-frosted">Subir Momento</button>
-    </form>
-  </section>
-
-  <main id="timeline" role="main">
-    <h2 class="image-section-title">Últimos Momentos 📸</h2>
-    <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
-  </main>
-
-  <footer class="footer-fixed" role="contentinfo">
-    <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
-  </footer>
-
-  <script src="js/upload.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Actualizar año en footer
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-      // Control de sesión
-      const logoutBtn = document.getElementById('logoutBtn');
-      const userToken = localStorage.getItem('token');
-      if (userToken) {
-        logoutBtn.style.display = 'inline-block';
-      } else {
-        window.location.href = 'login.html';
-      }
-
-      // Toggle formulario
-      const toggleUploadBtn = document.getElementById('toggleUploadBtn');
-      const uploadFormContainer = document.getElementById('uploadFormContainer');
-      toggleUploadBtn.addEventListener('click', () => {
-        const isVisible = uploadFormContainer.style.display === 'block';
-        uploadFormContainer.style.display = isVisible ? 'none' : 'block';
-        uploadFormContainer.setAttribute('aria-hidden', isVisible);
-        toggleUploadBtn.setAttribute('aria-expanded', !isVisible);
-      });
-
-      // Selector de círculos
-      document.getElementById('visibility').addEventListener('change', e => {
-        const container = document.getElementById('circleSelectorContainer');
-        if (e.target.value === 'circle') {
-          container.style.display = 'block';
-          container.setAttribute('aria-hidden', 'false');
-        } else {
-          container.style.display = 'none';
-          container.setAttribute('aria-hidden', 'true');
-        }
-      });
-
-      // Modo oscuro
-      const toggle = document.getElementById('darkModeToggle');
-      const body = document.body;
-      if (localStorage.getItem('darkMode') === 'true') {
-        body.classList.add('dark-mode');
-        toggle.textContent = '☀️';
-      }
-      toggle.addEventListener('click', () => {
-        const isDark = body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', isDark);
-        toggle.textContent = isDark ? '☀️' : '🌙';
-      });
-    });
-
-    // Verificación rápida de token
-    if (!localStorage.getItem('token')) {
-      alert('Debes iniciar sesión primero.');
-      window.location.href = 'login.html';
-    }
-  </script>
+<!-- Botones fijos -->
+<nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
+<button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
+<a href="#" id="logoutBtn" title="Cerrar sesión" role="button" class="logout-btn">Cerrar sesión</a>
+</nav>
+<header class="header-fixed" role="banner">
+<button id="darkModeToggle" class="dark-mode-btn" aria-pressed="false" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
+<h1 class="logo">Momento</h1>
+<h2 class="welcome-text">¡Te damos la bienvenida! 👋</h2>
+<nav class="main-nav" aria-label="Navegación principal">
+<!-- Enlaces si quieres -->
+</nav>
+</header>
+<!-- Contenedor del formulario de subida -->
+<section id="uploadFormContainer" class="upload-form" aria-hidden="true">
+<form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
+<fieldset class="upload-section">
+<label for="image">Selecciona imagen:</label>
+<input type="file" id="image" name="image" accept="image/*" required aria-required="true" />
+</fieldset>
+<fieldset class="upload-section">
+<label for="description">Descripción:</label>
+<input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required aria-required="true" />
+</fieldset>
+<fieldset class="upload-section">
+<label for="duration">Duración de visibilidad:</label>
+<select id="duration" name="duration" required aria-required="true">
+<option value="30">30 minutos</option>
+<option value="60" selected>1 hora</option>
+<option value="180">3 horas</option>
+<option value="360">6 horas</option>
+</select>
+</fieldset>
+<fieldset class="upload-section">
+<label for="visibility">Visibilidad:</label>
+<select id="visibility" name="visibility" required aria-required="true">
+<option value="public" selected>Público</option>
+<option value="circle">Solo círculos</option>
+</select>
+</fieldset>
+<fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true">
+<label for="circles">Selecciona círculos:</label>
+<select id="circles" name="circles" multiple size="3" aria-multiselectable="true" aria-label="Lista de círculos disponibles para seleccionar">
+<!-- Los círculos se cargarán por JS -->
+</select>
+<small>Ctrl + clic para seleccionar varios círculos</small>
+</fieldset>
+<button type="submit" class="btn-frosted">Subir Momento</button>
+</form>
+</section>
+<main id="timeline" role="main">
+<h2 class="image-section-title">Últimos Momentos 📸</h2>
+<div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
+</main>
+<footer class="footer-fixed" role="contentinfo">
+<p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
+</footer>
+<script src="js/upload.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+// Actualizar año en footer
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+// Control de sesión
+const logoutBtn = document.getElementById('logoutBtn');
+const userToken = localStorage.getItem('token');
+if (userToken) {
+logoutBtn.style.display = 'inline-block';
+logoutBtn.addEventListener('click', e => {
+e.preventDefault();
+localStorage.removeItem('token');
+localStorage.removeItem('userId');
+localStorage.removeItem('welcomeShown');
+window.location.href = 'login.html';
+});
+} else {
+window.location.href = 'login.html';
+}
+// Toggle formulario de subida
+const toggleUploadBtn = document.getElementById('toggleUploadBtn');
+const uploadFormContainer = document.getElementById('uploadFormContainer');
+toggleUploadBtn.addEventListener('click', () => {
+const isVisible = uploadFormContainer.style.display === 'block';
+uploadFormContainer.style.display = isVisible ? 'none' : 'block';
+uploadFormContainer.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
+toggleUploadBtn.setAttribute('aria-expanded', (!isVisible).toString());
+});
+// Toggle selector de círculos según visibilidad
+const visibilitySelect = document.getElementById('visibility');
+const circleSelectorContainer = document.getElementById('circleSelectorContainer');
+visibilitySelect.addEventListener('change', () => {
+if (visibilitySelect.value === 'circle') {
+circleSelectorContainer.style.display = 'block';
+circleSelectorContainer.setAttribute('aria-hidden', 'false');
+} else {
+circleSelectorContainer.style.display = 'none';
+circleSelectorContainer.setAttribute('aria-hidden', 'true');
+}
+});
+// Modo oscuro
+const darkModeToggle = document.getElementById('darkModeToggle');
+if (localStorage.getItem('darkMode') === 'enabled') {
+document.body.classList.add('dark-mode');
+darkModeToggle.textContent = "☀️";
+darkModeToggle.setAttribute('aria-pressed', 'true');
+} else {
+darkModeToggle.textContent = "🌓";
+darkModeToggle.setAttribute('aria-pressed', 'false');
+}
+darkModeToggle.addEventListener('click', () => {
+const body = document.body;
+body.classList.toggle('dark-mode');
+const isDarkMode = body.classList.contains('dark-mode');
+darkModeToggle.setAttribute('aria-pressed', isDarkMode);
+darkModeToggle.textContent = isDarkMode ? "☀️" : "🌓";
+localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+});
+});
+// Revisión rápida de token antes de que cargue todo
+const token = localStorage.getItem('token');
+if (!token) {
+alert("Debes iniciar sesión primero.");
+window.location.href = "login.html";
+}
+</script>
 </body>
 </html>
+
