@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
-          alert("Sesión iniciada");
+          alert(`¡Qué alegría verte de nuevo, ${result.user.username}! 👋`);
           window.location.href = "upload.html";
         } else {
           alert(result.error || result.message || "Error al iniciar sesión");
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
-          alert("Registro exitoso");
+          alert(`¡Bienvenido, ${result.user.username}! Tu aventura empieza aquí ✨`);
           window.location.href = "upload.html";
         } else {
           alert(result.error || result.message || "Error al registrarse");
@@ -93,3 +93,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
