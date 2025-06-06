@@ -9,13 +9,12 @@
 <body class="upload-page">
   <!-- Botones fijos -->
   <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
-    <button id="darkModeToggle" aria-pressed="false" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
     <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
     <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
   </nav>
 
   <header class="header-fixed" role="banner">
-    <button id="darkModeToggle" class="dark-mode-btn">🌓</button>
+    <button id="darkModeToggle" class="dark-mode-btn" aria-pressed="false" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
     <h1 class="logo">Momento</h1>
     <h2>¡Te damos la bienvenida! 👋</h2>
     <nav class="main-nav" aria-label="Navegación principal">
@@ -115,7 +114,7 @@
         }
       });
 
-      // Modo oscuro: aplicar modo y texto inicial del botón
+      // Modo oscuro
       const darkModeToggle = document.getElementById('darkModeToggle');
       if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
@@ -131,21 +130,13 @@
         body.classList.toggle('dark-mode');
         const isDarkMode = body.classList.contains('dark-mode');
         darkModeToggle.setAttribute('aria-pressed', isDarkMode);
-
-        // Cambiar texto del botón acorde al modo
         darkModeToggle.textContent = isDarkMode ? "☀️" : "🌓";
-
-        // Guardar estado en localStorage para persistencia
-        if (isDarkMode) {
-          localStorage.setItem('darkMode', 'enabled');
-        } else {
-          localStorage.setItem('darkMode', 'disabled');
-        }
+        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
       });
     });
   </script>
   <script>
-    // Revisión token fuera de DOMContentLoaded para alertar rápido
+    // Revisión rápida de token antes de que cargue todo
     const token = localStorage.getItem('token');
     if (!token) {
       alert("Debes iniciar sesión primero.");
