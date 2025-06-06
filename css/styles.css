@@ -637,3 +637,291 @@ body.dark-mode .logo {
 body.dark-mode header h2 {
   color: #eee;
 }
+
+
+/* styles.css */
+
+/* Reset básico para body y tipografía */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #fafafa;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Modo Oscuro --- */
+body.dark-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+/* Botones */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 6px;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Botón modo oscuro */
+button#darkModeToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 999px;
+  font-size: 1.4rem;
+  z-index: 1000;
+}
+
+body.dark-mode button#darkModeToggle {
+  background-color: #222;
+  color: #f0f0f0;
+}
+
+/* Botones fijos en nav */
+.fixed-buttons {
+  position: fixed;
+  top: 50px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.fixed-buttons button,
+.fixed-buttons a {
+  background-color: #5a9bd8;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.fixed-buttons button:hover,
+.fixed-buttons a:hover {
+  background-color: #437fc7;
+}
+
+body.dark-mode .fixed-buttons button,
+body.dark-mode .fixed-buttons a {
+  background-color: #437fc7;
+  color: #eee;
+}
+
+body.dark-mode .fixed-buttons button:hover,
+body.dark-mode .fixed-buttons a:hover {
+  background-color: #2a5599;
+}
+
+/* Header */
+.header-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffffcc;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 999;
+}
+
+body.dark-mode .header-fixed {
+  background-color: #181818cc;
+  box-shadow: 0 1px 5px rgba(255,255,255,0.1);
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #5a9bd8;
+}
+
+body.dark-mode .logo {
+  color: #90caf9;
+}
+
+/* Títulos */
+h1, h2 {
+  margin: 0;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-top: 5rem; /* Para no tapar contenido debajo del header fijo */
+  text-align: center;
+  color: #333;
+}
+
+body.dark-mode h2 {
+  color: #ddd;
+}
+
+/* Formulario de subida */
+#uploadFormContainer {
+  max-width: 480px;
+  margin: 6rem auto 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode #uploadFormContainer {
+  background-color: #222;
+  color: #ddd;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+/* Fieldsets y labels */
+.upload-section {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: #333;
+}
+
+body.dark-mode label {
+  color: #ccc;
+}
+
+/* Inputs y selects */
+input[type="file"],
+input[type="text"],
+select {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  color: #222;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+input[type="file"] {
+  padding: 0.3rem 0.6rem;
+}
+
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: #5a9bd8;
+  background-color: #fff;
+}
+
+body.dark-mode input[type="file"],
+body.dark-mode input[type="text"],
+body.dark-mode select {
+  background-color: #333;
+  border-color: #555;
+  color: #eee;
+}
+
+body.dark-mode input[type="text"]:focus,
+body.dark-mode select:focus {
+  background-color: #444;
+  border-color: #90caf9;
+  color: #fff;
+}
+
+/* Selector múltiples círculos */
+#circleSelectorContainer small {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+body.dark-mode #circleSelectorContainer small {
+  color: #aaa;
+}
+
+/* Botón submit */
+button.btn-frosted {
+  width: 100%;
+  background: #5a9bd8;
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-frosted:hover {
+  background: #437fc7;
+}
+
+body.dark-mode button.btn-frosted {
+  background: #437fc7;
+}
+
+body.dark-mode button.btn-frosted:hover {
+  background: #3163a3;
+}
+
+/* Contenedor de imágenes timeline */
+#timeline {
+  max-width: 900px;
+  margin: 2rem auto 6rem;
+  padding: 0 1rem;
+}
+
+.image-section-title {
+  margin-bottom: 1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+body.dark-mode .image-section-title {
+  color: #ddd;
+}
+
+/* Contenedor de imágenes */
+#imagesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Footer fijo */
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f2f2f2;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .footer-fixed {
+  background-color: #1a1a1a;
+  color: #aaa;
+}
