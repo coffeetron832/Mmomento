@@ -612,3 +612,28 @@ footer {
   font-size: 0.9rem;
   z-index: 100;
 }
+
+/* Estilos normales (modo claro) */
+.logo {
+  color: #333;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+header h2 {
+  color: #555;
+}
+
+/* Estilos para modo oscuro */
+body.dark-mode {
+  background-color: #121212;
+  color: #ddd;
+}
+
+body.dark-mode .logo {
+  color: #f0a500; /* un color amarillo, o el que prefieras para contraste */
+}
+
+body.dark-mode header h2 {
+  color: #eee;
+}
