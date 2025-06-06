@@ -2,17 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="upload-page">
   <!-- Botones fijos -->
-  <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
-  <button id="toggleUploadBtn" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
-  <a href="#" id="logoutBtn" title="Cerrar sesión">Cerrar sesión</a>
+  <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
+    <button id="darkModeToggle" aria-pressed="false" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
+    <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
+    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
+  </nav>
 
-  <header class="header-fixed">
+  <header class="header-fixed" role="banner">
     <h1 class="logo">Momento</h1>
     <h2>¡Te damos la bienvenida! 👋</h2>
     <nav class="main-nav" aria-label="Navegación principal">
@@ -21,49 +23,49 @@
   </header>
 
   <!-- Contenedor del formulario de subida -->
-  <div id="uploadFormContainer" style="display:none;">
-    <form id="uploadForm" autocomplete="off">
-      <div class="upload-section">
+  <section id="uploadFormContainer" style="display:none;" aria-hidden="true">
+    <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
+      <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
-        <input type="file" id="image" name="image" accept="image/*" required />
-      </div>
-      <div class="upload-section">
+        <input type="file" id="image" name="image" accept="image/*" required aria-required="true" />
+      </fieldset>
+      <fieldset class="upload-section">
         <label for="description">Descripción:</label>
-        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required />
-      </div>
-      <div class="upload-section">
+        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required aria-required="true" />
+      </fieldset>
+      <fieldset class="upload-section">
         <label for="duration">Duración de visibilidad:</label>
-        <select id="duration" name="duration" required>
+        <select id="duration" name="duration" required aria-required="true">
           <option value="30">30 minutos</option>
           <option value="60" selected>1 hora</option>
           <option value="180">3 horas</option>
           <option value="360">6 horas</option>
         </select>
-      </div>
-      <div class="upload-section">
+      </fieldset>
+      <fieldset class="upload-section">
         <label for="visibility">Visibilidad:</label>
-        <select id="visibility" name="visibility" required>
+        <select id="visibility" name="visibility" required aria-required="true">
           <option value="public" selected>Público</option>
           <option value="circle">Solo círculos</option>
         </select>
-      </div>
-      <div id="circleSelectorContainer" style="display:none;">
+      </fieldset>
+      <fieldset id="circleSelectorContainer" style="display:none;" aria-hidden="true">
         <label for="circles">Selecciona círculos:</label>
-        <select id="circles" name="circles" multiple size="3">
+        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true" aria-label="Lista de círculos disponibles para seleccionar">
           <!-- Los círculos se cargarán por JS -->
         </select>
         <small>Ctrl + clic para seleccionar varios círculos</small>
-      </div>
+      </fieldset>
       <button type="submit" class="btn-frosted">Subir Momento</button>
     </form>
-  </div>
+  </section>
 
-  <main id="timeline">
+  <main id="timeline" role="main">
     <h2 class="image-section-title">Últimos Momentos 📸</h2>
-    <div id="imagesContainer"></div>
+    <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
   </main>
 
-  <footer class="footer-fixed">
+  <footer class="footer-fixed" role="contentinfo">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -95,6 +97,8 @@
       toggleUploadBtn.addEventListener('click', () => {
         const isVisible = uploadFormContainer.style.display === 'block';
         uploadFormContainer.style.display = isVisible ? 'none' : 'block';
+        uploadFormContainer.setAttribute('aria-hidden', isVisible);
+        toggleUploadBtn.setAttribute('aria-expanded', !isVisible);
       });
 
       // Toggle selector de círculos según visibilidad
@@ -103,18 +107,23 @@
       visibilitySelect.addEventListener('change', () => {
         if (visibilitySelect.value === 'circle') {
           circleSelectorContainer.style.display = 'block';
+          circleSelectorContainer.setAttribute('aria-hidden', 'false');
         } else {
           circleSelectorContainer.style.display = 'none';
+          circleSelectorContainer.setAttribute('aria-hidden', 'true');
         }
       });
 
       // Modo oscuro: alternar clase dark-mode en body
       const darkModeToggle = document.getElementById('darkModeToggle');
       darkModeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        const isDarkMode = body.classList.contains('dark-mode');
+        darkModeToggle.setAttribute('aria-pressed', isDarkMode);
 
         // Guardar estado en localStorage para persistencia
-        if (document.body.classList.contains('dark-mode')) {
+        if (isDarkMode) {
           localStorage.setItem('darkMode', 'enabled');
         } else {
           localStorage.setItem('darkMode', 'disabled');
@@ -124,6 +133,7 @@
       // Aplicar modo oscuro si estaba activado
       if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
+        darkModeToggle.setAttribute('aria-pressed', true);
       }
     });
   </script>
