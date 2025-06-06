@@ -1,3 +1,5 @@
+const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
+
 // Función auxiliar para hacer peticiones al backend con fetch
 async function apiRequest(endpoint, method = 'GET', body = null) {
   const token = localStorage.getItem('token');
@@ -45,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value;
 
       try {
-        const result = await apiRequest("/api/auth/login", "POST", { email, password });
+        const result = await apiRequest(`${API_BASE_URL}/api/auth/login`, "POST", { email, password });
 
         if (result.token) {
           localStorage.clear();
@@ -72,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value;
 
       try {
-        const result = await apiRequest("/api/auth/register", "POST", { name, email, password });
+        const result = await apiRequest(`${API_BASE_URL}/api/auth/register`, "POST", { name, email, password });
 
         if (result.token) {
           localStorage.clear();
