@@ -613,27 +613,33 @@ footer {
   z-index: 100;
 }
 
-/* Estilos normales (modo claro) */
+body {
+  background-color: #fff;
+  color: #222;
+}
+
 .logo {
-  color: #333;
-  font-weight: bold;
-  font-size: 2rem;
+  color: #222;
+  font-weight: 700;
+  font-size: 2.5rem;
 }
 
 header h2 {
-  color: #555;
+  color: #444;
+  font-size: 1.3rem;
 }
 
-/* Estilos para modo oscuro */
+/* Modo oscuro */
 body.dark-mode {
   background-color: #121212;
   color: #ddd;
 }
 
 body.dark-mode .logo {
-  color: #f0a500; /* un color amarillo, o el que prefieras para contraste */
+  color: #f5c518; /* amarillo fuerte para destacar */
 }
 
 body.dark-mode header h2 {
   color: #eee;
 }
+
