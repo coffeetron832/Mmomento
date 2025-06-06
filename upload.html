@@ -71,10 +71,10 @@
 
   <script src="js/upload.js"></script>
   <script>
-    // Actualizar año en footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
     document.addEventListener('DOMContentLoaded', () => {
+      // Actualizar año en footer
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+
       // Control de sesión
       const logoutBtn = document.getElementById('logoutBtn');
       const userToken = localStorage.getItem('token');
@@ -114,13 +114,25 @@
         }
       });
 
-      // Modo oscuro: alternar clase dark-mode en body
+      // Modo oscuro: aplicar modo y texto inicial del botón
       const darkModeToggle = document.getElementById('darkModeToggle');
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.textContent = "☀️";
+        darkModeToggle.setAttribute('aria-pressed', 'true');
+      } else {
+        darkModeToggle.textContent = "🌓";
+        darkModeToggle.setAttribute('aria-pressed', 'false');
+      }
+
       darkModeToggle.addEventListener('click', () => {
         const body = document.body;
         body.classList.toggle('dark-mode');
         const isDarkMode = body.classList.contains('dark-mode');
         darkModeToggle.setAttribute('aria-pressed', isDarkMode);
+
+        // Cambiar texto del botón acorde al modo
+        darkModeToggle.textContent = isDarkMode ? "☀️" : "🌓";
 
         // Guardar estado en localStorage para persistencia
         if (isDarkMode) {
@@ -129,12 +141,6 @@
           localStorage.setItem('darkMode', 'disabled');
         }
       });
-
-      // Aplicar modo oscuro si estaba activado
-      if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.setAttribute('aria-pressed', true);
-      }
     });
   </script>
   <script>
@@ -147,4 +153,5 @@
   </script>
 </body>
 </html>
+
 
