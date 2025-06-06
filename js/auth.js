@@ -18,10 +18,18 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
 
   try {
     const response = await fetch(endpoint, options);
-    const data = await response.json();
-    return data;
+
+    const contentType = response.headers.get("content-type");
+    const isJson = contentType && contentType.includes("application/json");
+
+    if (!response.ok) {
+      const errorMessage = isJson ? await response.json() : { message: `Error ${response.status}` };
+      throw new Error(errorMessage.message || "Error en la solicitud");
+    }
+
+    return isJson ? response.json() : {};
   } catch (error) {
-    console.error('Fetch error:', error);
+    console.error('❌ Error en fetch:', error);
     throw error;
   }
 }
@@ -38,18 +46,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const result = await apiRequest("/auth/login", "POST", { email, password });
+
         if (result.token) {
-          localStorage.clear(); // limpiar sesión previa para evitar conflictos
+          localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
           alert("Sesión iniciada");
           window.location.href = "upload.html";
         } else {
           alert(result.error || result.message || "Error al iniciar sesión");
-          console.error("Error en login:", result);
+          console.error("⚠️ Error en login:", result);
         }
       } catch (err) {
-        alert("Error al conectar con el servidor.");
+        alert("No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.");
         console.error("❌ Error en fetch (login):", err);
       }
     });
@@ -64,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const result = await apiRequest("/auth/register", "POST", { name, email, password });
+
         if (result.token) {
           localStorage.clear();
           localStorage.setItem("token", result.token);
@@ -72,10 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.href = "upload.html";
         } else {
           alert(result.error || result.message || "Error al registrarse");
-          console.error("Error en registro:", result);
+          console.error("⚠️ Error en registro:", result);
         }
       } catch (err) {
-        alert("Error al conectar con el servidor.");
+        alert("No se pudo registrar. Intenta más tarde.");
         console.error("❌ Error en fetch (registro):", err);
       }
     });
