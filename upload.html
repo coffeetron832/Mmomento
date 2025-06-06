@@ -5,20 +5,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Modo oscuro */
+    body.dark-mode {
+      background-color: #121212;
+      color: #eee;
+    }
+    body.dark-mode .header-fixed,
+    body.dark-mode .footer-fixed,
+    body.dark-mode .fixed-buttons {
+      background-color: #1e1e1e;
+      color: #ddd;
+    }
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode textarea {
+      background-color: #222;
+      color: #eee;
+      border-color: #555;
+    }
+    body.dark-mode button,
+    body.dark-mode a {
+      color: #eee;
+    }
+    /* Botones fixed */
+    .fixed-buttons button,
+    .fixed-buttons a {
+      background: #eee;
+      color: #333;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .fixed-buttons button:hover,
+    .fixed-buttons a:hover {
+      background-color: #bbb;
+      color: #000;
+    }
+    body.dark-mode .fixed-buttons button,
+    body.dark-mode .fixed-buttons a {
+      background: #333;
+      color: #eee;
+    }
+    body.dark-mode .fixed-buttons button:hover,
+    body.dark-mode .fixed-buttons a:hover {
+      background-color: #555;
+      color: #fff;
+    }
+
+    /* Botón modo oscuro */
+    .dark-mode-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: inherit;
+      margin-right: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .dark-mode-btn:hover {
+      transform: rotate(20deg);
+    }
+
+    /* Ocultar/mostrar form upload */
+    #uploadFormContainer {
+      max-width: 480px;
+      margin: 4rem auto 2rem;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      background-color: #fff;
+    }
+    body.dark-mode #uploadFormContainer {
+      background-color: #222;
+      box-shadow: 0 0 12px rgba(255,255,255,0.1);
+    }
+
+    /* Form fields */
+    .upload-section {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    input[type="file"],
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    body.dark-mode input[type="file"],
+    body.dark-mode input[type="text"],
+    body.dark-mode select {
+      border-color: #555;
+      background-color: #222;
+      color: #eee;
+    }
+
+    button.btn-frosted {
+      background: rgba(90, 155, 216, 0.85);
+      border: none;
+      color: #fff;
+      padding: 0.8rem 1.2rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-weight: 700;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    button.btn-frosted:hover {
+      background: rgba(67, 127, 199, 0.95);
+    }
+
+    /* Circle selector */
+    #circleSelectorContainer small {
+      display: block;
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      color: #666;
+    }
+    body.dark-mode #circleSelectorContainer small {
+      color: #aaa;
+    }
+
+    /* Timeline */
+    #timeline {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .image-section-title {
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+  </style>
 </head>
 <body class="upload-page">
   <!-- Botones fijos -->
   <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
     <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
-    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
+    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button" style="display:none;">Cerrar sesión</a>
   </nav>
 
-  <header class="header-fixed" role="banner">
+  <header class="header-fixed" role="banner" style="display:flex; align-items:center; gap:1rem; padding:1rem; background:#f0f0f0;">
     <button id="darkModeToggle" class="dark-mode-btn" aria-pressed="false" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
-    <h1 class="logo">Momento</h1>
-    <h2>¡Te damos la bienvenida! 👋</h2>
-    <nav class="main-nav" aria-label="Navegación principal">
-      <!-- Si quieres, aquí puedes añadir enlaces -->
+    <h1 class="logo" style="margin:0; font-weight:700;">Momento</h1>
+    <h2 style="margin:0 0 0 auto; font-weight:400;">¡Te damos la bienvenida! 👋</h2>
+    <nav class="main-nav" aria-label="Navegación principal" style="display:none;">
+      <!-- Enlaces si quieres -->
     </nav>
   </header>
 
@@ -65,7 +213,7 @@
     <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
   </main>
 
-  <footer class="footer-fixed" role="contentinfo">
+  <footer class="footer-fixed" role="contentinfo" style="text-align:center; padding:1rem; font-size:0.9rem; color:#666;">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -97,8 +245,8 @@
       toggleUploadBtn.addEventListener('click', () => {
         const isVisible = uploadFormContainer.style.display === 'block';
         uploadFormContainer.style.display = isVisible ? 'none' : 'block';
-        uploadFormContainer.setAttribute('aria-hidden', isVisible);
-        toggleUploadBtn.setAttribute('aria-expanded', !isVisible);
+        uploadFormContainer.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
+        toggleUploadBtn.setAttribute('aria-expanded', (!isVisible).toString());
       });
 
       // Toggle selector de círculos según visibilidad
@@ -135,6 +283,7 @@
       });
     });
   </script>
+
   <script>
     // Revisión rápida de token antes de que cargue todo
     const token = localStorage.getItem('token');
@@ -145,5 +294,6 @@
   </script>
 </body>
 </html>
+
 
 
