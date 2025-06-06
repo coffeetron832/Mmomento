@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:5000'       // Cambia este puerto si usas otro
+  : 'https://momento-backend-production.up.railway.app/';   // Cambia esta URL por la real de tu backend
+
 // Función auxiliar para hacer peticiones al backend con fetch
 async function apiRequest(endpoint, method = 'GET', body = null) {
   const token = localStorage.getItem('token');
@@ -17,7 +21,7 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
   }
 
   try {
-    const response = await fetch(endpoint, options);
+    const response = await fetch(API_BASE_URL + endpoint, options);
 
     const contentType = response.headers.get("content-type");
     const isJson = contentType && contentType.includes("application/json");
