@@ -1,5 +1,3 @@
-const API_BASE_URL = "https://momento-backend-production.up.railway.app"; // Sin slash al final
-
 // Función auxiliar para hacer peticiones al backend con fetch
 async function apiRequest(endpoint, method = 'GET', body = null) {
   const token = localStorage.getItem('token');
@@ -10,16 +8,16 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const options = { method, headers };
-  if (body) options.body = JSON.stringify(body);
-
-  // Construir URL sin doble slash
-  const url = API_BASE_URL.endsWith('/')
-    ? API_BASE_URL.slice(0, -1) + endpoint
-    : API_BASE_URL + endpoint;
+  const options = {
+    method,
+    headers,
+  };
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(endpoint, options);
 
     const contentType = response.headers.get("content-type");
     const isJson = contentType && contentType.includes("application/json");
@@ -47,12 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value;
 
       try {
-        const result = await apiRequest("/auth/login", "POST", { email, password });
+        const result = await apiRequest("/api/auth/login", "POST", { email, password });
 
         if (result.token) {
           localStorage.clear();
           localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user || { id: result.userId }));
+          localStorage.setItem("user", JSON.stringify(result.user));
           alert("Sesión iniciada");
           window.location.href = "upload.html";
         } else {
@@ -74,12 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value;
 
       try {
-        const result = await apiRequest("/auth/register", "POST", { name, email, password });
+        const result = await apiRequest("/api/auth/register", "POST", { name, email, password });
 
         if (result.token) {
           localStorage.clear();
           localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user || { id: result.userId }));
+          localStorage.setItem("user", JSON.stringify(result.user));
           alert("Registro exitoso");
           window.location.href = "upload.html";
         } else {
@@ -93,4 +91,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
