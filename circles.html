@@ -1,18 +1,80 @@
-<!-- circles.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Crear Círculo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crear Círculo - Momento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    form {
+      margin-bottom: 30px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #message {
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: green;
+    }
+    #searchResults {
+      list-style: none;
+      padding-left: 0;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    #searchResults li {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+    #searchResults li:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
   <h1>Crear Círculo</h1>
   <form id="createCircleForm">
-    <input type="text" id="circleName" placeholder="Nombre del círculo" required maxlength="50" />
-    <button type="submit">Crear</button>
+    <input
+      type="text"
+      id="circleName"
+      placeholder="Nombre del círculo"
+      required
+      maxlength="50"
+      autocomplete="off"
+    />
+    <button type="submit">Crear Círculo</button>
   </form>
 
   <div id="message"></div>
+
+  <h2>Invitar Usuarios</h2>
+  <input
+    type="text"
+    id="userSearch"
+    placeholder="Buscar usuario (mínimo 3 caracteres)"
+    autocomplete="off"
+  />
+  <ul id="searchResults"></ul>
 
   <script src="circles.js"></script>
 </body>
