@@ -36,6 +36,22 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
   }
 }
 
+// Función para mostrar mensajes en el contenedor con estilos
+function showMessage(message, type = 'success') {
+  const messageBox = document.getElementById('messageBox');
+  if (!messageBox) return;
+
+  messageBox.textContent = message;
+  messageBox.className = ''; // limpia clases
+  messageBox.classList.add(type);
+  messageBox.style.display = 'block';
+
+  // Opcional: que el mensaje desaparezca después de 5 segundos
+  setTimeout(() => {
+    messageBox.style.display = 'none';
+  }, 5000);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
@@ -53,14 +69,20 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
-          alert(`¡Qué alegría verte de nuevo, ${result.user.username}! 👋`);
-          window.location.href = "upload.html";
+
+          // Mostrar mensaje con el nombre del usuario y mensaje personalizado
+          showMessage(`¡Hola, ${result.user.username}! Nos alegra verte de nuevo. 👋`, 'success');
+
+          // Redirigir después de mostrar mensaje (puedes cambiar el tiempo aquí)
+          setTimeout(() => {
+            window.location.href = "upload.html";
+          }, 1800);
         } else {
-          alert(result.error || result.message || "Error al iniciar sesión");
+          showMessage(result.error || result.message || "Error al iniciar sesión", 'error');
           console.error("⚠️ Error en login:", result);
         }
       } catch (err) {
-        alert("No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.");
+        showMessage("No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.", 'error');
         console.error("❌ Error en fetch (login):", err);
       }
     });
@@ -80,17 +102,20 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
-          alert(`¡Bienvenido, ${result.user.username}! Tu aventura empieza aquí ✨`);
-          window.location.href = "upload.html";
+          showMessage("Registro exitoso", 'success');
+          setTimeout(() => {
+            window.location.href = "upload.html";
+          }, 1800);
         } else {
-          alert(result.error || result.message || "Error al registrarse");
+          showMessage(result.error || result.message || "Error al registrarse", 'error');
           console.error("⚠️ Error en registro:", result);
         }
       } catch (err) {
-        alert("No se pudo registrar. Intenta más tarde.");
+        showMessage("No se pudo registrar. Intenta más tarde.", 'error');
         console.error("❌ Error en fetch (registro):", err);
       }
     });
   }
 });
+
 
