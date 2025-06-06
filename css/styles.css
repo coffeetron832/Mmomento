@@ -583,3 +583,32 @@ body.dark-mode.upload-page #logoutBtn:hover {
   color: #fff;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
 }
+
+/* --- Header y Footer fijos para upload.html --- */
+header {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+.upload-page main {
+  flex: 1;
+  width: 100%;
+  padding-bottom: 4rem; /* espacio para el footer fijo */
+}
+
+footer {
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 0.9rem;
+  z-index: 100;
+}
