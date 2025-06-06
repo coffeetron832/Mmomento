@@ -5,8 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Botón modo oscuro similar a index.html */
+    button#darkModeToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background-color: #f0f0f0;
+      color: #333;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18px;
+    }
+    button#darkModeToggle:hover {
+      transform: scale(1.05);
+    }
+    body.dark-mode button#darkModeToggle {
+      background-color: #222;
+      color: #f0f0f0;
+    }
+  </style>
 </head>
 <body class="upload-page">
+  <!-- Botón modo oscuro -->
+  <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌙</button>
+
   <!-- Botones fijos -->
   <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
     <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
@@ -14,7 +41,6 @@
   </nav>
 
   <header class="header-fixed" role="banner">
-    <button id="darkModeToggle" class="dark-mode-btn" aria-pressed="false" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
     <h1 class="logo">Momento</h1>
     <h2 class="welcome-text">¡Te damos la bienvenida! 👋</h2>
     <nav class="main-nav" aria-label="Navegación principal">
@@ -25,6 +51,7 @@
   <!-- Contenedor del formulario de subida -->
   <section id="uploadFormContainer" class="upload-form" aria-hidden="true">
     <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
+      <!-- campos del formulario -->
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
         <input type="file" id="image" name="image" accept="image/*" required aria-required="true" />
@@ -51,7 +78,7 @@
       </fieldset>
       <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true">
         <label for="circles">Selecciona círculos:</label>
-        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true" aria-label="Lista de círculos disponibles para seleccionar">
+        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true">
           <!-- Los círculos se cargarán por JS -->
         </select>
         <small>Ctrl + clic para seleccionar varios círculos</small>
@@ -80,69 +107,51 @@
       const userToken = localStorage.getItem('token');
       if (userToken) {
         logoutBtn.style.display = 'inline-block';
-        logoutBtn.addEventListener('click', e => {
-          e.preventDefault();
-          localStorage.removeItem('token');
-          localStorage.removeItem('userId');
-          localStorage.removeItem('welcomeShown');
-          window.location.href = 'login.html';
-        });
       } else {
         window.location.href = 'login.html';
       }
 
-      // Toggle formulario de subida
+      // Toggle formulario
       const toggleUploadBtn = document.getElementById('toggleUploadBtn');
       const uploadFormContainer = document.getElementById('uploadFormContainer');
       toggleUploadBtn.addEventListener('click', () => {
         const isVisible = uploadFormContainer.style.display === 'block';
         uploadFormContainer.style.display = isVisible ? 'none' : 'block';
-        uploadFormContainer.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
-        toggleUploadBtn.setAttribute('aria-expanded', (!isVisible).toString());
+        uploadFormContainer.setAttribute('aria-hidden', isVisible);
+        toggleUploadBtn.setAttribute('aria-expanded', !isVisible);
       });
 
-      // Toggle selector de círculos según visibilidad
-      const visibilitySelect = document.getElementById('visibility');
-      const circleSelectorContainer = document.getElementById('circleSelectorContainer');
-      visibilitySelect.addEventListener('change', () => {
-        if (visibilitySelect.value === 'circle') {
-          circleSelectorContainer.style.display = 'block';
-          circleSelectorContainer.setAttribute('aria-hidden', 'false');
+      // Selector de círculos
+      document.getElementById('visibility').addEventListener('change', e => {
+        const container = document.getElementById('circleSelectorContainer');
+        if (e.target.value === 'circle') {
+          container.style.display = 'block';
+          container.setAttribute('aria-hidden', 'false');
         } else {
-          circleSelectorContainer.style.display = 'none';
-          circleSelectorContainer.setAttribute('aria-hidden', 'true');
+          container.style.display = 'none';
+          container.setAttribute('aria-hidden', 'true');
         }
       });
 
       // Modo oscuro
-      const darkModeToggle = document.getElementById('darkModeToggle');
-      if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = "☀️";
-        darkModeToggle.setAttribute('aria-pressed', 'true');
-      } else {
-        darkModeToggle.textContent = "🌓";
-        darkModeToggle.setAttribute('aria-pressed', 'false');
+      const toggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+      if (localStorage.getItem('darkMode') === 'true') {
+        body.classList.add('dark-mode');
+        toggle.textContent = '☀️';
       }
-
-      darkModeToggle.addEventListener('click', () => {
-        const body = document.body;
-        body.classList.toggle('dark-mode');
-        const isDarkMode = body.classList.contains('dark-mode');
-        darkModeToggle.setAttribute('aria-pressed', isDarkMode);
-        darkModeToggle.textContent = isDarkMode ? "☀️" : "🌓";
-        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+      toggle.addEventListener('click', () => {
+        const isDark = body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        toggle.textContent = isDark ? '☀️' : '🌙';
       });
     });
 
-    // Revisión rápida de token antes de que cargue todo
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert("Debes iniciar sesión primero.");
-      window.location.href = "login.html";
+    // Verificación rápida de token
+    if (!localStorage.getItem('token')) {
+      alert('Debes iniciar sesión primero.');
+      window.location.href = 'login.html';
     }
   </script>
 </body>
 </html>
-
-
