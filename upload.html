@@ -107,6 +107,24 @@
           circleSelectorContainer.style.display = 'none';
         }
       });
+
+      // Modo oscuro: alternar clase dark-mode en body
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+
+        // Guardar estado en localStorage para persistencia
+        if (document.body.classList.contains('dark-mode')) {
+          localStorage.setItem('darkMode', 'enabled');
+        } else {
+          localStorage.setItem('darkMode', 'disabled');
+        }
+      });
+
+      // Aplicar modo oscuro si estaba activado
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+      }
     });
   </script>
   <script>
