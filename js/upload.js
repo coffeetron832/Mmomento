@@ -6,20 +6,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const imagesContainer = document.getElementById("imagesContainer");
   const token = localStorage.getItem("token");
 
-  // 🌙 Aplicar modo oscuro si está activado
-  if (localStorage.getItem('darkMode') === 'true') {
+  // 🌙 Aplicar modo oscuro si está activado (con la lógica correcta 'enabled'/'disabled')
+  if (localStorage.getItem('darkMode') === 'enabled') {
     document.body.classList.add('dark-mode');
   }
 
   // 🔘 Botón de alternar modo oscuro
   const darkModeToggle = document.getElementById('darkModeToggle');
   if (darkModeToggle) {
+    // Ajustar texto inicial según el estado real
     darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? "☀️" : "🌓";
 
     darkModeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
       const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDark);
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
       darkModeToggle.textContent = isDark ? "☀️" : "🌓";
     });
   }
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-    // 🧠 Obtener usuario del localStorage
+  // 🧠 Obtener usuario del localStorage
   let user = {};
   try {
     const userRaw = localStorage.getItem("user");
@@ -51,13 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const currentUserId = user._id || user.id || null;
 
-  // 👋 Mostrar nombre del usuario en el DOM
+  // 👋 Mostrar nombre del usuario en el DOM (si existe el elemento)
   const welcomeElement = document.getElementById("welcomeText");
   if (welcomeElement && user.name) {
     welcomeElement.textContent = user.name;
   }
 
-  // ✅ Agregado: mostrar u ocultar selector de círculos
+  // ✅ Mostrar u ocultar selector de círculos según visibilidad
   const visibilitySelect = document.getElementById("visibility");
   const circleSelectorContainer = document.getElementById("circleSelectorContainer");
 
@@ -215,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const image = imageInput.files[0];
-    const description = document.getElementById("description").value;
+    const description = document.getElementById("description").value.trim();
     const duration = document.getElementById("duration").value;
     const visibility = document.getElementById("visibility").value;
     const circlesSelect = document.getElementById("circles");
@@ -249,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
         const newCard = createImageCard(result);
         imagesContainer.prepend(newCard);
-        if (circleSelectorContainer) circleSelectorContainer.style.display = "none"; // ocultar de nuevo
+        if (circleSelectorContainer) circleSelectorContainer.style.display = "none"; // ocultar selector después de subir
       } else {
         alert(result.error || "Error al subir la imagen");
       }
