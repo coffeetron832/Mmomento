@@ -2,167 +2,72 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sube tu Momento | Momento</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    body.upload-page {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      font-family: 'Helvetica Neue', sans-serif;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      background-color: #fff;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 100;
-    }
-
-    header .logo {
-      font-size: 2rem;
-      margin: 0;
-      color: #222;
-    }
-
-    footer {
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      font-size: 0.9rem;
-    }
-
-    main {
-      flex: 1;
-      padding-bottom: 80px; /* espacio para el footer fijo */
-    }
-
-    #uploadFormContainer {
-      margin: 2rem auto;
-      max-width: 500px;
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    button,
-    select,
-    input,
-    textarea {
-      font-size: 1rem;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subir imágenes - Momento</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="upload-page">
-
-  <!-- Botón de modo oscuro -->
-  <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌓</button>
-
-  <!-- Botón para mostrar/ocultar el formulario -->
-  <button id="toggleUploadBtn">Subir imagen</button>
-  <!-- Enlace para cerrar sesión -->
-  <a href="#" id="logoutBtn">Cerrar sesión</a>
-
-  <header>
-    <h1 class="logo">Momento</h1>
-    <h2>¡Te damos la bienvenida! 👋</h2>
+  <!-- Header fijo -->
+  <header class="header-fixed">
+    <div class="logo">Momento</div>
+    <nav class="main-nav">
+      <a href="#">Inicio</a>
+      <a href="#">Galería</a>
+      <a href="#">Perfil</a>
+    </nav>
   </header>
 
-  <main>
-    <!-- Contenedor del formulario de subida -->
-    <div id="uploadFormContainer" style="display:none;">
-      <form id="uploadForm">
-        <input type="file" id="image" name="image" accept="image/*" required />
-        
-        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required />
-        
-        <label for="duration">Duración de visibilidad:</label>
-        <select id="duration" name="duration" required>
-          <option value="30">30 minutos</option>
-          <option value="60" selected>1 hora</option>
-          <option value="180">3 horas</option>
-          <option value="360">6 horas</option>
-        </select>
+  <!-- Botones fijos en la parte superior -->
+  <button id="toggleUploadBtn" title="Mostrar/Ocultar formulario de subida">📤</button>
+  <button id="darkModeToggle" title="Cambiar modo claro/oscuro">🌙</button>
+  <a href="#" id="logoutBtn" title="Cerrar sesión">Salir</a>
 
-        <!-- Selector de visibilidad -->
-        <label for="visibility">Visibilidad:</label>
-        <select id="visibility" name="visibility" required>
-          <option value="public" selected>Público</option>
-          <option value="circle">Solo círculos</option>
-        </select>
+  <!-- Contenedor para el formulario de subida (oculto inicialmente) -->
+  <div id="uploadFormContainer">
+    <form id="uploadForm" class="upload-section" enctype="multipart/form-data" method="post" action="/upload">
+      <label for="imageFile">Selecciona imagen:</label>
+      <input type="file" id="imageFile" name="imageFile" accept="image/*" required />
+      
+      <label for="description">Descripción:</label>
+      <input type="text" id="description" name="description" maxlength="150" placeholder="Escribe algo sobre la imagen..." />
 
-        <!-- Selector de círculos (oculto inicialmente) -->
-        <div id="circleSelectorContainer" style="display:none;">
-          <label for="circles">Selecciona círculos:</label>
-          <select id="circles" name="circles" multiple size="3">
-            <!-- Aquí se cargarán los círculos por JS -->
-          </select>
-          <small>Ctrl+click para seleccionar varios círculos</small>
-        </div>
+      <button type="submit" class="btn-frosted">Subir</button>
+    </form>
+  </div>
 
-        <button type="submit">Subir Momento</button>
-      </form>
+  <!-- Contenedor principal para timeline y contenido -->
+  <main id="timeline" style="margin-top: 110px; margin-bottom: 70px;">
+    <h2>Imágenes recientes</h2>
+    <div id="imagesContainer">
+      <!-- Aquí se inyectarán las imágenes con JavaScript -->
     </div>
-
-    <section id="timeline">
-      <h2 class="image-section-title">Últimos Momentos 📸</h2>
-      <div id="imagesContainer"></div>
-    </section>
   </main>
 
-  <footer>
-    <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
+  <!-- Footer fijo -->
+  <footer class="footer-fixed">
+    <p>© 2025 Momento. Todos los derechos reservados.</p>
   </footer>
 
-  <script src="js/upload.js"></script>
   <script>
-    // Actualizar año en footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    // Script para togglear formulario de subida
+    const toggleUploadBtn = document.getElementById('toggleUploadBtn');
+    const uploadFormContainer = document.getElementById('uploadFormContainer');
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // Cerrar sesión
-      const logoutBtn = document.getElementById('logoutBtn');
-      const userToken = localStorage.getItem('token');
-      if (userToken) {
-        logoutBtn.style.display = 'inline-block';
-        logoutBtn.addEventListener('click', e => {
-          e.preventDefault();
-          localStorage.removeItem('token');
-          localStorage.removeItem('userId');
-          localStorage.removeItem('welcomeShown');
-          window.location.href = 'login.html';
-        });
+    toggleUploadBtn.addEventListener('click', () => {
+      if (uploadFormContainer.style.display === 'block') {
+        uploadFormContainer.style.display = 'none';
       } else {
-        window.location.href = 'login.html';
+        uploadFormContainer.style.display = 'block';
       }
-
-      // Toggle del formulario de subida
-      const toggleUploadBtn = document.getElementById('toggleUploadBtn');
-      const uploadFormContainer = document.getElementById('uploadFormContainer');
-      toggleUploadBtn.addEventListener('click', () => {
-        const isVisible = uploadFormContainer.style.display === 'block';
-        uploadFormContainer.style.display = isVisible ? 'none' : 'block';
-      });
     });
-  </script>
-  <script>
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert("Debes iniciar sesión primero.");
-      window.location.href = "login.html";
-    }
+
+    // Script para modo oscuro
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    // Puedes agregar aquí la lógica para cargar imágenes y manejar eventos adicionales
   </script>
 </body>
 </html>
-
