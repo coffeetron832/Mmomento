@@ -1,6 +1,4 @@
-const API_BASE_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:5000'       // Cambia este puerto si usas otro
-  : 'https://momento-backend-production.up.railway.app/';   // Cambia esta URL por la real de tu backend
+const API_BASE_URL = "https://momento-backend-production.up.railway.app"; // Sin slash al final
 
 // Función auxiliar para hacer peticiones al backend con fetch
 async function apiRequest(endpoint, method = 'GET', body = null) {
@@ -12,16 +10,16 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const options = {
-    method,
-    headers,
-  };
-  if (body) {
-    options.body = JSON.stringify(body);
-  }
+  const options = { method, headers };
+  if (body) options.body = JSON.stringify(body);
+
+  // Construir URL sin doble slash
+  const url = API_BASE_URL.endsWith('/')
+    ? API_BASE_URL.slice(0, -1) + endpoint
+    : API_BASE_URL + endpoint;
 
   try {
-    const response = await fetch(API_BASE_URL + endpoint, options);
+    const response = await fetch(url, options);
 
     const contentType = response.headers.get("content-type");
     const isJson = contentType && contentType.includes("application/json");
@@ -54,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (result.token) {
           localStorage.clear();
           localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user));
+          localStorage.setItem("user", JSON.stringify(result.user || { id: result.userId }));
           alert("Sesión iniciada");
           window.location.href = "upload.html";
         } else {
@@ -81,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (result.token) {
           localStorage.clear();
           localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user));
+          localStorage.setItem("user", JSON.stringify(result.user || { id: result.userId }));
           alert("Registro exitoso");
           window.location.href = "upload.html";
         } else {
@@ -95,3 +93,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
