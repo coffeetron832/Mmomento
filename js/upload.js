@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 🧠 Obtener usuario del localStorage
+    // 🧠 Obtener usuario del localStorage
   let user = {};
   try {
     const userRaw = localStorage.getItem("user");
@@ -50,6 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
     user = {};
   }
   const currentUserId = user._id || user.id || null;
+
+  // 👋 Mostrar nombre del usuario en el DOM
+  const welcomeElement = document.getElementById("welcomeText");
+  if (welcomeElement && user.name) {
+    welcomeElement.textContent = user.name;
+  }
 
   // ✅ Agregado: mostrar u ocultar selector de círculos
   const visibilitySelect = document.getElementById("visibility");
