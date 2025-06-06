@@ -5,8 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body.upload-page {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    header .logo {
+      font-size: 2rem;
+      margin: 0;
+      color: #222;
+    }
+
+    footer {
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    main {
+      flex: 1;
+      padding-bottom: 80px; /* espacio para el footer fijo */
+    }
+
+    #uploadFormContainer {
+      margin: 2rem auto;
+      max-width: 500px;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    button,
+    select,
+    input,
+    textarea {
+      font-size: 1rem;
+    }
+  </style>
 </head>
 <body class="upload-page">
+
   <!-- Botón de modo oscuro -->
   <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌓</button>
 
@@ -20,45 +79,47 @@
     <h2>¡Te damos la bienvenida! 👋</h2>
   </header>
 
-  <!-- Contenedor del formulario de subida -->
-  <div id="uploadFormContainer" style="display:none;">
-    <form id="uploadForm">
-      <input type="file" id="image" name="image" accept="image/*" required />
-      
-      <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required />
-      
-      <label for="duration">Duración de visibilidad:</label>
-      <select id="duration" name="duration" required>
-        <option value="30">30 minutos</option>
-        <option value="60" selected>1 hora</option>
-        <option value="180">3 horas</option>
-        <option value="360">6 horas</option>
-      </select>
-
-      <!-- Selector de visibilidad -->
-      <label for="visibility">Visibilidad:</label>
-      <select id="visibility" name="visibility" required>
-        <option value="public" selected>Público</option>
-        <option value="circle">Solo círculos</option>
-      </select>
-
-      <!-- Selector de círculos (oculto inicialmente) -->
-      <div id="circleSelectorContainer" style="display:none;">
-        <label for="circles">Selecciona círculos:</label>
-        <select id="circles" name="circles" multiple size="3">
-          <!-- Aquí se cargarán los círculos por JS -->
+  <main>
+    <!-- Contenedor del formulario de subida -->
+    <div id="uploadFormContainer" style="display:none;">
+      <form id="uploadForm">
+        <input type="file" id="image" name="image" accept="image/*" required />
+        
+        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required />
+        
+        <label for="duration">Duración de visibilidad:</label>
+        <select id="duration" name="duration" required>
+          <option value="30">30 minutos</option>
+          <option value="60" selected>1 hora</option>
+          <option value="180">3 horas</option>
+          <option value="360">6 horas</option>
         </select>
-        <small>Ctrl+click para seleccionar varios círculos</small>
-      </div>
 
-      <button type="submit">Subir Momento</button>
-    </form>
-  </div>
+        <!-- Selector de visibilidad -->
+        <label for="visibility">Visibilidad:</label>
+        <select id="visibility" name="visibility" required>
+          <option value="public" selected>Público</option>
+          <option value="circle">Solo círculos</option>
+        </select>
 
-  <section id="timeline">
-    <h2 class="image-section-title">Últimos Momentos 📸</h2>
-    <div id="imagesContainer"></div>
-  </section>
+        <!-- Selector de círculos (oculto inicialmente) -->
+        <div id="circleSelectorContainer" style="display:none;">
+          <label for="circles">Selecciona círculos:</label>
+          <select id="circles" name="circles" multiple size="3">
+            <!-- Aquí se cargarán los círculos por JS -->
+          </select>
+          <small>Ctrl+click para seleccionar varios círculos</small>
+        </div>
+
+        <button type="submit">Subir Momento</button>
+      </form>
+    </div>
+
+    <section id="timeline">
+      <h2 class="image-section-title">Últimos Momentos 📸</h2>
+      <div id="imagesContainer"></div>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
@@ -96,11 +157,12 @@
     });
   </script>
   <script>
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert("Debes iniciar sesión primero.");
-    window.location.href = "login.html"; // o donde tengas el login
-  }
-</script>
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Debes iniciar sesión primero.");
+      window.location.href = "login.html";
+    }
+  </script>
 </body>
 </html>
+
