@@ -18,12 +18,14 @@
       color: #333;
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
       font-size: 18px;
+      transition: all 0.3s ease;
     }
+
     #darkModeToggle:hover {
       transform: scale(1.05);
     }
+
     body.dark-mode #darkModeToggle {
       background-color: #222;
       color: #f0f0f0;
@@ -32,12 +34,12 @@
 </head>
 <body class="upload-page">
   <!-- Botón modo oscuro -->
-  <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌙</button>
+  <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
 
   <!-- Botones fijos -->
-  <nav class="fixed-buttons" aria-label="Acciones rápidas" role="navigation">
-    <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer">Subir imagen</button>
-    <a href="#" id="logoutBtn" class="logout-btn" role="button">Cerrar sesión</a>
+  <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
+    <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
+    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button" class="logout-btn">Cerrar sesión</a>
   </nav>
 
   <header class="header-fixed" role="banner">
@@ -45,7 +47,7 @@
     <h2 class="welcome-text">¡Te damos la bienvenida! 👋</h2>
   </header>
 
-  <!-- Formulario de subida -->
+  <!-- Contenedor del formulario de subida -->
   <section id="uploadFormContainer" class="upload-form" aria-hidden="true">
     <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
       <fieldset class="upload-section">
@@ -76,10 +78,10 @@
         </select>
       </fieldset>
 
-      <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display: none;">
+      <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display:none">
         <label for="circles">Selecciona círculos:</label>
         <select id="circles" name="circles" multiple size="3" aria-multiselectable="true">
-          <!-- Círculos cargados dinámicamente -->
+          <!-- Los círculos se cargan por JS -->
         </select>
         <small>Ctrl + clic para seleccionar varios</small>
       </fieldset>
@@ -88,13 +90,11 @@
     </form>
   </section>
 
-  <!-- Timeline -->
   <main id="timeline" role="main">
     <h2 class="image-section-title">Últimos Momentos 📸</h2>
     <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
   </main>
 
-  <!-- Footer -->
   <footer class="footer-fixed" role="contentinfo">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
@@ -102,60 +102,53 @@
   <script src="js/upload.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Año actual
       document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-      // Validar sesión
+      const logoutBtn = document.getElementById('logoutBtn');
       const token = localStorage.getItem('token');
+
       if (!token) {
         alert("Debes iniciar sesión primero.");
         window.location.href = "login.html";
-        return;
+      } else {
+        logoutBtn.style.display = 'inline-block';
+        logoutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          localStorage.clear();
+          window.location.href = 'login.html';
+        });
       }
 
-      // Logout
-      const logoutBtn = document.getElementById('logoutBtn');
-      logoutBtn.style.display = 'inline-block';
-      logoutBtn.addEventListener('click', e => {
-        e.preventDefault();
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('welcomeShown');
-        window.location.href = 'login.html';
-      });
-
       // Toggle formulario
-      const toggleUploadBtn = document.getElementById('toggleUploadBtn');
-      const uploadFormContainer = document.getElementById('uploadFormContainer');
-      toggleUploadBtn.addEventListener('click', () => {
-        const visible = uploadFormContainer.style.display === 'block';
-        uploadFormContainer.style.display = visible ? 'none' : 'block';
-        uploadFormContainer.setAttribute('aria-hidden', visible);
-        toggleUploadBtn.setAttribute('aria-expanded', !visible);
+      const toggleBtn = document.getElementById('toggleUploadBtn');
+      const formContainer = document.getElementById('uploadFormContainer');
+      toggleBtn.addEventListener('click', () => {
+        const isVisible = formContainer.style.display === 'block';
+        formContainer.style.display = isVisible ? 'none' : 'block';
+        formContainer.setAttribute('aria-hidden', isVisible.toString());
+        toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
       });
 
-      // Mostrar/ocultar selector de círculos
+      // Visibilidad y selector de círculos
       const visibility = document.getElementById('visibility');
       const circleContainer = document.getElementById('circleSelectorContainer');
       visibility.addEventListener('change', () => {
         const isCircle = visibility.value === 'circle';
         circleContainer.style.display = isCircle ? 'block' : 'none';
-        circleContainer.setAttribute('aria-hidden', !isCircle);
+        circleContainer.setAttribute('aria-hidden', (!isCircle).toString());
       });
 
       // Modo oscuro
-      const body = document.body;
-      const toggle = document.getElementById('darkModeToggle');
-      const isDark = localStorage.getItem('darkMode') === 'enabled';
-      if (isDark) {
-        body.classList.add('dark-mode');
-        toggle.textContent = '☀️';
+      const darkToggle = document.getElementById('darkModeToggle');
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        darkToggle.textContent = '☀️';
       }
 
-      toggle.addEventListener('click', () => {
-        const dark = body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', dark ? 'enabled' : 'disabled');
-        toggle.textContent = dark ? '☀️' : '🌙';
+      darkToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        darkToggle.textContent = isDark ? '☀️' : '🌓';
       });
     });
   </script>
