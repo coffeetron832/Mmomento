@@ -2,153 +2,68 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sube tu Momento | Momento</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subir Momento</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-<body class="upload-page">
-  <!-- Botones fijos -->
-  <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
-    <button id="darkModeToggle" aria-pressed="false" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
-    <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
-    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
-  </nav>
-
-  <header class="header-fixed" role="banner">
-    <h1 class="logo">Momento</h1>
-    <h2>¡Te damos la bienvenida! 👋</h2>
-    <nav class="main-nav" aria-label="Navegación principal">
-      <!-- Puedes añadir enlaces aquí si quieres -->
-    </nav>
+<body>
+  <header>
+    <h1>Subir Momento</h1>
+    <div class="user-greeting">
+      <span>Bienvenido, <strong id="welcomeText">Usuario</strong></span>
+      <button id="darkModeToggle">🌓</button>
+    </div>
   </header>
 
-  <!-- Contenedor del formulario de subida -->
-  <section id="uploadFormContainer" style="display:none;" aria-hidden="true">
-    <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes" enctype="multipart/form-data" method="post" action="/upload">
-      <fieldset class="upload-section">
-        <label for="image">Selecciona imagen:</label>
-        <input type="file" id="image" name="image" accept="image/*" required aria-required="true" />
-      </fieldset>
-      <fieldset class="upload-section">
-        <label for="description">Descripción:</label>
-        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required aria-required="true" />
-      </fieldset>
-      <fieldset class="upload-section">
-        <label for="duration">Duración de visibilidad:</label>
-        <select id="duration" name="duration" required aria-required="true">
-          <option value="30">30 minutos</option>
-          <option value="60" selected>1 hora</option>
-          <option value="180">3 horas</option>
-          <option value="360">6 horas</option>
-        </select>
-      </fieldset>
-      <fieldset class="upload-section">
-        <label for="visibility">Visibilidad:</label>
-        <select id="visibility" name="visibility" required aria-required="true">
-          <option value="public" selected>Público</option>
-          <option value="circle">Solo círculos</option>
-        </select>
-      </fieldset>
-      <fieldset id="circleSelectorContainer" style="display:none;" aria-hidden="true">
-        <label for="circles">Selecciona círculos:</label>
-        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true" aria-label="Lista de círculos disponibles para seleccionar">
-          <!-- Los círculos se cargarán por JS -->
-        </select>
-        <small>Ctrl + clic para seleccionar varios círculos</small>
-      </fieldset>
-      <button type="submit" class="btn-frosted">Subir Momento</button>
-    </form>
-  </section>
+  <!-- 🖼 Formulario de subida -->
+  <main>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label for="image">Selecciona imagen:</label>
+      <input type="file" id="image" name="image" accept="image/*" required />
 
-  <main id="timeline" role="main">
-    <h2 class="image-section-title">Últimos Momentos 📸</h2>
-    <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
+      <label for="description">Descripción:</label>
+      <textarea id="description" name="description" rows="3" placeholder="Describe tu Momento..."></textarea>
+
+      <label for="duration">Duración (horas):</label>
+      <select id="duration" name="duration">
+        <option value="6">6 horas</option>
+        <option value="12">12 horas</option>
+        <option value="24">24 horas</option>
+      </select>
+
+      <label for="visibility">Visibilidad:</label>
+      <select id="visibility" name="visibility">
+        <option value="public">Público</option>
+        <option value="circle">Solo círculos</option>
+      </select>
+
+      <div id="circleSelectorContainer" style="display: none;">
+        <label for="circles">Selecciona círculos:</label>
+        <select id="circles" name="circles" multiple></select>
+      </div>
+
+      <button type="submit">Subir Momento</button>
+    </form>
+
+    <!-- 🖼 Imágenes renderizadas -->
+    <section id="imagesContainer"></section>
   </main>
 
-  <footer class="footer-fixed" role="contentinfo">
-    <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
+  <!-- 👋 Modal de bienvenida -->
+  <div id="welcomeModal" class="modal">
+    <div class="modal-content">
+      <h2>¡Bienvenido a Momento!</h2>
+      <p>Gracias por usar nuestra plataforma. Comparte tu Momento con el mundo o con tus círculos.</p>
+      <button id="closeModal">Cerrar</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; <span id="currentYear"></span> Momento</p>
   </footer>
 
-  <script src="js/upload.js"></script>
-  <script>
-    // Actualizar año en footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // Control de sesión
-      const logoutBtn = document.getElementById('logoutBtn');
-      const userToken = localStorage.getItem('token');
-      if (userToken) {
-        logoutBtn.style.display = 'inline-block';
-        logoutBtn.addEventListener('click', e => {
-          e.preventDefault();
-          localStorage.removeItem('token');
-          localStorage.removeItem('userId');
-          localStorage.removeItem('welcomeShown');
-          window.location.href = 'login.html';
-        });
-      } else {
-        window.location.href = 'login.html';
-      }
-
-      // Toggle formulario de subida
-      const toggleUploadBtn = document.getElementById('toggleUploadBtn');
-      const uploadFormContainer = document.getElementById('uploadFormContainer');
-      toggleUploadBtn.addEventListener('click', () => {
-        const isVisible = uploadFormContainer.style.display === 'block';
-        uploadFormContainer.style.display = isVisible ? 'none' : 'block';
-        uploadFormContainer.setAttribute('aria-hidden', isVisible);
-        toggleUploadBtn.setAttribute('aria-expanded', !isVisible);
-      });
-
-      // Toggle selector de círculos según visibilidad
-      const visibilitySelect = document.getElementById('visibility');
-      const circleSelectorContainer = document.getElementById('circleSelectorContainer');
-      visibilitySelect.addEventListener('change', () => {
-        if (visibilitySelect.value === 'circle') {
-          circleSelectorContainer.style.display = 'block';
-          circleSelectorContainer.setAttribute('aria-hidden', 'false');
-        } else {
-          circleSelectorContainer.style.display = 'none';
-          circleSelectorContainer.setAttribute('aria-hidden', 'true');
-        }
-      });
-
-      // Modo oscuro: aplicar estado y texto inicial del botón
-      const darkModeToggle = document.getElementById('darkModeToggle');
-      if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = "☀️";
-        darkModeToggle.setAttribute('aria-pressed', 'true');
-      } else {
-        darkModeToggle.textContent = "🌓";
-        darkModeToggle.setAttribute('aria-pressed', 'false');
-      }
-
-      darkModeToggle.addEventListener('click', () => {
-        const body = document.body;
-        body.classList.toggle('dark-mode');
-        const isDarkMode = body.classList.contains('dark-mode');
-        darkModeToggle.setAttribute('aria-pressed', isDarkMode);
-        darkModeToggle.textContent = isDarkMode ? "☀️" : "🌓";
-
-        if (isDarkMode) {
-          localStorage.setItem('darkMode', 'enabled');
-        } else {
-          localStorage.setItem('darkMode', 'disabled');
-        }
-      });
-    });
-  </script>
-
-  <script>
-    // Revisión token fuera de DOMContentLoaded para alertar rápido
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert("Debes iniciar sesión primero.");
-      window.location.href = "login.html";
-    }
-  </script>
+  <!-- 👇 Script principal -->
+  <script src="upload.js"></script>
 </body>
 </html>
 
