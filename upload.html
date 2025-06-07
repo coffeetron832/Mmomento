@@ -5,50 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    /* Botón modo oscuro */
-    #darkModeToggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      padding: 10px 15px;
-      border-radius: 999px;
-      background-color: #f0f0f0;
-      color: #333;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      transition: all 0.3s ease;
-    }
-
-    #darkModeToggle:hover {
-      transform: scale(1.05);
-    }
-
-    body.dark-mode #darkModeToggle {
-      background-color: #222;
-      color: #f0f0f0;
-    }
-  </style>
 </head>
 <body class="upload-page">
   <!-- Botón modo oscuro -->
   <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
 
   <!-- Botones fijos -->
-  <nav aria-label="Acciones rápidas" class="fixed-buttons" role="navigation">
+  <nav aria-label="Acciones rápidas" role="navigation">
     <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
-    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button" class="logout-btn">Cerrar sesión</a>
+    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
   </nav>
 
-  <header class="header-fixed" role="banner">
+  <header role="banner">
     <h1 class="logo">Momento</h1>
-    <h2 class="welcome-text">¡Te damos la bienvenida! 👋</h2>
+    <h2>¡Te damos la bienvenida! 👋</h2>
   </header>
 
   <!-- Contenedor del formulario de subida -->
-  <section id="uploadFormContainer" class="upload-form" aria-hidden="true">
+  <section id="uploadFormContainer" aria-hidden="true">
     <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
@@ -91,11 +65,11 @@
   </section>
 
   <main id="timeline" role="main">
-    <h2 class="image-section-title">Últimos Momentos 📸</h2>
+    <h2>Últimos Momentos 📸</h2>
     <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
   </main>
 
-  <footer class="footer-fixed" role="contentinfo">
+  <footer role="contentinfo">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -154,6 +128,5 @@
   </script>
 </body>
 </html>
-
 
 
