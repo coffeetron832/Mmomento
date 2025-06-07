@@ -5,101 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    body.upload-page {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      font-family: 'Helvetica Neue', sans-serif;
-    }
-    header.header-fixed {
-      position: sticky;
-      top: 0;
-      background-color: #fff;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 100;
-    }
-    .fixed-buttons {
-      position: fixed;
-      top: 0;
-      right: 0;
-      display: flex;
-      gap: 0.5rem;
-      background: #fff;
-      padding: 0.5rem 1rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 110;
-    }
-    main#timeline {
-      flex: 1;
-      padding: 1rem;
-      margin-top: 110px; /* espacio para header y botones fijos */
-      margin-bottom: 70px; /* espacio para footer fijo */
-    }
-    footer.footer-fixed {
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      font-size: 0.9rem;
-      z-index: 100;
-    }
-    #uploadFormContainer {
-      margin: 2rem auto;
-      max-width: 500px;
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    fieldset.upload-section {
-      border: none;
-      margin-bottom: 1rem;
-      padding: 0;
-    }
-    button, select, input, textarea {
-      font-size: 1rem;
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    button.btn-frosted {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-    button.btn-frosted:hover {
-      background: rgba(255, 255, 255, 1);
-    }
-    /* Modo oscuro */
-    body.dark-mode {
-      background-color: #121212;
-      color: #eee;
-    }
-    body.dark-mode header.header-fixed,
-    body.dark-mode .fixed-buttons,
-    body.dark-mode #uploadFormContainer {
-      background-color: #1e1e1e;
-      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-    }
-    body.dark-mode button, body.dark-mode select, body.dark-mode input {
-      background-color: #333;
-      color: #eee;
-      border-color: #555;
-    }
-  </style>
 </head>
 <body class="upload-page">
   <!-- Botones fijos -->
@@ -225,7 +130,6 @@
         body.classList.toggle('dark-mode');
         const isDarkMode = body.classList.contains('dark-mode');
         darkModeToggle.setAttribute('aria-pressed', isDarkMode);
-
         darkModeToggle.textContent = isDarkMode ? "☀️" : "🌓";
 
         if (isDarkMode) {
@@ -247,4 +151,5 @@
   </script>
 </body>
 </html>
+
 
