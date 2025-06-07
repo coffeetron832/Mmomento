@@ -20,6 +20,30 @@
     body.dark-mode footer p {
       color: #ffffff !important;
     }
+
+    /* Transición suave de colores */
+    body {
+      transition: background-color 0.4s, color 0.4s;
+    }
+
+    /* Vista previa de imagen */
+    #preview {
+      max-width: 200px;
+      margin: 10px auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    /* Animación del formulario */
+    #uploadFormContainer {
+      transition: opacity 0.4s ease-in-out, transform 0.3s ease-in-out;
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    #uploadFormContainer.show {
+      opacity: 1;
+      transform: scale(1);
+    }
   </style>
 </head>
 <body class="upload-page">
@@ -43,6 +67,7 @@
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
         <input type="file" id="image" name="image" accept="image/*" required />
+        <img id="preview" alt="Vista previa" style="display:none" />
       </fieldset>
 
       <fieldset class="upload-section">
@@ -93,21 +118,48 @@
   <script src="js/upload.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Toggle formulario
+      // Toggle formulario con animación
+      const container = document.getElementById('uploadFormContainer');
       document.getElementById('toggleUploadBtn').addEventListener('click', () => {
-        const container = document.getElementById('uploadFormContainer');
-        const visible = container.style.display === 'block';
-        container.style.display = visible ? 'none' : 'block';
+        const visible = container.classList.contains('show');
+        if (visible) {
+          container.classList.remove('show');
+          container.setAttribute('aria-hidden', 'true');
+        } else {
+          container.classList.add('show');
+          container.setAttribute('aria-hidden', 'false');
+        }
         document.getElementById('toggleUploadBtn').setAttribute('aria-expanded', (!visible).toString());
       });
+
       // Logout
       document.getElementById('logoutBtn').addEventListener('click', e => {
         e.preventDefault(); localStorage.clear(); window.location.href='login.html';
+      });
+
+      // Año actual en footer
+      document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+      // Vista previa de imagen
+      const imageInput = document.getElementById('image');
+      const preview = document.getElementById('preview');
+      imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            preview.src = evt.target.result;
+            preview.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        } else {
+          preview.style.display = 'none';
+          preview.src = '';
+        }
       });
     });
   </script>
 </body>
 </html>
-
 
 
