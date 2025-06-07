@@ -73,59 +73,8 @@
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
+  <!-- Script principal -->
   <script src="js/upload.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-      const logoutBtn = document.getElementById('logoutBtn');
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        alert("Debes iniciar sesión primero.");
-        window.location.href = "login.html";
-      } else {
-        logoutBtn.style.display = 'inline-block';
-        logoutBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          localStorage.clear();
-          window.location.href = 'login.html';
-        });
-      }
-
-      // Toggle formulario
-      const toggleBtn = document.getElementById('toggleUploadBtn');
-      const formContainer = document.getElementById('uploadFormContainer');
-      toggleBtn.addEventListener('click', () => {
-        const isVisible = formContainer.style.display === 'block';
-        formContainer.style.display = isVisible ? 'none' : 'block';
-        formContainer.setAttribute('aria-hidden', isVisible.toString());
-        toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
-      });
-
-      // Visibilidad y selector de círculos
-      const visibility = document.getElementById('visibility');
-      const circleContainer = document.getElementById('circleSelectorContainer');
-      visibility.addEventListener('change', () => {
-        const isCircle = visibility.value === 'circle';
-        circleContainer.style.display = isCircle ? 'block' : 'none';
-        circleContainer.setAttribute('aria-hidden', (!isCircle).toString());
-      });
-
-      // Modo oscuro
-      const darkToggle = document.getElementById('darkModeToggle');
-      if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkToggle.textContent = '☀️';
-      }
-
-      darkToggle.addEventListener('click', () => {
-        const isDark = document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        darkToggle.textContent = isDark ? '☀️' : '🌓';
-      });
-    });
-  </script>
 </body>
 </html>
 
