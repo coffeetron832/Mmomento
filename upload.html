@@ -2,69 +2,165 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Subir Momento</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sube tu Momento | Momento</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Botón modo oscuro */
+    #darkModeToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background-color: #f0f0f0;
+      color: #333;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18px;
+    }
+    #darkModeToggle:hover {
+      transform: scale(1.05);
+    }
+    body.dark-mode #darkModeToggle {
+      background-color: #222;
+      color: #f0f0f0;
+    }
+  </style>
 </head>
-<body>
-  <header>
-    <h1>Subir Momento</h1>
-    <div class="user-greeting">
-      <span>Bienvenido, <strong id="welcomeText">Usuario</strong></span>
-      <button id="darkModeToggle">🌓</button>
-    </div>
+<body class="upload-page">
+  <!-- Botón modo oscuro -->
+  <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌙</button>
+
+  <!-- Botones fijos -->
+  <nav class="fixed-buttons" aria-label="Acciones rápidas" role="navigation">
+    <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer">Subir imagen</button>
+    <a href="#" id="logoutBtn" class="logout-btn" role="button">Cerrar sesión</a>
+  </nav>
+
+  <header class="header-fixed" role="banner">
+    <h1 class="logo">Momento</h1>
+    <h2 class="welcome-text">¡Te damos la bienvenida! 👋</h2>
   </header>
 
-  <!-- 🖼 Formulario de subida -->
-  <main>
-    <form id="uploadForm" enctype="multipart/form-data">
-      <label for="image">Selecciona imagen:</label>
-      <input type="file" id="image" name="image" accept="image/*" required />
+  <!-- Formulario de subida -->
+  <section id="uploadFormContainer" class="upload-form" aria-hidden="true">
+    <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
+      <fieldset class="upload-section">
+        <label for="image">Selecciona imagen:</label>
+        <input type="file" id="image" name="image" accept="image/*" required />
+      </fieldset>
 
-      <label for="description">Descripción:</label>
-      <textarea id="description" name="description" rows="3" placeholder="Describe tu Momento..."></textarea>
+      <fieldset class="upload-section">
+        <label for="description">Descripción:</label>
+        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" required />
+      </fieldset>
 
-      <label for="duration">Duración (horas):</label>
-      <select id="duration" name="duration">
-        <option value="6">6 horas</option>
-        <option value="12">12 horas</option>
-        <option value="24">24 horas</option>
-      </select>
+      <fieldset class="upload-section">
+        <label for="duration">Duración de visibilidad:</label>
+        <select id="duration" name="duration" required>
+          <option value="30">30 minutos</option>
+          <option value="60" selected>1 hora</option>
+          <option value="180">3 horas</option>
+          <option value="360">6 horas</option>
+        </select>
+      </fieldset>
 
-      <label for="visibility">Visibilidad:</label>
-      <select id="visibility" name="visibility">
-        <option value="public">Público</option>
-        <option value="circle">Solo círculos</option>
-      </select>
+      <fieldset class="upload-section">
+        <label for="visibility">Visibilidad:</label>
+        <select id="visibility" name="visibility" required>
+          <option value="public" selected>Público</option>
+          <option value="circle">Solo círculos</option>
+        </select>
+      </fieldset>
 
-      <div id="circleSelectorContainer" style="display: none;">
+      <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display: none;">
         <label for="circles">Selecciona círculos:</label>
-        <select id="circles" name="circles" multiple></select>
-      </div>
+        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true">
+          <!-- Círculos cargados dinámicamente -->
+        </select>
+        <small>Ctrl + clic para seleccionar varios</small>
+      </fieldset>
 
-      <button type="submit">Subir Momento</button>
+      <button type="submit" class="btn-frosted">Subir Momento</button>
     </form>
+  </section>
 
-    <!-- 🖼 Imágenes renderizadas -->
-    <section id="imagesContainer"></section>
+  <!-- Timeline -->
+  <main id="timeline" role="main">
+    <h2 class="image-section-title">Últimos Momentos 📸</h2>
+    <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
   </main>
 
-  <!-- 👋 Modal de bienvenida -->
-  <div id="welcomeModal" class="modal">
-    <div class="modal-content">
-      <h2>¡Bienvenido a Momento!</h2>
-      <p>Gracias por usar nuestra plataforma. Comparte tu Momento con el mundo o con tus círculos.</p>
-      <button id="closeModal">Cerrar</button>
-    </div>
-  </div>
-
-  <footer>
-    <p>&copy; <span id="currentYear"></span> Momento</p>
+  <!-- Footer -->
+  <footer class="footer-fixed" role="contentinfo">
+    <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- 👇 Script principal -->
-  <script src="upload.js"></script>
+  <script src="js/upload.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Año actual
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+      // Validar sesión
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert("Debes iniciar sesión primero.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      // Logout
+      const logoutBtn = document.getElementById('logoutBtn');
+      logoutBtn.style.display = 'inline-block';
+      logoutBtn.addEventListener('click', e => {
+        e.preventDefault();
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('welcomeShown');
+        window.location.href = 'login.html';
+      });
+
+      // Toggle formulario
+      const toggleUploadBtn = document.getElementById('toggleUploadBtn');
+      const uploadFormContainer = document.getElementById('uploadFormContainer');
+      toggleUploadBtn.addEventListener('click', () => {
+        const visible = uploadFormContainer.style.display === 'block';
+        uploadFormContainer.style.display = visible ? 'none' : 'block';
+        uploadFormContainer.setAttribute('aria-hidden', visible);
+        toggleUploadBtn.setAttribute('aria-expanded', !visible);
+      });
+
+      // Mostrar/ocultar selector de círculos
+      const visibility = document.getElementById('visibility');
+      const circleContainer = document.getElementById('circleSelectorContainer');
+      visibility.addEventListener('change', () => {
+        const isCircle = visibility.value === 'circle';
+        circleContainer.style.display = isCircle ? 'block' : 'none';
+        circleContainer.setAttribute('aria-hidden', !isCircle);
+      });
+
+      // Modo oscuro
+      const body = document.body;
+      const toggle = document.getElementById('darkModeToggle');
+      const isDark = localStorage.getItem('darkMode') === 'enabled';
+      if (isDark) {
+        body.classList.add('dark-mode');
+        toggle.textContent = '☀️';
+      }
+
+      toggle.addEventListener('click', () => {
+        const dark = body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', dark ? 'enabled' : 'disabled');
+        toggle.textContent = dark ? '☀️' : '🌙';
+      });
+    });
+  </script>
 </body>
 </html>
+
 
 
