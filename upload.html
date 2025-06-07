@@ -16,9 +16,9 @@
     <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
   </nav>
 
-  <header role="banner">
-    <h1 class="logo">Momento</h1>
-    <h2>¡Te damos la bienvenida! 👋</h2>
+  <header role="banner" style="position:sticky; top:0; background:rgba(255,255,255,0.9); padding:0.5rem 1rem; z-index:100;">
+    <h1 class="logo" style="margin:0; font-size:2rem; text-align:center;">Momento</h1>
+    <h2 style="margin:0; text-align:center; font-size:1rem; opacity:0.8;">¡Te damos la bienvenida! 👋</h2>
   </header>
 
   <!-- Contenedor del formulario de subida -->
@@ -64,12 +64,12 @@
     </form>
   </section>
 
-  <main id="timeline" role="main">
-    <h2>Últimos Momentos 📸</h2>
-    <div id="imagesContainer" aria-live="polite" aria-atomic="true"></div>
+  <main id="timeline" role="main" style="padding-top:1rem;">
+    <h2 style="text-align:center; font-size:1.2rem; margin-bottom:1rem;">Últimos Momentos 📸</h2>
+    <div id="imagesContainer" class="images-grid" aria-live="polite" aria-atomic="true" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:0 1rem;"></div>
   </main>
 
-  <footer role="contentinfo">
+  <footer role="contentinfo" style="text-align:center; font-size:0.8rem; opacity:0.6; padding:0.5rem 1rem; background:transparent; position:relative;">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -77,6 +77,7 @@
   <script src="js/upload.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Toggle formulario
       const toggleBtn = document.getElementById('toggleUploadBtn');
       const formContainer = document.getElementById('uploadFormContainer');
       toggleBtn.addEventListener('click', () => {
@@ -84,15 +85,14 @@
         formContainer.style.display = visible ? 'none' : 'block';
         toggleBtn.setAttribute('aria-expanded', (!visible).toString());
       });
-
+      // Logout
       const logoutBtn = document.getElementById('logoutBtn');
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        window.location.href = 'login.html';
+      logoutBtn.addEventListener('click', e => {
+        e.preventDefault(); localStorage.clear(); window.location.href='login.html';
       });
     });
   </script>
 </body>
 </html>
+
 
