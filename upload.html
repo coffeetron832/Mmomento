@@ -73,9 +73,26 @@
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Script principal -->
+  <!-- Scripts -->
   <script src="js/upload.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('toggleUploadBtn');
+      const formContainer = document.getElementById('uploadFormContainer');
+      toggleBtn.addEventListener('click', () => {
+        const visible = formContainer.style.display === 'block';
+        formContainer.style.display = visible ? 'none' : 'block';
+        toggleBtn.setAttribute('aria-expanded', (!visible).toString());
+      });
+
+      const logoutBtn = document.getElementById('logoutBtn');
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
 </body>
 </html>
-
 
