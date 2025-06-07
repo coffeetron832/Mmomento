@@ -134,8 +134,7 @@
   <!-- Script de funcionalidad -->
   <script src="js/upload.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Año en footer
+      // Año en footer inmediatamente
       document.getElementById('currentYear').textContent = new Date().getFullYear();
 
       // Toggle formulario
@@ -169,18 +168,22 @@
       // Dark mode
       const dm = document.getElementById('darkModeToggle');
       const body = document.body;
+      // Inicializar según localStorage
       if (localStorage.getItem('darkMode') === 'true') {
         body.classList.add('dark-mode');
         dm.textContent = '☀️';
+        dm.setAttribute('aria-pressed', 'true');
+      } else {
+        dm.textContent = '🌙';
+        dm.setAttribute('aria-pressed', 'false');
       }
       dm.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        const isDark = body.classList.contains('dark-mode');
+        const isDark = body.classList.toggle('dark-mode');
         localStorage.setItem('darkMode', isDark);
         dm.textContent = isDark ? '☀️' : '🌙';
         dm.setAttribute('aria-pressed', isDark);
       });
-    });
   </script>
 </body>
 </html>
+
