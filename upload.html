@@ -16,9 +16,9 @@
     <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
   </nav>
 
-  <header role="banner" style="position:sticky; top:0; background:rgba(255,255,255,0.9); padding:0.5rem 1rem; z-index:100;">
-    <h1 class="logo" style="margin:0; font-size:2rem; text-align:center;">Momento</h1>
-    <h2 style="margin:0; text-align:center; font-size:1rem; opacity:0.8;">¡Te damos la bienvenida! 👋</h2>
+  <header role="banner" style="position:sticky; top:0; background:rgba(255,255,255,0.9); display:flex; justify-content:space-between; align-items:center; padding:0.5rem 1rem; z-index:100;">
+    <h1 class="logo" style="margin:0; font-size:2rem; color:#1f2937;">Momento</h1>
+    <h2 style="margin:0; font-size:1rem; color:#4b5563; opacity:0.9;">¡Te damos la bienvenida! 👋</h2>
   </header>
 
   <!-- Contenedor del formulario de subida -->
@@ -69,7 +69,7 @@
     <div id="imagesContainer" class="images-grid" aria-live="polite" aria-atomic="true" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:0 1rem;"></div>
   </main>
 
-  <footer role="contentinfo" style="text-align:center; font-size:0.8rem; opacity:0.6; padding:0.5rem 1rem; background:transparent; position:relative;">
+  <footer role="contentinfo" style="text-align:center; font-size:0.8rem; color:#374151; background:rgba(255,255,255,0.8); padding:0.5rem 1rem; position:relative;">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -78,16 +78,14 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // Toggle formulario
-      const toggleBtn = document.getElementById('toggleUploadBtn');
-      const formContainer = document.getElementById('uploadFormContainer');
-      toggleBtn.addEventListener('click', () => {
-        const visible = formContainer.style.display === 'block';
-        formContainer.style.display = visible ? 'none' : 'block';
-        toggleBtn.setAttribute('aria-expanded', (!visible).toString());
+      document.getElementById('toggleUploadBtn').addEventListener('click', () => {
+        const container = document.getElementById('uploadFormContainer');
+        const visible = container.style.display === 'block';
+        container.style.display = visible ? 'none' : 'block';
+        document.getElementById('toggleUploadBtn').setAttribute('aria-expanded', (!visible).toString());
       });
       // Logout
-      const logoutBtn = document.getElementById('logoutBtn');
-      logoutBtn.addEventListener('click', e => {
+      document.getElementById('logoutBtn').addEventListener('click', e => {
         e.preventDefault(); localStorage.clear(); window.location.href='login.html';
       });
     });
