@@ -6,7 +6,21 @@
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
   <style>
-    /* Ajustes de modo oscuro para header y footer */
+    /* Estilos para formulario con transición */
+    #uploadFormContainer {
+      display: none;
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #uploadFormContainer.show {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Modo oscuro header y footer */
     body.dark-mode header {
       background: rgba(20, 20, 20, 0.9) !important;
     }
@@ -20,30 +34,6 @@
     body.dark-mode footer p {
       color: #ffffff !important;
     }
-
-    /* Transición suave de colores */
-    body {
-      transition: background-color 0.4s, color 0.4s;
-    }
-
-    /* Vista previa de imagen */
-    #preview {
-      max-width: 200px;
-      margin: 10px auto;
-      display: block;
-      border-radius: 10px;
-    }
-
-    /* Animación del formulario */
-    #uploadFormContainer {
-      transition: opacity 0.4s ease-in-out, transform 0.3s ease-in-out;
-      opacity: 0;
-      transform: scale(0.98);
-    }
-    #uploadFormContainer.show {
-      opacity: 1;
-      transform: scale(1);
-    }
   </style>
 </head>
 <body class="upload-page">
@@ -56,18 +46,18 @@
     <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
   </nav>
 
+  <!-- Encabezado -->
   <header role="banner" style="position:sticky; top:0; background:rgba(255,255,255,0.9); display:flex; justify-content:space-between; align-items:center; padding:0.5rem 1rem; z-index:100;">
     <h1 class="logo" style="margin:0; font-size:2rem; color:#1f2937;">Momento</h1>
     <h2 style="margin:0; font-size:1rem; color:#4b5563; opacity:0.9;">¡Te damos la bienvenida! 👋</h2>
   </header>
 
-  <!-- Contenedor del formulario de subida -->
+  <!-- Formulario -->
   <section id="uploadFormContainer" aria-hidden="true">
     <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
         <input type="file" id="image" name="image" accept="image/*" required />
-        <img id="preview" alt="Vista previa" style="display:none" />
       </fieldset>
 
       <fieldset class="upload-section">
@@ -96,7 +86,7 @@
       <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display:none">
         <label for="circles">Selecciona círculos:</label>
         <select id="circles" name="circles" multiple size="3" aria-multiselectable="true">
-          <!-- Los círculos se cargan por JS -->
+          <!-- Círculos se cargan por JS -->
         </select>
         <small>Ctrl + clic para seleccionar varios</small>
       </fieldset>
@@ -105,11 +95,13 @@
     </form>
   </section>
 
+  <!-- Línea de tiempo -->
   <main id="timeline" role="main" style="padding-top:1rem;">
     <h2 style="text-align:center; font-size:1.2rem; margin-bottom:1rem;">Últimos Momentos 📸</h2>
     <div id="imagesContainer" class="images-grid" aria-live="polite" aria-atomic="true" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:0 1rem;"></div>
   </main>
 
+  <!-- Pie de página -->
   <footer role="contentinfo" style="text-align:center; font-size:0.8rem; color:#374151; background:rgba(255,255,255,0.8); padding:0.5rem 1rem; position:relative;">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
@@ -118,48 +110,32 @@
   <script src="js/upload.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Toggle formulario con animación
-      const container = document.getElementById('uploadFormContainer');
-      document.getElementById('toggleUploadBtn').addEventListener('click', () => {
-        const visible = container.classList.contains('show');
-        if (visible) {
-          container.classList.remove('show');
-          container.setAttribute('aria-hidden', 'true');
+      // Alternar formulario
+      const toggleBtn = document.getElementById('toggleUploadBtn');
+      const formContainer = document.getElementById('uploadFormContainer');
+
+      toggleBtn.addEventListener('click', () => {
+        const isVisible = formContainer.classList.contains('show');
+        if (isVisible) {
+          formContainer.classList.remove('show');
+          formContainer.setAttribute('aria-hidden', 'true');
         } else {
-          container.classList.add('show');
-          container.setAttribute('aria-hidden', 'false');
+          formContainer.classList.add('show');
+          formContainer.setAttribute('aria-hidden', 'false');
         }
-        document.getElementById('toggleUploadBtn').setAttribute('aria-expanded', (!visible).toString());
+        toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
       });
 
-      // Logout
+      // Botón cerrar sesión
       document.getElementById('logoutBtn').addEventListener('click', e => {
-        e.preventDefault(); localStorage.clear(); window.location.href='login.html';
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = 'login.html';
       });
 
       // Año actual en footer
-      document.getElementById("currentYear").textContent = new Date().getFullYear();
-
-      // Vista previa de imagen
-      const imageInput = document.getElementById('image');
-      const preview = document.getElementById('preview');
-      imageInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function(evt) {
-            preview.src = evt.target.result;
-            preview.style.display = 'block';
-          };
-          reader.readAsDataURL(file);
-        } else {
-          preview.style.display = 'none';
-          preview.src = '';
-        }
-      });
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
     });
   </script>
 </body>
 </html>
-
-
