@@ -21,6 +21,7 @@ body.dark-mode {
   color: #f1f1f1;
 }
 
+/* --- Texto en modo oscuro --- */
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
@@ -221,7 +222,6 @@ button:hover,
   transition: opacity 0.3s ease, height 0.3s ease;
 }
 
-/* Cuando el formulario está visible, se agrega la clase .visible (control en JS) */
 .upload-section form.visible {
   opacity: 1;
   pointer-events: auto;
@@ -396,24 +396,38 @@ body.dark-mode .carousel-message {
   z-index: 1100;
 }
 
-@media (max-width: 600px) {
-  .nav-fixed {
-    flex-direction: row;
-    top: auto;
-    bottom: 1rem;
-    right: 1rem;
-  }
+/* Contenedores en modo oscuro */
+body.dark-mode header {
+  background-color: #1f1f1f;
+  border-bottom: 1px solid #444;
+}
+body.dark-mode .nav-fixed {
+  background-color: rgba(20,20,20,0.8);
+}
+body.dark-mode .upload-form-container {
+  background-color: #1c1c1c;
+  border: 1px solid #444;
+}
+body.dark-mode #timeline {
+  background-color: #1e1e1e;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.8);
+}
+body.dark-mode .image-card {
+  background-color: #252525;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+body.dark-mode footer {
+  background-color: #181818;
+  border-top: 1px solid #444;
 }
 
 /* --- Scroll personalizado para contenedores con scroll --- */
 #circles::-webkit-scrollbar {
   width: 8px;
 }
-
 #circles::-webkit-scrollbar-track {
   background: transparent;
 }
-
 #circles::-webkit-scrollbar-thumb {
   background-color: rgba(58, 134, 255, 0.5);
   border-radius: 20px;
@@ -428,7 +442,6 @@ footer {
   margin-top: 40px;
   user-select: none;
 }
-
 body.dark-mode footer {
   color: #aaa;
 }
@@ -439,25 +452,27 @@ body.dark-mode footer {
     flex-direction: column;
     padding: 20px;
   }
-  
-  .left-section, 
+  .left-section,
   .right-section {
     flex: 1 1 100%;
   }
 }
-
 @media (max-width: 600px) {
   body {
     padding: 20px 10px;
   }
-
   .hero-content .logo {
     font-size: 3rem;
   }
-
   .action-buttons {
     padding: 12px;
   }
+  .btn-frosted {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+}
+
 
   .btn-frosted {
     font-size: 0.9rem;
