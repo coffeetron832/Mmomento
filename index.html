@@ -24,6 +24,23 @@
       right: 20px;
       z-index: 999;
     }
+
+    /* Tamaño reducido del switch */
+    .switch .button {
+      width: 40px;
+      height: 20px;
+    }
+
+    .switch .button::before {
+      width: 16px;
+      height: 16px;
+      top: 2px;
+      left: 2px;
+    }
+
+    .switch input:checked + .button::before {
+      transform: translateX(20px);
+    }
   </style>
 </head>
 <body>
