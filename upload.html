@@ -4,41 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
-  <!-- Importar la fuente Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Importar la fuente Inter y Grape Nuts para el logo -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Grape+Nuts&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="upload-page">
-  <!-- Barra fija superior izquierda -->
+  <!-- Barra fija superior -->
   <header role="banner" class="fixed-header" aria-label="Barra principal">
     <nav aria-label="Acciones rápidas" role="navigation" class="header-left">
-      <button
-        id="toggleUploadBtn"
-        class="btn btn-toggle btn-frosted"
-        aria-expanded="false"
-        aria-controls="uploadFormContainer"
-        title="Mostrar/Ocultar formulario de subida"
-      >
-        Subir imagen
-      </button>
-      <button
-        id="darkModeToggle"
-        class="btn btn-toggle btn-frosted"
-        aria-label="Alternar modo oscuro"
-        title="Alternar modo oscuro"
-      >
-        🌙
-      </button>
-      <a
-        href="#"
-        id="logoutBtn"
-        class="btn btn-logout btn-frosted"
-        title="Cerrar sesión"
-        role="button"
-      >
-        Cerrar sesión
-      </a>
+      <button id="toggleUploadBtn" class="btn btn-toggle btn-frosted" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
+      <button id="darkModeToggle" class="btn btn-toggle btn-frosted" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌙</button>
+      <a href="#" id="logoutBtn" class="btn btn-logout btn-frosted" title="Cerrar sesión" role="button">Cerrar sesión</a>
     </nav>
+    <!-- Logo centrado -->
+    <div class="header-logo">
+      <h1 class="logo">Momento</h1>
+    </div>
   </header>
 
   <!-- Saludo dinámico centrado -->
@@ -51,42 +32,21 @@
     <div class="modal-content">
       <h3 id="welcomeTitle">Bienvenido a Momento</h3>
       <p id="welcomeDesc">Gracias por unirte, disfruta compartiendo tus Momentos.</p>
-      <button id="closeModal" class="btn btn-frosted" aria-label="Cerrar modal">
-        Cerrar
-      </button>
+      <button id="closeModal" class="btn btn-frosted" aria-label="Cerrar modal">Cerrar</button>
     </div>
   </div>
 
   <!-- Formulario de subida -->
-  <section
-    id="uploadFormContainer"
-    class="upload-form-container"
-    aria-hidden="true"
-    style="display: none;"
-  >
-    <form
-      id="uploadForm"
-      autocomplete="off"
-      aria-label="Formulario para subir imágenes"
-      method="POST"
-      enctype="multipart/form-data"
-    >
+  <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true" style="display: none;">
+    <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes" method="POST" enctype="multipart/form-data">
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
         <input type="file" id="image" name="image" accept="image/*" required />
       </fieldset>
-
       <fieldset class="upload-section">
         <label for="description">Descripción:</label>
-        <input
-          type="text"
-          id="description"
-          name="description"
-          placeholder="Escribe una descripción..."
-          maxlength="100"
-        />
+        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" />
       </fieldset>
-
       <fieldset class="upload-section">
         <label for="duration">Duración de visibilidad:</label>
         <select id="duration" name="duration" required>
@@ -96,7 +56,6 @@
           <option value="360">6 horas</option>
         </select>
       </fieldset>
-
       <fieldset class="upload-section">
         <label for="visibility">Visibilidad:</label>
         <select id="visibility" name="visibility" required>
@@ -104,27 +63,11 @@
           <option value="circle">Solo círculos</option>
         </select>
       </fieldset>
-
-      <fieldset
-        id="circleSelectorContainer"
-        class="upload-section"
-        aria-hidden="true"
-        style="display: none;"
-      >
+      <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display: none;">
         <label for="circles">Selecciona círculos:</label>
-        <select
-          id="circles"
-          name="circles"
-          multiple
-          size="3"
-          aria-multiselectable="true"
-          aria-describedby="circleHelp"
-        >
-          <!-- Círculos se cargan por JS -->
-        </select>
+        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true" aria-describedby="circleHelp"></select>
         <small id="circleHelp">Ctrl + clic para seleccionar varios</small>
       </fieldset>
-
       <button type="submit" class="btn btn-frosted">Subir Momento</button>
     </form>
   </section>
@@ -135,12 +78,12 @@
     <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
 
-  <!-- Pie de página fijo -->
-  <footer role="contentinfo" class="footer fixed-footer">
+  <!-- Pie de página fijo y compacto -->
+  <footer role="contentinfo" class="footer fixed-footer small-footer">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Script principal (lógica de red, carga de imágenes, modo oscuro, etc.) -->
+  <!-- Script principal -->
   <script src="js/upload.js"></script>
 
   <!-- Script inline para controles de interfaz -->
@@ -152,16 +95,14 @@
       const circleSelector = document.getElementById('circleSelectorContainer');
       const logoutBtn = document.getElementById('logoutBtn');
       const welcomeText = document.getElementById('welcomeText');
-      const headerWelcomeMsg = document.getElementById('headerWelcomeMsg');
       const currentYearSpan = document.getElementById('currentYear');
 
-      // Mostrar año actual en el footer
+      // Mostrar año actual
       currentYearSpan.textContent = new Date().getFullYear();
 
       // Nombre de usuario dinámico
       const username = localStorage.getItem('username') || 'Usuario';
       welcomeText.textContent = username;
-      if (headerWelcomeMsg) headerWelcomeMsg.textContent = '';
 
       // Toggle formulario
       toggleBtn.addEventListener('click', () => {
@@ -191,4 +132,3 @@
   </script>
 </body>
 </html>
-
