@@ -9,13 +9,9 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="upload-page">
-  <!-- Barra fija superior -->
+  <!-- Barra fija superior izquierda -->
   <header role="banner" class="fixed-header" aria-label="Barra principal">
-    <div class="header-left">
-      <h1 class="logo">Momento</h1>
-      <span class="welcome-msg" id="headerWelcomeMsg">¡Bienvenido!</span>
-    </div>
-    <nav aria-label="Acciones rápidas" role="navigation" class="nav-fixed header-right">
+    <nav aria-label="Acciones rápidas" role="navigation" class="header-left">
       <button
         id="toggleUploadBtn"
         class="btn btn-toggle btn-frosted"
@@ -45,14 +41,12 @@
     </nav>
   </header>
 
-  <!-- Mensaje de bienvenida -->
-  <section class="welcome-section" aria-live="polite">
-    <h2 class="welcome-msg">
-      ¡Te damos la bienvenida! <span id="welcomeText"></span> 👋
-    </h2>
+  <!-- Saludo dinámico centrado -->
+  <section class="welcome-section centered" aria-live="polite">
+    <h1 class="welcome-user">¡Hola, <span id="welcomeText"></span>!</h1>
   </section>
 
-  <!-- Modal de bienvenida -->
+  <!-- Modal de bienvenida (oculto) -->
   <div id="welcomeModal" class="modal" role="dialog" aria-modal="true" hidden>
     <div class="modal-content">
       <h3 id="welcomeTitle">Bienvenido a Momento</h3>
@@ -141,8 +135,8 @@
     <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
 
-  <!-- Pie de página -->
-  <footer role="contentinfo" class="footer">
+  <!-- Pie de página fijo -->
+  <footer role="contentinfo" class="footer fixed-footer">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -164,14 +158,10 @@
       // Mostrar año actual en el footer
       currentYearSpan.textContent = new Date().getFullYear();
 
-      // Simular obtener nombre de usuario (puedes adaptar con tu lógica real)
+      // Nombre de usuario dinámico
       const username = localStorage.getItem('username') || 'Usuario';
-
-      // Mostrar nombre de usuario en mensajes de bienvenida
       welcomeText.textContent = username;
-      if (headerWelcomeMsg) {
-        headerWelcomeMsg.textContent = `¡Hola, ${username}!`;
-      }
+      if (headerWelcomeMsg) headerWelcomeMsg.textContent = '';
 
       // Toggle formulario
       toggleBtn.addEventListener('click', () => {
@@ -201,3 +191,4 @@
   </script>
 </body>
 </html>
+
