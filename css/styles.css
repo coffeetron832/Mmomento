@@ -212,6 +212,21 @@ button:hover,
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.05);
   margin-bottom: 40px;
+
+  /* Inicialmente oculto y no interactuable */
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+/* Cuando el formulario está visible, se agrega la clase .visible (control en JS) */
+.upload-section form.visible {
+  opacity: 1;
+  pointer-events: auto;
+  height: auto;
+  overflow: visible;
 }
 
 .upload-section input,
@@ -226,6 +241,27 @@ button:hover,
 .upload-section input[type="text"] {
   background-color: #f9fafb;
   color: #111827;
+}
+
+/* Selector de círculos */
+#circles {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f3f4f6;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  color: #1f2937;
+  font-size: 1rem;
+  resize: vertical;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+/* Selector de círculos modo oscuro */
+body.dark-mode #circles {
+  background-color: #1f2937;
+  border-color: #444;
+  color: #f1f1f1;
 }
 
 /* --- Inputs y botones en modo oscuro --- */
@@ -349,6 +385,54 @@ body.dark-mode .carousel-message {
   color: #ccc;
 }
 
+/* --- Botones fijos (desktop arriba derecha, móvil abajo) --- */
+.nav-fixed {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1100;
+}
+
+@media (max-width: 600px) {
+  .nav-fixed {
+    flex-direction: row;
+    top: auto;
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+/* --- Scroll personalizado para contenedores con scroll --- */
+#circles::-webkit-scrollbar {
+  width: 8px;
+}
+
+#circles::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#circles::-webkit-scrollbar-thumb {
+  background-color: rgba(58, 134, 255, 0.5);
+  border-radius: 20px;
+}
+
+/* --- Footer automático con año actual --- */
+footer {
+  text-align: center;
+  padding: 15px 20px;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 40px;
+  user-select: none;
+}
+
+body.dark-mode footer {
+  color: #aaa;
+}
+
 /* --- Responsivo --- */
 @media (max-width: 1100px) {
   .main-container {
@@ -380,4 +464,3 @@ body.dark-mode .carousel-message {
     padding: 10px 15px;
   }
 }
-
