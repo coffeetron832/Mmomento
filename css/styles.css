@@ -845,21 +845,27 @@ body.dark-mode .daily-quote {
   position: fixed;
   top: 0; bottom: 0; left: 0; right: 0;
   z-index: 1;
-  border: 5px solid transparent;
-  box-sizing: border-box;
-  animation: neonPulse 3s infinite;
+  border: 5px solid;
   border-radius: 12px;
+  box-sizing: border-box;
+  background: linear-gradient(270deg, #00f0ff, #ff00f0, #00ff95, #00f0ff);
+  background-size: 600% 600%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: neonBorderMove 8s linear infinite;
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
 }
 
 body.dark-mode .neon-border {
   opacity: 1;
-  border-image: linear-gradient(45deg, #00f0ff, #ff00f0, #00ff95, #00f0ff) 1;
 }
 
-@keyframes neonPulse {
-  0% { filter: drop-shadow(0 0 4px #0ff) drop-shadow(0 0 8px #f0f); }
-  50% { filter: drop-shadow(0 0 12px #0ff) drop-shadow(0 0 16px #f0f); }
-  100% { filter: drop-shadow(0 0 4px #0ff) drop-shadow(0 0 8px #f0f); }
+@keyframes neonBorderMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
