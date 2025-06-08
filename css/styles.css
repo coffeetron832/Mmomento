@@ -6,6 +6,17 @@
   box-sizing: border-box;
 }
 
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  flex-direction: column;
+}
+
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -87,14 +98,8 @@ button:hover,
 }
 
 .main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex-direction: column;
   text-align: center;
 }
-
 
 
 /* --- Botones de acción --- */
