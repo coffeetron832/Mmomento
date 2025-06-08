@@ -68,62 +68,65 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 🧩 Crear tarjeta de imagen
-  function createImageCard(image) {
-    const card = document.createElement('div');
-    card.className = 'image-card';
+function createImageCard(image) {
+  const card = document.createElement('div');
+  card.className = 'image-card';
 
-    const img = document.createElement('img');
-    img.src = image.imageUrl || image.url || '';
-    img.alt = image.description || 'Imagen subida';
+  const img = document.createElement('img');
+  img.src = image.imageUrl || image.url || '';
+  img.alt = image.description || 'Imagen subida';
 
-    const desc = document.createElement('p');
-    desc.className = 'image-description';
-    desc.textContent = image.description || '';
+  const desc = document.createElement('p');
+  desc.className = 'image-description';
+  desc.textContent = image.description || '';
 
-    const userInfo = document.createElement('p');
-    userInfo.className = 'image-user';
+  const userInfo = document.createElement('p');
+  userInfo.className = 'image-user';
 
-    let ownerId = null;
-    if (image.userId && typeof image.userId === 'object') {
-      ownerId = image.userId._id || image.userId.id;
-      userInfo.textContent = image.userId.username
-        ? `Subido por: ${image.userId.username}`
-        : 'Subido por: Anónimo';
-    } else if (typeof image.userId === 'string') {
-      ownerId = image.userId;
-      userInfo.textContent = currentUserId === image.userId
-        ? 'Subido por: Tú'
-        : 'Subido por: Usuario desconocido';
-    } else {
-      userInfo.textContent = 'Subido por: Anónimo';
-    }
+  let ownerId = null;
+  if (image.userId && typeof image.userId === 'object') {
+    ownerId = image.userId._id || image.userId.id;
+    userInfo.textContent = image.userId.username
+      ? `Subido por: ${image.userId.username}`
+      : 'Subido por: Anónimo';
+  } else if (typeof image.userId === 'string') {
+    ownerId = image.userId;
+    userInfo.textContent = currentUserId === image.userId
+      ? 'Subido por: Tú'
+      : 'Subido por: Usuario desconocido';
+  } else {
+    userInfo.textContent = 'Subido por: Anónimo';
+  }
 
-    card.append(img, desc, userInfo);
+  card.append(img, desc, userInfo);
 
-    if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
-  const container = document.createElement('div');
-  container.className = 'delete-container';
-  container.style.position = 'relative';
+  if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
+    const container = document.createElement('div');
+    container.className = 'delete-container';
+    container.style.position = 'relative';
 
-  const delButton = document.createElement('button');
-  delButton.className = 'bin';
-  delButton.addEventListener('click', () => deleteImage(image._id, card));
+    // 🗑 Botón tipo basurero con animación
+    const delButton = document.createElement('button');
+    delButton.className = 'bin';
+    delButton.addEventListener('click', () => deleteImage(image._id, card));
 
-  const decorDiv = document.createElement('div');
-  decorDiv.className = 'div';
+    // Decoración animada del botón
+    const decorDiv = document.createElement('div');
+    decorDiv.className = 'div';
 
-  const small = document.createElement('small');
-  const icon = document.createElement('i');
-  small.appendChild(icon);
-  decorDiv.appendChild(small);
+    const small = document.createElement('small');
+    const icon = document.createElement('i');
+    small.appendChild(icon);
+    decorDiv.appendChild(small);
 
-  container.appendChild(delButton);
-  container.appendChild(decorDiv);
-  card.appendChild(container);
+    container.appendChild(delButton);
+    container.appendChild(decorDiv);
+    card.appendChild(container);
+  }
+
+  return card;
 }
 
-    return card;
-  }
 
   // 🚫 Redirigir si no autenticado
   if (!token) {
