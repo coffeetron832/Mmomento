@@ -95,10 +95,6 @@
       // Mostrar año actual
       currentYearSpan.textContent = new Date().getFullYear();
 
-      // Nombre de usuario dinámico
-      const username = localStorage.getItem('username') || 'Usuario';
-      welcomeText.textContent = username;
-
       // Toggle formulario
       toggleBtn.addEventListener('click', () => {
         const isVisible = formContainer.classList.contains('show');
