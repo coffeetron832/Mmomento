@@ -1059,7 +1059,7 @@ body.dark-mode .daily-quote {
   background-repeat: repeat-x;
 
   position: absolute;     /* 👈 antes era relative */
-  bottom: 5px;           /* 👈 lo mueve hacia abajo */
+  bottom: 2px;           /* 👈 lo mueve hacia abajo */
   right: 10px;            /* 👈 lo ubica a la derecha */
   z-index: 5;
 
