@@ -15,12 +15,20 @@
       <button id="toggleUploadBtn" class="btn btn-toggle btn-frosted" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
       <a href="#" id="logoutBtn" class="btn btn-logout btn-frosted" title="Cerrar sesión" role="button">Cerrar sesión</a>
     </nav>
+
     <!-- Logo centrado -->
     <div class="header-logo">
       <h1 class="logo">Momento</h1>
     </div>
-  </header>
 
+    <!-- Información legal a la derecha -->
+    <div class="header-info" aria-label="Información del sitio">
+      <p class="legal-text">
+        &copy; <span id="currentYear"></span> Momento<br />
+        <span class="slogan">Redefining what’s worth looking at.</span>
+      </p>
+    </div>
+  </header>
 
   <!-- Formulario de subida -->
   <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true" style="display: none;">
@@ -64,11 +72,6 @@
     <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
 
-  <!-- Pie de página fijo y compacto -->
-  <footer role="contentinfo" class="footer fixed-footer small-footer">
-    <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
-  </footer>
-
   <!-- Script principal -->
   <script src="js/upload.js"></script>
 
@@ -80,7 +83,6 @@
       const visibilitySelect = document.getElementById('visibility');
       const circleSelector = document.getElementById('circleSelectorContainer');
       const logoutBtn = document.getElementById('logoutBtn');
-      const welcomeText = document.getElementById('welcomeText');
       const currentYearSpan = document.getElementById('currentYear');
 
       // Mostrar año actual
