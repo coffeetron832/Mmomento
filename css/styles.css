@@ -87,14 +87,14 @@ button:hover,
 }
 
 .main-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 30px;
+  height: 100vh;
+  flex-direction: column;
+  text-align: center;
 }
+
 
 
 /* --- Botones de acción --- */
