@@ -101,12 +101,27 @@ document.addEventListener("DOMContentLoaded", () => {
     card.append(img, desc, userInfo);
 
     if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
-      const del = document.createElement('button');
-      del.textContent = '🗑 Eliminar';
-      del.className = 'delete-btn';
-      del.addEventListener('click', () => deleteImage(image._id, card));
-      card.appendChild(del);
-    }
+  const container = document.createElement('div');
+  container.className = 'delete-container';
+  container.style.position = 'relative';
+
+  const delButton = document.createElement('button');
+  delButton.className = 'bin';
+  delButton.addEventListener('click', () => deleteImage(image._id, card));
+
+  const decorDiv = document.createElement('div');
+  decorDiv.className = 'div';
+
+  const small = document.createElement('small');
+  const icon = document.createElement('i');
+  small.appendChild(icon);
+  decorDiv.appendChild(small);
+
+  container.appendChild(delButton);
+  container.appendChild(decorDiv);
+  card.appendChild(container);
+}
+
     return card;
   }
 
