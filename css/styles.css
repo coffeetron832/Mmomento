@@ -789,3 +789,17 @@ footer.footer,
 main#timeline {
   padding-bottom: 60px; /* altura suficiente para el footer compacto */
 }
+
+/* Adaptar footer al modo oscuro */
+body.dark-mode .fixed-footer.small-footer {
+  background-color: #121212;
+  border-top-color: #333;
+  color: #aaa;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.8);
+}
+
+/* Botones del header más pequeños */
+header.fixed-header .header-left .btn {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
