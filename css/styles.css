@@ -729,3 +729,63 @@ footer.footer,
   color: #555;
   margin: 1rem 0 1.5rem 0;
 }
+
+/* --- Ajustes específicos de layout --- */
+
+/* 1. Centrar saludo “¡Hola, Usuario!” */
+.welcome-section.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.welcome-section.centered .welcome-user {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* 2. Posicionar y estilizar el logo Grape Nuts estratégicamente */
+.fixed-header {
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  gap: 8px;
+}
+
+.header-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-logo .logo {
+  font-family: 'Grape Nuts', cursive;
+  font-size: 2rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+/* 3. Footer fijo más compacto */
+.fixed-footer.small-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 0;
+  font-size: 0.8rem;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+}
+
+/* Asegurar que el main tenga algo de padding-bottom para no quedar oculto tras el footer */
+main#timeline {
+  padding-bottom: 60px; /* altura suficiente para el footer compacto */
+}
