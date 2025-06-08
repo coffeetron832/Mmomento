@@ -839,44 +839,48 @@ main#timeline {
 }
 
 /* --- Flechas para el carrusel de mensajes --- */
+/* --- Flechas para el carrusel de mensajes con emojis --- */
+
 .carousel-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: linear-gradient(135deg, #333, #111); /* degradado moderno */
-  border: 2px solid white;
+  background-color: rgba(0, 0, 0, 0.25);
+  border: none;
   color: white;
-  font-size: 1.5rem; /* antes 2rem */
-  padding: 0.4rem 0.6rem;
+  font-size: 1.6rem;              /* Un poco más pequeño que antes */
+  padding: 0.4rem 0.7rem;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 999px;           /* Más tipo "pill" que círculo */
   user-select: none;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  z-index: 10;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
+/* Hover: fondo se aclara sutilmente */
 .carousel-arrow:hover {
-  background: linear-gradient(135deg, #555, #222);
-  transform: translateY(-50%) scale(1.1); /* efecto más dinámico */
+  background-color: rgba(0, 0, 0, 0.45);
+  transform: translateY(-50%) scale(1.1);
 }
 
+/* Posición lateral */
 .carousel-arrow.left {
-  left: 0.5rem;
+  left: -1.2rem;
 }
 
 .carousel-arrow.right {
-  right: 0.5rem;
+  right: -1.2rem;
 }
 
+/* Modo oscuro */
 body.dark-mode .carousel-arrow {
-  background: linear-gradient(135deg, #ccc, #999);
+  background-color: rgba(255, 255, 255, 0.2);
   color: black;
-  border: 2px solid black;
 }
 
 body.dark-mode .carousel-arrow:hover {
-  background: linear-gradient(135deg, #fff, #bbb);
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 /* --- Estilo del mensaje del carrusel --- */
