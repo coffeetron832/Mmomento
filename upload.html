@@ -22,8 +22,17 @@
     <h2 class="welcome-msg">¡Te damos la bienvenida! 👋</h2>
   </header>
 
+  <!-- Modal de bienvenida -->
+  <div id="welcomeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" aria-describedby="welcomeDesc" hidden>
+    <div class="modal-content">
+      <h3 id="welcomeTitle">Bienvenido a Momento</h3>
+      <p id="welcomeDesc">Gracias por unirte, disfruta subiendo y compartiendo tus momentos.</p>
+      <button id="closeModal" class="btn btn-close" aria-label="Cerrar modal">Cerrar</button>
+    </div>
+  </div>
+
   <!-- Formulario -->
-  <section id="uploadFormContainer" aria-hidden="true">
+  <section id="uploadFormContainer" aria-hidden="true" class="hidden">
     <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes">
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
@@ -80,7 +89,7 @@
   <script src="js/upload.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Alternar formulario
+      // Toggle formulario subir imagen
       const toggleBtn = document.getElementById('toggleUploadBtn');
       const formContainer = document.getElementById('uploadFormContainer');
 
@@ -89,29 +98,14 @@
         if (isVisible) {
           formContainer.classList.remove('show');
           formContainer.setAttribute('aria-hidden', 'true');
+          formContainer.classList.add('hidden');
         } else {
           formContainer.classList.add('show');
           formContainer.setAttribute('aria-hidden', 'false');
+          formContainer.classList.remove('hidden');
         }
         toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
       });
-
-      // Mostrar/Ocultar selector de círculos según visibilidad
-      const visibilitySelect = document.getElementById('visibility');
-      const circleSelector = document.getElementById('circleSelectorContainer');
-
-      const toggleCircleSelector = () => {
-        if (visibilitySelect.value === 'circle') {
-          circleSelector.style.display = 'block';
-          circleSelector.setAttribute('aria-hidden', 'false');
-        } else {
-          circleSelector.style.display = 'none';
-          circleSelector.setAttribute('aria-hidden', 'true');
-        }
-      };
-
-      visibilitySelect.addEventListener('change', toggleCircleSelector);
-      toggleCircleSelector();
 
       // Botón cerrar sesión
       document.getElementById('logoutBtn').addEventListener('click', e => {
@@ -123,9 +117,9 @@
       // Año actual en footer
       document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-      // Modo oscuro: activación inicial
+      // Modo oscuro: activación inicial con valor unificado 'enabled'
       const darkModeToggle = document.getElementById('darkModeToggle');
-      const prefersDark = localStorage.getItem('darkMode') === 'true';
+      const prefersDark = localStorage.getItem('darkMode') === 'enabled';
       if (prefersDark) {
         document.body.classList.add('dark-mode');
       }
@@ -133,9 +127,10 @@
       // Alternar modo oscuro
       darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
       });
     });
   </script>
 </body>
 </html>
+
