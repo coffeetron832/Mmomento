@@ -7,45 +7,45 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="upload-page">
-  <!-- Botón modo oscuro -->
-  <button
-    id="darkModeToggle"
-    class="btn btn-toggle btn-frosted"
-    aria-label="Alternar modo oscuro"
-    title="Alternar modo oscuro"
-  >
-    🌙
-  </button>
-
-  <!-- Botones fijos -->
-  <nav aria-label="Acciones rápidas" role="navigation" class="nav-fixed">
-    <button
-      id="toggleUploadBtn"
-      class="btn btn-toggle btn-frosted"
-      aria-expanded="false"
-      aria-controls="uploadFormContainer"
-      title="Mostrar/Ocultar formulario de subida"
-    >
-      Subir imagen
-    </button>
-    <a
-      href="#"
-      id="logoutBtn"
-      class="btn btn-logout btn-frosted"
-      title="Cerrar sesión"
-      role="button"
-    >
-      Cerrar sesión
-    </a>
-  </nav>
-
-  <!-- Encabezado -->
-  <header role="banner">
+  <!-- Barra fija superior -->
+  <header role="banner" class="header-fixed" aria-label="Barra principal">
     <h1 class="logo">Momento</h1>
+    <nav aria-label="Acciones rápidas" role="navigation" class="nav-fixed">
+      <button
+        id="toggleUploadBtn"
+        class="btn btn-toggle btn-frosted"
+        aria-expanded="false"
+        aria-controls="uploadFormContainer"
+        title="Mostrar/Ocultar formulario de subida"
+      >
+        Subir imagen
+      </button>
+      <button
+        id="darkModeToggle"
+        class="btn btn-toggle btn-frosted"
+        aria-label="Alternar modo oscuro"
+        title="Alternar modo oscuro"
+      >
+        🌙
+      </button>
+      <a
+        href="#"
+        id="logoutBtn"
+        class="btn btn-logout btn-frosted"
+        title="Cerrar sesión"
+        role="button"
+      >
+        Cerrar sesión
+      </a>
+    </nav>
+  </header>
+
+  <!-- Mensaje de bienvenida -->
+  <section class="welcome-section" aria-live="polite">
     <h2 class="welcome-msg">
       ¡Te damos la bienvenida! <span id="welcomeText"></span> 👋
     </h2>
-  </header>
+  </section>
 
   <!-- Modal de bienvenida -->
   <div id="welcomeModal" class="modal" role="dialog" aria-modal="true" hidden>
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <!-- Formulario -->
+  <!-- Formulario de subida -->
   <section
     id="uploadFormContainer"
     class="upload-form-container"
@@ -131,7 +131,7 @@
   </section>
 
   <!-- Línea de tiempo -->
-  <main id="timeline" role="main">
+  <main id="timeline" role="main" tabindex="0">
     <h2 class="timeline-title">Últimos Momentos 📸</h2>
     <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
