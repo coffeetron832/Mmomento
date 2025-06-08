@@ -47,36 +47,33 @@
   <!-- Botón modo oscuro -->
   <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌙</button>
 
-  <!-- Contenedor Principal 60/40 -->
+  <!-- Contenedor Principal unificado -->
   <div class="main-container">
-    <!-- Lado izquierdo: Carrusel ocupa 60% -->
-    <div class="left-section">
-        </div>
-      </section>
-    </div>
 
-    <!-- Lado derecho: Hero y botones ocupa 40% -->
-    <div class="right-section">
-      <div class="hero-content">
-        <h1 class="logo">Momento</h1>
-        <p class="tagline"><em>Redefining what’s worth looking at.</em></p>
+    <!-- Hero y botones -->
+    <div class="hero-content">
+      <h1 class="logo">Momento</h1>
+      <p class="tagline"><em>Redefining what’s worth looking at.</em></p>
 
-        <!-- Botones de sesión -->
-        <nav class="main-nav">
-          <a href="login.html" class="btn-frosted">Iniciar sesión</a>
-          <a href="register.html" class="btn-frosted">Registrarse</a>
-        </nav>
+      <!-- Botones de sesión -->
+      <nav class="main-nav">
+        <a href="login.html" class="btn-frosted">Iniciar sesión</a>
+        <a href="register.html" class="btn-frosted">Registrarse</a>
+      </nav>
 
-        <!-- Espacio entre secciones -->
-        <div style="height: 20px;"></div>
+      <!-- Espacio entre secciones -->
+      <div style="height: 20px;"></div>
 
-        <!-- Botones legales -->
-        <div class="legal-links">
-          <button class="btn-frosted" onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
-          <button class="btn-frosted" onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
-        </div>
+      <!-- Botones legales -->
+      <div class="legal-links">
+        <button class="btn-frosted" onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
+        <button class="btn-frosted" onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
       </div>
+
+      <!-- Mensaje inspirador del día -->
+      <div class="daily-quote" id="dailyQuote"></div>
     </div>
+
   </div>
 
   <!-- Modal de bienvenida -->
@@ -92,11 +89,10 @@
 
   <!-- Línea dinámica degradada al final -->
   <div class="animated-gradient-line"></div>
-  <div class="daily-quote" id="dailyQuote"></div>
 
   <script>
-    // Modal de bienvenida y carrusel
     document.addEventListener('DOMContentLoaded', () => {
+      // Modal de bienvenida
       const modal = document.getElementById('welcomeModal');
       const closeBtn = document.getElementById('closeModalBtn');
 
@@ -109,50 +105,25 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
+      // Frase inspiradora del día
       const quotes = [
-  {
-    text: "Haz que cada momento cuente.",
-    author: "Leonardo da Vinci"
-  },
-  {
-    text: "No esperes. El momento nunca será perfecto.",
-    author: "Napoleon Hill"
-  },
-  {
-    text: "Lo que haces hoy puede mejorar todos tus mañanas.",
-    author: "Ralph Marston"
-  },
-  {
-    text: "Sé tú mismo; todos los demás ya están ocupados.",
-    author: "Oscar Wilde"
-  },
-  {
-    text: "La creatividad es la inteligencia divirtiéndose.",
-    author: "Albert Einstein"
-  },
-  {
-    text: "Todo lo que puedas imaginar es real.",
-    author: "Pablo Picasso"
-  },
-  {
-    text: "Crea como si nadie fuera a mirar.",
-    author: "Anónimo"
-  }
-];
+        { text: "Haz que cada momento cuente.", author: "Leonardo da Vinci" },
+        { text: "No esperes. El momento nunca será perfecto.", author: "Napoleon Hill" },
+        { text: "Lo que haces hoy puede mejorar todos tus mañanas.", author: "Ralph Marston" },
+        { text: "Sé tú mismo; todos los demás ya están ocupados.", author: "Oscar Wilde" },
+        { text: "La creatividad es la inteligencia divirtiéndose.", author: "Albert Einstein" },
+        { text: "Todo lo que puedas imaginar es real.", author: "Pablo Picasso" },
+        { text: "Crea como si nadie fuera a mirar.", author: "Anónimo" }
+      ];
+      const quoteContainer = document.getElementById('dailyQuote');
+      const today = new Date().getDate();
+      const quoteIndex = today % quotes.length;
+      const quote = quotes[quoteIndex];
+      quoteContainer.innerHTML = `<em>“${quote.text}”</em><br>– ${quote.author}`;
 
-const quoteContainer = document.getElementById('dailyQuote');
-const today = new Date().getDate(); // Cambia diariamente
-
-const quoteIndex = today % quotes.length;
-const quote = quotes[quoteIndex];
-quoteContainer.innerHTML = `<em>“${quote.text}”</em><br>– ${quote.author}`;
-
-      
-      // Modo oscuro con cambio de ícono y color en botón
+      // Modo oscuro
       const toggle = document.getElementById("darkModeToggle");
       const body = document.body;
-
-      // Si ya estaba modo oscuro activado en localStorage, aplicar
       if (localStorage.getItem("darkMode") === "true") {
         body.classList.add("dark-mode");
         toggle.textContent = "☀️";
