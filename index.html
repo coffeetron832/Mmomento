@@ -15,24 +15,32 @@
 
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
+
   <style>
-    /* Oculta el switch original, ya no se usa */
-    button#darkModeToggle { display: none; }
+    /* Contenedor fijo del switch en la esquina inferior derecha */
+    .switch-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Botón modo oscuro personalizado -->
-  <label class="switch" id="darkModeToggle">
-    <input type="checkbox" id="toggleCheckbox">
-    <div class="button">
-      <div class="light"></div>
-      <div class="dots"></div>
-      <div class="characters"></div>
-      <div class="shine"></div>
-      <div class="shadow"></div>
-    </div>
-  </label>
+  <!-- Switch fijo en esquina inferior derecha -->
+  <div class="switch-container">
+    <label class="switch">
+      <input type="checkbox" id="toggleCheckbox">
+      <div class="button">
+        <div class="light"></div>
+        <div class="dots"></div>
+        <div class="characters"></div>
+        <div class="shine"></div>
+        <div class="shadow"></div>
+      </div>
+    </label>
+  </div>
 
   <!-- Contenedor Principal unificado -->
   <div class="main-container">
@@ -112,7 +120,6 @@
 
       // Modo oscuro con nuevo switch
       const toggleCheckbox = document.getElementById('toggleCheckbox');
-      // Restaurar estado
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
         toggleCheckbox.checked = true;
@@ -125,3 +132,5 @@
   </script>
 </body>
 </html>
+
+
