@@ -803,3 +803,34 @@ header.fixed-header .header-left .btn {
   padding: 6px 10px;
   font-size: 0.85rem;
 }
+
+/* Ajustar espacio para header y footer fijos */
+body.upload-page {
+  padding-top: 80px;    /* deja más hueco bajo el header */
+  padding-bottom: 50px; /* deja espacio sobre el footer */
+}
+
+/* Reducir un poco la altura del header */
+.fixed-header {
+  height: 60px; /* de 70px a 60px */
+  padding: 0 16px; /* ajusta el padding horizontal */
+}
+
+/* Centrar la zona de imágenes bien separada */
+main#timeline {
+  margin-top: 1rem;   /* separa del saludo */
+  margin-bottom: 1rem;/* separa del footer */
+}
+
+/* Ajustar footer compacto */
+.fixed-footer.small-footer {
+  height: 40px;       /* altura fija */
+  line-height: 40px;  /* centrar el texto verticalmente */
+  font-size: 0.75rem; /* un poco más pequeño */
+}
+
+/* Opcional: para no cortar la galería de imágenes en pantallas muy grandes */
+.images-grid {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
