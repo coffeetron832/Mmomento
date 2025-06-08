@@ -1,268 +1,206 @@
+// upload.js
+
 // Mostrar año actual en el footer
-document.getElementById('currentYear').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('currentYear');
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
   const token = localStorage.getItem("token");
 
-  // 🌙 Aplicar modo oscuro si está activado (con la lógica correcta 'enabled'/'disabled')
-  if (localStorage.getItem('darkMode') === 'enabled') {
-    document.body.classList.add('dark-mode');
-  }
+  // 🌙 Aplicar modo oscuro si está activado en localStorage
+  const darkValue = localStorage.getItem('darkMode');
+  const isDarkStored = darkValue === 'true' || darkValue === 'enabled'; // por compatibilidad
+  if (isDarkStored) document.body.classList.add('dark-mode');
 
-  // 🔘 Botón de alternar modo oscuro
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  if (darkModeToggle) {
-    // Ajustar texto inicial según el estado real
-    darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? "☀️" : "🌓";
-
-    darkModeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-      darkModeToggle.textContent = isDark ? "☀️" : "🌓";
+  // 🔘 Switch 3D de modo oscuro
+  const toggleCheckbox = document.getElementById('toggleCheckbox');
+  if (toggleCheckbox) {
+    toggleCheckbox.checked = isDarkStored;
+    toggleCheckbox.addEventListener('change', () => {
+      const nowDark = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', nowDark.toString());
     });
   }
 
   // 👋 Modal de bienvenida (solo una vez por sesión)
-  const hasSeenModal = sessionStorage.getItem('hasSeenModal');
+  const hasSeenModal = sessionStorage.getItem('hasSeenModal') === 'true';
   const modal = document.getElementById('welcomeModal');
-  const closeModalBtn = document.getElementById('closeModal');
+  const closeModalBtn = document.getElementById('closeModalBtn');
 
   if (!hasSeenModal && modal) {
     modal.style.display = 'flex';
     sessionStorage.setItem('hasSeenModal', 'true');
   }
-
   if (closeModalBtn) {
-    closeModalBtn.addEventListener('click', () => {
-      if (modal) modal.style.display = 'none';
-    });
+    closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
   }
 
-  // 🧠 Obtener usuario del localStorage
+  // 🧠 Obtener datos del usuario
   let user = {};
   try {
-    const userRaw = localStorage.getItem("user");
-    user = userRaw && userRaw !== "undefined" ? JSON.parse(userRaw) : {};
-  } catch (e) {
-    console.warn("Usuario en localStorage mal formado o ausente");
-    user = {};
+    const stored = localStorage.getItem('user');
+    user = stored && stored !== 'undefined' ? JSON.parse(stored) : {};
+  } catch {
+    console.warn('Usuario mal formado en localStorage');
   }
   const currentUserId = user._id || user.id || null;
 
-  // 👋 Mostrar nombre del usuario en el DOM (si existe el elemento)
-  const welcomeElement = document.getElementById("welcomeText");
-  if (welcomeElement && user.name) {
-    welcomeElement.textContent = user.name;
-  }
+  // 👋 Mostrar nombre del usuario
+  const welcomeEl = document.getElementById('welcomeText');
+  if (welcomeEl && user.name) welcomeEl.textContent = user.name;
 
-  // ✅ Mostrar u ocultar selector de círculos según visibilidad
-  const visibilitySelect = document.getElementById("visibility");
-  const circleSelectorContainer = document.getElementById("circleSelectorContainer");
-
-  if (visibilitySelect && circleSelectorContainer) {
-    visibilitySelect.addEventListener("change", () => {
-      if (visibilitySelect.value === "circle") {
-        circleSelectorContainer.style.display = "block";
+  // ✅ Mostrar/ocultar selector de círculos
+  const visibilitySelect = document.getElementById('visibility');
+  const circleContainer = document.getElementById('circleSelectorContainer');
+  if (visibilitySelect && circleContainer) {
+    visibilitySelect.addEventListener('change', () => {
+      if (visibilitySelect.value === 'circle') {
+        circleContainer.style.display = 'block';
         loadUserCircles();
       } else {
-        circleSelectorContainer.style.display = "none";
+        circleContainer.style.display = 'none';
       }
     });
   }
 
   // 🧩 Crear tarjeta de imagen
   function createImageCard(image) {
-    const div = document.createElement("div");
-    div.className = "image-card";
+    const card = document.createElement('div');
+    card.className = 'image-card';
 
-    const img = document.createElement("img");
-    img.src = image.imageUrl || image.url || "";
-    img.alt = image.description || "Imagen subida";
+    const img = document.createElement('img');
+    img.src = image.imageUrl || image.url || '';
+    img.alt = image.description || 'Imagen subida';
 
-    const desc = document.createElement("p");
-    desc.className = "image-description";
-    desc.textContent = image.description || "";
+    const desc = document.createElement('p');
+    desc.className = 'image-description';
+    desc.textContent = image.description || '';
 
-    const userInfo = document.createElement("p");
-    userInfo.className = "image-user";
+    const userInfo = document.createElement('p');
+    userInfo.className = 'image-user';
 
-    const uploader = image.userId;
-    let imageOwnerId = null;
-
-    if (typeof uploader === "object" && uploader !== null) {
-      imageOwnerId = uploader._id || uploader.id || null;
-      userInfo.textContent = uploader.username
-        ? `Subido por: ${uploader.username}`
-        : "Subido por: Anónimo";
-    } else if (typeof uploader === "string") {
-      imageOwnerId = uploader;
-      userInfo.textContent = currentUserId === uploader
-        ? "Subido por: Tú"
-        : "Subido por: Usuario desconocido";
+    let ownerId = null;
+    if (image.userId && typeof image.userId === 'object') {
+      ownerId = image.userId._id || image.userId.id;
+      userInfo.textContent = image.userId.username
+        ? `Subido por: ${image.userId.username}`
+        : 'Subido por: Anónimo';
+    } else if (typeof image.userId === 'string') {
+      ownerId = image.userId;
+      userInfo.textContent = currentUserId === image.userId
+        ? 'Subido por: Tú'
+        : 'Subido por: Usuario desconocido';
     } else {
-      userInfo.textContent = "Subido por: Anónimo";
+      userInfo.textContent = 'Subido por: Anónimo';
     }
 
-    div.appendChild(img);
-    div.appendChild(desc);
-    div.appendChild(userInfo);
+    card.append(img, desc, userInfo);
 
-    // 🗑 Botón de eliminar si es del usuario actual
-    if (currentUserId && imageOwnerId && currentUserId === imageOwnerId.toString()) {
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "🗑 Eliminar";
-      deleteBtn.className = "delete-btn";
-      deleteBtn.addEventListener("click", () => deleteImage(image._id, div));
-      div.appendChild(deleteBtn);
+    if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
+      const del = document.createElement('button');
+      del.textContent = '🗑 Eliminar';
+      del.className = 'delete-btn';
+      del.addEventListener('click', () => deleteImage(image._id, card));
+      card.appendChild(del);
     }
-
-    return div;
+    return card;
   }
 
-  // 🚫 Redirige si no hay token
+  // 🚫 Redirigir si no autenticado
   if (!token) {
-    alert("Debes iniciar sesión");
-    window.location.href = "login.html";
+    alert('Debes iniciar sesión');
+    window.location.href = 'login.html';
     return;
   }
 
-  // 🚀 Cargar imágenes desde la API
+  // 🚀 Cargar imágenes
   async function loadImages() {
     try {
-      const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
+        headers: { Authorization: `Bearer ${token}` }
       });
-      if (!res.ok) throw new Error("Error al obtener imágenes");
-      const images = await res.json();
-      imagesContainer.innerHTML = "";
-      images.forEach(image => {
-        const card = createImageCard(image);
-        imagesContainer.appendChild(card);
-      });
-    } catch (error) {
-      console.error("Error al cargar imágenes:", error);
-      imagesContainer.innerHTML = "<p style='color: red;'>Error al cargar imágenes.</p>";
+      if (!res.ok) throw new Error('Error al obtener imágenes');
+      const imgs = await res.json();
+      imagesContainer.innerHTML = '';
+      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
+    } catch (e) {
+      console.error('Error cargando imágenes:', e);
+      imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
     }
   }
 
   // 🗑 Eliminar imagen
-  async function deleteImage(imageId, element) {
+  async function deleteImage(id, el) {
     try {
-      const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${imageId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/images/${id}`,
+        { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
+      );
       if (res.ok) {
-        alert("Imagen eliminada exitosamente");
-        element.remove();
+        alert('Imagen eliminada exitosamente');
+        el.remove();
       } else {
         const data = await res.json();
-        alert(data.error || "Error al eliminar la imagen");
+        alert(data.error || 'Error al eliminar imagen');
       }
-    } catch (err) {
-      console.error("Error al eliminar imagen:", err);
-      alert("Error al eliminar la imagen");
+    } catch (e) {
+      console.error('Error eliminando imagen:', e);
+      alert('Error al eliminar la imagen');
     }
   }
 
   // 🔄 Cargar círculos del usuario
   async function loadUserCircles() {
-    const circlesSelect = document.getElementById('circles');
-    if (!circlesSelect) return;
-
-    circlesSelect.innerHTML = '<option disabled>Cargando círculos...</option>';
-
+    const select = document.getElementById('circles');
+    if (!select) return;
+    select.innerHTML = '<option disabled>Cargando círculos...</option>';
     try {
-      const res = await fetch(`https://momento-backend-production.up.railway.app/api/circles/user/${currentUserId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error("Error al obtener círculos");
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/circles/user/${currentUserId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) throw new Error('Error al obtener círculos');
       const circles = await res.json();
-
-      circlesSelect.innerHTML = "";
-      if (circles.length === 0) {
-        circlesSelect.innerHTML = '<option disabled>No tienes círculos</option>';
-      } else {
-        circles.forEach(circle => {
-          const option = document.createElement('option');
-          option.value = circle._id || circle.id;
-          option.textContent = circle.name || "Círculo sin nombre";
-          circlesSelect.appendChild(option);
-        });
-      }
-    } catch (error) {
-      console.error("Error al cargar círculos:", error);
-      circlesSelect.innerHTML = '<option disabled>Error cargando círculos</option>';
+      select.innerHTML = circles.length
+        ? circles.map(c => `<option value="${c._id||c.id}">${c.name||'Círculo'}</option>`).join('')
+        : '<option disabled>No tienes círculos</option>';
+    } catch (e) {
+      console.error('Error cargando círculos:', e);
+      select.innerHTML = '<option disabled>Error cargando círculos</option>';
     }
   }
 
   // 📤 Envío del formulario
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-
-    const imageInput = document.getElementById("image");
-    if (!imageInput.files.length) {
-      alert("Por favor selecciona una imagen para subir.");
-      return;
-    }
-
-    const image = imageInput.files[0];
-    const description = document.getElementById("description").value.trim();
-    const duration = document.getElementById("duration").value;
-    const visibility = document.getElementById("visibility").value;
-    const circlesSelect = document.getElementById("circles");
-
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("description", description);
-    formData.append("duration", duration);
-    formData.append("visibility", visibility);
-
-    if (visibility === "circle" && circlesSelect) {
-      const selectedCircles = Array.from(circlesSelect.selectedOptions).map(opt => opt.value);
-      if (selectedCircles.length === 0) {
-        alert("Por favor selecciona al menos un círculo para compartir tu Momento.");
-        return;
-      }
-      formData.append("circles", JSON.stringify(selectedCircles));
-    }
-
+    const file = document.getElementById('image');
+    if (!file.files.length) { alert('Selecciona una imagen'); return; }
+    const data = new FormData(form);
     try {
-      const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-
+      const res = await fetch(
+        'https://momento-backend-production.up.railway.app/api/images/',
+        { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: data }
+      );
       const result = await res.json();
-
       if (res.ok) {
-        alert("Imagen subida con éxito");
+        alert('Imagen subida con éxito');
         form.reset();
-        const newCard = createImageCard(result);
-        imagesContainer.prepend(newCard);
-        if (circleSelectorContainer) circleSelectorContainer.style.display = "none"; // ocultar selector después de subir
+        imagesContainer.prepend(createImageCard(result));
+        document.getElementById('circleSelectorContainer').style.display = 'none';
       } else {
-        alert(result.error || "Error al subir la imagen");
+        alert(result.error || 'Error al subir la imagen');
       }
-    } catch (err) {
-      console.error("Error en la subida:", err);
-      alert("Error en la subida de la imagen");
+    } catch (e) {
+      console.error('Error en subida de imagen:', e);
+      alert('Error en la subida de la imagen');
     }
   });
 
-  // 🔄 Cargar imágenes existentes al iniciar
+  // Inicializar carga
   loadImages();
-
-  // Exportar función (opcional)
   window.loadUserCircles = loadUserCircles;
 });
