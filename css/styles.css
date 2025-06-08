@@ -845,19 +845,19 @@ body.dark-mode .daily-quote {
   position: fixed;
   top: 0; bottom: 0; left: 0; right: 0;
   z-index: 1;
-  border: 5px solid;
   border-radius: 12px;
   box-sizing: border-box;
+  border: 5px solid transparent;
   background: linear-gradient(270deg, #00f0ff, #ff00f0, #00ff95, #00f0ff);
   background-size: 600% 600%;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
   animation: neonBorderMove 8s linear infinite;
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
+  /* Para que el gradiente se vea en el borde, vamos a usar background-clip y padding */
+  padding: 5px; /* Igual que el borde */
+  background-clip: padding-box, border-box;
+  background-origin: border-box;
+  box-shadow: 0 0 15px #00f0ff, 0 0 25px #ff00f0, 0 0 35px #00ff95;
 }
 
 body.dark-mode .neon-border {
@@ -869,4 +869,3 @@ body.dark-mode .neon-border {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
