@@ -42,7 +42,9 @@
   <!-- Encabezado -->
   <header role="banner">
     <h1 class="logo">Momento</h1>
-    <h2 class="welcome-msg">¡Te damos la bienvenida! <span id="welcomeText"></span>👋</h2>
+    <h2 class="welcome-msg">
+      ¡Te damos la bienvenida! <span id="welcomeText"></span> 👋
+    </h2>
   </header>
 
   <!-- Modal de bienvenida -->
@@ -50,7 +52,9 @@
     <div class="modal-content">
       <h3 id="welcomeTitle">Bienvenido a Momento</h3>
       <p id="welcomeDesc">Gracias por unirte, disfruta compartiendo tus Momentos.</p>
-      <button id="closeModal" class="btn btn-frosted" aria-label="Cerrar modal">Cerrar</button>
+      <button id="closeModal" class="btn btn-frosted" aria-label="Cerrar modal">
+        Cerrar
+      </button>
     </div>
   </div>
 
@@ -70,13 +74,7 @@
     >
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          accept="image/*"
-          required
-        />
+        <input type="file" id="image" name="image" accept="image/*" required />
       </fieldset>
 
       <fieldset class="upload-section">
@@ -135,12 +133,7 @@
   <!-- Línea de tiempo -->
   <main id="timeline" role="main">
     <h2 class="timeline-title">Últimos Momentos 📸</h2>
-    <div
-      id="imagesContainer"
-      class="images-grid"
-      aria-live="polite"
-      aria-atomic="true"
-    ></div>
+    <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
 
   <!-- Pie de página -->
@@ -148,7 +141,62 @@
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Script principal -->
+  <!-- Script principal (lógica de red, carga de imágenes, etc.) -->
   <script src="js/upload.js"></script>
+
+  <!-- Script inline restaurado para controles de UI -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('toggleUploadBtn');
+      const formContainer = document.getElementById('uploadFormContainer');
+      const visibilitySelect = document.getElementById('visibility');
+      const circleSelector = document.getElementById('circleSelectorContainer');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+
+      // Mostrar año
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+      // Toggle formulario
+      toggleBtn.addEventListener('click', () => {
+        const isVisible = formContainer.classList.contains('show');
+        formContainer.classList.toggle('show');
+        formContainer.style.display = isVisible ? 'none' : 'block';
+        formContainer.setAttribute('aria-hidden', isVisible.toString());
+        toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
+      });
+
+      // Selector de círculos
+      const updateCircles = () => {
+        const show = visibilitySelect.value === 'circle';
+        circleSelector.style.display = show ? 'block' : 'none';
+        circleSelector.setAttribute('aria-hidden', (!show).toString());
+      };
+      visibilitySelect.addEventListener('change', updateCircles);
+      updateCircles();
+
+      // Cerrar sesión
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = 'login.html';
+      });
+
+      // Modo oscuro inicial
+      const darkPref = localStorage.getItem('darkMode');
+      if (darkPref === 'enabled') {
+        body.classList.add('dark-mode');
+        darkModeToggle.textContent = '☀️';
+      }
+
+      // Alternar modo oscuro
+      darkModeToggle.addEventListener('click', () => {
+        const isDark = body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+      });
+    });
+  </script>
 </body>
 </html>
