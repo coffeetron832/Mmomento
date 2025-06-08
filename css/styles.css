@@ -1057,8 +1057,12 @@ body.dark-mode .daily-quote {
   background-size: 11px calc(var(--height) / 2);
   background-position: 2px center;
   background-repeat: repeat-x;
-  margin: auto;
-  position: relative;
+
+  position: absolute;     /* 👈 antes era relative */
+  bottom: 10px;           /* 👈 lo mueve hacia abajo */
+  right: 10px;            /* 👈 lo ubica a la derecha */
+  z-index: 5;
+
   background-color: var(--binbg);
   border: 0;
   color: transparent;
