@@ -108,51 +108,6 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
-      const messages = [
-        {
-          title: "¿Cómo funciona?",
-          content: `1. Publica algo que solo tiene sentido hoy.<br>
-Una imagen, una idea, una historia o una oportunidad que no vuelve.<br><br>
-2. Muéstralo al mundo sin preocuparte.<br>
-Sin presión. Solo contenido puro, directo y real.<br><br>
-3. Desaparece en 6 horas.<br>
-Cada momento es único, irrepetible… y temporal.`
-        },
-        {
-          title: "¿Para quién es Momento?",
-          content: `Para quien quiere compartir sin buscar aprobación.<br><br>
-Para creadores, emprendedores, músicos, negocios y soñadores que quieren ser vistos hoy.<br><br>
-Para quienes disfrutan compartir y descubrir lo nuevo, lo auténtico y lo único.<br><br>
-Momento es para ti, para que descubras lo nuevo y te animes a ser parte.`
-        }
-      ];
-
-      let currentMessage = 0;
-      const messageContainer = document.getElementById('carouselMessage');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-
-      function renderMessage(index) {
-        messageContainer.style.opacity = 0;
-
-        setTimeout(() => {
-          messageContainer.innerHTML = `<h2>${messages[index].title}</h2><p>${messages[index].content}</p>`;
-          messageContainer.style.opacity = 1;
-        }, 300);
-      }
-
-      prevBtn.addEventListener('click', () => {
-        currentMessage = (currentMessage - 1 + messages.length) % messages.length;
-        renderMessage(currentMessage);
-      });
-
-      nextBtn.addEventListener('click', () => {
-        currentMessage = (currentMessage + 1) % messages.length;
-        renderMessage(currentMessage);
-      });
-
-      renderMessage(currentMessage);
-
       // Modo oscuro con cambio de ícono y color en botón
       const toggle = document.getElementById("darkModeToggle");
       const body = document.body;
