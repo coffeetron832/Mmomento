@@ -5,51 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    /* Estilos para formulario con transición */
-    #uploadFormContainer {
-      display: none;
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    #uploadFormContainer.show {
-      display: block;
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* Modo oscuro header y footer */
-    body.dark-mode header {
-      background: rgba(20, 20, 20, 0.9) !important;
-    }
-    body.dark-mode header .logo,
-    body.dark-mode header h2 {
-      color: #ffffff !important;
-    }
-    body.dark-mode footer {
-      background: rgba(18, 18, 18, 0.8) !important;
-    }
-    body.dark-mode footer p {
-      color: #ffffff !important;
-    }
-  </style>
 </head>
 <body class="upload-page">
   <!-- Botón modo oscuro -->
-  <button id="darkModeToggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
+  <button id="darkModeToggle" class="btn btn-toggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">🌓</button>
 
   <!-- Botones fijos -->
-  <nav aria-label="Acciones rápidas" role="navigation">
-    <button id="toggleUploadBtn" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
-    <a href="#" id="logoutBtn" title="Cerrar sesión" role="button">Cerrar sesión</a>
+  <nav aria-label="Acciones rápidas" role="navigation" class="nav-fixed">
+    <button id="toggleUploadBtn" class="btn btn-toggle" aria-expanded="false" aria-controls="uploadFormContainer" title="Mostrar/Ocultar formulario de subida">Subir imagen</button>
+    <a href="#" id="logoutBtn" class="btn btn-logout" title="Cerrar sesión" role="button">Cerrar sesión</a>
   </nav>
 
   <!-- Encabezado -->
-  <header role="banner" style="position:sticky; top:0; background:rgba(255,255,255,0.9); display:flex; justify-content:space-between; align-items:center; padding:0.5rem 1rem; z-index:100;">
-    <h1 class="logo" style="margin:0; font-size:2rem; color:#1f2937;">Momento</h1>
-    <h2 style="margin:0; font-size:1rem; color:#4b5563; opacity:0.9;">¡Te damos la bienvenida! 👋</h2>
+  <header role="banner">
+    <h1 class="logo">Momento</h1>
+    <h2 class="welcome-msg">¡Te damos la bienvenida! 👋</h2>
   </header>
 
   <!-- Formulario -->
@@ -83,7 +53,7 @@
         </select>
       </fieldset>
 
-      <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display:none">
+      <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display:none;">
         <label for="circles">Selecciona círculos:</label>
         <select id="circles" name="circles" multiple size="3" aria-multiselectable="true">
           <!-- Círculos se cargan por JS -->
@@ -91,18 +61,18 @@
         <small>Ctrl + clic para seleccionar varios</small>
       </fieldset>
 
-      <button type="submit" class="btn-frosted">Subir Momento</button>
+      <button type="submit" class="btn btn-frosted">Subir Momento</button>
     </form>
   </section>
 
   <!-- Línea de tiempo -->
-  <main id="timeline" role="main" style="padding-top:1rem;">
-    <h2 style="text-align:center; font-size:1.2rem; margin-bottom:1rem;">Últimos Momentos 📸</h2>
-    <div id="imagesContainer" class="images-grid" aria-live="polite" aria-atomic="true" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:0 1rem;"></div>
+  <main id="timeline" role="main">
+    <h2 class="timeline-title">Últimos Momentos 📸</h2>
+    <div id="imagesContainer" class="images-grid" aria-live="polite" aria-atomic="true"></div>
   </main>
 
   <!-- Pie de página -->
-  <footer role="contentinfo" style="text-align:center; font-size:0.8rem; color:#374151; background:rgba(255,255,255,0.8); padding:0.5rem 1rem; position:relative;">
+  <footer role="contentinfo">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -141,7 +111,6 @@
       };
 
       visibilitySelect.addEventListener('change', toggleCircleSelector);
-      // Inicializar estado al cargar
       toggleCircleSelector();
 
       // Botón cerrar sesión
@@ -170,5 +139,3 @@
   </script>
 </body>
 </html>
-
-
