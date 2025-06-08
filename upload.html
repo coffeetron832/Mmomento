@@ -14,7 +14,7 @@
     aria-label="Alternar modo oscuro"
     title="Alternar modo oscuro"
   >
-    🌓
+    🌙
   </button>
 
   <!-- Botones fijos -->
@@ -153,31 +153,22 @@
       const circleSelector = document.getElementById('circleSelectorContainer');
       const logoutBtn = document.getElementById('logoutBtn');
       const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
 
       // Toggle formulario
       toggleBtn.addEventListener('click', () => {
         const isVisible = formContainer.classList.contains('show');
-        if (isVisible) {
-          formContainer.classList.remove('show');
-          formContainer.style.display = 'none';
-          formContainer.setAttribute('aria-hidden', 'true');
-        } else {
-          formContainer.classList.add('show');
-          formContainer.style.display = 'block';
-          formContainer.setAttribute('aria-hidden', 'false');
-        }
+        formContainer.classList.toggle('show');
+        formContainer.style.display = isVisible ? 'none' : 'block';
+        formContainer.setAttribute('aria-hidden', isVisible.toString());
         toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
       });
 
       // Mostrar/Ocultar selector de círculos
       const toggleCircleSelector = () => {
-        if (visibilitySelect.value === 'circle') {
-          circleSelector.style.display = 'block';
-          circleSelector.setAttribute('aria-hidden', 'false');
-        } else {
-          circleSelector.style.display = 'none';
-          circleSelector.setAttribute('aria-hidden', 'true');
-        }
+        const isCircle = visibilitySelect.value === 'circle';
+        circleSelector.style.display = isCircle ? 'block' : 'none';
+        circleSelector.setAttribute('aria-hidden', (!isCircle).toString());
       };
       visibilitySelect.addEventListener('change', toggleCircleSelector);
       toggleCircleSelector();
@@ -192,19 +183,20 @@
       // Año actual footer
       document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-      // Modo oscuro inicial
+      // Modo oscuro al cargar
       if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
+        body.classList.add('dark-mode');
+        darkModeToggle.textContent = '☀️'; // icono sol
       }
 
       // Alternar modo oscuro
       darkModeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        const isDark = body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        darkModeToggle.textContent = isDark ? '☀️' : '🌙';
       });
     });
   </script>
 </body>
 </html>
-
 
