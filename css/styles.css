@@ -840,39 +840,6 @@ body.dark-mode .daily-quote {
   color: #ccc;
 }
 
-.neon-border {
-  pointer-events: none;
-  position: fixed;
-  top: 0; bottom: 0; left: 0; right: 0;
-  z-index: 9999; /* encima de casi todo */
-  border-radius: 12px;
-  box-sizing: border-box;
-  border: 5px solid transparent; /* el ancho del borde */
-  background: linear-gradient(270deg, #00f0ff, #ff00f0, #00ff95, #00f0ff);
-  background-size: 600% 600%;
-  animation: neonBorderMove 8s linear infinite;
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
-
-  /* Esto hace que el fondo se "pegue" solo al borde */
-  background-clip: border-box;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-}
-
-body.dark-mode .neon-border {
-  opacity: 1;
-}
-
-@keyframes neonBorderMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 
 /* Botón estilo keycap para cerrar el modal */
 .keycap {
