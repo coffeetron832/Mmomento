@@ -141,10 +141,10 @@
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Script principal (lógica de red, carga de imágenes, etc.) -->
+  <!-- Script principal (lógica de red, carga de imágenes, modo oscuro, etc.) -->
   <script src="js/upload.js"></script>
 
-  <!-- Script inline restaurado para controles de UI -->
+  <!-- Script inline para controles de interfaz -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const toggleBtn = document.getElementById('toggleUploadBtn');
@@ -152,8 +152,6 @@
       const visibilitySelect = document.getElementById('visibility');
       const circleSelector = document.getElementById('circleSelectorContainer');
       const logoutBtn = document.getElementById('logoutBtn');
-      const darkModeToggle = document.getElementById('darkModeToggle');
-      const body = document.body;
 
       // Mostrar año
       document.getElementById('currentYear').textContent = new Date().getFullYear();
@@ -182,21 +180,8 @@
         localStorage.clear();
         window.location.href = 'login.html';
       });
-
-      // Modo oscuro inicial
-      const darkPref = localStorage.getItem('darkMode');
-      if (darkPref === 'enabled') {
-        body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️';
-      }
-
-      // Alternar modo oscuro
-      darkModeToggle.addEventListener('click', () => {
-        const isDark = body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        darkModeToggle.textContent = isDark ? '☀️' : '🌙';
-      });
     });
   </script>
 </body>
 </html>
+
