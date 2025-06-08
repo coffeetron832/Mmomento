@@ -828,3 +828,48 @@ main#timeline {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+
+
+/* --- Flechas para el carrusel de mensajes --- */
+
+/* Estilo base para ambas flechas (izquierda y derecha) */
+.carousel-arrow {
+  position: absolute;               /* Posiciona de forma absoluta respecto al contenedor */
+  top: 50%;                        /* Centra verticalmente en el carrusel */
+  transform: translateY(-50%);     /* Ajusta para que el centro del botón quede justo en la mitad */
+  background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente oscuro */
+  border: none;                    /* Sin borde */
+  color: white;                   /* Color del ícono (flecha) blanco */
+  font-size: 2rem;                 /* Tamaño grande para buena visibilidad */
+  padding: 0.3rem 0.6rem;          /* Espacio interno para hacer el botón más grande */
+  cursor: pointer;                 /* Cambia cursor para indicar que es clickeable */
+  border-radius: 50%;              /* Botón redondeado tipo círculo */
+  user-select: none;               /* Evita que el texto se seleccione al hacer clic */
+  transition: background-color 0.3s ease; /* Transición suave al cambiar el fondo */
+  z-index: 1000;                   /* Se asegura que esté por encima de otros elementos */
+}
+
+/* Efecto hover para que el botón se oscurezca cuando se pasa el mouse */
+.carousel-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Posición específica para la flecha izquierda */
+.carousel-arrow.left {
+  left: 1rem;                     /* A 1rem del borde izquierdo del contenedor */
+}
+
+/* Posición específica para la flecha derecha */
+.carousel-arrow.right {
+  right: 1rem;                    /* A 1rem del borde derecho del contenedor */
+}
+
+/* --- Ajuste para modo oscuro (si aplica en tu página) */
+body.dark-mode .carousel-arrow {
+  background-color: rgba(255, 255, 255, 0.3); /* Fondo claro semitransparente */
+  color: black;                               /* Color de flecha negro para contraste */
+}
+
+body.dark-mode .carousel-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.6); /* Fondo más claro al hover */
+}
