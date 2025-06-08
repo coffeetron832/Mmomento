@@ -4,13 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
+  <!-- Importar la fuente Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="upload-page">
   <!-- Barra fija superior -->
-  <header role="banner" class="header-fixed" aria-label="Barra principal">
-    <h1 class="logo">Momento</h1>
-    <nav aria-label="Acciones rápidas" role="navigation" class="nav-fixed">
+  <header role="banner" class="fixed-header" aria-label="Barra principal">
+    <div class="header-left">
+      <h1 class="logo">Momento</h1>
+      <span class="welcome-msg" id="headerWelcomeMsg">¡Bienvenido!</span>
+    </div>
+    <nav aria-label="Acciones rápidas" role="navigation" class="nav-fixed header-right">
       <button
         id="toggleUploadBtn"
         class="btn btn-toggle btn-frosted"
@@ -137,7 +142,7 @@
   </main>
 
   <!-- Pie de página -->
-  <footer role="contentinfo">
+  <footer role="contentinfo" class="footer">
     <p>&copy; <span id="currentYear"></span> Momento. Todos los derechos reservados.</p>
   </footer>
 
@@ -152,9 +157,21 @@
       const visibilitySelect = document.getElementById('visibility');
       const circleSelector = document.getElementById('circleSelectorContainer');
       const logoutBtn = document.getElementById('logoutBtn');
+      const welcomeText = document.getElementById('welcomeText');
+      const headerWelcomeMsg = document.getElementById('headerWelcomeMsg');
+      const currentYearSpan = document.getElementById('currentYear');
 
-      // Mostrar año
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
+      // Mostrar año actual en el footer
+      currentYearSpan.textContent = new Date().getFullYear();
+
+      // Simular obtener nombre de usuario (puedes adaptar con tu lógica real)
+      const username = localStorage.getItem('username') || 'Usuario';
+
+      // Mostrar nombre de usuario en mensajes de bienvenida
+      welcomeText.textContent = username;
+      if (headerWelcomeMsg) {
+        headerWelcomeMsg.textContent = `¡Hola, ${username}!`;
+      }
 
       // Toggle formulario
       toggleBtn.addEventListener('click', () => {
@@ -184,4 +201,3 @@
   </script>
 </body>
 </html>
-
