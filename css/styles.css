@@ -840,3 +840,26 @@ body.dark-mode .daily-quote {
   color: #ccc;
 }
 
+.neon-border {
+  pointer-events: none;
+  position: fixed;
+  top: 0; bottom: 0; left: 0; right: 0;
+  z-index: 1;
+  border: 5px solid transparent;
+  box-sizing: border-box;
+  animation: neonPulse 3s infinite;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+body.dark-mode .neon-border {
+  opacity: 1;
+  border-image: linear-gradient(45deg, #00f0ff, #ff00f0, #00ff95, #00f0ff) 1;
+}
+
+@keyframes neonPulse {
+  0% { filter: drop-shadow(0 0 4px #0ff) drop-shadow(0 0 8px #f0f); }
+  50% { filter: drop-shadow(0 0 12px #0ff) drop-shadow(0 0 16px #f0f); }
+  100% { filter: drop-shadow(0 0 4px #0ff) drop-shadow(0 0 8px #f0f); }
+}
