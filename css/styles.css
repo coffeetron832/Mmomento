@@ -86,27 +86,16 @@ button:hover,
   text-align: center;
 }
 
-/* --- Layout de columnas generales --- */
 .main-container {
-  display: flex;
-  max-width: 1200px;
-  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  gap: 40px;
-  align-items: flex-start;
-}
-
-.left-section {
-  flex: 0 0 60%;
-}
-
-.right-section {
-  flex: 0 0 40%;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
 }
+
 
 /* --- Botones de acción --- */
 .action-buttons {
