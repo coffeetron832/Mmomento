@@ -829,3 +829,64 @@ main#timeline {
   padding-bottom: 0.5rem;
 }
 
+/* --- Contenedor del carrusel con posicionamiento relativo --- */
+.carousel-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  box-sizing: border-box;
+}
+
+/* --- Flechas para el carrusel de mensajes --- */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.3);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  border-radius: 50%;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-arrow.left {
+  left: 0;
+}
+
+.carousel-arrow.right {
+  right: 0;
+}
+
+.carousel-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .carousel-arrow {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: black;
+}
+
+body.dark-mode .carousel-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- Estilo del mensaje del carrusel --- */
+.carousel-message {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 0;
+  color: #333;
+  padding: 0 3rem;
+  transition: opacity 0.3s ease;
+}
+
+body.dark-mode .carousel-message {
+  color: #ccc;
+}
