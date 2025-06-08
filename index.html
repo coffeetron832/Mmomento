@@ -17,15 +17,15 @@
   <link rel="stylesheet" href="css/styles.css" />
 
   <style>
-    /* Contenedor fijo del switch en la esquina inferior derecha */
   .switch-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 999;
+    transform: scale(0.5); /* Escala el tamaño general */
+    transform-origin: bottom right; /* Asegura que se mantenga pegado en la esquina */
   }
 
-  /* Estilo 3D original de Uiverse ajustado a un tamaño más compacto */
   .switch {
     display: block;
     background-color: black;
@@ -149,22 +149,23 @@
     0% { opacity: 1; }
     80% { opacity: 0; }
   }
-  </style>
+</style>
 </head>
 <body>
 
   <!-- Switch fijo en esquina inferior derecha -->
   <div class="switch-container">
-    <label class="switch">
-      <input type="checkbox" id="toggleCheckbox">
-      <div class="button">
-        <div class="light"></div>
-        <div class="dots"></div>
-        <div class="characters"></div>
-        <div class="shine"></div>
-        <div class="shadow"></div>
-      </div>
-    </label>
+   <label class="switch">
+  <input type="checkbox" id="toggleCheckbox">
+  <span class="button">
+    <span class="light"></span>
+    <span class="dots"></span>
+    <span class="characters"></span>
+    <span class="shine"></span>
+    <span class="shadow"></span>
+  </span>
+</label>
+
   </div>
 
   <!-- Contenedor Principal unificado -->
