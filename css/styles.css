@@ -726,19 +726,6 @@ footer.footer,
 
 /* --- Ajustes específicos de layout --- */
 
-/* 1. Centrar saludo “¡Hola, Usuario!” */
-.welcome-section.centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem 0;
-}
-
-.welcome-section.centered .welcome-user {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #2c3e50;
-}
 
 /* 2. Posicionar y estilizar el logo Grape Nuts estratégicamente */
 .fixed-header {
