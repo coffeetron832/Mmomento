@@ -843,29 +843,48 @@ body.dark-mode .daily-quote {
 .neon-border {
   pointer-events: none;
   position: fixed;
-  top: 0; bottom: 0; left: 0; right: 0;
-  z-index: 1;
-  border: 5px solid;
+  inset: 0;
   border-radius: 12px;
   box-sizing: border-box;
-  background: linear-gradient(270deg, #00f0ff, #ff00f0, #00ff95, #00f0ff);
-  background-size: 600% 600%;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  animation: neonBorderMove 8s linear infinite;
+  z-index: 1;
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
+  animation: neonGlowMove 6s linear infinite;
+  box-shadow:
+    0 0 10px #00fff7,
+    0 0 20px #ff00ff,
+    0 0 30px #00ff95,
+    0 0 40px #00fff7,
+    0 0 50px #ff00ff;
 }
 
 body.dark-mode .neon-border {
   opacity: 1;
 }
 
-@keyframes neonBorderMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes neonGlowMove {
+  0% {
+    box-shadow:
+      0 0 10px #00fff7,
+      0 0 20px #ff00ff,
+      0 0 30px #00ff95,
+      0 0 40px #00fff7,
+      0 0 50px #ff00ff;
+  }
+  50% {
+    box-shadow:
+      0 0 15px #ff00ff,
+      0 0 25px #00ff95,
+      0 0 35px #00fff7,
+      0 0 45px #ff00ff,
+      0 0 55px #00ff95;
+  }
+  100% {
+    box-shadow:
+      0 0 10px #00fff7,
+      0 0 20px #ff00ff,
+      0 0 30px #00ff95,
+      0 0 40px #00fff7,
+      0 0 50px #ff00ff;
+  }
 }
