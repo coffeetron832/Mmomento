@@ -5,36 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    /* Estilos para formulario con transición */
-    #uploadFormContainer {
-      display: none;
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    #uploadFormContainer.show {
-      display: block;
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* Modo oscuro header y footer */
-    body.dark-mode header {
-      background: rgba(20, 20, 20, 0.9) !important;
-    }
-    body.dark-mode header .logo,
-    body.dark-mode header h2 {
-      color: #ffffff !important;
-    }
-    body.dark-mode footer {
-      background: rgba(18, 18, 18, 0.8) !important;
-    }
-    body.dark-mode footer p {
-      color: #ffffff !important;
-    }
-  </style>
 </head>
 <body class="upload-page">
   <!-- Botón modo oscuro -->
@@ -110,32 +80,41 @@
   <script src="js/upload.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Alternar formulario
       const toggleBtn = document.getElementById('toggleUploadBtn');
       const formContainer = document.getElementById('uploadFormContainer');
 
+      // Mostrar/Ocultar formulario
       toggleBtn.addEventListener('click', () => {
         const isVisible = formContainer.classList.contains('show');
-        if (isVisible) {
-          formContainer.classList.remove('show');
-          formContainer.setAttribute('aria-hidden', 'true');
-        } else {
-          formContainer.classList.add('show');
-          formContainer.setAttribute('aria-hidden', 'false');
-        }
+        formContainer.classList.toggle('show');
+        formContainer.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
         toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
       });
 
-      // Botón cerrar sesión
+      // Cerrar sesión
       document.getElementById('logoutBtn').addEventListener('click', e => {
         e.preventDefault();
         localStorage.clear();
         window.location.href = 'login.html';
       });
 
-      // Año actual en footer
+      // Año actual
       document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+      // Modo oscuro: activación inicial
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const prefersDark = localStorage.getItem('darkMode') === 'true';
+      if (prefersDark) {
+        document.body.classList.add('dark-mode');
+      }
+
+      // Alternar modo oscuro
+      darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+      });
     });
   </script>
 </body>
 </html>
+
