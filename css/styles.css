@@ -830,46 +830,78 @@ main#timeline {
 }
 
 
-/* --- Flechas para el carrusel de mensajes --- */
-
-/* Estilo base para ambas flechas (izquierda y derecha) */
-.carousel-arrow {
-  position: absolute;               /* Posiciona de forma absoluta respecto al contenedor */
-  top: 50%;                        /* Centra verticalmente en el carrusel */
-  transform: translateY(-50%);     /* Ajusta para que el centro del botón quede justo en la mitad */
-  background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente oscuro */
-  border: none;                    /* Sin borde */
-  color: white;                   /* Color del ícono (flecha) blanco */
-  font-size: 2rem;                 /* Tamaño grande para buena visibilidad */
-  padding: 0.3rem 0.6rem;          /* Espacio interno para hacer el botón más grande */
-  cursor: pointer;                 /* Cambia cursor para indicar que es clickeable */
-  border-radius: 50%;              /* Botón redondeado tipo círculo */
-  user-select: none;               /* Evita que el texto se seleccione al hacer clic */
-  transition: background-color 0.3s ease; /* Transición suave al cambiar el fondo */
-  z-index: 1000;                   /* Se asegura que esté por encima de otros elementos */
+/* --- Contenedor del carrusel --- */
+.carousel {
+  position: relative;
+  margin-top: 40px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 3rem;
+  box-sizing: border-box;
 }
 
-/* Efecto hover para que el botón se oscurezca cuando se pasa el mouse */
+/* --- Flechas para el carrusel de mensajes --- */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.3);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  border-radius: 50%;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
 .carousel-arrow:hover {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-/* Posición específica para la flecha izquierda */
 .carousel-arrow.left {
-  left: 1rem;                     /* A 1rem del borde izquierdo del contenedor */
+  left: 0.5rem;
 }
 
-/* Posición específica para la flecha derecha */
 .carousel-arrow.right {
-  right: 1rem;                    /* A 1rem del borde derecho del contenedor */
+  right: 0.5rem;
 }
 
-/* --- Ajuste para modo oscuro (si aplica en tu página) */
+/* --- Modo oscuro --- */
 body.dark-mode .carousel-arrow {
-  background-color: rgba(255, 255, 255, 0.3); /* Fondo claro semitransparente */
-  color: black;                               /* Color de flecha negro para contraste */
+  background-color: rgba(255, 255, 255, 0.3);
+  color: black;
 }
 
 body.dark-mode .carousel-arrow:hover {
-  background-color: rgba(255, 255, 255, 0.6); /* Fondo más claro al hover */
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- Ajustes para pantallas pequeñas (móviles) --- */
+@media (max-width: 600px) {
+  .carousel-arrow {
+    position: static;       /* Se quita el absolute para que fluyan con el contenido */
+    transform: none;        /* Sin transformación vertical */
+    font-size: 1.8rem;      /* Un poco más pequeño */
+    margin: 0 1rem;         /* Margen horizontal para separarlas */
+  }
+
+  .carousel {
+    padding: 0;             /* Se elimina el padding horizontal para móvil */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Contenedor para las flechas debajo del mensaje */
+  .carousel-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 1rem;
+  }
 }
