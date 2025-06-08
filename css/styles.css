@@ -822,12 +822,6 @@ main#timeline {
   margin-bottom: 1rem;/* separa del footer */
 }
 
-/* Ajustar footer compacto */
-.fixed-footer.small-footer {
-  height: 40px;       /* altura fija */
-  line-height: 40px;  /* centrar el texto verticalmente */
-  font-size: 0.75rem; /* un poco más pequeño */
-}
 
 /* Opcional: para no cortar la galería de imágenes en pantallas muy grandes */
 .images-grid {
