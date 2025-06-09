@@ -11,11 +11,9 @@
 <body class="upload-page">
   <!-- Barra fija superior -->
   <header role="banner" class="fixed-header" aria-label="Barra principal">
-    <nav aria-label="Acciones rápidas" role="navigation" class="header-left">
-      <!-- Botón hamburguesa para móviles -->
+    <!-- Botón hamburguesa a la izquierda -->
+    <nav class="header-left" role="navigation">
       <button id="mobileMenuBtn" class="btn btn-frosted mobile-menu-toggle" aria-expanded="false" aria-controls="mobileMenu" title="Menú">☰</button>
-
-      <!-- Menú móvil oculto -->
       <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
         <button id="toggleUploadBtn" class="btn btn-toggle btn-frosted" title="Subir imagen">Subir imagen</button>
         <a href="#" id="logoutBtn" class="btn btn-logout btn-frosted" title="Cerrar sesión">Cerrar sesión</a>
@@ -26,7 +24,6 @@
     <div class="header-logo">
       <h1 class="logo">Momento</h1>
     </div>
-
   </header>
 
   <!-- Formulario de subida -->
@@ -84,10 +81,6 @@
       const logoutBtn = document.getElementById('logoutBtn');
       const mobileMenuBtn = document.getElementById('mobileMenuBtn');
       const mobileMenu = document.getElementById('mobileMenu');
-      const currentYearSpan = document.getElementById('currentYear');
-
-      // Mostrar año actual
-      currentYearSpan.textContent = new Date().getFullYear();
 
       // Toggle formulario
       toggleBtn.addEventListener('click', () => {
@@ -124,3 +117,4 @@
   </script>
 </body>
 </html>
+
