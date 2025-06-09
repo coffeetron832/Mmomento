@@ -1341,3 +1341,37 @@ main#timeline {
     margin-top: 4px;
   }
 }
+
+/* Estilos para menú móvil */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu.show {
+  display: flex;
+  opacity: 1;
+  max-height: 200px;
+}
+
+/* Oculta el botón hamburguesa en pantallas grandes */
+@media (min-width: 768px) {
+  .mobile-menu-toggle {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: flex !important;
+    flex-direction: row;
+    gap: 10px;
+    opacity: 1 !important;
+    max-height: none !important;
+    margin-top: 0;
+  }
+}
