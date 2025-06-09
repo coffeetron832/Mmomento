@@ -226,22 +226,7 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
-      // Frase inspiradora del día
-      const quotes = [
-        { text: "Haz que cada momento cuente.", author: "Leonardo da Vinci" },
-        { text: "No esperes. El momento nunca será perfecto.", author: "Napoleon Hill" },
-        { text: "Lo que haces hoy puede mejorar todos tus mañanas.", author: "Ralph Marston" },
-        { text: "Sé tú mismo; todos los demás ya están ocupados.", author: "Oscar Wilde" },
-        { text: "La creatividad es la inteligencia divirtiéndose.", author: "Albert Einstein" },
-        { text: "Todo lo que puedas imaginar es real.", author: "Pablo Picasso" },
-        { text: "Crea como si nadie fuera a mirar.", author: "Anónimo" }
-      ];
-      const quoteContainer = document.getElementById('dailyQuote');
-      const today = new Date().getDate();
-      const quoteIndex = today % quotes.length;
-      const quote = quotes[quoteIndex];
-      quoteContainer.innerHTML = `<em>“${quote.text}”</em><br>– ${quote.author}`;
-
+      
       // Modo oscuro con nuevo switch
       const toggleCheckbox = document.getElementById('toggleCheckbox');
       if (localStorage.getItem('darkMode') === 'true') {
