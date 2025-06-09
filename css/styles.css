@@ -1375,3 +1375,43 @@ main#timeline {
     margin-top: 0;
   }
 }
+
+.fixed-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 0 1rem;
+  z-index: 1000;
+}
+
+.header-left {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header-logo {
+  text-align: center;
+}
+
+.header-logo .logo {
+  font-family: 'Grape Nuts', cursive;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .btn.mobile-menu-toggle {
+    font-size: 1.2rem;
+    padding: 0.4rem 0.6rem;
+  }
+}
