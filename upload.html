@@ -9,21 +9,29 @@
 </head>
 <body class="upload-page">
   <!-- Barra fija superior -->
-  <header role="banner" class="fixed-header" aria-label="Barra principal">
-    <!-- Logo centrado en móviles, centrado en escritorio -->
+<header role="banner" class="fixed-header" aria-label="Barra principal">
+  <div class="header-container">
+    <!-- Botón hamburguesa a la izquierda -->
+    <div class="header-left">
+      <button id="mobileMenuBtn" class="btn btn-frosted mobile-menu-toggle" aria-expanded="false" aria-controls="mobileMenu" title="Menú">☰</button>
+    </div>
+
+    <!-- Logo centrado -->
     <div class="header-logo">
       <h1 class="logo">Momento</h1>
     </div>
 
-    <!-- Botón hamburguesa y menú móvil -->
-    <nav class="header-left" role="navigation">
-      <button id="mobileMenuBtn" class="btn btn-frosted mobile-menu-toggle" aria-expanded="false" aria-controls="mobileMenu" title="Menú">☰</button>
-      <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
-        <button id="toggleUploadBtn" class="btn btn-toggle btn-frosted" title="Subir imagen">Subir imagen</button>
-        <a href="#" id="logoutBtn" class="btn btn-logout btn-frosted" title="Cerrar sesión">Cerrar sesión</a>
-      </div>
-    </nav>
-  </header>
+    <!-- Espacio derecho vacío o para futuros elementos -->
+    <div class="header-right"></div>
+  </div>
+
+  <!-- Menú móvil debajo del header -->
+  <nav id="mobileMenu" class="mobile-menu" aria-hidden="true">
+    <button id="toggleUploadBtn" class="btn btn-toggle btn-frosted" title="Subir imagen">Subir imagen</button>
+    <a href="#" id="logoutBtn" class="btn btn-logout btn-frosted" title="Cerrar sesión">Cerrar sesión</a>
+  </nav>
+</header>
+
 
   <!-- Formulario de subida -->
   <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true" style="display: none;">
