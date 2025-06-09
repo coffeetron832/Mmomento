@@ -1266,86 +1266,36 @@ main#timeline {
   }
 }
 
+/* ESTILOS GENERALES HEADER */
 .fixed-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 24px;
   background-color: #f9f9f9;
   border-bottom: 1px solid #ccc;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.header-left {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  flex: 1;
-}
-
-.header-logo {
-  text-align: center;
-  flex: 1;
-}
-
-.header-info {
-  flex: 1;
-  text-align: right;
-  font-size: 12px;
-  color: #555;
-}
-
-.header-info .slogan {
-  font-style: italic;
-  color: #777;
-}
-
-/* AJUSTES PARA CELULARES Y TABLETAS */
-.fixed-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
   position: relative;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 0 1rem;
   z-index: 1000;
 }
 
 .header-left {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .header-logo {
+  flex: 1;
   text-align: center;
 }
 
 .header-logo .logo {
   font-family: 'Grape Nuts', cursive;
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin: 0;
 }
 
-@media (max-width: 480px) {
-  .logo {
-    font-size: 1.5rem;
-  }
-
-  .btn.mobile-menu-toggle {
-    font-size: 1.2rem;
-    padding: 0.4rem 0.6rem;
-  }
-}
-
-
-/* Estilos para menú móvil */
+/* MENÚ MÓVIL */
 .mobile-menu {
   display: none;
   flex-direction: column;
@@ -1363,7 +1313,47 @@ main#timeline {
   max-height: 200px;
 }
 
-/* Oculta el botón hamburguesa en pantallas grandes */
+/* BOTÓN HAMBURGUESA */
+.btn.mobile-menu-toggle {
+  font-size: 1.5rem;
+  padding: 0.5rem 0.8rem;
+}
+
+/* RESPONSIVE: TABLETAS Y CELULARES */
+@media (max-width: 768px) {
+  .fixed-header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px 16px;
+    height: auto;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: flex-start;
+    order: 1;
+  }
+
+  .header-logo {
+    width: 100%;
+    order: 0;
+    margin-bottom: 8px;
+  }
+
+  .header-logo .logo {
+    font-size: 1.8rem;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-block;
+  }
+
+  .mobile-menu {
+    width: 100%;
+  }
+}
+
+/* RESPONSIVE: ESCRITORIO */
 @media (min-width: 768px) {
   .mobile-menu-toggle {
     display: none;
