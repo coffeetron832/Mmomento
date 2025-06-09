@@ -1277,24 +1277,19 @@ main#timeline {
 }
 
 .header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 1rem;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 1rem;
 }
 
-.header-left,
-.header-right {
-  flex: 0 0 auto;
-}
-
-/* Logo centrado en móviles */
+/* Logo centrado */
 .header-logo {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  text-align: center;
+  z-index: 2;
 }
 
 .logo {
@@ -1303,7 +1298,13 @@ main#timeline {
   margin: 0;
 }
 
-/* Menú móvil oculto por defecto */
+/* Botón hamburguesa alineado a la derecha */
+.header-hamburger {
+  margin-left: auto;
+  z-index: 3;
+}
+
+/* Menú móvil debajo del header */
 .mobile-menu {
   display: none;
   flex-direction: column;
@@ -1318,15 +1319,15 @@ main#timeline {
   display: flex;
 }
 
-/* Pantallas grandes */
+/* Escritorio: ajustar layout */
 @media (min-width: 768px) {
+  .header-container {
+    justify-content: space-between;
+  }
+
   .header-logo {
     position: static;
     transform: none;
-  }
-
-  .header-container {
-    justify-content: space-between;
   }
 
   .mobile-menu {
