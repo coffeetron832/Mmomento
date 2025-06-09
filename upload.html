@@ -4,14 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sube tu Momento | Momento</title>
-  <!-- Importar la fuente Inter y Grape Nuts para el logo -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Grape+Nuts&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="upload-page">
   <!-- Barra fija superior -->
   <header role="banner" class="fixed-header" aria-label="Barra principal">
-    <!-- Botón hamburguesa a la izquierda -->
+    <!-- Logo centrado en móviles, centrado en escritorio -->
+    <div class="header-logo">
+      <h1 class="logo">Momento</h1>
+    </div>
+
+    <!-- Botón hamburguesa y menú móvil -->
     <nav class="header-left" role="navigation">
       <button id="mobileMenuBtn" class="btn btn-frosted mobile-menu-toggle" aria-expanded="false" aria-controls="mobileMenu" title="Menú">☰</button>
       <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
@@ -19,11 +23,6 @@
         <a href="#" id="logoutBtn" class="btn btn-logout btn-frosted" title="Cerrar sesión">Cerrar sesión</a>
       </div>
     </nav>
-
-    <!-- Logo centrado -->
-    <div class="header-logo">
-      <h1 class="logo">Momento</h1>
-    </div>
   </header>
 
   <!-- Formulario de subida -->
@@ -117,4 +116,5 @@
   </script>
 </body>
 </html>
+
 
