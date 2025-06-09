@@ -1266,106 +1266,80 @@ main#timeline {
   }
 }
 
-/* ESTILOS GENERALES HEADER */
 .fixed-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #ccc;
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
   z-index: 1000;
+  border-bottom: 1px solid #ccc;
 }
 
-.header-left {
+.header-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  padding: 10px 1rem;
+  position: relative;
 }
 
+.header-left,
+.header-right {
+  flex: 0 0 auto;
+}
+
+/* Logo centrado en móviles */
 .header-logo {
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
 }
 
-.header-logo .logo {
+.logo {
   font-family: 'Grape Nuts', cursive;
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin: 0;
 }
 
-/* MENÚ MÓVIL */
+/* Menú móvil oculto por defecto */
 .mobile-menu {
   display: none;
   flex-direction: column;
   gap: 10px;
-  margin-top: 10px;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
+  padding: 10px 1rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #ccc;
   transition: all 0.3s ease;
 }
 
 .mobile-menu.show {
   display: flex;
-  opacity: 1;
-  max-height: 200px;
 }
 
-/* BOTÓN HAMBURGUESA */
-.btn.mobile-menu-toggle {
-  font-size: 1.5rem;
-  padding: 0.5rem 0.8rem;
-}
-
-/* RESPONSIVE: TABLETAS Y CELULARES */
-@media (max-width: 768px) {
-  .fixed-header {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 10px 16px;
-    height: auto;
-  }
-
-  .header-left {
-    width: 100%;
-    justify-content: flex-start;
-    order: 1;
-  }
-
-  .header-logo {
-    width: 100%;
-    order: 0;
-    margin-bottom: 8px;
-  }
-
-  .header-logo .logo {
-    font-size: 1.8rem;
-  }
-
-  .mobile-menu-toggle {
-    display: inline-block;
-  }
-
-  .mobile-menu {
-    width: 100%;
-  }
-}
-
-/* RESPONSIVE: ESCRITORIO */
+/* Pantallas grandes */
 @media (min-width: 768px) {
-  .mobile-menu-toggle {
-    display: none;
+  .header-logo {
+    position: static;
+    transform: none;
+  }
+
+  .header-container {
+    justify-content: space-between;
   }
 
   .mobile-menu {
     display: flex !important;
     flex-direction: row;
     gap: 10px;
-    opacity: 1 !important;
-    max-height: none !important;
-    margin-top: 0;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
   }
 }
+
 
