@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Momento - Imágenes fugaces que desaparecen en 6h</title>
+  <title>Momento</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -35,39 +35,35 @@
     }
 
     #logoText {
-      transition: font-family 0.4s ease-in-out;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .fade {
+      opacity: 0;
     }
   </style>
 </head>
 <body>
 
-  <!-- Contenedor Principal unificado -->
   <div class="main-container">
-
-    <!-- Hero y botones -->
     <div class="hero-content">
       <h1 id="logoText" class="logo font-grape">Momento</h1>
-      <p class="tagline"><em>Redefining what’s worth looking at.</em></p>
+      <p class="tagline"><em>Imágenes fugaces que desaparecen en 6h</em></p>
 
-      <!-- Botones de sesión -->
       <nav class="main-nav">
         <a href="login.html" class="btn-frosted">Iniciar sesión</a>
         <a href="register.html" class="btn-frosted">Registrarse</a>
       </nav>
 
-      <!-- Espacio entre secciones -->
       <div style="height: 20px;"></div>
 
-      <!-- Botones legales -->
       <div class="legal-links">
         <button class="btn-frosted" onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
         <button class="btn-frosted" onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
       </div>
-
     </div>
   </div>
 
-  <!-- Modal de bienvenida -->
   <div id="welcomeModal" class="modal" style="display:none;">
     <div class="modal-content">
       <p>
@@ -80,13 +76,11 @@
     </div>
   </div>
 
-  <!-- Línea dinámica degradada al final -->
   <div class="animated-gradient-line"></div>
 
-  <!-- Script para cambiar fuentes del logo -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Modal de bienvenida
+      // Modal
       const modal = document.getElementById('welcomeModal');
       const closeBtn = document.getElementById('closeModalBtn');
 
@@ -99,20 +93,23 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
-      // Cambiar fuentes del logo cada segundo
+      // Cambio de fuentes con animación
       const logo = document.getElementById("logoText");
       const fonts = ["font-grape", "font-savate", "font-fraktur", "font-silkscreen"];
       let index = 0;
 
       setInterval(() => {
-        logo.classList.remove(...fonts);
-        logo.classList.add(fonts[index]);
-        index = (index + 1) % fonts.length;
-      }, 1000);
+        logo.classList.add("fade");
+
+        setTimeout(() => {
+          logo.classList.remove(...fonts);
+          logo.classList.add(fonts[index]);
+          logo.classList.remove("fade");
+          index = (index + 1) % fonts.length;
+        }, 500); // Espera a que se desvanezca antes de cambiar
+      }, 2000); // Cambio cada 2 segundos (incluyendo tiempo de transición)
     });
   </script>
 </body>
 </html>
-
-
 
