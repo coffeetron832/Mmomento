@@ -163,15 +163,7 @@
     window.location.href = 'index.html';
   });
 
-  // Modo oscuro con nuevo switch
-      if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        toggleCheckbox.checked = true;
-      }
-      toggleCheckbox.addEventListener('change', () => {
-        const isDark = document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', isDark);
-      });
+
     });
   </script>
 </body>
