@@ -11,7 +11,7 @@
   <link rel="shortcut icon" href="favicon.ico">
 
   <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&family=Savate&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&family=Savate&family=UnifrakturMaguntia&family=Silkscreen&display=swap" rel="stylesheet">
 
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
@@ -28,6 +28,10 @@
 
     .font-fraktur {
       font-family: 'UnifrakturMaguntia', cursive;
+    }
+
+    .font-silkscreen {
+      font-family: 'Silkscreen', sans-serif;
     }
 
     #logoText {
@@ -97,7 +101,7 @@
 
       // Cambiar fuentes del logo cada segundo
       const logo = document.getElementById("logoText");
-      const fonts = ["font-grape", "font-savate", "font-fraktur"];
+      const fonts = ["font-grape", "font-savate", "font-fraktur", "font-silkscreen"];
       let index = 0;
 
       setInterval(() => {
