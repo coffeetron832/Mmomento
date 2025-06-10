@@ -16,9 +16,32 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Estilos para fuentes del logo -->
-  <!-- Estilos para fuentes del logo y footer -->
+  <!-- Estilos internos -->
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #0c0c0c; /* o el color que estés usando */
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 40px 20px;
+    }
+
     .font-grape {
       font-family: 'Grape Nuts', cursive;
     }
@@ -45,7 +68,7 @@
 
     footer.site-footer {
       text-align: center;
-      padding: 30px 10px 20px;
+      padding: 20px 10px;
       font-size: 0.9rem;
       color: #aaa;
     }
@@ -77,11 +100,6 @@
       </nav>
 
       <div style="height: 20px;"></div>
-
-      <div class="legal-links">
-        <button class="btn-frosted" onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
-        <button class="btn-frosted" onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
-      </div>
     </div>
   </div>
 
@@ -132,14 +150,11 @@
         setTimeout(() => {
           logo.classList.remove(...fonts);
           logo.classList.add(fonts[index]);
-          logo.classList.remove("fade");Add commentMore actions
+          logo.classList.remove("fade");
           index = (index + 1) % fonts.length;
-        }, 500); // Espera a que se desvanezca antes de cambiar
-      }, 2000); // Cambio cada 2 segundos (incluyendo tiempo de transición)
         }, 500);
       }, 2000);
     });
   </script>
 </body>
 </html>
-
