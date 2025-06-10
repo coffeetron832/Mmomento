@@ -16,7 +16,7 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Estilos para fuentes del logo -->
+  <!-- Estilos para fuentes del logo y footer -->
   <style>
     .font-grape {
       font-family: 'Grape Nuts', cursive;
@@ -41,6 +41,26 @@
     .fade {
       opacity: 0;
     }
+
+    footer.site-footer {
+      text-align: center;
+      padding: 30px 10px 20px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    footer.site-footer a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+    }
+
+    footer.site-footer a:hover {
+      color: #fff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -56,13 +76,15 @@
       </nav>
 
       <div style="height: 20px;"></div>
-
-      <div class="legal-links">
-        <button class="btn-frosted" onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
-        <button class="btn-frosted" onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
-      </div>
     </div>
   </div>
+
+  <footer class="site-footer">
+    <p>
+      <a href="privacidad.html">Política de Privacidad</a> ·
+      <a href="condiciones.html">Términos y Condiciones</a>
+    </p>
+  </footer>
 
   <div id="welcomeModal" class="modal" style="display:none;">
     <div class="modal-content">
@@ -106,8 +128,8 @@
           logo.classList.add(fonts[index]);
           logo.classList.remove("fade");
           index = (index + 1) % fonts.length;
-        }, 500); // Espera a que se desvanezca antes de cambiar
-      }, 2000); // Cambio cada 2 segundos (incluyendo tiempo de transición)
+        }, 500);
+      }, 2000);
     });
   </script>
 </body>
