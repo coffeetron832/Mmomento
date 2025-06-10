@@ -16,9 +16,32 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Estilos para fuentes del logo -->
-  <!-- Estilos para fuentes del logo y footer -->
+  <!-- Estilos internos -->
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f9f9f9;
+      color: #333;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 40px 20px;
+    }
+
     .font-grape {
       font-family: 'Grape Nuts', cursive;
     }
@@ -43,24 +66,86 @@
       opacity: 0;
     }
 
+    .tagline {
+      margin: 10px 0 20px;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .main-nav a, .legal-links button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #e0e0e0;
+      color: #333;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .main-nav a:hover, .legal-links button:hover {
+      background: #d0d0d0;
+      cursor: pointer;
+    }
+
     footer.site-footer {
       text-align: center;
-      padding: 30px 10px 20px;
+      padding: 20px 10px;
       font-size: 0.9rem;
-      color: #aaa;
+      color: #666;
+      background-color: #f1f1f1;
     }
 
     footer.site-footer a {
-      color: #aaa;
+      color: #666;
       text-decoration: none;
       margin: 0 8px;
       transition: color 0.3s ease;
     }
 
     footer.site-footer a:hover {
-      color: #fff;
+      color: #000;
       text-decoration: underline;
       cursor: pointer;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: white;
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .keycap {
+      display: inline-block;
+      margin-top: 20px;
+      background: #e0e0e0;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .keycap:hover {
+      background: #d0d0d0;
+    }
+
+    .animated-gradient-line {
+      display: none; /* Oculto si no lo estás usando */
     }
   </style>
 </head>
@@ -79,8 +164,8 @@
       <div style="height: 20px;"></div>
 
       <div class="legal-links">
-        <button class="btn-frosted" onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
-        <button class="btn-frosted" onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
+        <button onclick="window.location.href='privacidad.html'">Política de Privacidad</button>
+        <button onclick="window.location.href='condiciones.html'">Términos y Condiciones</button>
       </div>
     </div>
   </div>
@@ -104,8 +189,6 @@
     </div>
   </div>
 
-  <div class="animated-gradient-line"></div>
-
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // Modal
@@ -121,24 +204,22 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
-      // Cambio de fuentes con animación
+      // Cambio de fuentes animado en el logo
       const logo = document.getElementById("logoText");
       const fonts = ["font-grape", "font-savate", "font-fraktur", "font-silkscreen"];
       let index = 0;
 
       setInterval(() => {
         logo.classList.add("fade");
-
         setTimeout(() => {
           logo.classList.remove(...fonts);
           logo.classList.add(fonts[index]);
           logo.classList.remove("fade");
           index = (index + 1) % fonts.length;
-        }, 500); // Espera a que se desvanezca antes de cambiar
-      }, 2000); // Cambio cada 2 segundos (incluyendo tiempo de transición)
         }, 500);
       }, 2000);
     });
   </script>
 </body>
 </html>
+
