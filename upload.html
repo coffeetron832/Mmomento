@@ -8,19 +8,33 @@
   <link rel="stylesheet" href="css/styles.css" />
   <style>
     /* Botones flotantes */
-    .floating-buttons {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 1000;
-    }
-    .floating-buttons .btn {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-    }
+    /* Botones flotantes */
+.floating-buttons {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1000;
+}
+
+.floating-buttons .btn {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Switch de modo oscuro */
+.switch-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; /* Abajo a la izquierda */
+  z-index: 500; /* Más bajo que los botones flotantes */
+  transform: scale(0.6);
+  transform-origin: bottom left;
+}
+
 
     /* Switch de modo oscuro, ligeramente más arriba para no interferir */
     .switch-container {
@@ -126,50 +140,51 @@
   <!-- Script inline para controles de interfaz -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const toggleBtn = document.getElementById('toggleUploadBtn');
-      const formContainer = document.getElementById('uploadFormContainer');
-      const visibilitySelect = document.getElementById('visibility');
-      const circleSelector = document.getElementById('circleSelectorContainer');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const toggleCheckbox = document.getElementById('toggleCheckbox');
+  const toggleBtn = document.getElementById('toggleUploadBtn');
+  const formContainer = document.getElementById('uploadFormContainer');
+  const visibilitySelect = document.getElementById('visibility');
+  const circleSelector = document.getElementById('circleSelectorContainer');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const toggleCheckbox = document.getElementById('toggleCheckbox');
 
-      // Mostrar / ocultar formulario
-      toggleBtn.addEventListener('click', () => {
-        const isVisible = formContainer.classList.contains('show');
-        formContainer.classList.toggle('show');
-        formContainer.style.display = isVisible ? 'none' : 'block';
-        formContainer.setAttribute('aria-hidden', isVisible.toString());
-        toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
-      });
+  // Mostrar/ocultar formulario de subida
+  toggleBtn.addEventListener('click', () => {
+    const isVisible = formContainer.classList.contains('show');
+    formContainer.classList.toggle('show');
+    formContainer.style.display = isVisible ? 'none' : 'block';
+    formContainer.setAttribute('aria-hidden', isVisible.toString());
+    toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
+  });
 
-      // Mostrar selector de círculos si aplica
-      const updateCircles = () => {
-        const show = visibilitySelect.value === 'circle';
-        circleSelector.style.display = show ? 'block' : 'none';
-        circleSelector.setAttribute('aria-hidden', (!show).toString());
-      };
-      visibilitySelect.addEventListener('change', updateCircles);
-      updateCircles();
+  // Cambiar visibilidad a círculos
+  const updateCircles = () => {
+    const show = visibilitySelect.value === 'circle';
+    circleSelector.style.display = show ? 'block' : 'none';
+    circleSelector.setAttribute('aria-hidden', (!show).toString());
+  };
 
-      // Cerrar sesión
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        window.location.href = 'index.html';
-      });
+  visibilitySelect.addEventListener('change', updateCircles);
+  updateCircles();
 
-      /// Modo oscuro toggle
-const toggleCheckbox = document.getElementById('toggleCheckbox');
-if (localStorage.getItem('darkMode') === 'true') {
-  document.body.classList.add('dark-mode');
-  toggleCheckbox.checked = true;
-}
-toggleCheckbox.addEventListener('change', () => {
-  const isDark = document.body.classList.toggle('dark-mode');
-  localStorage.setItem('darkMode', isDark);
+  // Botón cerrar sesión
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    window.location.href = 'index.html';
+  });
+
+  // Modo oscuro: restaurar estado
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+    toggleCheckbox.checked = true;
+  }
+
+  // Modo oscuro: cambiar al hacer clic
+  toggleCheckbox.addEventListener('change', () => {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDark);
+  });
 });
-
-    });
   </script>
 </body>
 </html>
