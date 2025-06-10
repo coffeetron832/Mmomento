@@ -7,10 +7,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Grape+Nuts&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
+    :root {
+      --btn-bg: #f5f5f5;
+      --btn-hover: #e0e0e0;
+      --btn-text: #111;
+    }
+
+    .dark-mode {
+      --btn-bg: #333;
+      --btn-hover: #444;
+      --btn-text: #fff;
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
+      background-color: #fff;
+      color: #111;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* Header fijo */
@@ -18,7 +35,7 @@
       position: fixed;
       top: 0;
       width: 100%;
-      background-color: #ffffff;
+      background-color: inherit;
       padding: 1rem;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       z-index: 1001;
@@ -43,17 +60,22 @@
 
     .btn-small {
       font-size: 0.875rem;
-      padding: 0.4rem 0.6rem;
+      padding: 0.5rem 0.75rem;
       border: none;
       border-radius: 6px;
-      background-color: #f0f0f0;
-      cursor: pointer;
       font-weight: 500;
-      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      cursor: pointer;
     }
 
     .btn-small:hover {
-      background-color: #e0e0e0;
+      background-color: var(--btn-hover);
+      transform: scale(1.05);
     }
 
     .icon-btn {
@@ -192,6 +214,8 @@
       const visibilitySelect = document.getElementById('visibility');
       const circleSelector = document.getElementById('circleSelectorContainer');
       const logoutBtn = document.getElementById('logoutBtn');
+      const toggleCheckbox = document.getElementById('toggleCheckbox');
+      const body = document.body;
 
       // Mostrar/ocultar formulario de subida
       toggleBtn.addEventListener('click', () => {
@@ -218,7 +242,13 @@
         localStorage.clear();
         window.location.href = 'index.html';
       });
+
+      // Modo oscuro
+      toggleCheckbox.addEventListener('change', () => {
+        body.classList.toggle('dark-mode', toggleCheckbox.checked);
+      });
     });
   </script>
 </body>
 </html>
+
