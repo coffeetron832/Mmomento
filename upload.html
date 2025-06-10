@@ -173,18 +173,17 @@
     window.location.href = 'index.html';
   });
 
-  // Modo oscuro: restaurar estado
-  if (localStorage.getItem('darkMode') === 'true') {
-    document.body.classList.add('dark-mode');
-    toggleCheckbox.checked = true;
-  }
-
-  // Modo oscuro: cambiar al hacer clic
-  toggleCheckbox.addEventListener('change', () => {
-    const isDark = document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', isDark);
-  });
-});
+  // Modo oscuro con nuevo switch
+      const toggleCheckbox = document.getElementById('toggleCheckbox');
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        toggleCheckbox.checked = true;
+      }
+      toggleCheckbox.addEventListener('change', () => {
+        const isDark = document.body.classList.toggle('dark-mode');More actions
+        localStorage.setItem('darkMode', isDark);
+      });
+    });
   </script>
 </body>
 </html>
