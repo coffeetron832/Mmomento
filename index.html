@@ -11,25 +11,38 @@
   <link rel="shortcut icon" href="favicon.ico">
 
   <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&family=Savate&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
 
-  
+  <!-- Estilos para fuentes del logo -->
+  <style>
+    .font-grape {
+      font-family: 'Grape Nuts', cursive;
+    }
+
+    .font-savate {
+      font-family: 'Savate', sans-serif;
+    }
+
+    .font-fraktur {
+      font-family: 'UnifrakturMaguntia', cursive;
+    }
+
+    #logoText {
+      transition: font-family 0.4s ease-in-out;
+    }
+  </style>
 </head>
 <body>
-
-  
-
-  </div>
 
   <!-- Contenedor Principal unificado -->
   <div class="main-container">
 
     <!-- Hero y botones -->
     <div class="hero-content">
-      <h1 class="logo">Momento</h1>
+      <h1 id="logoText" class="logo font-grape">Momento</h1>
       <p class="tagline"><em>Redefining what’s worth looking at.</em></p>
 
       <!-- Botones de sesión -->
@@ -48,7 +61,6 @@
       </div>
 
     </div>
-
   </div>
 
   <!-- Modal de bienvenida -->
@@ -67,8 +79,9 @@
   <!-- Línea dinámica degradada al final -->
   <div class="animated-gradient-line"></div>
 
+  <!-- Script para cambiar fuentes del logo -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener("DOMContentLoaded", () => {
       // Modal de bienvenida
       const modal = document.getElementById('welcomeModal');
       const closeBtn = document.getElementById('closeModalBtn');
@@ -81,9 +94,21 @@
         modal.style.display = 'none';
         localStorage.setItem('welcomeShown', 'true');
       });
+
+      // Cambiar fuentes del logo cada segundo
+      const logo = document.getElementById("logoText");
+      const fonts = ["font-grape", "font-savate", "font-fraktur"];
+      let index = 0;
+
+      setInterval(() => {
+        logo.classList.remove(...fonts);
+        logo.classList.add(fonts[index]);
+        index = (index + 1) % fonts.length;
+      }, 1000);
     });
   </script>
 </body>
 </html>
+
 
 
