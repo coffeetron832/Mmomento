@@ -16,8 +16,32 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Estilos para fuentes del logo y footer -->
+  <!-- Estilos internos -->
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #0c0c0c; /* o el color que estés usando */
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 40px 20px;
+    }
+
     .font-grape {
       font-family: 'Grape Nuts', cursive;
     }
@@ -44,7 +68,7 @@
 
     footer.site-footer {
       text-align: center;
-      padding: 30px 10px 20px;
+      padding: 20px 10px;
       font-size: 0.9rem;
       color: #aaa;
     }
@@ -134,4 +158,3 @@
   </script>
 </body>
 </html>
-
