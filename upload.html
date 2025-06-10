@@ -135,7 +135,6 @@
   const visibilitySelect = document.getElementById('visibility');
   const circleSelector = document.getElementById('circleSelectorContainer');
   const logoutBtn = document.getElementById('logoutBtn');
-  const toggleCheckbox = document.getElementById('toggleCheckbox');
 
   // Mostrar/ocultar formulario de subida
   toggleBtn.addEventListener('click', () => {
@@ -164,6 +163,7 @@
   });
 
   // Modo oscuro con nuevo switch
+      const toggleCheckbox = document.getElementById('toggleCheckbox');
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
         toggleCheckbox.checked = true;
