@@ -7,36 +7,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Grape+Nuts&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
-    /* Botones flotantes */
-    /* Botones flotantes */
-.floating-buttons {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  z-index: 1000;
-}
+    body {
+      font-family: 'Inter', sans-serif;
+    }
 
-.floating-buttons .btn {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
+    header.site-header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #ddd;
+    }
 
+    header.site-header h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
 
-    /* Switch de modo oscuro, ligeramente más arriba para no interferir */
+    .floating-buttons {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 1000;
+    }
+
+    .floating-buttons .btn {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+
     .switch-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px; /* Ahora a la izquierda */
-  z-index: 999;
-  transform: scale(0.3); /* Tamaño reducido */
-  transform-origin: bottom left; /* Ajustado para que se mantenga pegado en la esquina */
-}
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 999;
+      transform: scale(0.3);
+      transform-origin: bottom left;
+    }
 
-    /* Centrar imágenes */
     #imagesContainer {
       display: flex;
       flex-direction: column;
@@ -51,16 +65,14 @@
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
-
-    /* Título centrado */
-    .timeline-title {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 3rem;
-    }
   </style>
 </head>
 <body class="upload-page">
+
+  <!-- Header con título -->
+  <header class="site-header">
+    <h2>Últimos Momentos 📸</h2>
+  </header>
 
   <!-- Formulario de subida -->
   <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true" style="display: none;">
@@ -100,7 +112,6 @@
 
   <!-- Línea de tiempo -->
   <main id="timeline" role="main" tabindex="0">
-    <h2 class="timeline-title">Últimos Momentos 📸</h2>
     <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
 
@@ -130,43 +141,39 @@
   <!-- Script inline para controles de interfaz -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('toggleUploadBtn');
-  const formContainer = document.getElementById('uploadFormContainer');
-  const visibilitySelect = document.getElementById('visibility');
-  const circleSelector = document.getElementById('circleSelectorContainer');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const toggleCheckbox = document.getElementById('toggleCheckbox');
+      const toggleBtn = document.getElementById('toggleUploadBtn');
+      const formContainer = document.getElementById('uploadFormContainer');
+      const visibilitySelect = document.getElementById('visibility');
+      const circleSelector = document.getElementById('circleSelectorContainer');
+      const logoutBtn = document.getElementById('logoutBtn');
 
-  // Mostrar/ocultar formulario de subida
-  toggleBtn.addEventListener('click', () => {
-    const isVisible = formContainer.classList.contains('show');
-    formContainer.classList.toggle('show');
-    formContainer.style.display = isVisible ? 'none' : 'block';
-    formContainer.setAttribute('aria-hidden', isVisible.toString());
-    toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
-  });
+      // Mostrar/ocultar formulario de subida
+      toggleBtn.addEventListener('click', () => {
+        const isVisible = formContainer.classList.contains('show');
+        formContainer.classList.toggle('show');
+        formContainer.style.display = isVisible ? 'none' : 'block';
+        formContainer.setAttribute('aria-hidden', isVisible.toString());
+        toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
+      });
 
-  // Cambiar visibilidad a círculos
-  const updateCircles = () => {
-    const show = visibilitySelect.value === 'circle';
-    circleSelector.style.display = show ? 'block' : 'none';
-    circleSelector.setAttribute('aria-hidden', (!show).toString());
-  };
+      // Cambiar visibilidad a círculos
+      const updateCircles = () => {
+        const show = visibilitySelect.value === 'circle';
+        circleSelector.style.display = show ? 'block' : 'none';
+        circleSelector.setAttribute('aria-hidden', (!show).toString());
+      };
 
-  visibilitySelect.addEventListener('change', updateCircles);
-  updateCircles();
+      visibilitySelect.addEventListener('change', updateCircles);
+      updateCircles();
 
-  // Botón cerrar sesión
-  logoutBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    localStorage.clear();
-    window.location.href = 'index.html';
-  });
-
-
+      // Botón cerrar sesión
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = 'index.html';
+      });
     });
   </script>
 </body>
 </html>
-
 
