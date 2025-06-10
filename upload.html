@@ -1,4 +1,4 @@
-<!DOCTYPE html>More actions
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -22,14 +22,15 @@
       font-size: 1rem;
     }
 
+    /* Switch de modo oscuro, ligeramente más arriba para no interferir */
     .switch-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 999;
-    transform: scale(0.4); /* Escala el tamaño general */
-    transform-origin: bottom right; /* Asegura que se mantenga pegado en la esquina */
-  }
+      position: fixed;
+      bottom: 7rem; /* Más arriba para que no tape los botones */
+      right: 1.5rem;
+      z-index: 999;
+      transform: scale(0.4);
+      transform-origin: bottom right;
+    }
 
     /* Centrar imágenes */
     #imagesContainer {
@@ -132,7 +133,7 @@
       const logoutBtn = document.getElementById('logoutBtn');
       const toggleCheckbox = document.getElementById('toggleCheckbox');
 
-      // Toggle formulario
+      // Mostrar / ocultar formulario
       toggleBtn.addEventListener('click', () => {
         const isVisible = formContainer.classList.contains('show');
         formContainer.classList.toggle('show');
@@ -141,7 +142,7 @@
         toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
       });
 
-      // Selector de círculos
+      // Mostrar selector de círculos si aplica
       const updateCircles = () => {
         const show = visibilitySelect.value === 'circle';
         circleSelector.style.display = show ? 'block' : 'none';
@@ -157,18 +158,13 @@
         window.location.href = 'index.html';
       });
 
-      // Modo oscuro toggle
-      toggleCheckbox.addEventListener('change', () => {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-      });
-
-      // Modo oscuro con nuevo switch
-      const toggleCheckbox = document.getElementById('toggleCheckbox');
+      // Activar modo oscuro si estaba activo
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
         toggleCheckbox.checked = true;
       }
+
+      // Cambiar modo oscuro
       toggleCheckbox.addEventListener('change', () => {
         const isDark = document.body.classList.toggle('dark-mode');
         localStorage.setItem('darkMode', isDark);
