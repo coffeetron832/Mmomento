@@ -25,9 +25,15 @@
     /* Switch de modo oscuro */
     .switch-container {
       position: fixed;
+      z-index: 1000;
+    }
+    .switch-bottom-left {
       bottom: 1.5rem;
       left: 1.5rem;
-      z-index: 1000;
+    }
+    .switch-bottom-right {
+      bottom: 1.5rem;
+      right: 1.5rem;
     }
 
     /* Centrar imágenes */
@@ -104,10 +110,24 @@
     <button id="logoutBtn" class="btn btn-logout btn-frosted" title="Cerrar sesión">Cerrar sesión</button>
   </div>
 
-  <!-- Switch modo oscuro -->
-  <div class="switch-container">
-    <label class="switch" title="Modo oscuro">
-      <input type="checkbox" id="toggleCheckbox" />
+  <!-- Switch modo oscuro (esquina inferior izquierda) -->
+  <div class="switch-container switch-bottom-left">
+    <label class="switch" title="Modo oscuro (izquierda)">
+      <input type="checkbox" id="toggleCheckboxLeft" />
+      <span class="button">
+        <span class="light"></span>
+        <span class="dots"></span>
+        <span class="characters"></span>
+        <span class="shine"></span>
+        <span class="shadow"></span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Switch modo oscuro (esquina inferior derecha) -->
+  <div class="switch-container switch-bottom-right">
+    <label class="switch" title="Modo oscuro (derecha)">
+      <input type="checkbox" id="toggleCheckboxRight" />
       <span class="button">
         <span class="light"></span>
         <span class="dots"></span>
@@ -129,7 +149,8 @@
       const visibilitySelect = document.getElementById('visibility');
       const circleSelector = document.getElementById('circleSelectorContainer');
       const logoutBtn = document.getElementById('logoutBtn');
-      const toggleCheckbox = document.getElementById('toggleCheckbox');
+      const toggleCheckboxLeft = document.getElementById('toggleCheckboxLeft');
+      const toggleCheckboxRight = document.getElementById('toggleCheckboxRight');
 
       // Toggle formulario
       toggleBtn.addEventListener('click', () => {
@@ -156,20 +177,30 @@
         window.location.href = 'index.html';
       });
 
-      // Modo oscuro toggle
-      toggleCheckbox.addEventListener('change', () => {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+      // Modo oscuro sincronizado
+      const syncSwitches = (checked) => {
+        document.body.classList.toggle('dark-mode', checked);
+        toggleCheckboxLeft.checked = checked;
+        toggleCheckboxRight.checked = checked;
+        localStorage.setItem('darkMode', checked);
+      };
+
+      toggleCheckboxLeft.addEventListener('change', () => {
+        syncSwitches(toggleCheckboxLeft.checked);
+      });
+
+      toggleCheckboxRight.addEventListener('change', () => {
+        syncSwitches(toggleCheckboxRight.checked);
       });
 
       // Restaurar modo oscuro
-      if (localStorage.getItem('darkMode') === 'true') {
+      const savedMode = localStorage.getItem('darkMode') === 'true';
+      if (savedMode) {
         document.body.classList.add('dark-mode');
-        toggleCheckbox.checked = true;
+        toggleCheckboxLeft.checked = true;
+        toggleCheckboxRight.checked = true;
       }
     });
   </script>
 </body>
 </html>
-
-
