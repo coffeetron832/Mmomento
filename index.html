@@ -16,8 +16,20 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Estilos para fuentes del logo y footer -->
+  <!-- Estilos para fuentes del logo y layout -->
   <style>
+    /* Estilos base del body para mantener footer abajo */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .main-container {
+      flex: 1;
+    }
+
     .font-grape {
       font-family: 'Grape Nuts', cursive;
     }
