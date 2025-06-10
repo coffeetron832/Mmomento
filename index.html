@@ -16,9 +16,9 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Estilos para fuentes del logo y layout -->
+  <!-- Estilos internos -->
   <style>
-    /* Estilos base del body para mantener footer abajo */
+    /* Layout base */
     body {
       display: flex;
       flex-direction: column;
@@ -28,6 +28,15 @@
 
     .main-container {
       flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero-content {
+      max-width: 600px;
     }
 
     .font-grape {
@@ -48,10 +57,22 @@
 
     #logoText {
       transition: opacity 0.5s ease-in-out;
+      font-size: 3rem;
+      margin-bottom: 10px;
     }
 
     .fade {
       opacity: 0;
+    }
+
+    .tagline {
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .main-nav a {
+      display: inline-block;
+      margin: 0 10px;
     }
 
     footer.site-footer {
@@ -80,14 +101,12 @@
   <div class="main-container">
     <div class="hero-content">
       <h1 id="logoText" class="logo font-grape">Momento</h1>
-      <p class="tagline"><em>Imágenes fugaces que desaparecen en 6h</em></p>
+      <p class="tagline">Imágenes fugaces que desaparecen en 6h</p>
 
       <nav class="main-nav">
         <a href="login.html" class="btn-frosted">Iniciar sesión</a>
         <a href="register.html" class="btn-frosted">Registrarse</a>
       </nav>
-
-      <div style="height: 20px;"></div>
     </div>
   </div>
 
@@ -127,7 +146,7 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
-      // Cambio de fuentes con animación
+      // Animación de fuentes
       const logo = document.getElementById("logoText");
       const fonts = ["font-grape", "font-savate", "font-fraktur", "font-silkscreen"];
       let index = 0;
