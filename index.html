@@ -4,15 +4,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Momento</title>  <!-- Favicon -->  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="shortcut icon" href="favicon.ico">  <!-- Fuente Parkinsans -->  <link href="https://fonts.googleapis.com/css2?family=Parkinsans&display=swap" rel="stylesheet">  <!-- Estilos externos -->  <link rel="stylesheet" href="css/styles.css" />  <!-- Estilos internos -->  <style>
+  <link rel="shortcut icon" href="favicon.ico">  <!-- Fuentes -->  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Parkinsans&display=swap" rel="stylesheet">  <!-- Estilos externos -->  <link rel="stylesheet" href="css/styles.css" />  <!-- Estilos internos -->  <style>
     body {
       margin: 0;
       font-family: 'Parkinsans', sans-serif;
       background-color: #1E1E1E;
       color: #fff;
       overflow-x: hidden;
-      padding-top: 60px;
-      text-align: center;
     }
 
     /* Header global */
@@ -31,7 +29,7 @@
     header.global-header h1 {
       font-size: 1.2rem;
       margin: 0;
-      margin-right: auto;
+      margin-right: 20px;
     }
     header.global-header nav a {
       margin-left: 10px;
@@ -47,13 +45,17 @@
       background-color: rgba(67,127,199,0.8);
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-top: 40px;
-      font-weight: normal;
+    .content-wrapper {
+      padding-top: 100px;
+      text-align: center;
     }
 
-    h1 small {
+    .main-text h1 {
+      font-family: 'Nothing You Could Do', cursive;
+      font-size: 3rem;
+      margin: 0;
+    }
+    .main-text small {
       display: block;
       font-size: 1rem;
       margin-top: 10px;
@@ -84,20 +86,18 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    #slideshow-container {
-      margin-top: 40px;
-    }
-
     #slideshow-img {
       width: 300px;
       border-radius: 10px;
       opacity: 1;
       transition: opacity 1s ease-in-out;
+      margin-top: 40px;
     }
 
     footer.site-footer {
-      margin-top: 30px;
+      margin-top: 20px;
       text-align: center;
+      padding: 10px 0;
       font-size: 0.9rem;
       color: #aaa;
     }
@@ -119,18 +119,23 @@
       <a href="login.html">Iniciar sesión</a>
       <a href="register.html">Registrarse</a>
     </nav>
-  </header>  <!-- Texto principal -->  <h1>
-    Tus momentos reales.<br><small>Solo por un <span class="fade-pieces">
-      <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
-    </span>.</small>
-  </h1>  <!-- Slideshow -->  <div id="slideshow-container">
-    <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
-  </div>  <!-- Footer -->  <footer class="site-footer">
-    <p>
-      <a href="privacidad.html">Política de Privacidad</a> ·
-      <a href="condiciones.html">Términos y Condiciones</a>
-    </p>
-  </footer>  <script>
+  </header>  <div class="content-wrapper">
+    <div class="main-text">
+      <h1>
+        Tus momentos reales.<br><small>Solo por un <span class="fade-pieces">
+          <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
+        </span>.</small>
+      </h1>
+    </div><img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
+
+<footer class="site-footer">
+  <p>
+    <a href="privacidad.html">Política de Privacidad</a> ·
+    <a href="condiciones.html">Términos y Condiciones</a>
+  </p>
+</footer>
+
+  </div>  <script>
     document.addEventListener("DOMContentLoaded", () => {
       // Slideshow dinámico
       const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
