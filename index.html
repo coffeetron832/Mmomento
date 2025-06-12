@@ -91,59 +91,6 @@
       font-weight: 300;
     }
 
-    .hourglass {
-  position: absolute;
-  top: -70px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.hourglass-body {
-  position: relative;
-  width: 30px;
-  height: 60px;
-  border: 2px solid #fff;
-  border-radius: 15px;
-  overflow: hidden;
-  background: transparent;
-}
-
-.sand-top, .sand-bottom {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  background: #f4d742;
-}
-
-.sand-top {
-  height: 50%;
-  animation: sandTopAnim 4s infinite linear;
-  top: 0;
-  transform-origin: bottom;
-}
-
-.sand-bottom {
-  height: 0%;
-  bottom: 0;
-  animation: sandBottomAnim 4s infinite linear;
-}
-
-@keyframes sandTopAnim {
-  0% { height: 50%; }
-  100% { height: 0%; }
-}
-
-@keyframes sandBottomAnim {
-  0% { height: 0%; }
-  100% { height: 50%; }
-}
-
-
     .right-column {
       display: flex;
       justify-content: center;
@@ -154,7 +101,7 @@
 
     /* Estilos para slideshow */
     #slideshow-img {
-      width: 320px;
+      width: 360px;
       border-radius: 10px;
       opacity: 1;
       transition: opacity 1s ease-in-out;
@@ -197,12 +144,6 @@
   <div class="layout-container">
     <!-- IZQUIERDA -->
     <div class="left-column">
-      <div class="hourglass">
-        <div class="hourglass-body">
-          <div class="sand-top"></div>
-          <div class="sand-bottom"></div>
-        </div>
-      </div>
       <h1>
         Tus momentos reales.<br><small>Solo por un instante.</small>
       </h1>
@@ -240,5 +181,3 @@
   </script>
 </body>
 </html>
-
-
