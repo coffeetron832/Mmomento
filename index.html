@@ -10,17 +10,17 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="shortcut icon" href="favicon.ico">
 
-  <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Inter:wght@300;400;600&family=Savate&family=UnifrakturMaguntia&family=Silkscreen&display=swap" rel="stylesheet">
+  <!-- Fuente Parkinsans -->
+  <link href="https://fonts.googleapis.com/css2?family=Parkinsans&display=swap" rel="stylesheet">
 
-  <!-- Estilos -->
+  <!-- Estilos externos -->
   <link rel="stylesheet" href="css/styles.css" />
 
   <!-- Estilos internos -->
   <style>
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Parkinsans', sans-serif;
       background: url('fondo.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
@@ -47,8 +47,8 @@
     .right-column {
       display: flex;
       align-items: center;
-      justify-content: flex-end; /* Mueve la imagen más a la derecha */
-      padding-right: 40px;       /* Espacio adicional a la derecha */
+      justify-content: flex-end;
+      padding-right: 40px;
       backdrop-filter: blur(2px);
     }
 
@@ -57,19 +57,19 @@
       text-align: center;
     }
 
-    .font-grape { font-family: 'Grape Nuts', cursive; }
-    .font-savate { font-family: 'Savate', sans-serif; }
-    .font-fraktur { font-family: 'UnifrakturMaguntia', cursive; }
-    .font-silkscreen { font-family: 'Silkscreen', sans-serif; }
-
+    /* Logo fijo sin animación */
     #logoText {
-      transition: opacity 0.5s ease-in-out;
       font-size: 3rem;
       margin-bottom: 10px;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
     }
 
-    .fade { opacity: 0; }
-    .tagline { margin-bottom: 20px; font-style: italic; }
+    .tagline {
+      margin-bottom: 20px;
+      font-style: italic;
+      color: #eee;
+    }
 
     footer.site-footer {
       text-align: center;
@@ -95,7 +95,7 @@
       border-radius: 10px;
       opacity: 1;
       transition: opacity 1s ease-in-out;
-      margin-left: 50px; /* Ajuste adicional si es necesario */
+      margin-left: 20px;
     }
 
     /* FORMULARIOS */
@@ -117,6 +117,7 @@
     .auth-forms h2 {
       text-align: center;
       margin-bottom: 1rem;
+      color: #fff;
     }
     .auth-forms input,
     .auth-forms button {
@@ -155,7 +156,7 @@
     <!-- IZQUIERDA -->
     <div class="left-column">
       <div class="hero-content">
-        <h1 id="logoText" class="logo font-grape">Momento</h1>
+        <h1 id="logoText">Momento</h1>
         <p class="tagline">Imágenes fugaces que desaparecen en 6h</p>
 
         <div class="auth-forms">
@@ -225,22 +226,6 @@
         localStorage.setItem('welcomeShown', 'true');
       });
 
-      // Animación de fuentes
-      const logo = document.getElementById("logoText");
-      const fonts = ["font-grape", "font-savate", "font-fraktur", "font-silkscreen"];
-      let index = 0;
-
-      setInterval(() => {
-        logo.classList.add("fade");
-
-        setTimeout(() => {
-          logo.classList.remove(...fonts);
-          logo.classList.add(fonts[index]);
-          logo.classList.remove("fade");
-          index = (index + 1) % fonts.length;
-        }, 500);
-      }, 2000);
-
       // Slideshow dinámico
       const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
       const slideshow = document.getElementById("slideshow-img");
@@ -265,6 +250,7 @@
   </script>
 </body>
 </html>
+
 
 
 
