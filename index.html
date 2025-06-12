@@ -88,19 +88,12 @@
       cursor: pointer;
     }
 
-    .image-gallery {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .image-gallery img {
+    /* Estilos para slideshow */
+    #slideshow-img {
       width: 250px;
       border-radius: 10px;
-      transition: transform 0.3s ease, filter 0.3s ease;
-    }
-    .image-gallery img:hover {
-      transform: scale(1.05);
-      filter: brightness(1.2) contrast(1.1);
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
     }
 
     /* FORMULARIOS */
@@ -188,14 +181,9 @@
       </div>
     </div>
 
-    <!-- DERECHA -->
+    <!-- DERECHA (Slideshow) -->
     <div class="right-column">
-      <div class="image-gallery">
-        <img src="img1.png" alt="Imagen 1" />
-        <img src="img2.png" alt="Imagen 2" />
-        <img src="img3.png" alt="Imagen 3" />
-        <img src="img4.png" alt="Imagen 4" />
-      </div>
+      <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
     </div>
   </div>
 
@@ -250,6 +238,20 @@
           index = (index + 1) % fonts.length;
         }, 500);
       }, 2000);
+
+      // Slideshow dinámico
+      const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
+      const slideshow = document.getElementById("slideshow-img");
+      let imgIndex = 0;
+
+      setInterval(() => {
+        slideshow.style.opacity = 0;
+        setTimeout(() => {
+          imgIndex = (imgIndex + 1) % images.length;
+          slideshow.src = images[imgIndex];
+          slideshow.style.opacity = 1;
+        }, 1000);
+      }, 4000);
     });
 
     function toggleForm() {
@@ -261,4 +263,5 @@
   </script>
 </body>
 </html>
+
 
