@@ -92,55 +92,57 @@
     }
 
     .hourglass {
-      position: absolute;
-      top: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    .hourglass-body {
-      position: relative;
-      width: 20px;
-      height: 40px;
-      border: 2px solid #fff;
-      border-radius: 10px;
-      overflow: hidden;
-    }
+.hourglass-body {
+  position: relative;
+  width: 30px;
+  height: 60px;
+  border: 2px solid #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  background: transparent;
+}
 
-    .sand-top, .sand-bottom {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      background: #f4d742;
-    }
+.sand-top, .sand-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background: #f4d742;
+}
 
-    .sand-top {
-      height: 50%;
-      animation: sandTopAnim 4s infinite linear;
-      top: 0;
-      transform-origin: bottom;
-    }
+.sand-top {
+  height: 50%;
+  animation: sandTopAnim 4s infinite linear;
+  top: 0;
+  transform-origin: bottom;
+}
 
-    .sand-bottom {
-      height: 0;
-      bottom: 0;
-      animation: sandBottomAnim 4s infinite linear;
-    }
+.sand-bottom {
+  height: 0%;
+  bottom: 0;
+  animation: sandBottomAnim 4s infinite linear;
+}
 
-    @keyframes sandTopAnim {
-      0% { height: 50%; }
-      100% { height: 0%; }
-    }
+@keyframes sandTopAnim {
+  0% { height: 50%; }
+  100% { height: 0%; }
+}
 
-    @keyframes sandBottomAnim {
-      0% { height: 0%; }
-      100% { height: 50%; }
-    }
+@keyframes sandBottomAnim {
+  0% { height: 0%; }
+  100% { height: 50%; }
+}
+
 
     .right-column {
       display: flex;
