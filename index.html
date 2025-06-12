@@ -23,6 +23,7 @@
       font-family: 'Parkinsans', sans-serif;
       background-color: #1E1E1E;
       color: #fff;
+      overflow-x: hidden;
     }
 
     /* Header global */
@@ -81,12 +82,64 @@
       margin: 0;
       line-height: 1.2;
       font-weight: normal;
+      position: relative;
     }
     .left-column h1 small {
       display: block;
       font-size: 1rem;
       margin-top: 10px;
       font-weight: 300;
+    }
+
+    .hourglass {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hourglass-body {
+      position: relative;
+      width: 20px;
+      height: 40px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .sand-top, .sand-bottom {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      background: #f4d742;
+    }
+
+    .sand-top {
+      height: 50%;
+      animation: sandTopAnim 4s infinite linear;
+      top: 0;
+      transform-origin: bottom;
+    }
+
+    .sand-bottom {
+      height: 0;
+      bottom: 0;
+      animation: sandBottomAnim 4s infinite linear;
+    }
+
+    @keyframes sandTopAnim {
+      0% { height: 50%; }
+      100% { height: 0%; }
+    }
+
+    @keyframes sandBottomAnim {
+      0% { height: 0%; }
+      100% { height: 50%; }
     }
 
     .right-column {
@@ -142,7 +195,15 @@
   <div class="layout-container">
     <!-- IZQUIERDA -->
     <div class="left-column">
-      <h1>Tus momentos reales.<br><small>Solo por un instante.</small></h1>
+      <div class="hourglass">
+        <div class="hourglass-body">
+          <div class="sand-top"></div>
+          <div class="sand-bottom"></div>
+        </div>
+      </div>
+      <h1>
+        Tus momentos reales.<br><small>Solo por un instante.</small>
+      </h1>
     </div>
 
     <!-- DERECHA -->
