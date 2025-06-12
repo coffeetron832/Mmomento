@@ -1,32 +1,18 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Momento</title>
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <title>Momento</title>  <!-- Favicon -->  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="shortcut icon" href="favicon.ico">
-
-  <!-- Fuente Parkinsans -->
-  <link href="https://fonts.googleapis.com/css2?family=Parkinsans&display=swap" rel="stylesheet">
-
-  <!-- Estilos externos -->
-  <link rel="stylesheet" href="css/styles.css" />
-
-  <!-- Estilos internos -->
-  <style>
+  <link rel="shortcut icon" href="favicon.ico">  <!-- Fuente Parkinsans -->  <link href="https://fonts.googleapis.com/css2?family=Parkinsans&display=swap" rel="stylesheet">  <!-- Estilos externos -->  <link rel="stylesheet" href="css/styles.css" />  <!-- Estilos internos -->  <style>
     body {
       margin: 0;
       font-family: 'Parkinsans', sans-serif;
       background-color: #1E1E1E;
       color: #fff;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
-    /* Header global */
     header.global-header {
       position: fixed;
       top: 0;
@@ -58,33 +44,41 @@
       background-color: rgba(67,127,199,0.8);
     }
 
-    .layout-container {
-      display: flex;
+    .main-hero {
       height: 100vh;
-      padding-top: 60px; /* espacio para header */
-    }
-
-    .left-column, .right-column {
-      flex: 1;
-      position: relative;
-    }
-
-    .left-column {
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 20px;
-      text-align: center;
+      justify-content: center;
+      position: relative;
+      padding-top: 60px;
     }
 
-    .left-column h1 {
+    #slideshow-img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .overlay-text {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .overlay-text h1 {
       font-size: 3rem;
       margin: 0;
-      line-height: 1.2;
       font-weight: normal;
-      position: relative;
     }
-    .left-column h1 small {
+
+    .overlay-text h1 small {
       display: block;
       font-size: 1rem;
       margin-top: 10px;
@@ -115,23 +109,6 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .right-column {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(2px);
-      padding: 20px;
-    }
-
-    /* Estilos para slideshow */
-    #slideshow-img {
-      width: 360px;
-      border-radius: 10px;
-      opacity: 1;
-      transition: opacity 1s ease-in-out;
-      margin-left: 20px;
-    }
-
     footer.site-footer {
       position: absolute;
       bottom: 0;
@@ -140,6 +117,7 @@
       padding: 10px 0;
       font-size: 0.9rem;
       color: #aaa;
+      z-index: 2;
     }
     footer.site-footer a {
       color: #aaa;
@@ -152,45 +130,31 @@
       text-decoration: underline;
       cursor: pointer;
     }
-  </style>
-</head>
-<body>
-
-  <!-- Header para toda la página -->
-  <header class="global-header">
+  </style></head>
+<body>  <header class="global-header">
     <h1>Momento</h1>
     <nav>
       <a href="login.html">Iniciar sesión</a>
       <a href="register.html">Registrarse</a>
     </nav>
-  </header>
+  </header>  <div class="main-hero">
+    <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" /><div class="overlay-text">
+  <h1>
+    Tus momentos reales.<br><small>Solo por un <span class="fade-pieces">
+      <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
+    </span>.</small>
+  </h1>
+</div>
 
-  <div class="layout-container">
-    <!-- IZQUIERDA -->
-    <div class="left-column">
-      <h1>
-        Tus momentos reales.<br><small>Solo por un <span class="fade-pieces">
-          <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
-        </span>.</small>
-      </h1>
-    </div>
+<footer class="site-footer">
+  <p>
+    <a href="privacidad.html">Política de Privacidad</a> ·
+    <a href="condiciones.html">Términos y Condiciones</a>
+  </p>
+</footer>
 
-    <!-- DERECHA -->
-    <div class="right-column">
-      <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
-
-      <footer class="site-footer">
-        <p>
-          <a href="privacidad.html">Política de Privacidad</a> ·
-          <a href="condiciones.html">Terminos y Condiciones</a>
-        </p>
-      </footer>
-    </div>
-  </div>
-
-  <script>
+  </div>  <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Slideshow dinámico
       const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
       const slideshow = document.getElementById("slideshow-img");
       let imgIndex = 0;
@@ -204,6 +168,5 @@
         }, 1000);
       }, 4000);
     });
-  </script>
-</body>
+  </script></body>
 </html>
