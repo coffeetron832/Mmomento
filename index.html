@@ -10,9 +10,12 @@
       font-family: 'Parkinsans', sans-serif;
       background-color: #1E1E1E;
       color: #fff;
-      overflow: hidden;
+      overflow-x: hidden;
+      padding-top: 60px;
+      text-align: center;
     }
 
+    /* Header global */
     header.global-header {
       position: fixed;
       top: 0;
@@ -28,7 +31,7 @@
     header.global-header h1 {
       font-size: 1.2rem;
       margin: 0;
-      margin-right: 20px;
+      margin-right: auto;
     }
     header.global-header nav a {
       margin-left: 10px;
@@ -44,41 +47,13 @@
       background-color: rgba(67,127,199,0.8);
     }
 
-    .main-hero {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      padding-top: 60px;
-    }
-
-    #slideshow-img {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      transition: opacity 1s ease-in-out;
-    }
-
-    .overlay-text {
-      position: relative;
-      z-index: 2;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .overlay-text h1 {
+    h1 {
       font-size: 3rem;
-      margin: 0;
+      margin-top: 40px;
       font-weight: normal;
     }
 
-    .overlay-text h1 small {
+    h1 small {
       display: block;
       font-size: 1rem;
       margin-top: 10px;
@@ -109,15 +84,22 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    #slideshow-container {
+      margin-top: 40px;
+    }
+
+    #slideshow-img {
+      width: 300px;
+      border-radius: 10px;
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
+    }
+
     footer.site-footer {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
+      margin-top: 30px;
       text-align: center;
-      padding: 10px 0;
       font-size: 0.9rem;
       color: #aaa;
-      z-index: 2;
     }
     footer.site-footer a {
       color: #aaa;
@@ -131,30 +113,26 @@
       cursor: pointer;
     }
   </style></head>
-<body>  <header class="global-header">
+<body>  <!-- Header para toda la página -->  <header class="global-header">
     <h1>Momento</h1>
     <nav>
       <a href="login.html">Iniciar sesión</a>
       <a href="register.html">Registrarse</a>
     </nav>
-  </header>  <div class="main-hero">
-    <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" /><div class="overlay-text">
-  <h1>
+  </header>  <!-- Texto principal -->  <h1>
     Tus momentos reales.<br><small>Solo por un <span class="fade-pieces">
       <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
     </span>.</small>
-  </h1>
-</div>
-
-<footer class="site-footer">
-  <p>
-    <a href="privacidad.html">Política de Privacidad</a> ·
-    <a href="condiciones.html">Términos y Condiciones</a>
-  </p>
-</footer>
-
-  </div>  <script>
+  </h1>  <!-- Slideshow -->  <div id="slideshow-container">
+    <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
+  </div>  <!-- Footer -->  <footer class="site-footer">
+    <p>
+      <a href="privacidad.html">Política de Privacidad</a> ·
+      <a href="condiciones.html">Términos y Condiciones</a>
+    </p>
+  </footer>  <script>
     document.addEventListener("DOMContentLoaded", () => {
+      // Slideshow dinámico
       const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
       const slideshow = document.getElementById("slideshow-img");
       let imgIndex = 0;
