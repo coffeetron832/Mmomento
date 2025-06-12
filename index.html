@@ -56,21 +56,10 @@
       text-align: center;
     }
 
-    .font-grape {
-      font-family: 'Grape Nuts', cursive;
-    }
-
-    .font-savate {
-      font-family: 'Savate', sans-serif;
-    }
-
-    .font-fraktur {
-      font-family: 'UnifrakturMaguntia', cursive;
-    }
-
-    .font-silkscreen {
-      font-family: 'Silkscreen', sans-serif;
-    }
+    .font-grape { font-family: 'Grape Nuts', cursive; }
+    .font-savate { font-family: 'Savate', sans-serif; }
+    .font-fraktur { font-family: 'UnifrakturMaguntia', cursive; }
+    .font-silkscreen { font-family: 'Silkscreen', sans-serif; }
 
     #logoText {
       transition: opacity 0.5s ease-in-out;
@@ -78,19 +67,8 @@
       margin-bottom: 10px;
     }
 
-    .fade {
-      opacity: 0;
-    }
-
-    .tagline {
-      margin-bottom: 20px;
-      font-style: italic;
-    }
-
-    .main-nav a {
-      display: inline-block;
-      margin: 0 10px;
-    }
+    .fade { opacity: 0; }
+    .tagline { margin-bottom: 20px; font-style: italic; }
 
     footer.site-footer {
       text-align: center;
@@ -98,14 +76,12 @@
       font-size: 0.9rem;
       color: #aaa;
     }
-
     footer.site-footer a {
       color: #aaa;
       text-decoration: none;
       margin: 0 8px;
       transition: color 0.3s ease;
     }
-
     footer.site-footer a:hover {
       color: #fff;
       text-decoration: underline;
@@ -117,16 +93,64 @@
       flex-direction: column;
       gap: 20px;
     }
-
     .image-gallery img {
       width: 250px;
       border-radius: 10px;
       transition: transform 0.3s ease, filter 0.3s ease;
     }
-
     .image-gallery img:hover {
       transform: scale(1.05);
       filter: brightness(1.2) contrast(1.1);
+    }
+
+    /* FORMULARIOS */
+    .auth-forms {
+      max-width: 360px;
+      margin: 0 auto;
+      transition: all 0.5s ease;
+    }
+    .form-card {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      transition: opacity 0.4s ease;
+    }
+    .form-card.active {
+      display: flex;
+      opacity: 1;
+    }
+    .auth-forms h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .auth-forms input,
+    .auth-forms button {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .auth-forms button {
+      background-color: #5a9bd8;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+    .auth-forms button:hover {
+      background-color: #437fc7;
+    }
+    .switch {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .switch a {
+      color: #5a9bd8;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .switch a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -139,10 +163,28 @@
         <h1 id="logoText" class="logo font-grape">Momento</h1>
         <p class="tagline">Imágenes fugaces que desaparecen en 6h</p>
 
-        <nav class="main-nav">
-          <a href="login.html" class="btn-frosted">Iniciar sesión</a>
-          <a href="register.html" class="btn-frosted">Registrarse</a>
-        </nav>
+        <div class="auth-forms">
+          <div class="form-card active" id="loginCard">
+            <h2>Iniciar sesión</h2>
+            <form id="loginForm">
+              <input type="email" placeholder="Correo" required />
+              <input type="password" placeholder="Contraseña" required />
+              <button type="submit">Entrar</button>
+            </form>
+            <p class="switch">¿No tienes cuenta? <a onclick="toggleForm()">Regístrate</a></p>
+          </div>
+
+          <div class="form-card" id="registerCard">
+            <h2>Crear cuenta</h2>
+            <form id="registerForm">
+              <input type="text" placeholder="Nombre" required />
+              <input type="email" placeholder="Correo" required />
+              <input type="password" placeholder="Contraseña" required />
+              <button type="submit">Registrarse</button>
+            </form>
+            <p class="switch">¿Ya tienes cuenta? <a onclick="toggleForm()">Inicia sesión</a></p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -209,6 +251,13 @@
         }, 500);
       }, 2000);
     });
+
+    function toggleForm() {
+      const login = document.getElementById("loginCard");
+      const register = document.getElementById("registerCard");
+      login.classList.toggle("active");
+      register.classList.toggle("active");
+    }
   </script>
 </body>
 </html>
