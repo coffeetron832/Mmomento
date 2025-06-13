@@ -1,10 +1,20 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Momento</title>  <!-- Favicon -->  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <title>Momento</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="shortcut icon" href="favicon.ico">  <!-- Fuentes -->  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Parkinsans&display=swap" rel="stylesheet">  <!-- Estilos externos -->  <link rel="stylesheet" href="css/styles.css" />  <!-- Estilos internos -->  <style>
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Parkinsans&display=swap" rel="stylesheet">
+
+  <!-- Estilos internos -->
+  <style>
     body {
       margin: 0;
       font-family: 'Parkinsans', sans-serif;
@@ -14,7 +24,7 @@
       overflow-x: hidden;
     }
 
-    /* Header global transparente */
+    /* Header global */
     header.global-header {
       position: fixed;
       top: 0;
@@ -27,26 +37,43 @@
       background: transparent;
       z-index: 100;
     }
+
     header.global-header h1 {
       font-size: 1.2rem;
       margin: 0;
-      margin-right: 20px;
-      color: #fff;
+      margin-right: auto;
+      color: white;
     }
+
     header.global-header nav a {
       margin-left: 10px;
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
       border-radius: 6px;
       text-decoration: none;
-      color: #28a745;
-      border: 2px solid #28a745;
-      background: transparent;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: all 0.3s ease;
     }
-    header.global-header nav a:hover {
-      background-color: rgba(40,167,69,0.1);
-      color: #fff;
+
+    /* Botón Iniciar sesión: solo texto blanco */
+    header.global-header nav a[href="login.html"] {
+      color: white;
+      background: transparent;
+      border: none;
+    }
+
+    header.global-header nav a[href="login.html"]:hover {
+      text-decoration: underline;
+    }
+
+    /* Botón Registrarse: verde con texto blanco */
+    header.global-header nav a[href="register.html"] {
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+    }
+
+    header.global-header nav a[href="register.html"]:hover {
+      background-color: #27ae60;
     }
 
     .content-wrapper {
@@ -59,6 +86,7 @@
       font-size: 3rem;
       margin: 0;
     }
+
     .main-text small {
       display: block;
       font-size: 1rem;
@@ -105,45 +133,55 @@
       font-size: 0.9rem;
       color: #aaa;
     }
+
     footer.site-footer a {
       color: #aaa;
       text-decoration: none;
       margin: 0 8px;
       transition: color 0.3s ease;
     }
+
     footer.site-footer a:hover {
       color: #fff;
       text-decoration: underline;
       cursor: pointer;
     }
-  </style></head>
-<body>  <!-- Header para toda la página -->  <header class="global-header">
+  </style>
+</head>
+<body>
+  <!-- Header para toda la página -->
+  <header class="global-header">
     <h1>Momento</h1>
     <nav>
       <a href="login.html">Iniciar sesión</a>
       <a href="register.html">Registrarse</a>
     </nav>
-  </header>  <!-- Contenido principal -->  <div class="content-wrapper">
+  </header>
+
+  <!-- Contenido principal -->
+  <div class="content-wrapper">
     <div class="main-text">
       <h1>
         Tus momentos reales.<br><small>Solo por un <span class="fade-pieces">
           <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
         </span>.</small>
       </h1>
-    </div><!-- Slideshow -->
-<img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
+    </div>
 
-<!-- Footer -->
-<footer class="site-footer">
-  <p>
-    <a href="privacidad.html">Política de Privacidad</a> ·
-    <a href="condiciones.html">Términos y Condiciones</a>
-  </p>
-</footer>
+    <!-- Slideshow -->
+    <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
 
-  </div>  <script>
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>
+        <a href="privacidad.html">Política de Privacidad</a> ·
+        <a href="condiciones.html">Términos y Condiciones</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Slideshow dinámico
       const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
       const slideshow = document.getElementById("slideshow-img");
       let imgIndex = 0;
@@ -157,5 +195,6 @@
         }, 1000);
       }, 4000);
     });
-  </script></body>
+  </script>
+</body>
 </html>
