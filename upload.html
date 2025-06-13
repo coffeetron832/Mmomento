@@ -12,7 +12,6 @@
       --btn-hover: #e0e0e0;
       --btn-text: #111;
     }
-
     .dark-mode {
       --btn-bg: #333;
       --btn-hover: #444;
@@ -20,152 +19,101 @@
       background-color: #121212;
       color: #f0f0f0;
     }
-
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fff;
-      color: #111;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      margin: 0; padding: 0;
+      background-color: #fff; color: #111;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    /* Header fijo */
+    /* Header fijo con título centrado */
     header.site-header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background-color: inherit;
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      position: fixed; top: 0; width: 100%;
+      background-color: inherit; padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       z-index: 1001;
+      display: flex; justify-content: center;
     }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
     header.site-header h2 {
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .header-buttons {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .btn-small {
-      font-size: 0.875rem;
-      padding: 0.5rem 0.75rem;
-      border: none;
-      border-radius: 6px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background-color: var(--btn-bg);
-      color: var(--btn-text);
-      transition: background-color 0.3s ease, transform 0.1s ease;
-      cursor: pointer;
-    }
-
-    .btn-small:hover {
-      background-color: var(--btn-hover);
-      transform: scale(1.05);
-    }
-
-    .icon-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    @media (max-width: 600px) {
-      .btn-text {
-        display: none;
-      }
-      .btn-icon {
-        display: inline;
-        font-size: 1.2rem;
-      }
-    }
-
-    @media (min-width: 601px) {
-      .btn-icon {
-        display: none;
-      }
+      margin: 0; font-size: 1.5rem; font-weight: 600;
     }
 
     main {
-      padding-top: 6rem;
+      padding-top: 4rem; /* espacio para header */
     }
 
-    .switch-container {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 999;
-      transform: scale(0.3);
-      transform-origin: bottom left;
-    }
-
+    /* Contenedor de imágenes centradas */
     #imagesContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 2rem;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 1rem;
+      margin: 2rem auto;
+      max-width: 600px;
+    }
+    .images-grid img {
+      width: 100%; border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
-    .images-grid img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Botones laterales a la derecha */
+    .side-buttons {
+      position: fixed; top: 50%; right: 1rem;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 1rem;
+      z-index: 1000;
+    }
+    .side-buttons .btn-small {
+      font-size: 0.875rem; padding: 0.5rem 0.75rem;
+      border: none; border-radius: 6px;
+      background-color: var(--btn-bg); color: var(--btn-text);
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: background-color 0.3s, transform 0.1s;
+      cursor: pointer;
+    }
+    .side-buttons .btn-small:hover {
+      background-color: var(--btn-hover); transform: scale(1.05);
+    }
+    .icon-btn { display: flex; align-items: center; gap: 0.4rem; }
+    @media (max-width: 600px) {
+      .btn-text { display: none; }
+      .btn-icon { font-size: 1.2rem; display: inline; }
+    }
+    @media (min-width: 601px) {
+      .btn-icon { display: none; }
+    }
+
+    /* Switch modo oscuro */
+    .switch-container {
+      position: fixed; bottom: 20px; left: 20px;
+      z-index: 999; transform: scale(0.3);
+      transform-origin: bottom left;
     }
   </style>
 </head>
 <body class="upload-page">
 
-  <!-- Header con título y botones -->
+  <!-- Header con título centrado -->
   <header class="site-header">
-    <div class="header-content">
-      <h2>Últimos Momentos 📸</h2>
-      <div class="header-buttons">
-        <button id="toggleUploadBtn" class="btn btn-small icon-btn" title="Subir imagen" aria-label="Subir imagen">
-          <span class="btn-text">Subir imagen</span>
-          <span class="btn-icon" aria-hidden="true">📤</span>
-        </button>
-        <button id="logoutBtn" class="btn btn-small icon-btn btn-logout" title="Cerrar sesión" aria-label="Cerrar sesión">
-          <span class="btn-text">Cerrar sesión</span>
-          <span class="btn-icon" aria-hidden="true">🚪</span>
-        </button>
-      </div>
-    </div>
+    <h2>Últimos Momentos 📸</h2>
   </header>
 
-  <!-- Formulario de subida -->
+  <!-- Formulario de subida oculto -->
   <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true" style="display: none;">
-    <form id="uploadForm" autocomplete="off" aria-label="Formulario para subir imágenes" method="POST" enctype="multipart/form-data">
+    <form id="uploadForm" autocomplete="off" method="POST" enctype="multipart/form-data">
       <fieldset class="upload-section">
         <label for="image">Selecciona imagen:</label>
         <input type="file" id="image" name="image" accept="image/*" required />
       </fieldset>
       <fieldset class="upload-section">
         <label for="description">Descripción:</label>
-        <input type="text" id="description" name="description" placeholder="Escribe una descripción..." maxlength="100" />
+        <input type="text" id="description" name="description" maxlength="100" placeholder="Escribe una descripción..." />
       </fieldset>
       <fieldset class="upload-section">
-        <label for="duration">Duración de visibilidad:</label>
+        <label for="duration">Duración:</label>
         <select id="duration" name="duration" required>
-          <option value="30">30 minutos</option>
-          <option value="60" selected>1 hora</option>
-          <option value="180">3 horas</option>
-          <option value="360">6 horas</option>
+          <option value="30">30 min</option>
+          <option value="60" selected>1 h</option>
+          <option value="180">3 h</option>
+          <option value="360">6 h</option>
         </select>
       </fieldset>
       <fieldset class="upload-section">
@@ -176,22 +124,34 @@
         </select>
       </fieldset>
       <fieldset id="circleSelectorContainer" class="upload-section" aria-hidden="true" style="display: none;">
-        <label for="circles">Selecciona círculos:</label>
-        <select id="circles" name="circles" multiple size="3" aria-multiselectable="true" aria-describedby="circleHelp"></select>
-        <small id="circleHelp">Ctrl + clic para seleccionar varios</small>
+        <label for="circles">Círculos:</label>
+        <select id="circles" name="circles" multiple size="3"></select>
+        <small>Ctrl + clic para varios</small>
       </fieldset>
       <button type="submit" class="btn btn-frosted">Subir Momento</button>
     </form>
   </section>
 
-  <!-- Línea de tiempo -->
-  <main id="timeline" role="main" tabindex="0">
+  <!-- Galería de imágenes -->
+  <main id="timeline" role="main">
     <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
 
+  <!-- Botones lado derecho -->
+  <div class="side-buttons">
+    <button id="toggleUploadBtn" class="btn btn-small icon-btn" title="Subir imagen">
+      <span class="btn-text">Subir imagen</span>
+      <span class="btn-icon" aria-hidden="true">📤</span>
+    </button>
+    <button id="logoutBtn" class="btn btn-small icon-btn btn-logout" title="Cerrar sesión">
+      <span class="btn-text">Cerrar sesión</span>
+      <span class="btn-icon" aria-hidden="true">🚪</span>
+    </button>
+  </div>
+
   <!-- Switch modo oscuro -->
   <div class="switch-container">
-    <label class="switch" title="Modo oscuro">
+    <label class="switch">
       <input type="checkbox" id="toggleCheckbox" />
       <span class="button">
         <span class="light"></span>
@@ -203,10 +163,8 @@
     </label>
   </div>
 
-  <!-- Script principal -->
+  <!-- Scripts -->
   <script src="js/upload.js"></script>
-
-  <!-- Script inline para controles de interfaz -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const toggleBtn = document.getElementById('toggleUploadBtn');
@@ -217,27 +175,21 @@
       const toggleCheckbox = document.getElementById('toggleCheckbox');
       const body = document.body;
 
-      // Mostrar/ocultar formulario de subida
+      // Mostrar/ocultar formulario
       toggleBtn.addEventListener('click', () => {
-        const isVisible = formContainer.classList.contains('show');
-        formContainer.classList.toggle('show');
-        formContainer.style.display = isVisible ? 'none' : 'block';
-        formContainer.setAttribute('aria-hidden', isVisible.toString());
-        toggleBtn.setAttribute('aria-expanded', (!isVisible).toString());
+        const isVisible = formContainer.classList.toggle('show');
+        formContainer.style.display = isVisible ? 'block' : 'none';
+        formContainer.setAttribute('aria-hidden', (!isVisible).toString());
       });
 
-      // Cambiar visibilidad a círculos
-      const updateCircles = () => {
-        const show = visibilitySelect.value === 'circle';
-        circleSelector.style.display = show ? 'block' : 'none';
-        circleSelector.setAttribute('aria-hidden', (!show).toString());
-      };
+      // Selector de círculos
+      visibilitySelect.addEventListener('change', () => {
+        circleSelector.style.display = visibilitySelect.value === 'circle' ? 'block' : 'none';
+        circleSelector.setAttribute('aria-hidden', visibilitySelect.value !== 'circle');
+      });
 
-      visibilitySelect.addEventListener('change', updateCircles);
-      updateCircles();
-
-      // Botón cerrar sesión
-      logoutBtn.addEventListener('click', (e) => {
+      // Cerrar sesión
+      logoutBtn.addEventListener('click', e => {
         e.preventDefault();
         localStorage.clear();
         window.location.href = 'index.html';
@@ -246,9 +198,14 @@
       // Modo oscuro
       toggleCheckbox.addEventListener('change', () => {
         body.classList.toggle('dark-mode', toggleCheckbox.checked);
+        localStorage.setItem('darkMode', toggleCheckbox.checked);
       });
+      // Restaurar estado
+      if (localStorage.getItem('darkMode') === 'true') {
+        toggleCheckbox.checked = true;
+        body.classList.add('dark-mode');
+      }
     });
   </script>
 </body>
 </html>
-
