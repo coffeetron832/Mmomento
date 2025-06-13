@@ -14,7 +14,7 @@
       overflow-x: hidden;
     }
 
-    /* Header global */
+    /* Header global transparente */
     header.global-header {
       position: fixed;
       top: 0;
@@ -24,13 +24,14 @@
       justify-content: flex-end;
       align-items: center;
       padding: 10px 20px;
-      background: rgba(0,0,0,0.5);
+      background: transparent;
       z-index: 100;
     }
     header.global-header h1 {
       font-size: 1.2rem;
       margin: 0;
       margin-right: 20px;
+      color: #fff;
     }
     header.global-header nav a {
       margin-left: 10px;
@@ -38,12 +39,14 @@
       font-size: 0.9rem;
       border-radius: 6px;
       text-decoration: none;
-      color: #fff;
-      background-color: rgba(90,155,216,0.8);
-      transition: background-color 0.3s ease;
+      color: #28a745;
+      border: 2px solid #28a745;
+      background: transparent;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
     header.global-header nav a:hover {
-      background-color: rgba(67,127,199,0.8);
+      background-color: rgba(40,167,69,0.1);
+      color: #fff;
     }
 
     .content-wrapper {
