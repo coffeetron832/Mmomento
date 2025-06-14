@@ -78,7 +78,7 @@
   <div id="soulprint" class="container" style="display:none;">
     <div id="soulcolorBar" class="soulcolor-bar"></div>
     <div class="content">
-      <img id="profileImage" class="profile-img" src="/default-avatar.png" alt="Foto de perfil" />
+      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/100?text=Avatar" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay"></div>
       <div class="phrase" id="soulPhraseDisplay"></div>
       <img id="momentImage" class="moment-img" src="" alt="Momento anclado" />
@@ -100,7 +100,7 @@
         return;
       }
 
-      fetch(`/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
+      fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
         .then(res => res.json().then(data => ({status: res.status, body: data})))
         .then(({status, body}) => {
           if (status !== 200) {
