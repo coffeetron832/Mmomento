@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar Soulprint</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fafafa;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin: 1rem 0 0.3rem;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+
+    input[type="color"] {
+      padding: 0;
+      height: 40px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      background-color: #6c63ff;
+      color: white;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .preview {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 100px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Editar tu Soulprint</h2>
+    <form id="soulprintForm">
+      <label for="profileImage">URL de imagen de perfil</label>
+      <input type="text" id="profileImage" name="profileImage" placeholder="https://..."/>
+
+      <div class="preview">
+        <img id="profilePreview" src="/default-avatar.png" alt="Previsualización"/>
+      </div>
+
+      <label for="soulPhrase">Frase del alma</label>
+      <textarea id="soulPhrase" name="soulPhrase" rows="2" maxlength="100" placeholder="Ej: Veo poesía en lo efímero"></textarea>
+
+      <label for="soulColor">Color del alma</label>
+      <input type="color" id="soulColor" name="soulColor" />
+
+      <label for="pinnedMoment">ID del momento anclado</label>
+      <input type="text" id="pinnedMoment" name="pinnedMoment" placeholder="ID de tu imagen"/>
+
+      <button type="submit">Guardar cambios</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('soulprintForm');
+    const preview = document.getElementById('profilePreview');
+    const token = localStorage.getItem('token'); // JWT guardado tras login
+
+    // Previsualizar imagen
+    document.getElementById('profileImage').addEventListener('input', e => {
+      const url = e.target.value;
+      if (url) preview.src = url;
+    });
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const data = {
+        profileImage: form.profileImage.value,
+        soulPhrase: form.soulPhrase.value,
+        soulColor: form.soulColor.value,
+        pinnedMoment: form.pinnedMoment.value
+      };
+
+      try {
+        const res = await fetch('/api/users/soulprint', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          alert('Soulprint actualizado 🦋');
+        } else {
+          alert(result.message || 'Error al actualizar');
+        }
+      } catch (err) {
+        alert('Error de red');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
