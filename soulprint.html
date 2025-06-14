@@ -54,7 +54,13 @@
       const params = new URLSearchParams(window.location.search);
       const usernameParam = params.get('user');
       const token = localStorage.getItem('token');
-      const loggedUser = localStorage.getItem('username');
+      const storedUser = localStorage.getItem('user');
+      let loggedUser = null;
+      if (storedUser && storedUser !== 'undefined') {
+        try {
+          loggedUser = JSON.parse(storedUser).username;
+        } catch {}
+      }
       const payload = decodeToken(token);
       const soulEl = document.getElementById('soulprint');
       const errorEl = document.getElementById('errorMessage');
