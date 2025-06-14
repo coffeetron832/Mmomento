@@ -5,12 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const imagesContainer = document.getElementById("imagesContainer");
   const token = localStorage.getItem("token");
 
-  // 🌙 Aplicar modo oscuro si está activado en localStorage
+  // 🌙 Aplicar modo oscuro
   const darkValue = localStorage.getItem('darkMode');
   const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
   if (isDarkStored) document.body.classList.add('dark-mode');
 
-  // 🔘 Switch modo oscuro (id correcto desde upload.html es "darkModeToggle")
+  // 🔘 Switch modo oscuro
   const toggleCheckbox = document.getElementById('darkModeToggle');
   if (toggleCheckbox) {
     toggleCheckbox.checked = isDarkStored;
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 👋 Modal de bienvenida (solo si existe en el HTML)
+  // 👋 Modal de bienvenida
   const hasSeenModal = sessionStorage.getItem('hasSeenModal') === 'true';
   const modal = document.getElementById('welcomeModal');
   const closeModalBtn = document.getElementById('closeModalBtn');
@@ -28,16 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = 'flex';
     sessionStorage.setItem('hasSeenModal', 'true');
   }
-  if (closeModalBtn) {
-    closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
-  }
+  if (closeModalBtn) closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
 
-  // ⚙️ Enlace a Soulprint dinámico
+  // ⚙️ Enlace a Soulprint
   const soulprintBtn = document.getElementById('soulprintBtn');
   const username = localStorage.getItem('username');
-  if (soulprintBtn && username) {
-    soulprintBtn.href = `/soulprint.html?user=${username}`;
-  }
+  if (soulprintBtn && username) soulprintBtn.href = `/soulprint.html?user=${username}`;
 
   // 👤 Usuario
   let user = {};
@@ -52,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
 
-  // 👁 Mostrar selector de círculos según visibilidad
+  // 👁 Mostrar selector de círculos
   const visibilitySelect = document.getElementById('visibility');
   const circleContainer = document.getElementById('circleSelectorContainer');
   if (visibilitySelect && circleContainer) {
@@ -68,22 +64,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🪄 Botón subir imagen
   const toggleUploadBtn = document.getElementById('toggleUploadBtn');
-  if (toggleUploadBtn) {
+  const formContainer = document.getElementById('uploadFormContainer');
+  if (toggleUploadBtn && formContainer) {
     toggleUploadBtn.addEventListener('click', () => {
-      const formContainer = document.getElementById('uploadFormContainer');
+      // Remover foco antes de ocultar para accesibilidad
+      if (formContainer.style.display === 'block') {
+        document.activeElement.blur();
+      }
       const isVisible = formContainer.style.display === 'block';
       formContainer.style.display = isVisible ? 'none' : 'block';
+      formContainer.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
     });
   }
 
   // 🔓 Cerrar sesión
   const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      localStorage.clear();
-      window.location.href = 'login.html';
-    });
-  }
+  if (logoutBtn) logoutBtn.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  });
 
   // 🚫 Redirigir si no autenticado
   if (!token) {
@@ -96,28 +95,29 @@ document.addEventListener("DOMContentLoaded", () => {
   if (form) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      const file = document.getElementById('image');
-      if (!file.files.length) {
+      const fileInput = document.getElementById('image');
+      if (!fileInput || !fileInput.files.length) {
         alert('Selecciona una imagen');
         return;
       }
-      const data = new FormData(form);
+      const formData = new FormData(form);
       try {
         const res = await fetch(
           'https://momento-backend-production.up.railway.app/api/images/',
-          { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: data }
+          { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData }
         );
         const result = await res.json();
-        if (res.ok) {
-          alert('Imagen subida con éxito');
-          form.reset();
-          imagesContainer.prepend(createImageCard(result));
-          if (circleContainer) circleContainer.style.display = 'none';
-        } else {
-          alert(result.error || 'Error al subir la imagen');
+        if (!res.ok) {
+          console.error('Error servidor:', result);
+          alert(result.error || result.message || 'Error al subir la imagen');
+          return;
         }
-      } catch (e) {
-        console.error('Error en subida de imagen:', e);
+        alert('Imagen subida con éxito');
+        form.reset();
+        imagesContainer.prepend(createImageCard(result));
+        if (circleContainer) circleContainer.style.display = 'none';
+      } catch (err) {
+        console.error('Error en subida de imagen:', err);
         alert('Error en la subida de la imagen');
       }
     });
@@ -243,4 +243,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadImages();
   window.loadUserCircles = loadUserCircles;
 });
+
 
