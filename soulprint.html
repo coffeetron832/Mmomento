@@ -1,152 +1,135 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Soulprint</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Soulprint | Momento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=DM+Serif+Display&display=swap');
-
     body {
       margin: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(135deg, #ece9f2, #fdfdfd);
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 1rem;
     }
-
     .container {
-      position: relative;
-      max-width: 360px;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 400px;
       width: 100%;
-      background: white;
-      border-radius: 2rem;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+    }
+    .soulcolor-bar {
+      height: 8px;
+      width: 100%;
+      background-color: #aaa;
+    }
+    .content {
       padding: 2rem;
       text-align: center;
-      transition: transform 0.3s;
     }
-
-    .container:hover {
-      transform: scale(1.01);
-    }
-
-    .halo {
-      position: absolute;
-      top: -20px; left: -20px;
-      right: -20px; bottom: -20px;
-      background: var(--soul-color, #aaa);
-      filter: blur(40px);
-      z-index: -1;
-      border-radius: 2rem;
-      opacity: 0.5;
-    }
-
     .profile-img {
-      width: 110px;
-      height: 110px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       object-fit: cover;
       border: 4px solid #fff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      margin-top: -80px;
-      background-color: #ccc;
+      margin-top: -60px;
+      background: #ccc;
     }
-
     .username {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.6rem;
-      margin-top: 1rem;
-      color: #333;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 1rem 0 0.5rem;
     }
-
     .phrase {
       font-style: italic;
       color: #666;
-      margin: 0.5rem 0 1rem;
+      margin-bottom: 1rem;
     }
-
     .moment-img {
       width: 100%;
-      max-height: 220px;
+      max-height: 250px;
       object-fit: cover;
-      border-radius: 1rem;
+      border-radius: 0.5rem;
       margin-top: 1rem;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+      display: none;
     }
-
     .butterflies {
+      margin-top: 1rem;
       font-size: 0.9rem;
       color: #888;
-      margin-top: 1rem;
     }
-
     .error {
       text-align: center;
       color: crimson;
-      margin-top: 3rem;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
+      padding: 2rem;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="soulprint" style="display: none;">
-    <div class="halo" id="haloEffect"></div>
-    <img id="profileImage" class="profile-img" src="" alt="Foto de perfil" />
-    <div class="username" id="usernameDisplay"></div>
-    <div class="phrase" id="soulPhraseDisplay"></div>
-    <img id="momentImage" class="moment-img" src="" alt="Momento anclado" style="display: none;" />
-    <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
+  <div id="soulprint" class="container" style="display:none;">
+    <div id="soulcolorBar" class="soulcolor-bar"></div>
+    <div class="content">
+      <img id="profileImage" class="profile-img" src="/default-avatar.png" alt="Foto de perfil" />
+      <div class="username" id="usernameDisplay"></div>
+      <div class="phrase" id="soulPhraseDisplay"></div>
+      <img id="momentImage" class="moment-img" src="" alt="Momento anclado" />
+      <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
+    </div>
   </div>
-
-  <div id="errorMessage" class="error" style="display:none;">
-    Soulprint no encontrado 😢
-  </div>
+  <div id="errorMessage" class="error" style="display:none;">Soulprint no encontrado 😢</div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('user');
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const usernameParam = params.get('user');
+      const errorEl = document.getElementById('errorMessage');
+      const soulEl = document.getElementById('soulprint');
 
-    async function loadSoulprint() {
-      if (!username) {
-        document.getElementById('errorMessage').innerText = "Falta el nombre de usuario en la URL";
-        document.getElementById('errorMessage').style.display = "block";
+      if (!usernameParam) {
+        errorEl.textContent = 'Falta el nombre de usuario en la URL';
+        errorEl.style.display = 'block';
         return;
       }
 
-      try {
-        const res = await fetch(`/api/users/soulprint/${username}`);
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message || "Error al obtener Soulprint");
-        }
-
-        const { soulprint } = data;
-
-        document.getElementById('profileImage').src = soulprint.profileImage || '/default-avatar.png';
-        document.getElementById('usernameDisplay').innerText = '@' + data.username;
-        document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
-        document.getElementById('haloEffect').style.setProperty('--soul-color', soulprint.soulColor || '#aaa');
-
-        if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
-          const momentImage = document.getElementById('momentImage');
-          momentImage.src = soulprint.pinnedMoment.url;
-          momentImage.style.display = 'block';
-        }
-
-        document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
-        document.getElementById('soulprint').style.display = 'block';
-      } catch (err) {
-        console.error(err);
-        document.getElementById('errorMessage').style.display = 'block';
-      }
-    }
-
-    loadSoulprint();
+      fetch(`/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
+        .then(res => res.json().then(data => ({status: res.status, body: data})))
+        .then(({status, body}) => {
+          if (status !== 200) {
+            errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
+            errorEl.style.display = 'block';
+            return;
+          }
+          const { username, soulprint } = body;
+          document.getElementById('usernameDisplay').innerText = '@' + username;
+          document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
+          document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
+          if (soulprint.profileImage) {
+            document.getElementById('profileImage').src = soulprint.profileImage;
+          }
+          if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
+            const m = document.getElementById('momentImage');
+            m.src = soulprint.pinnedMoment.url;
+            m.style.display = 'block';
+          }
+          document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
+          soulEl.style.display = 'block';
+        })
+        .catch(err => {
+          console.error('Error al cargar Soulprint:', err);
+          errorEl.textContent = 'Error al obtener Soulprint';
+          errorEl.style.display = 'block';
+        });
+    });
   </script>
 </body>
 </html>
+
