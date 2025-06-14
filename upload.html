@@ -203,7 +203,13 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const soulprintBtn = document.getElementById('soulprintBtn');
-      const username = localStorage.getItem('username');
+      let username = null;
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          username = JSON.parse(storedUser).username;
+        }
+      } catch {}
       if (soulprintBtn && username) {
         soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
       } else if (soulprintBtn) {
