@@ -167,7 +167,7 @@
     const username = "usuarioEjemplo"; // En producción, reemplaza con el real desde tu lógica de sesión
     document.getElementById('previewUsername').innerText = '@' + username;
 
-    // Vista previa imagen de perfil
+    // Vista previa de la imagen de perfil
     profileImageInput.addEventListener('change', e => {
       const file = e.target.files[0];
       if (file) {
@@ -177,17 +177,17 @@
       }
     });
 
-    // Vista previa frase
+    // Vista previa de la frase
     soulPhrase.addEventListener('input', () => {
       previewPhrase.innerText = soulPhrase.value || "Tu frase aparecerá aquí...";
     });
 
-    // Vista previa color del alma
+    // Vista previa del color del alma
     soulColor.addEventListener('input', () => {
       halo.style.setProperty('--soul-color', soulColor.value);
     });
 
-    // Llenar momentos de prueba (en producción, haz fetch a tu API `/api/users/moments`)
+    // Simular carga de momentos del usuario (luego haz fetch a tu API `/api/users/moments`)
     const userMoments = [
       { id: '1', url: 'https://picsum.photos/seed/1/400/250' },
       { id: '2', url: 'https://picsum.photos/seed/2/400/250' },
@@ -195,17 +195,17 @@
     ];
     userMoments.forEach(m => {
       const opt = document.createElement('option');
-      opt.value = m.id;          // usa el ID real en producción
-      opt.dataset.url = m.url;   // guardamos la URL en data-attribute
+      opt.value = m.id;               // en producción usa el ID real
+      opt.dataset.url = m.url;        // guardamos la URL en data-attribute
       opt.textContent = `Momento #${m.id}`;
       pinnedMoment.appendChild(opt);
     });
 
-    // Vista previa momento anclado
+    // Vista previa del momento anclado
     pinnedMoment.addEventListener('change', () => {
-      const selected = pinnedMoment.selectedOptions[0];
-      if (selected && selected.value) {
-        previewMoment.src = selected.dataset.url;
+      const sel = pinnedMoment.selectedOptions[0];
+      if (sel && sel.value) {
+        previewMoment.src = sel.dataset.url;
         previewMoment.style.display = 'block';
       } else {
         previewMoment.style.display = 'none';
@@ -217,13 +217,12 @@
       e.preventDefault();
       responseMessage.textContent = '';
       const formData = new FormData(form);
+      const token = localStorage.getItem('token');
 
       try {
         const res = await fetch('/api/users/soulprint', {
           method: 'PUT',
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token')
-          },
+          headers: { Authorization: 'Bearer ' + token },
           body: formData
         });
 
@@ -240,4 +239,5 @@
   </script>
 </body>
 </html>
+
 
