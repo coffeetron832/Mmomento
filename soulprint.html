@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Soulprint</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    .soulcolor-bar {
+      height: 10px;
+      width: 100%;
+    }
+
+    .content {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: -60px;
+      background: #ccc;
+    }
+
+    .username {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 1rem 0 0.3rem;
+    }
+
+    .phrase {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .moment-img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .butterflies {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      color: #888;
+    }
+
+    .error {
+      text-align: center;
+      color: crimson;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="soulprint" class="container" style="display:none;">
+    <div id="soulcolorBar" class="soulcolor-bar"></div>
+    <div class="content">
+      <img id="profileImage" class="profile-img" src="" alt="Foto de perfil" />
+      <div class="username" id="usernameDisplay"></div>
+      <div class="phrase" id="soulPhraseDisplay"></div>
+      <img id="momentImage" class="moment-img" src="" alt="Momento anclado" style="display: none;" />
+      <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
+    </div>
+  </div>
+
+  <div id="errorMessage" class="error" style="display:none;">
+    Soulprint no encontrado 😢
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('user');
+
+    async function loadSoulprint() {
+      if (!username) {
+        document.getElementById('errorMessage').innerText = "Falta el nombre de usuario en la URL";
+        document.getElementById('errorMessage').style.display = "block";
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/users/soulprint/${username}`);
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || "Error al obtener Soulprint");
+        }
+
+        const { soulprint } = data;
+
+        document.getElementById('profileImage').src = soulprint.profileImage || '/default-avatar.png';
+        document.getElementById('usernameDisplay').innerText = '@' + data.username;
+        document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
+        document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
+
+        if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
+          const momentImage = document.getElementById('momentImage');
+          momentImage.src = soulprint.pinnedMoment.url;
+          momentImage.style.display = 'block';
+        }
+
+        // Futuro: Cargar mariposas reales
+        document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
+
+        document.getElementById('soulprint').style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        document.getElementById('errorMessage').style.display = 'block';
+      }
+    }
+
+    loadSoulprint();
+  </script>
+</body>
+</html>
