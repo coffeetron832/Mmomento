@@ -65,36 +65,7 @@
       background-color: #3730a3;
     }
 
-    main {
-      padding-top: 5rem;
-    }
-
-    .floating-buttons {
-      position: fixed;
-      top: 50%;
-      right: 1.5rem;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 1000;
-    }
-
-    .floating-buttons .btn {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      background-color: var(--btn-bg);
-      color: var(--btn-text);
-      border: none;
-      border-radius: 6px;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-    }
-
-    .floating-buttons .btn:hover {
-      background-color: var(--btn-hover);
-      transform: scale(1.05);
-    }
+    main { padding-top: 5rem; }
 
     .upload-form-container {
       padding: 2rem;
@@ -142,6 +113,33 @@
       padding: 1rem;
     }
 
+    .floating-buttons {
+      position: fixed;
+      top: 50%;
+      right: 1.5rem;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 1000;
+    }
+
+    .floating-buttons .btn {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    .floating-buttons .btn:hover {
+      background-color: var(--btn-hover);
+      transform: scale(1.05);
+    }
+
     .switch-container {
       position: fixed;
       bottom: 1rem;
@@ -153,7 +151,7 @@
 
   <header class="site-header">
     <h2>Últimos Momentos 📸</h2>
-    <a id="soulprintBtn" href="soulprint.html" class="soulprint-link">Mi Soulprint</a>
+    <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
   </header>
 
   <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
@@ -202,6 +200,20 @@
   </div>
 
   <script src="js/upload.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const soulprintBtn = document.getElementById('soulprintBtn');
+      const username = localStorage.getItem('username');
+      if (soulprintBtn && username) {
+        soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
+      } else if (soulprintBtn) {
+        soulprintBtn.addEventListener('click', e => {
+          e.preventDefault();
+          alert('Debes iniciar sesión para ver tu Soulprint');
+          window.location.href = 'login.html';
+        });
+      }
+    });
+  </script>
 </body>
 </html>
-
