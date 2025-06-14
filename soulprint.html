@@ -13,6 +13,21 @@
       color: #333;
       display: flex;
       justify-content: center;
+      align-items: center;<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Soulprint | Momento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      display: flex;
+      justify-content: center;
       align-items: center;
       min-height: 100vh;
       padding: 1rem;
@@ -72,12 +87,35 @@
       font-size: 1.1rem;
       padding: 2rem;
     }
+    .edit-form input,
+    .edit-form textarea {
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+    .edit-form button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div id="soulprint" class="container" style="display:none;">
     <div id="soulcolorBar" class="soulcolor-bar"></div>
     <div class="content">
+      <form id="editForm" class="edit-form">
+        <input type="file" id="profileImageInput" accept="image/*" />
+        <input type="color" id="soulColorInput" />
+        <textarea id="soulPhraseInput" rows="2" placeholder="Escribe tu frase..."></textarea>
+        <button type="submit">Actualizar</button>
+      </form>
       <img id="profileImage" class="profile-img" src="https://via.placeholder.com/100?text=Avatar" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay"></div>
       <div class="phrase" id="soulPhraseDisplay"></div>
@@ -93,12 +131,15 @@
       const usernameParam = params.get('user');
       const errorEl = document.getElementById('errorMessage');
       const soulEl = document.getElementById('soulprint');
+      const form = document.getElementById('editForm');
 
       if (!usernameParam) {
         errorEl.textContent = 'Falta el nombre de usuario en la URL';
         errorEl.style.display = 'block';
         return;
       }
+
+      let currentData;
 
       fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
         .then(res => res.json().then(data => ({status: res.status, body: data})))
@@ -109,9 +150,12 @@
             return;
           }
           const { username, soulprint } = body;
+          currentData = soulprint;
           document.getElementById('usernameDisplay').innerText = '@' + username;
           document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
+          document.getElementById('soulPhraseInput').value = soulprint.soulPhrase || '';
           document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
+          document.getElementById('soulColorInput').value = soulprint.soulColor || '#aaaaaa';
           if (soulprint.profileImage) {
             document.getElementById('profileImage').src = soulprint.profileImage;
           }
@@ -128,8 +172,35 @@
           errorEl.textContent = 'Error al obtener Soulprint';
           errorEl.style.display = 'block';
         });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const phrase = document.getElementById('soulPhraseInput').value;
+        const color = document.getElementById('soulColorInput').value;
+        const imageFile = document.getElementById('profileImageInput').files[0];
+
+        const formData = new FormData();
+        formData.append('soulPhrase', phrase);
+        formData.append('soulColor', color);
+        if (imageFile) formData.append('profileImage', imageFile);
+
+        try {
+          const response = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(usernameParam)}`, {
+            method: 'PUT',
+            body: formData
+          });
+
+          if (!response.ok) throw new Error('Fallo al actualizar');
+
+          alert('¡Soulprint actualizado!');
+          location.reload();
+        } catch (err) {
+          console.error('Error actualizando:', err);
+          alert('Hubo un error actualizando tu Soulprint');
+        }
+      });
     });
   </script>
 </body>
 </html>
-
