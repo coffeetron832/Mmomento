@@ -6,98 +6,21 @@
   <title>Soulprint | Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f0f0f0;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 1rem;
-    }
-    .container {
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
-      overflow: hidden;
-    }
-    .soulcolor-bar {
-      height: 8px;
-      width: 100%;
-      background-color: #aaa;
-    }
-    .content {
-      padding: 2rem;
-      text-align: center;
-    }
-    .profile-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #fff;
-      margin-top: -60px;
-      background: #ccc;
-    }
-    .username {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 1rem 0 0.5rem;
-    }
-    .phrase {
-      font-style: italic;
-      color: #666;
-      margin-bottom: 1rem;
-    }
-    .moment-img {
-      width: 100%;
-      max-height: 250px;
-      object-fit: cover;
-      border-radius: 0.5rem;
-      margin-top: 1rem;
-      display: none;
-    }
-    .butterflies {
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #888;
-    }
-    .error {
-      text-align: center;
-      color: crimson;
-      font-size: 1.1rem;
-      padding: 2rem;
-    }
-    form {
-      margin-top: 2rem;
-      display: none;
-      text-align: left;
-      padding: 1rem;
-      border-top: 1px solid #eee;
-    }
-    form label {
-      display: block;
-      margin-bottom: 0.2rem;
-      font-weight: 600;
-    }
-    form input[type="text"],
-    form input[type="color"],
-    form input[type="file"] {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    button {
-      background-color: #333;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
+    body { margin: 0; font-family: 'Inter', sans-serif; background-color: #f0f0f0; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1rem; }
+    .container { background: #fff; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 400px; width: 100%; overflow: hidden; }
+    .soulcolor-bar { height: 8px; width: 100%; background-color: #aaa; }
+    .content { padding: 2rem; text-align: center; }
+    .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; margin-top: -60px; background: #ccc; }
+    .username { font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; }
+    .phrase { font-style: italic; color: #666; margin-bottom: 1rem; }
+    .moment-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 0.5rem; margin-top: 1rem; display: none; }
+    .butterflies { margin-top: 1rem; font-size: 0.9rem; color: #888; }
+    .error { text-align: center; color: crimson; font-size: 1.1rem; padding: 2rem; }
+    /* Form styling */
+    .edit-form { display: none; text-align: left; padding: 1rem; border-top: 1px solid #eee; }
+    .edit-form label { display: block; margin-top: 0.5rem; font-weight: 600; }
+    .edit-form input, .edit-form textarea { width: 100%; margin-top: 0.25rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 0.5rem; }
+    .edit-form button { margin-top: 1rem; padding: 0.5rem 1rem; background-color: #333; color: #fff; border: none; border-radius: 0.5rem; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -109,34 +32,33 @@
       <div class="phrase" id="soulPhraseDisplay"></div>
       <img id="momentImage" class="moment-img" src="" alt="Momento anclado" />
       <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
-
-      <!-- Formulario para editar el Soulprint -->
-      <form id="editForm">
-        <label for="soulPhrase">Frase del alma</label>
-        <input type="text" id="soulPhrase" name="soulPhrase" maxlength="100" />
-
-        <label for="soulColor">Color del alma</label>
-        <input type="color" id="soulColor" name="soulColor" />
-
+      <form id="editForm" class="edit-form">
         <label for="profileImageInput">Foto de perfil</label>
         <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
-
+        <label for="soulColorInput">Color del alma</label>
+        <input type="color" id="soulColorInput" name="soulColor" />
+        <label for="soulPhraseInput">Frase del alma</label>
+        <textarea id="soulPhraseInput" name="soulPhrase" rows="2" placeholder="Escribe tu frase..."></textarea>
         <button type="submit">Actualizar</button>
       </form>
     </div>
   </div>
-
   <div id="errorMessage" class="error" style="display:none;">Soulprint no encontrado 😢</div>
 
   <script>
+    function decodeToken(token) {
+      try { return JSON.parse(atob(token.split('.')[1])); } catch { return null; }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const usernameParam = params.get('user');
-      const errorEl = document.getElementById('errorMessage');
-      const soulEl = document.getElementById('soulprint');
-      const formEl = document.getElementById('editForm');
       const token = localStorage.getItem('token');
-      const loggedInUser = localStorage.getItem('username');
+      const loggedUser = localStorage.getItem('username');
+      const payload = decodeToken(token);
+      const soulEl = document.getElementById('soulprint');
+      const errorEl = document.getElementById('errorMessage');
+      const formEl = document.getElementById('editForm');
 
       if (!usernameParam) {
         errorEl.textContent = 'Falta el nombre de usuario en la URL';
@@ -144,9 +66,9 @@
         return;
       }
 
-      fetch(`/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
-        .then(res => res.json().then(data => ({status: res.status, body: data})))
-        .then(({status, body}) => {
+      fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
+        .then(res => res.json().then(data => ({ status: res.status, body: data })))
+        .then(({ status, body }) => {
           if (status !== 200) {
             errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
             errorEl.style.display = 'block';
@@ -156,26 +78,19 @@
           const { username, soulprint } = body;
           document.getElementById('usernameDisplay').innerText = '@' + username;
           document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
-          document.getElementById('soulPhrase').value = soulprint.soulPhrase || '';
-          document.getElementById('soulColor').value = soulprint.soulColor || '#cccccc';
-          document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#ccc';
-          if (soulprint.profileImage) {
-            document.getElementById('profileImage').src = soulprint.profileImage;
-          }
+          document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
+          document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
+          document.getElementById('soulColorInput').value = soulprint.soulColor || '#888888';
+          document.getElementById('soulPhraseInput').value = soulprint.soulPhrase || '';
+          if (soulprint.profileImage) document.getElementById('profileImage').src = soulprint.profileImage;
           if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
             const m = document.getElementById('momentImage');
             m.src = soulprint.pinnedMoment.url;
             m.style.display = 'block';
           }
-          document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
 
-          // Mostrar el Soulprint
           soulEl.style.display = 'block';
-
-          // Mostrar formulario si el usuario autenticado es el dueño
-          if (loggedInUser === username) {
-            formEl.style.display = 'block';
-          }
+          if (loggedUser === username) formEl.style.display = 'block';
         })
         .catch(err => {
           console.error('Error al cargar Soulprint:', err);
@@ -183,43 +98,33 @@
           errorEl.style.display = 'block';
         });
 
-      // 🛠️ Enviar cambios al servidor
-      formEl.addEventListener('submit', async (e) => {
+      formEl.addEventListener('submit', async e => {
         e.preventDefault();
-        if (!token) return alert('No estás autenticado');
+        if (!token) return alert('Debes iniciar sesión');
 
         const formData = new FormData();
-        formData.append('soulPhrase', document.getElementById('soulPhrase').value);
-        formData.append('soulColor', document.getElementById('soulColor').value);
-        const fileInput = document.getElementById('profileImageInput');
-        if (fileInput.files.length > 0) {
-          formData.append('profileImage', fileInput.files[0]);
-        }
+        formData.append('soulPhrase', document.getElementById('soulPhraseInput').value);
+        formData.append('soulColor', document.getElementById('soulColorInput').value);
+        const file = document.getElementById('profileImageInput').files[0];
+        if (file) formData.append('profileImage', file);
 
         try {
-          const res = await fetch('/api/users/soulprint', {
+          const res = await fetch('https://momento-backend-production.up.railway.app/api/users/soulprint', {
             method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
+            headers: { Authorization: `Bearer ${token}` },
             body: formData
           });
-
           const data = await res.json();
-
-          if (!res.ok) {
-            console.error('Error actualizando:', data.message);
-            return alert('Fallo al actualizar');
-          }
-
+          if (!res.ok) throw new Error(data.message || 'Error');
           alert('Soulprint actualizado con éxito');
-          window.location.reload(); // Recargar para mostrar cambios
+          location.reload();
         } catch (err) {
-          console.error('Error enviando el formulario:', err);
-          alert('Error de red al actualizar');
+          console.error('Error actualizando:', err);
+          alert('Hubo un error actualizando tu Soulprint');
         }
       });
     });
   </script>
 </body>
 </html>
+
