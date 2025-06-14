@@ -72,19 +72,28 @@
       font-size: 1.1rem;
       padding: 2rem;
     }
-    .edit-form input,
-    .edit-form textarea {
-      width: 100%;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid #ccc;
+    form {
+      margin-top: 2rem;
+      display: none;
+      text-align: left;
+      padding: 1rem;
+      border-top: 1px solid #eee;
     }
-    .edit-form button {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
+    form label {
+      display: block;
+      margin-bottom: 0.2rem;
+      font-weight: 600;
+    }
+    form input[type="text"],
+    form input[type="color"],
+    form input[type="file"] {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    button {
       background-color: #333;
       color: white;
+      padding: 0.5rem 1rem;
       border: none;
       border-radius: 0.5rem;
       cursor: pointer;
@@ -95,39 +104,39 @@
   <div id="soulprint" class="container" style="display:none;">
     <div id="soulcolorBar" class="soulcolor-bar"></div>
     <div class="content">
-      <form id="editForm" class="edit-form">
-        <input type="file" id="profileImageInput" accept="image/*" />
-        <input type="color" id="soulColorInput" />
-        <textarea id="soulPhraseInput" rows="2" placeholder="Escribe tu frase..."></textarea>
-        <button type="submit">Actualizar</button>
-      </form>
-      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/100?text=Avatar" alt="Foto de perfil" />
+      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/100" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay"></div>
       <div class="phrase" id="soulPhraseDisplay"></div>
       <img id="momentImage" class="moment-img" src="" alt="Momento anclado" />
       <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
+
+      <!-- Formulario para editar el Soulprint -->
+      <form id="editForm">
+        <label for="soulPhrase">Frase del alma</label>
+        <input type="text" id="soulPhrase" name="soulPhrase" maxlength="100" />
+
+        <label for="soulColor">Color del alma</label>
+        <input type="color" id="soulColor" name="soulColor" />
+
+        <label for="profileImageInput">Foto de perfil</label>
+        <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
+
+        <button type="submit">Actualizar</button>
+      </form>
     </div>
   </div>
+
   <div id="errorMessage" class="error" style="display:none;">Soulprint no encontrado 😢</div>
 
   <script>
-    // Decodificar JWT (para obtener username del token)
-    function decodeToken(token) {
-      try {
-        return JSON.parse(atob(token.split('.')[1]));
-      } catch {
-        return null;
-      }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const usernameParam = params.get('user');
       const errorEl = document.getElementById('errorMessage');
       const soulEl = document.getElementById('soulprint');
-      const form = document.getElementById('editForm');
+      const formEl = document.getElementById('editForm');
       const token = localStorage.getItem('token');
-      const payload = decodeToken(token);
+      const loggedInUser = localStorage.getItem('username');
 
       if (!usernameParam) {
         errorEl.textContent = 'Falta el nombre de usuario en la URL';
@@ -135,31 +144,21 @@
         return;
       }
 
-      // Cargar Soulprint
-      fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
-        .then(async res => {
-          const data = await res.json();
-          return { status: res.status, body: data };
-        })
+      fetch(`/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
+        .then(res => res.json().then(data => ({status: res.status, body: data})))
         .then(({status, body}) => {
           if (status !== 200) {
             errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
             errorEl.style.display = 'block';
             return;
           }
+
           const { username, soulprint } = body;
-
-          // Mostrar formulario solo al dueño
-          if (!payload || payload.username !== username) {
-            form.style.display = 'none';
-          }
-
-          // Rellenar datos
           document.getElementById('usernameDisplay').innerText = '@' + username;
           document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
-          document.getElementById('soulPhraseInput').value = soulprint.soulPhrase || '';
-          document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
-          document.getElementById('soulColorInput').value = soulprint.soulColor || '#aaaaaa';
+          document.getElementById('soulPhrase').value = soulprint.soulPhrase || '';
+          document.getElementById('soulColor').value = soulprint.soulColor || '#cccccc';
+          document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#ccc';
           if (soulprint.profileImage) {
             document.getElementById('profileImage').src = soulprint.profileImage;
           }
@@ -169,7 +168,14 @@
             m.style.display = 'block';
           }
           document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
+
+          // Mostrar el Soulprint
           soulEl.style.display = 'block';
+
+          // Mostrar formulario si el usuario autenticado es el dueño
+          if (loggedInUser === username) {
+            formEl.style.display = 'block';
+          }
         })
         .catch(err => {
           console.error('Error al cargar Soulprint:', err);
@@ -177,35 +183,40 @@
           errorEl.style.display = 'block';
         });
 
-      // Manejar actualización
-      form.addEventListener('submit', async (e) => {
+      // 🛠️ Enviar cambios al servidor
+      formEl.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const phrase = document.getElementById('soulPhraseInput').value;
-        const color = document.getElementById('soulColorInput').value;
-        const imageFile = document.getElementById('profileImageInput').files[0];
+        if (!token) return alert('No estás autenticado');
 
         const formData = new FormData();
-        formData.append('soulPhrase', phrase);
-        formData.append('soulColor', color);
-        if (imageFile) formData.append('profileImage', imageFile);
+        formData.append('soulPhrase', document.getElementById('soulPhrase').value);
+        formData.append('soulColor', document.getElementById('soulColor').value);
+        const fileInput = document.getElementById('profileImageInput');
+        if (fileInput.files.length > 0) {
+          formData.append('profileImage', fileInput.files[0]);
+        }
 
         try {
-          const response = await fetch('https://momento-backend-production.up.railway.app/api/users/soulprint', {
+          const res = await fetch('/api/users/soulprint', {
             method: 'PUT',
             headers: {
-              Authorization: `Bearer ${token}`
+              'Authorization': `Bearer ${token}`
             },
             body: formData
           });
 
-          if (!response.ok) throw new Error('Fallo al actualizar');
+          const data = await res.json();
 
-          alert('¡Soulprint actualizado!');
-          location.reload();
+          if (!res.ok) {
+            console.error('Error actualizando:', data.message);
+            return alert('Fallo al actualizar');
+          }
+
+          alert('Soulprint actualizado con éxito');
+          window.location.reload(); // Recargar para mostrar cambios
         } catch (err) {
-          console.error('Error actualizando:', err);
-          alert('Hubo un error actualizando tu Soulprint');
+          console.error('Error enviando el formulario:', err);
+          alert('Error de red al actualizar');
         }
       });
     });
