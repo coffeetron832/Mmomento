@@ -111,12 +111,23 @@
   <div id="errorMessage" class="error" style="display:none;">Soulprint no encontrado 😢</div>
 
   <script>
+    // Decodificar JWT (para obtener username del token)
+    function decodeToken(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch {
+        return null;
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const usernameParam = params.get('user');
       const errorEl = document.getElementById('errorMessage');
       const soulEl = document.getElementById('soulprint');
       const form = document.getElementById('editForm');
+      const token = localStorage.getItem('token');
+      const payload = decodeToken(token);
 
       if (!usernameParam) {
         errorEl.textContent = 'Falta el nombre de usuario en la URL';
@@ -124,10 +135,12 @@
         return;
       }
 
-      let currentData;
-
+      // Cargar Soulprint
       fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(usernameParam)}`)
-        .then(res => res.json().then(data => ({status: res.status, body: data})))
+        .then(async res => {
+          const data = await res.json();
+          return { status: res.status, body: data };
+        })
         .then(({status, body}) => {
           if (status !== 200) {
             errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
@@ -135,7 +148,13 @@
             return;
           }
           const { username, soulprint } = body;
-          currentData = soulprint;
+
+          // Mostrar formulario solo al dueño
+          if (!payload || payload.username !== username) {
+            form.style.display = 'none';
+          }
+
+          // Rellenar datos
           document.getElementById('usernameDisplay').innerText = '@' + username;
           document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
           document.getElementById('soulPhraseInput').value = soulprint.soulPhrase || '';
@@ -158,13 +177,13 @@
           errorEl.style.display = 'block';
         });
 
+      // Manejar actualización
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const phrase = document.getElementById('soulPhraseInput').value;
         const color = document.getElementById('soulColorInput').value;
         const imageFile = document.getElementById('profileImageInput').files[0];
-        const token = localStorage.getItem('token');
 
         const formData = new FormData();
         formData.append('soulPhrase', phrase);
@@ -172,7 +191,7 @@
         if (imageFile) formData.append('profileImage', imageFile);
 
         try {
-          const response = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(usernameParam)}`, {
+          const response = await fetch('https://momento-backend-production.up.railway.app/api/users/soulprint', {
             method: 'PUT',
             headers: {
               Authorization: `Bearer ${token}`
@@ -193,4 +212,3 @@
   </script>
 </body>
 </html>
-
