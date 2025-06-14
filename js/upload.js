@@ -1,11 +1,5 @@
 // upload.js
 
-// Mostrar año actual en el footer
-const yearEl = document.getElementById('currentYear');
-if (yearEl) {
-  yearEl.textContent = new Date().getFullYear();
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
@@ -13,11 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🌙 Aplicar modo oscuro si está activado en localStorage
   const darkValue = localStorage.getItem('darkMode');
-  const isDarkStored = darkValue === 'true' || darkValue === 'enabled'; // por compatibilidad
+  const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
   if (isDarkStored) document.body.classList.add('dark-mode');
 
-  // 🔘 Switch 3D de modo oscuro
-  const toggleCheckbox = document.getElementById('toggleCheckbox');
+  // 🔘 Switch modo oscuro (id correcto desde upload.html es "darkModeToggle")
+  const toggleCheckbox = document.getElementById('darkModeToggle');
   if (toggleCheckbox) {
     toggleCheckbox.checked = isDarkStored;
     toggleCheckbox.addEventListener('change', () => {
@@ -26,11 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 👋 Modal de bienvenida (solo una vez por sesión)
+  // 👋 Modal de bienvenida (solo si existe en el HTML)
   const hasSeenModal = sessionStorage.getItem('hasSeenModal') === 'true';
   const modal = document.getElementById('welcomeModal');
   const closeModalBtn = document.getElementById('closeModalBtn');
-
   if (!hasSeenModal && modal) {
     modal.style.display = 'flex';
     sessionStorage.setItem('hasSeenModal', 'true');
@@ -39,7 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
     closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
   }
 
-  // 🧠 Obtener datos del usuario
+  // ⚙️ Enlace a Soulprint dinámico
+  const soulprintBtn = document.getElementById('soulprintBtn');
+  const username = localStorage.getItem('username');
+  if (soulprintBtn && username) {
+    soulprintBtn.href = `/soulprint.html?user=${username}`;
+  }
+
+  // 👤 Usuario
   let user = {};
   try {
     const stored = localStorage.getItem('user');
@@ -49,11 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const currentUserId = user._id || user.id || null;
 
-  // 👋 Mostrar nombre del usuario
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
 
-  // ✅ Mostrar/ocultar selector de círculos
+  // 👁 Mostrar selector de círculos según visibilidad
   const visibilitySelect = document.getElementById('visibility');
   const circleContainer = document.getElementById('circleSelectorContainer');
   if (visibilitySelect && circleContainer) {
@@ -67,66 +66,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 🧩 Crear tarjeta de imagen
-function createImageCard(image) {
-  const card = document.createElement('div');
-  card.className = 'image-card';
-
-  const img = document.createElement('img');
-  img.src = image.imageUrl || image.url || '';
-  img.alt = image.description || 'Imagen subida';
-
-  const desc = document.createElement('p');
-  desc.className = 'image-description';
-  desc.textContent = image.description || '';
-
-  const userInfo = document.createElement('p');
-  userInfo.className = 'image-user';
-
-  let ownerId = null;
-  if (image.userId && typeof image.userId === 'object') {
-    ownerId = image.userId._id || image.userId.id;
-    userInfo.textContent = image.userId.username
-      ? `Subido por: ${image.userId.username}`
-      : 'Subido por: Anónimo';
-  } else if (typeof image.userId === 'string') {
-    ownerId = image.userId;
-    userInfo.textContent = currentUserId === image.userId
-      ? 'Subido por: Tú'
-      : 'Subido por: Usuario desconocido';
-  } else {
-    userInfo.textContent = 'Subido por: Anónimo';
+  // 🪄 Botón subir imagen
+  const toggleUploadBtn = document.getElementById('toggleUploadBtn');
+  if (toggleUploadBtn) {
+    toggleUploadBtn.addEventListener('click', () => {
+      const formContainer = document.getElementById('uploadFormContainer');
+      const isVisible = formContainer.style.display === 'block';
+      formContainer.style.display = isVisible ? 'none' : 'block';
+    });
   }
 
-  card.append(img, desc, userInfo);
-
-  if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
-    const container = document.createElement('div');
-    container.className = 'delete-container';
-    container.style.position = 'relative';
-
-    // 🗑 Botón tipo basurero con animación
-    const delButton = document.createElement('button');
-    delButton.className = 'bin';
-    delButton.addEventListener('click', () => deleteImage(image._id, card));
-
-    // Decoración animada del botón
-    const decorDiv = document.createElement('div');
-    decorDiv.className = 'div';
-
-    const small = document.createElement('small');
-    const icon = document.createElement('i');
-    small.appendChild(icon);
-    decorDiv.appendChild(small);
-
-    container.appendChild(delButton);
-    container.appendChild(decorDiv);
-    card.appendChild(container);
+  // 🔓 Cerrar sesión
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
   }
-
-  return card;
-}
-
 
   // 🚫 Redirigir si no autenticado
   if (!token) {
@@ -135,12 +92,44 @@ function createImageCard(image) {
     return;
   }
 
-  // 🚀 Cargar imágenes
+  // 📤 Subida de imagen
+  if (form) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const file = document.getElementById('image');
+      if (!file.files.length) {
+        alert('Selecciona una imagen');
+        return;
+      }
+      const data = new FormData(form);
+      try {
+        const res = await fetch(
+          'https://momento-backend-production.up.railway.app/api/images/',
+          { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: data }
+        );
+        const result = await res.json();
+        if (res.ok) {
+          alert('Imagen subida con éxito');
+          form.reset();
+          imagesContainer.prepend(createImageCard(result));
+          if (circleContainer) circleContainer.style.display = 'none';
+        } else {
+          alert(result.error || 'Error al subir la imagen');
+        }
+      } catch (e) {
+        console.error('Error en subida de imagen:', e);
+        alert('Error en la subida de la imagen');
+      }
+    });
+  }
+
+  // 🔄 Cargar imágenes
   async function loadImages() {
     try {
-      const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(
+        'https://momento-backend-production.up.railway.app/api/images/',
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       if (!res.ok) throw new Error('Error al obtener imágenes');
       const imgs = await res.json();
       imagesContainer.innerHTML = '';
@@ -149,6 +138,64 @@ function createImageCard(image) {
       console.error('Error cargando imágenes:', e);
       imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
     }
+  }
+
+  // 🧩 Crear tarjeta
+  function createImageCard(image) {
+    const card = document.createElement('div');
+    card.className = 'image-card';
+
+    const img = document.createElement('img');
+    img.src = image.imageUrl || image.url || '';
+    img.alt = image.description || 'Imagen subida';
+
+    const desc = document.createElement('p');
+    desc.className = 'image-description';
+    desc.textContent = image.description || '';
+
+    const userInfo = document.createElement('p');
+    userInfo.className = 'image-user';
+
+    let ownerId = null;
+    if (image.userId && typeof image.userId === 'object') {
+      ownerId = image.userId._id || image.userId.id;
+      userInfo.textContent = image.userId.username
+        ? `Subido por: ${image.userId.username}`
+        : 'Subido por: Anónimo';
+    } else if (typeof image.userId === 'string') {
+      ownerId = image.userId;
+      userInfo.textContent = currentUserId === image.userId
+        ? 'Subido por: Tú'
+        : 'Subido por: Usuario desconocido';
+    } else {
+      userInfo.textContent = 'Subido por: Anónimo';
+    }
+
+    card.append(img, desc, userInfo);
+
+    if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
+      const container = document.createElement('div');
+      container.className = 'delete-container';
+      container.style.position = 'relative';
+
+      const delButton = document.createElement('button');
+      delButton.className = 'bin';
+      delButton.addEventListener('click', () => deleteImage(image._id, card));
+
+      const decorDiv = document.createElement('div');
+      decorDiv.className = 'div';
+
+      const small = document.createElement('small');
+      const icon = document.createElement('i');
+      small.appendChild(icon);
+      decorDiv.appendChild(small);
+
+      container.appendChild(delButton);
+      container.appendChild(decorDiv);
+      card.appendChild(container);
+    }
+
+    return card;
   }
 
   // 🗑 Eliminar imagen
@@ -171,7 +218,7 @@ function createImageCard(image) {
     }
   }
 
-  // 🔄 Cargar círculos del usuario
+  // 🔁 Cargar círculos
   async function loadUserCircles() {
     const select = document.getElementById('circles');
     if (!select) return;
@@ -192,33 +239,8 @@ function createImageCard(image) {
     }
   }
 
-  // 📤 Envío del formulario
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const file = document.getElementById('image');
-    if (!file.files.length) { alert('Selecciona una imagen'); return; }
-    const data = new FormData(form);
-    try {
-      const res = await fetch(
-        'https://momento-backend-production.up.railway.app/api/images/',
-        { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: data }
-      );
-      const result = await res.json();
-      if (res.ok) {
-        alert('Imagen subida con éxito');
-        form.reset();
-        imagesContainer.prepend(createImageCard(result));
-        document.getElementById('circleSelectorContainer').style.display = 'none';
-      } else {
-        alert(result.error || 'Error al subir la imagen');
-      }
-    } catch (e) {
-      console.error('Error en subida de imagen:', e);
-      alert('Error en la subida de la imagen');
-    }
-  });
-
-  // Inicializar carga
+  // 🔄 Inicializar
   loadImages();
   window.loadUserCircles = loadUserCircles;
 });
+
