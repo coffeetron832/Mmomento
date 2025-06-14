@@ -1,138 +1,211 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Editar Soulprint</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=DM+Serif+Display&display=swap');
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fafafa;
-      padding: 2rem;
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #f9f9f9, #e8ecf0);
+      display: flex;
+      min-height: 100vh;
     }
 
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      border-radius: 1rem;
+    .form-container {
+      width: 50%;
       padding: 2rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
+    .preview-container {
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #ffffff, #f0f4ff);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
     }
 
     label {
-      display: block;
-      margin: 1rem 0 0.3rem;
       font-weight: bold;
     }
 
-    input, textarea, select {
-      width: 100%;
-      padding: 0.7rem;
-      border-radius: 0.5rem;
+    input, select, textarea {
+      padding: 0.6rem;
       border: 1px solid #ccc;
-    }
-
-    input[type="color"] {
-      padding: 0;
-      height: 40px;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      background-color: #6c63ff;
-      color: white;
       border-radius: 0.5rem;
       font-size: 1rem;
-      cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    .preview {
-      margin-top: 1rem;
+    .preview-card {
+      position: relative;
+      max-width: 340px;
+      width: 100%;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       text-align: center;
+      padding: 2rem;
+      transition: transform 0.3s;
     }
 
-    .preview img {
-      max-width: 100px;
+    .halo {
+      position: absolute;
+      top: -20px; left: -20px;
+      right: -20px; bottom: -20px;
+      background: var(--soul-color, #aaa);
+      filter: blur(40px);
+      z-index: -1;
+      border-radius: 2rem;
+      opacity: 0.5;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: -80px;
+      background-color: #ccc;
+    }
+
+    .username {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      color: #333;
+    }
+
+    .phrase {
+      font-style: italic;
+      color: #666;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .moment-img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-top: 1rem;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
     }
   </style>
 </head>
 <body>
-  <div class="container">
+
+  <div class="form-container">
     <h2>Editar tu Soulprint</h2>
     <form id="soulprintForm">
-      <label for="profileImage">URL de imagen de perfil</label>
-      <input type="text" id="profileImage" name="profileImage" placeholder="https://..."/>
+      <label for="profileImage">Foto de perfil:</label>
+      <input type="file" id="profileImageInput" accept="image/*" />
 
-      <div class="preview">
-        <img id="profilePreview" src="/default-avatar.png" alt="Previsualización"/>
-      </div>
+      <label for="soulPhrase">Frase del alma:</label>
+      <textarea id="soulPhrase" maxlength="100" placeholder="Escribe una frase corta..."></textarea>
 
-      <label for="soulPhrase">Frase del alma</label>
-      <textarea id="soulPhrase" name="soulPhrase" rows="2" maxlength="100" placeholder="Ej: Veo poesía en lo efímero"></textarea>
+      <label for="soulColor">Color del alma:</label>
+      <input type="color" id="soulColor" value="#88c0d0" />
 
-      <label for="soulColor">Color del alma</label>
-      <input type="color" id="soulColor" name="soulColor" />
-
-      <label for="pinnedMoment">ID del momento anclado</label>
-      <input type="text" id="pinnedMoment" name="pinnedMoment" placeholder="ID de tu imagen"/>
+      <label for="pinnedMoment">Momento anclado:</label>
+      <select id="pinnedMoment">
+        <option value="">Selecciona uno</option>
+        <!-- Se llenará con momentos del usuario -->
+      </select>
 
       <button type="submit">Guardar cambios</button>
     </form>
   </div>
 
-  <script>
-    const form = document.getElementById('soulprintForm');
-    const preview = document.getElementById('profilePreview');
-    const token = localStorage.getItem('token'); // JWT guardado tras login
+  <div class="preview-container">
+    <div class="preview-card">
+      <div class="halo" id="haloPreview"></div>
+      <img id="previewProfileImage" class="profile-img" src="/default-avatar.png" />
+      <div class="username" id="previewUsername">@usuario</div>
+      <div class="phrase" id="previewPhrase">Tu frase aparecerá aquí...</div>
+      <img id="previewMoment" class="moment-img" style="display:none;" />
+    </div>
+  </div>
 
-    // Previsualizar imagen
-    document.getElementById('profileImage').addEventListener('input', e => {
-      const url = e.target.value;
-      if (url) preview.src = url;
+  <script>
+    const profileImageInput = document.getElementById('profileImageInput');
+    const previewProfileImage = document.getElementById('previewProfileImage');
+    const soulPhrase = document.getElementById('soulPhrase');
+    const previewPhrase = document.getElementById('previewPhrase');
+    const soulColor = document.getElementById('soulColor');
+    const halo = document.getElementById('haloPreview');
+    const pinnedMoment = document.getElementById('pinnedMoment');
+    const previewMoment = document.getElementById('previewMoment');
+
+    // Simula nombre de usuario del usuario logueado
+    const username = "usuarioEjemplo"; // <-- Reemplazar por el real en producción
+    document.getElementById('previewUsername').innerText = '@' + username;
+
+    // Vista previa imagen de perfil
+    profileImageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          previewProfileImage.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
     });
 
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
+    // Vista previa frase
+    soulPhrase.addEventListener('input', () => {
+      previewPhrase.innerText = soulPhrase.value || "Tu frase aparecerá aquí...";
+    });
 
-      const data = {
-        profileImage: form.profileImage.value,
-        soulPhrase: form.soulPhrase.value,
-        soulColor: form.soulColor.value,
-        pinnedMoment: form.pinnedMoment.value
-      };
+    // Vista previa color del alma
+    soulColor.addEventListener('input', () => {
+      halo.style.setProperty('--soul-color', soulColor.value);
+    });
 
-      try {
-        const res = await fetch('/api/users/soulprint', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(data)
-        });
-
-        const result = await res.json();
-
-        if (res.ok) {
-          alert('Soulprint actualizado 🦋');
-        } else {
-          alert(result.message || 'Error al actualizar');
-        }
-      } catch (err) {
-        alert('Error de red');
-        console.error(err);
+    // Vista previa momento anclado
+    pinnedMoment.addEventListener('change', () => {
+      const selectedUrl = pinnedMoment.value;
+      if (selectedUrl) {
+        previewMoment.src = selectedUrl;
+        previewMoment.style.display = 'block';
+      } else {
+        previewMoment.style.display = 'none';
       }
+    });
+
+    // Simular carga de momentos del usuario (luego se hace con fetch)
+    const userMoments = [
+      { id: '1', url: 'https://picsum.photos/seed/1/400/250' },
+      { id: '2', url: 'https://picsum.photos/seed/2/400/250' },
+      { id: '3', url: 'https://picsum.photos/seed/3/400/250' }
+    ];
+
+    userMoments.forEach(moment => {
+      const option = document.createElement('option');
+      option.value = moment.url;
+      option.innerText = `Momento #${moment.id}`;
+      pinnedMoment.appendChild(option);
+    });
+
+    // TODO: enviar formulario con backend
+    document.getElementById('soulprintForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alert("Aquí se enviará el formulario al backend");
     });
   </script>
 </body>
