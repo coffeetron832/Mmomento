@@ -6,8 +6,9 @@
   <title>Soulprint | Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
+    /* Reset y base */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background-color: #f0f0f0;
       color: #333;
@@ -17,6 +18,27 @@
       min-height: 100vh;
       padding: 1rem;
     }
+
+    /* Botón fijo superior derecho */
+    .edit-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #4f46e5;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: none;
+      z-index: 1000;
+      transition: background 0.2s;
+    }
+    .edit-btn:hover {
+      background: #3730a3;
+    }
+
+    /* Contenedor principal */
     .container {
       background: #fff;
       border-radius: 1rem;
@@ -80,28 +102,47 @@
       font-size: 1.1rem;
       padding: 2rem;
     }
-    .edit-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: #4f46e5;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      text-decoration: none;
-      font-size: 0.9rem;
-      display: none;
-    }
-    .edit-btn:hover {
-      background: #3730a3;
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        max-width: 100%;
+      }
+      .soulcolor-bar {
+        height: 30px;
+      }
+      .profile-img {
+        width: 100px;
+        height: 100px;
+        margin-top: -50px;
+      }
+      .username {
+        font-size: 1.25rem;
+      }
+      .phrase {
+        font-size: 1rem;
+      }
+      .moment-img {
+        max-height: 200px;
+      }
+      .edit-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        top: 0.5rem;
+        right: 0.5rem;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Botón fijo en esquina -->
+  <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
+
+  <!-- Soulprint container -->
   <div id="soulprint" class="container" style="display:none;">
     <div id="soulcolorBar" class="soulcolor-bar"></div>
     <div class="content">
-      <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
       <img id="profileImage" class="profile-img" src="https://via.placeholder.com/120" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay"></div>
       <div class="phrase" id="soulPhraseDisplay"></div>
@@ -109,6 +150,7 @@
       <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
     </div>
   </div>
+
   <div id="errorMessage" class="error" style="display:none;">Soulprint no encontrado 😢</div>
 
   <script>
@@ -118,7 +160,6 @@
       const token = localStorage.getItem('token');
       const stored = localStorage.getItem('user');
       let loggedUser = null;
-
       if (stored && stored !== 'undefined') {
         try { loggedUser = JSON.parse(stored).username; } catch(e){}
       }
@@ -133,7 +174,6 @@
         window.location.href = 'login.html';
         return;
       }
-
       if (!usernameParam) {
         errorEl.textContent = 'Falta el nombre de usuario en la URL';
         errorEl.style.display = 'block';
@@ -148,27 +188,21 @@
             errorEl.style.display = 'block';
             return;
           }
-
           const { username, soulprint } = body;
           document.getElementById('usernameDisplay').innerText = '@' + username;
           document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
           document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
           document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
-
-          // Aplicar color del alma al borde de la foto
           if (soulprint.profileImage) {
             profileImage.src = soulprint.profileImage;
             profileImage.style.borderColor = soulprint.soulColor;
           }
-
           if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
             const m = document.getElementById('momentImage');
             m.src = soulprint.pinnedMoment.url;
             m.style.display = 'block';
           }
-
           soulEl.style.display = 'block';
-
           if (loggedUser === username) {
             editBtn.style.display = 'inline-block';
             editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
@@ -183,6 +217,4 @@
   </script>
 </body>
 </html>
-
-
 
