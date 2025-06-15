@@ -41,12 +41,20 @@
       const token = localStorage.getItem('token');
       const stored = localStorage.getItem('user');
       let loggedUser = null;
+
       if (stored && stored !== 'undefined') {
         try { loggedUser = JSON.parse(stored).username; } catch(e){}
       }
+
       const soulEl = document.getElementById('soulprint');
       const errorEl = document.getElementById('errorMessage');
       const editBtn = document.getElementById('editBtn');
+
+      if (!token) {
+        alert('Debes iniciar sesión para ver perfiles');
+        window.location.href = 'login.html';
+        return;
+      }
 
       if (!usernameParam) {
         errorEl.textContent = 'Falta el nombre de usuario en la URL';
@@ -62,12 +70,17 @@
             errorEl.style.display = 'block';
             return;
           }
+
           const { username, soulprint } = body;
           document.getElementById('usernameDisplay').innerText = '@' + username;
           document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
           document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
           document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
-          if (soulprint.profileImage) document.getElementById('profileImage').src = soulprint.profileImage;
+
+          if (soulprint.profileImage) {
+            document.getElementById('profileImage').src = soulprint.profileImage;
+          }
+
           if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
             const m = document.getElementById('momentImage');
             m.src = soulprint.pinnedMoment.url;
@@ -75,18 +88,12 @@
           }
 
           soulEl.style.display = 'block';
+
           if (loggedUser === username) {
             editBtn.style.display = 'inline-block';
             editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
           }
         })
-
-        if (!token) {
-  alert('Debes iniciar sesión para ver perfiles');
-  window.location.href = 'login.html';
-  return;
-}
-        
         .catch(err => {
           console.error('Error al cargar Soulprint:', err);
           errorEl.textContent = 'Error al obtener Soulprint';
@@ -96,4 +103,5 @@
   </script>
 </body>
 </html>
+
 
