@@ -80,6 +80,13 @@
             editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
           }
         })
+
+        if (!token) {
+  alert('Debes iniciar sesión para ver perfiles');
+  window.location.href = 'login.html';
+  return;
+}
+        
         .catch(err => {
           console.error('Error al cargar Soulprint:', err);
           errorEl.textContent = 'Error al obtener Soulprint';
