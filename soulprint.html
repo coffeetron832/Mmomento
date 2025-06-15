@@ -11,70 +11,98 @@
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f0f0f0;
-      display: flex; flex-direction: column;
-      align-items: center; padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
       color: #333;
     }
-
-    /* Título de la página */
+    /* Título */
     h1.page-title {
       font-size: 2rem;
       font-weight: 800;
       margin-bottom: 1.5rem;
       color: #4f46e5;
     }
-
     /* Botón Editar */
     .edit-btn {
-      position: fixed; top: 1rem; right: 1rem;
-      background: #4f46e5; color: #fff;
-      padding: 0.6rem 1.2rem; border-radius: 0.5rem;
-      text-decoration: none; font-size: 0.95rem;
-      display: none; z-index: 1000; transition: background 0.2s;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #4f46e5;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: none;
+      z-index: 1000;
+      transition: background 0.2s;
     }
     .edit-btn:hover { background: #3730a3; }
-
     /* Tarjeta Soulprint */
     .container {
-      background: #fff; border-radius: 1rem;
+      background: #fff;
+      border-radius: 1rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 360px; width: 100%; overflow: hidden;
-      border: 4px solid #aaa;  /* dinámico desde JS */
+      max-width: 360px;
+      width: 100%;
+      overflow: hidden;
+      border: 4px solid #aaa; /* se ajusta por JS */
     }
     .content {
-      padding: 1.5rem 1rem; text-align: center;
-      background-color: #fff; color: #333;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      background-color: #fff;
+      color: #333;
     }
     .profile-img {
-      width: 80px; height: 80px; border-radius: 50%;
-      border: 3px solid #fff; object-fit: cover;
-      margin: 0 auto 0.75rem; background: #ccc;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      object-fit: cover;
+      margin: 0 auto 0.75rem;
+      background: #ccc;
     }
     .username {
-      font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
     .soulcolor-info {
-      display: flex; justify-content: center; align-items: center;
-      gap: 6px; font-size: 0.95rem; margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
     }
     .soulcolor-circle {
-      width: 10px; height: 10px; border-radius: 50%;
-      background-color: currentColor; /* color del alma */
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: currentColor;
     }
     .birthdate {
-      font-size: 0.95rem; margin-bottom: 1rem;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
     }
     .phrase {
-      font-style: italic; font-size: 1rem; margin-bottom: 1rem;
+      font-style: italic;
+      font-size: 1rem;
+      margin-bottom: 1rem;
     }
     .butterflies {
-      font-size: 0.95rem; font-weight: 500;
+      font-size: 0.95rem;
+      font-weight: 500;
     }
     .error {
-      text-align: center; color: crimson;
-      font-size: 1.1rem; padding: 2rem;
+      text-align: center;
+      color: crimson;
+      font-size: 1.1rem;
+      padding: 2rem;
     }
-
     /* Responsive */
     @media (max-width: 480px) {
       .container { max-width: 100%; }
@@ -85,15 +113,11 @@
 </head>
 <body>
 
-  <!-- Título fuera de la tarjeta -->
   <h1 class="page-title">SOULPRINT</h1>
-
-  <!-- Botón fijo -->
   <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
 
-  <!-- Tarjeta -->
   <div id="soulprint" class="container" style="display:none;">
-    <div class="content" id="content">
+    <div class="content">
       <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay">@usuario</div>
       <div class="soulcolor-info">
@@ -110,13 +134,12 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const user = params.get('user');
+      const user = new URLSearchParams(window.location.search).get('user');
       const token = localStorage.getItem('token');
       const stored = localStorage.getItem('user');
       let logged = null;
       if (stored && stored !== 'undefined') {
-        try { logged = JSON.parse(stored).username; } catch {} 
+        try { logged = JSON.parse(stored).username; } catch {}
       }
 
       const soulEl = document.getElementById('soulprint');
@@ -133,19 +156,21 @@
       }
       if (!user) {
         errorEl.textContent = 'Falta usuario en la URL';
-        return errorEl.style.display = 'block';
+        errorEl.style.display = 'block';
+        return;
       }
 
       fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`)
-        .then(r => r.json().then(b => ({status: r.status, body: b})))
-        .then(({status, body}) => {
+        .then(res => res.json().then(body => ({ status: res.status, body })))
+        .then(({ status, body }) => {
           if (status !== 200) {
             errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
-            return errorEl.style.display = 'block';
+            errorEl.style.display = 'block';
+            return;
           }
-          const {username, soulprint} = body;
+          const { username, soulprint } = body;
           document.getElementById('usernameDisplay').innerText = '@' + username;
-          document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase||''}"`;
+          document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
           document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
 
           // Formatear fecha de nacimiento
@@ -158,22 +183,26 @@
             birthEl.innerText = '--';
           }
 
+          // Mostrar nombre y color del alma
           soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
           const c = soulprint.soulColor || '#aaa';
           container.style.borderColor = c;
           colorCircle.style.backgroundColor = c;
+
           if (soulprint.profileImage) {
             profileImage.src = soulprint.profileImage;
             profileImage.style.borderColor = c;
           }
+
           soulEl.style.display = 'block';
+
           if (logged === username) {
             editBtn.style.display = 'inline-block';
             editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
           }
         })
-        .catch(e => {
-          console.error(e);
+        .catch(err => {
+          console.error(err);
           errorEl.textContent = 'Error al obtener Soulprint';
           errorEl.style.display = 'block';
         });
@@ -181,4 +210,5 @@
   </script>
 </body>
 </html>
+
 
