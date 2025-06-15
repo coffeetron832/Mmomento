@@ -6,18 +6,95 @@
   <title>Soulprint | Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    body { margin: 0; font-family: 'Inter', sans-serif; background-color: #f0f0f0; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1rem; }
-    .container { background: #fff; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 400px; width: 100%; overflow: hidden; }
-    .soulcolor-bar { height: 8px; width: 100%; background-color: #aaa; }
-    .content { padding: 2rem; text-align: center; position: relative; }
-    .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; margin-top: -60px; background: #ccc; }
-    .username { font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; }
-    .phrase { font-style: italic; color: #666; margin-bottom: 1rem; }
-    .moment-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 0.5rem; margin-top: 1rem; display: none; }
-    .butterflies { margin-top: 1rem; font-size: 0.9rem; color: #888; }
-    .error { text-align: center; color: crimson; font-size: 1.1rem; padding: 2rem; }
-    .edit-btn { position: absolute; top: 1rem; right: 1rem; background: #4f46e5; color: #fff; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.9rem; display: none; }
-    .edit-btn:hover { background: #3730a3; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .container {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .soulcolor-bar {
+      height: 50px;
+      width: 100%;
+      background-color: #aaa;
+      border-radius: 1rem 1rem 0 0;
+    }
+    .content {
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin-top: -60px;
+      background: #ccc;
+      transition: border-color 0.3s;
+    }
+    .username {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 1rem 0 0.5rem;
+    }
+    .phrase {
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: 500;
+      color: #444;
+      margin: 1rem 0;
+    }
+    .moment-img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      display: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      border: 3px solid #fff;
+    }
+    .butterflies {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      color: #444;
+      font-weight: 500;
+    }
+    .error {
+      text-align: center;
+      color: crimson;
+      font-size: 1.1rem;
+      padding: 2rem;
+    }
+    .edit-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #4f46e5;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .edit-btn:hover {
+      background: #3730a3;
+    }
   </style>
 </head>
 <body>
@@ -25,7 +102,7 @@
     <div id="soulcolorBar" class="soulcolor-bar"></div>
     <div class="content">
       <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
-      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/100" alt="Foto de perfil" />
+      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/120" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay"></div>
       <div class="phrase" id="soulPhraseDisplay"></div>
       <img id="momentImage" class="moment-img" src="" alt="Momento anclado" />
@@ -49,6 +126,7 @@
       const soulEl = document.getElementById('soulprint');
       const errorEl = document.getElementById('errorMessage');
       const editBtn = document.getElementById('editBtn');
+      const profileImage = document.getElementById('profileImage');
 
       if (!token) {
         alert('Debes iniciar sesión para ver perfiles');
@@ -77,8 +155,10 @@
           document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
           document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
 
+          // Aplicar color del alma al borde de la foto
           if (soulprint.profileImage) {
-            document.getElementById('profileImage').src = soulprint.profileImage;
+            profileImage.src = soulprint.profileImage;
+            profileImage.style.borderColor = soulprint.soulColor;
           }
 
           if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
@@ -103,5 +183,6 @@
   </script>
 </body>
 </html>
+
 
 
