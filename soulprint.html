@@ -115,7 +115,7 @@
       const token = localStorage.getItem('token');
       const stored = localStorage.getItem('user');
       let logged = null;
-      if (stored && stored!=='undefined') {
+      if (stored && stored !== 'undefined') {
         try { logged = JSON.parse(stored).username; } catch {} 
       }
 
@@ -129,47 +129,56 @@
 
       if (!token) {
         alert('Debes iniciar sesión');
-        return window.location.href='login.html';
+        return window.location.href = 'login.html';
       }
       if (!user) {
-        errorEl.textContent='Falta usuario en la URL';
-        return errorEl.style.display='block';
+        errorEl.textContent = 'Falta usuario en la URL';
+        return errorEl.style.display = 'block';
       }
 
       fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`)
-        .then(r=>r.json().then(b=>({status:r.status,body:b})))
-        .then(({status,body})=>{
-          if(status!==200){
-            errorEl.textContent=body.message||'Soulprint no encontrado 😢';
-            return errorEl.style.display='block';
+        .then(r => r.json().then(b => ({status: r.status, body: b})))
+        .then(({status, body}) => {
+          if (status !== 200) {
+            errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
+            return errorEl.style.display = 'block';
           }
-          const {username,soulprint} = body;
-          document.getElementById('usernameDisplay').innerText='@'+username;
-          document.getElementById('soulPhraseDisplay').innerText=`"${soulprint.soulPhrase||''}"`;
-          document.getElementById('butterflyCount').innerText=soulprint.butterflies||0;
-          document.getElementById('birthdate').innerText=soulprint.birthdate||'--';
-          soulcolorName.innerText=soulprint.soulColorName||'Color del alma';
+          const {username, soulprint} = body;
+          document.getElementById('usernameDisplay').innerText = '@' + username;
+          document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase||''}"`;
+          document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
+
+          // Formatear fecha de nacimiento
+          const birthEl = document.getElementById('birthdate');
+          if (soulprint.birthdate) {
+            const date = new Date(soulprint.birthdate);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            birthEl.innerText = date.toLocaleDateString('es-ES', options);
+          } else {
+            birthEl.innerText = '--';
+          }
+
+          soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
           const c = soulprint.soulColor || '#aaa';
           container.style.borderColor = c;
           colorCircle.style.backgroundColor = c;
-          if(soulprint.profileImage){
-            profileImage.src=soulprint.profileImage;
+          if (soulprint.profileImage) {
+            profileImage.src = soulprint.profileImage;
             profileImage.style.borderColor = c;
           }
-          soulEl.style.display='block';
-          if(logged===username){
-            editBtn.style.display='inline-block';
-            editBtn.href=`edit-soulprint.html?user=${encodeURIComponent(username)}`;
+          soulEl.style.display = 'block';
+          if (logged === username) {
+            editBtn.style.display = 'inline-block';
+            editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
           }
         })
-        .catch(e=>{
+        .catch(e => {
           console.error(e);
-          errorEl.textContent='Error al obtener Soulprint';
-          errorEl.style.display='block';
+          errorEl.textContent = 'Error al obtener Soulprint';
+          errorEl.style.display = 'block';
         });
     });
   </script>
 </body>
 </html>
-
 
