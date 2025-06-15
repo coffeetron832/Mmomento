@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -91,15 +92,15 @@
       margin-top: 1rem;
       color: #333;
     }
-    .phrase {
-      font-style: italic;
-      color: #666;
-      margin: 0.5rem 0 1rem;
-    }
     .birthdate-display {
       font-size: 0.9rem;
       color: #555;
       margin-bottom: 1rem;
+    }
+    .phrase {
+      font-style: italic;
+      color: #666;
+      margin: 0.5rem 0 1rem;
     }
     .moment-img {
       width: 100%;
@@ -158,21 +159,27 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const username = params.get('user');
-    document.getElementById('previewUsername').innerText = '@' + username;
 
+    // Form elements
     const form = document.getElementById('soulprintForm');
+    const soulPhrase = document.getElementById('soulPhrase');
+    const soulColor = document.getElementById('soulColor');
     const birthdateInput = document.getElementById('birthdate');
     const profileImageInput = document.getElementById('profileImageInput');
-    const previewProfileImage = document.getElementById('previewProfileImage');
-    const soulPhrase = document.getElementById('soulPhrase');
-    const previewPhrase = document.getElementById('previewPhrase');
-    const soulColor = document.getElementById('soulColor');
-    const halo = document.getElementById('haloPreview');
-    const previewBirthdate = document.getElementById('previewBirthdate');
     const pinnedMoment = document.getElementById('pinnedMoment');
-    const previewMoment = document.getElementById('previewMoment');
     const responseMessage = document.getElementById('responseMessage');
+
+    // Preview elements
+    const previewUsername = document.getElementById('previewUsername');
+    const previewPhrase = document.getElementById('previewPhrase');
+    const halo = document.getElementById('haloPreview');
+    const previewProfileImage = document.getElementById('previewProfileImage');
+    const previewBirthdate = document.getElementById('previewBirthdate');
+    const previewMoment = document.getElementById('previewMoment');
+
     const token = localStorage.getItem('token');
+
+    previewUsername.innerText = '@' + username;
 
     async function loadSoulprint() {
       if (!username) return;
@@ -182,19 +189,16 @@
         if (!res.ok) throw new Error(data.message || 'Error');
 
         const soul = data.soulprint;
-        // Rellenar formulario y preview
+        // Fill form
         soulPhrase.value = soul.soulPhrase || '';
-        previewPhrase.innerText = soul.soulPhrase || '';
         soulColor.value = soul.soulColor || '#88c0d0';
+        birthdateInput.value = soul.birthdate || '';
+        previewPhrase.innerText = soul.soulPhrase || '';
         halo.style.setProperty('--soul-color', soul.soulColor || '#88c0d0');
+        previewBirthdate.innerText = soul.birthdate || '--';
         previewProfileImage.src = soul.profileImage || '/default-avatar.png';
 
-        // Fecha
-        if (soul.birthdate) {
-          birthdateInput.value = soul.birthdate;
-          previewBirthdate.innerText = soul.birthdate;
-        }
-
+        // Load moments for select
         if (!token) return;
         const momentsRes = await fetch(`https://momento-backend-production.up.railway.app/api/users/${username}/moments`, {
           headers: { Authorization: 'Bearer ' + token }
@@ -209,7 +213,6 @@
           opt.textContent = `Momento #${m._id.slice(-4)}`;
           pinnedMoment.appendChild(opt);
         });
-
         if (soul.pinnedMoment) {
           pinnedMoment.value = soul.pinnedMoment._id;
           previewMoment.src = soul.pinnedMoment.imageUrl;
@@ -222,10 +225,12 @@
       }
     }
 
-    // Previews
+    // Preview handlers
     birthdateInput.addEventListener('change', () => {
       previewBirthdate.innerText = birthdateInput.value;
     });
+    soulPhrase.addEventListener('input', () => previewPhrase.innerText = soulPhrase.value);
+    soulColor.addEventListener('input', () => halo.style.setProperty('--soul-color', soulColor.value));
     profileImageInput.addEventListener('change', e => {
       const file = e.target.files[0];
       if (file) {
@@ -234,8 +239,6 @@
         reader.readAsDataURL(file);
       }
     });
-    soulPhrase.addEventListener('input', () => previewPhrase.innerText = soulPhrase.value);
-    soulColor.addEventListener('input', () => halo.style.setProperty('--soul-color', soulColor.value));
     pinnedMoment.addEventListener('change', () => {
       const sel = pinnedMoment.selectedOptions[0];
       if (sel && sel.dataset.url) {
@@ -246,7 +249,7 @@
       }
     });
 
-    // Submit
+    // Submit form
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const formData = new FormData();
@@ -265,10 +268,13 @@
         });
         const contentType = res.headers.get('Content-Type') || '';
         let data;
-        if (contentType.includes('application/json')) data = await res.json();
-        else throw new Error('Respuesta no válida del servidor');
-
+        if (contentType.includes('application/json')) {
+          data = await res.json();
+        } else {
+          throw new Error('Respuesta no válida del servidor');
+        }
         if (!res.ok) throw new Error(data.message || 'Error actualizando');
+
         responseMessage.textContent = '✅ Soulprint actualizado con éxito.';
         responseMessage.style.color = 'green';
         loadSoulprint();
@@ -283,4 +289,6 @@
   </script>
 </body>
 </html>
+```
+
 
