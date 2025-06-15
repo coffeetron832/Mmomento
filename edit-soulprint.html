@@ -192,13 +192,13 @@
       const moments = await momentsRes.json();
 
       // Limpiar el select antes de agregar opciones
-      pinnedMoment.innerHTML = '<option value="">Selecciona uno</option>';
+      pinnedMoment.innerHTML = '<option value="">Selecciiona uno</option>';
 
       moments.forEach(m => {
         const opt = document.createElement('option');
         opt.value = m._id;
         opt.dataset.url = m.imageUrl;
-        opt.textContent = `Momento #${m._id.slice(-4)}`; // muestra últimos 4 caracteres
+        opt.textContent = `Momento #${m._id.slice(-4)}`;
         pinnedMoment.appendChild(opt);
       });
 
@@ -224,14 +224,8 @@
     }
   });
 
-  soulPhrase.addEventListener('input', () => {
-    previewPhrase.innerText = soulPhrase.value;
-  });
-
-  soulColor.addEventListener('input', () => {
-    halo.style.setProperty('--soul-color', soulColor.value);
-  });
-
+  soulPhrase.addEventListener('input', () => previewPhrase.innerText = soulPhrase.value);
+  soulColor.addEventListener('input', () => halo.style.setProperty('--soul-color', soulColor.value));
   pinnedMoment.addEventListener('change', () => {
     const sel = pinnedMoment.selectedOptions[0];
     if (sel && sel.dataset.url) {
@@ -245,29 +239,38 @@
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
-    const formData = new FormData(form);
+    // Construir FormData manualmente para evitar duplicados
+    const formData = new FormData();
+    formData.append('soulPhrase', soulPhrase.value);
+    formData.append('soulColor', soulColor.value);
+    formData.append('pinnedMoment', pinnedMoment.value || '');
     const file = profileImageInput.files[0];
-
     if (file) {
-      formData.append('profileImage', file); // redundante, pero explícito por claridad
+      formData.append('profileImage', file);
     }
 
     try {
       const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
         method: 'PUT',
-        headers: {
-          Authorization: 'Bearer ' + token
-        },
+        headers: { Authorization: 'Bearer ' + token },
         body: formData
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get('Content-Type') || '';
+      let data;
+      if (contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        console.error('Respuesta inesperada:', text);
+        throw new Error('Respuesta no válida del servidor');
+      }
+
       if (!res.ok) throw new Error(data.message || 'Error actualizando');
 
       responseMessage.textContent = '✅ Soulprint actualizado con éxito.';
       responseMessage.style.color = 'green';
 
-      // Actualizar preview por si hubo cambios remotos
       loadSoulprint();
 
     } catch (err) {
@@ -281,6 +284,4 @@
 </script>
 </body>
 </html>
-
-
 
