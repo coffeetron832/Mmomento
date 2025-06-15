@@ -28,18 +28,19 @@
 
     /* Tarjeta Soulprint */
     .container {
-      background: #fff; border-radius: 1rem;
+      background: #fff;
+      border-radius: 1rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       max-width: 360px; width: 100%; overflow: hidden;
+      border: 4px solid #aaa;  /* color dinámico desde JS */
     }
     .soulcolor-bar {
-      height: 50px; width: 100%;
-      background-color: #aaa; border-radius: 1rem 1rem 0 0;
+      display: none; /* ya no necesitamos la barra superior */
     }
     .content {
       padding: 1.5rem 1rem; text-align: center; position: relative;
-      background-color: currentColor; /* se ajusta desde JS */
-      color: #fff;
+      background-color: #fff; /* interior siempre blanco */
+      color: #333;
     }
     .soulprint-title {
       font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem;
@@ -55,10 +56,11 @@
     .soulcolor-info {
       display: flex; justify-content: center; align-items: center;
       gap: 6px; font-size: 0.95rem; margin-bottom: 0.5rem;
+      color: inherit;
     }
     .soulcolor-circle {
       width: 10px; height: 10px; border-radius: 50%;
-      background-color: #fff;
+      background-color: currentColor; /* círculo al color del alma */
     }
     .birthdate {
       font-size: 0.95rem; margin-bottom: 1rem;
@@ -76,7 +78,7 @@
 
     /* Responsive */
     @media (max-width: 480px) {
-      .soulcolor-bar { height: 30px; }
+      .container { max-width: 100%; }
       .profile-img { width: 70px; height: 70px; }
       .soulprint-title { font-size: 1.5rem; }
     }
@@ -89,7 +91,6 @@
 
   <!-- Tarjeta -->
   <div id="soulprint" class="container" style="display:none;">
-    <div id="soulcolorBar" class="soulcolor-bar"></div>
     <div class="content" id="content">
       <div class="soulprint-title">SOULPRINT</div>
       <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
@@ -114,13 +115,16 @@
       const stored = localStorage.getItem('user');
       let logged = null;
       if (stored && stored!=='undefined') {
-        try { logged = JSON.parse(stored).username; } catch {}
+        try { logged = JSON.parse(stored).username; } catch {} 
       }
 
       const soulEl = document.getElementById('soulprint');
       const errorEl = document.getElementById('errorMessage');
       const editBtn = document.getElementById('editBtn');
-      const content = document.getElementById('content');
+      const container = document.querySelector('.container');
+      const profileImage = document.getElementById('profileImage');
+      const colorCircle = document.getElementById('soulcolorCircle');
+      const soulcolorName = document.getElementById('soulcolorName');
 
       if (!token) {
         alert('Debes iniciar sesión');
@@ -143,13 +147,14 @@
           document.getElementById('soulPhraseDisplay').innerText=`"${soulprint.soulPhrase||''}"`;
           document.getElementById('butterflyCount').innerText=soulprint.butterflies||0;
           document.getElementById('birthdate').innerText=soulprint.birthdate||'--';
-          document.getElementById('soulcolorName').innerText=soulprint.soulColorName||'Color del alma';
-          document.getElementById('soulcolorCircle').style.backgroundColor=soulprint.soulColor||'#aaa';
-          document.getElementById('soulcolorBar').style.backgroundColor=soulprint.soulColor||'#aaa';
-          content.style.backgroundColor=soulprint.soulColor||'#6b21a8';
+          soulcolorName.innerText=soulprint.soulColorName||'Color del alma';
+          // Aplica el color a los bordes y al círculo
+          const c = soulprint.soulColor || '#aaa';
+          container.style.borderColor = c;
+          colorCircle.style.backgroundColor = c;
           if(soulprint.profileImage){
-            document.getElementById('profileImage').src=soulprint.profileImage;
-            document.getElementById('profileImage').style.borderColor=soulprint.soulColor;
+            profileImage.src=soulprint.profileImage;
+            profileImage.style.borderColor = c;
           }
           soulEl.style.display='block';
           if(logged===username){
@@ -166,4 +171,5 @@
   </script>
 </body>
 </html>
+
 
