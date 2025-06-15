@@ -16,12 +16,7 @@
     .moment-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 0.5rem; margin-top: 1rem; display: none; }
     .butterflies { margin-top: 1rem; font-size: 0.9rem; color: #888; }
     .error { text-align: center; color: crimson; font-size: 1.1rem; padding: 2rem; }
-    /* Form styling */
-    .edit-form { display: none; text-align: left; padding: 1rem; border-top: 1px solid #eee; }
-    .edit-form label { display: block; margin-top: 0.5rem; font-weight: 600; }
-    .edit-form input, .edit-form textarea { width: 100%; margin-top: 0.25rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 0.5rem; }
-    .edit-form button { margin-top: 1rem; padding: 0.5rem 1rem; background-color: #333; color: #fff; border: none; border-radius: 0.5rem; cursor: pointer; }
-    .edit-btn { position: absolute; top: 1rem; right: 1rem; background: #4f46e5; color: #fff; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.9rem; }
+    .edit-btn { position: absolute; top: 1rem; right: 1rem; background: #4f46e5; color: #fff; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.9rem; display: none; }
     .edit-btn:hover { background: #3730a3; }
   </style>
 </head>
@@ -29,42 +24,28 @@
   <div id="soulprint" class="container" style="display:none;">
     <div id="soulcolorBar" class="soulcolor-bar"></div>
     <div class="content">
-      <a id="editBtn" class="edit-btn" href="#" style="display:none;">Editar Soulprint</a>
+      <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
       <img id="profileImage" class="profile-img" src="https://via.placeholder.com/100" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay"></div>
       <div class="phrase" id="soulPhraseDisplay"></div>
       <img id="momentImage" class="moment-img" src="" alt="Momento anclado" />
       <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
-      <form id="editForm" class="edit-form">
-        <label for="profileImageInput">Foto de perfil</label>
-        <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
-        <label for="soulColorInput">Color del alma</label>
-        <input type="color" id="soulColorInput" name="soulColor" />
-        <label for="soulPhraseInput">Frase del alma</label>
-        <textarea id="soulPhraseInput" name="soulPhrase" rows="2" placeholder="Escribe tu frase..."></textarea>
-        <button type="submit">Actualizar</button>
-      </form>
     </div>
   </div>
   <div id="errorMessage" class="error" style="display:none;">Soulprint no encontrado 😢</div>
 
   <script>
-    function decodeToken(token) { try { return JSON.parse(atob(token.split('.')[1])); } catch { return null; } }
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const usernameParam = params.get('user');
       const token = localStorage.getItem('token');
-      const storedUser = localStorage.getItem('user');
+      const stored = localStorage.getItem('user');
       let loggedUser = null;
-      if (storedUser && storedUser !== 'undefined') {
-        try {
-          loggedUser = JSON.parse(storedUser).username;
-        } catch {}
+      if (stored && stored !== 'undefined') {
+        try { loggedUser = JSON.parse(stored).username; } catch(e){}
       }
-      const payload = decodeToken(token);
       const soulEl = document.getElementById('soulprint');
       const errorEl = document.getElementById('errorMessage');
-      const formEl = document.getElementById('editForm');
       const editBtn = document.getElementById('editBtn');
 
       if (!usernameParam) {
@@ -86,8 +67,6 @@
           document.getElementById('soulPhraseDisplay').innerText = soulprint.soulPhrase || '';
           document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
           document.getElementById('soulcolorBar').style.backgroundColor = soulprint.soulColor || '#aaa';
-          document.getElementById('soulColorInput').value = soulprint.soulColor || '#888888';
-          document.getElementById('soulPhraseInput').value = soulprint.soulPhrase || '';
           if (soulprint.profileImage) document.getElementById('profileImage').src = soulprint.profileImage;
           if (soulprint.pinnedMoment && soulprint.pinnedMoment.url) {
             const m = document.getElementById('momentImage');
@@ -96,12 +75,8 @@
           }
 
           soulEl.style.display = 'block';
-
-          // Mostrar botón y formulario solo al dueño
           if (loggedUser === username) {
             editBtn.style.display = 'inline-block';
-            formEl.style.display = 'block';
-            // Configurar enlace al edit-soulprint.html
             editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
           }
         })
@@ -110,32 +85,6 @@
           errorEl.textContent = 'Error al obtener Soulprint';
           errorEl.style.display = 'block';
         });
-
-      formEl.addEventListener('submit', async e => {
-        e.preventDefault();
-        if (!token) return alert('Debes iniciar sesión');
-
-        const formData = new FormData();
-        formData.append('soulPhrase', document.getElementById('soulPhraseInput').value);
-        formData.append('soulColor', document.getElementById('soulColorInput').value);
-        const file = document.getElementById('profileImageInput').files[0];
-        if (file) formData.append('profileImage', file);
-
-        try {
-          const res = await fetch('https://momento-backend-production.up.railway.app/api/users/soulprint', {
-            method: 'PUT',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.message || 'Error');
-          alert('Soulprint actualizado con éxito');
-          location.reload();
-        } catch (err) {
-          console.error('Error actualizando:', err);
-          alert('Hubo un error actualizando tu Soulprint');
-        }
-      });
     });
   </script>
 </body>
