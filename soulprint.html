@@ -11,9 +11,17 @@
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f0f0f0;
-      display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; padding: 1rem;
+      display: flex; flex-direction: column;
+      align-items: center; padding: 2rem 1rem;
       color: #333;
+    }
+
+    /* Título de la página */
+    h1.page-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: #4f46e5;
     }
 
     /* Botón Editar */
@@ -28,22 +36,14 @@
 
     /* Tarjeta Soulprint */
     .container {
-      background: #fff;
-      border-radius: 1rem;
+      background: #fff; border-radius: 1rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       max-width: 360px; width: 100%; overflow: hidden;
-      border: 4px solid #aaa;  /* color dinámico desde JS */
-    }
-    .soulcolor-bar {
-      display: none; /* ya no necesitamos la barra superior */
+      border: 4px solid #aaa;  /* dinámico desde JS */
     }
     .content {
-      padding: 1.5rem 1rem; text-align: center; position: relative;
-      background-color: #fff; /* interior siempre blanco */
-      color: #333;
-    }
-    .soulprint-title {
-      font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem;
+      padding: 1.5rem 1rem; text-align: center;
+      background-color: #fff; color: #333;
     }
     .profile-img {
       width: 80px; height: 80px; border-radius: 50%;
@@ -56,11 +56,10 @@
     .soulcolor-info {
       display: flex; justify-content: center; align-items: center;
       gap: 6px; font-size: 0.95rem; margin-bottom: 0.5rem;
-      color: inherit;
     }
     .soulcolor-circle {
       width: 10px; height: 10px; border-radius: 50%;
-      background-color: currentColor; /* círculo al color del alma */
+      background-color: currentColor; /* color del alma */
     }
     .birthdate {
       font-size: 0.95rem; margin-bottom: 1rem;
@@ -80,11 +79,14 @@
     @media (max-width: 480px) {
       .container { max-width: 100%; }
       .profile-img { width: 70px; height: 70px; }
-      .soulprint-title { font-size: 1.5rem; }
+      h1.page-title { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Título fuera de la tarjeta -->
+  <h1 class="page-title">SOULPRINT</h1>
 
   <!-- Botón fijo -->
   <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
@@ -92,7 +94,6 @@
   <!-- Tarjeta -->
   <div id="soulprint" class="container" style="display:none;">
     <div class="content" id="content">
-      <div class="soulprint-title">SOULPRINT</div>
       <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
       <div class="username" id="usernameDisplay">@usuario</div>
       <div class="soulcolor-info">
@@ -148,7 +149,6 @@
           document.getElementById('butterflyCount').innerText=soulprint.butterflies||0;
           document.getElementById('birthdate').innerText=soulprint.birthdate||'--';
           soulcolorName.innerText=soulprint.soulColorName||'Color del alma';
-          // Aplica el color a los bordes y al círculo
           const c = soulprint.soulColor || '#aaa';
           container.style.borderColor = c;
           colorCircle.style.backgroundColor = c;
