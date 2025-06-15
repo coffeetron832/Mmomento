@@ -91,7 +91,6 @@
   </style>
 </head>
 <body>
-
   <div class="form-container">
     <h2>Editar tu Soulprint</h2>
     <form id="soulprintForm" enctype="multipart/form-data">
@@ -103,6 +102,16 @@
 
       <label for="birthdate">Mi primer latido (fecha de nacimiento):</label>
       <input type="date" id="birthdate" name="birthdate" required />
+
+      <!-- Nuevo campo: Rol del alma -->
+      <label for="soulRole">¿Cuál es tu rol del alma?</label>
+      <select id="soulRole" name="soulRole" required>
+        <option value="">Selecciona uno</option>
+        <option value="Arquitecto/a de Emociones">💖 Arquitecto/a de Emociones</option>
+        <option value="Alma Callejera">🛹 Alma Callejera</option>
+        <option value="Corazón Nómada">🚀 Corazón Nómada</option>
+        <option value="Rompe-esquemas">🧢 Rompe-esquemas</option>
+      </select>
 
       <label for="profileImageInput">Foto de perfil:</label>
       <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
@@ -126,6 +135,8 @@
         Mi primer latido: <span id="previewBirthdate">--</span>
       </div>
       <div class="phrase" id="previewPhrase">Tu frase aparecerá aquí...</div>
+      <!-- Vista previa del rol -->
+      <div id="previewRole" style="font-weight:bold;color:#444;margin-top:0.5rem;">Rol del alma: --</div>
       <img id="previewMoment" class="moment-img" style="display:none;" alt="Previsualización momento" />
     </div>
   </div>
@@ -140,6 +151,7 @@
     const soulPhrase = document.getElementById('soulPhrase');
     const soulColor = document.getElementById('soulColor');
     const birthdateInput = document.getElementById('birthdate');
+    const soulRole = document.getElementById('soulRole');
     const profileImageInput = document.getElementById('profileImageInput');
     const pinnedMoment = document.getElementById('pinnedMoment');
     const responseMessage = document.getElementById('responseMessage');
@@ -150,51 +162,53 @@
     const halo = document.getElementById('haloPreview');
     const previewProfileImage = document.getElementById('previewProfileImage');
     const previewBirthdate = document.getElementById('previewBirthdate');
+    const previewRole = document.getElementById('previewRole');
     const previewMoment = document.getElementById('previewMoment');
 
     previewUsername.innerText = '@' + username;
 
     async function loadSoulprint() {
       if (!username) return;
-
       const res = await fetch(
         `https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`,
         { headers: { Authorization: 'Bearer ' + token } }
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Error cargando Soulprint');
-
       const soul = data.soulprint;
 
       // Rellenar formulario
       soulPhrase.value = soul.soulPhrase || '';
       soulColor.value = soul.soulColor || '#88c0d0';
       birthdateInput.value = soul.birthdate || '';
+      soulRole.value = soul.soulRole || '';
 
       // Previsualización
       previewPhrase.innerText = soul.soulPhrase || '';
       halo.style.setProperty('--soul-color', soul.soulColor || '#88c0d0');
       previewProfileImage.src = soul.profileImage || '/default-avatar.png';
 
-      // Formatear fecha en la previsualización
+      // Fecha
       if (soul.birthdate) {
         const d = new Date(soul.birthdate);
         previewBirthdate.innerText = d.toLocaleDateString('es-ES', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+          year: 'numeric', month: 'long', day: 'numeric'
         });
       } else {
         previewBirthdate.innerText = '--';
       }
 
-      // Cargar momentos
+      // Rol
+      previewRole.innerText = soul.soulRole
+        ? 'Rol del alma: ' + soul.soulRole
+        : 'Rol del alma: --';
+
+      // Cargar momentos (resto igual)...
       const momentsRes = await fetch(
         `https://momento-backend-production.up.railway.app/api/users/${username}/moments`,
         { headers: { Authorization: 'Bearer ' + token } }
       );
       const moments = await momentsRes.json();
-
       pinnedMoment.innerHTML = '<option value="">Selecciona uno</option>';
       moments.forEach(m => {
         const opt = document.createElement('option');
@@ -203,7 +217,6 @@
         opt.textContent = `Momento #${m._id.slice(-4)}`;
         pinnedMoment.appendChild(opt);
       });
-
       if (soul.pinnedMoment) {
         pinnedMoment.value = soul.pinnedMoment._id;
         previewMoment.src = soul.pinnedMoment.imageUrl;
@@ -211,20 +224,20 @@
       }
     }
 
-    // Event listeners para live preview
+    // Live preview handlers
     birthdateInput.addEventListener('change', () => {
       const v = birthdateInput.value;
-      if (v) {
-        const d = new Date(v);
-        previewBirthdate.innerText = d.toLocaleDateString('es-ES', {
-          year: 'numeric', month: 'long', day: 'numeric'
-        });
-      } else {
-        previewBirthdate.innerText = '--';
-      }
+      previewBirthdate.innerText = v
+        ? new Date(v).toLocaleDateString('es-ES', { year:'numeric',month:'long',day:'numeric' })
+        : '--';
     });
     soulPhrase.addEventListener('input', () => previewPhrase.innerText = soulPhrase.value);
     soulColor.addEventListener('input', () => halo.style.setProperty('--soul-color', soulColor.value));
+    soulRole.addEventListener('change', () => {
+      previewRole.innerText = soulRole.value
+        ? 'Rol del alma: ' + soulRole.value
+        : 'Rol del alma: --';
+    });
     profileImageInput.addEventListener('change', e => {
       const file = e.target.files[0];
       if (file) {
@@ -246,14 +259,11 @@
     // Submit
     form.addEventListener('submit', async e => {
       e.preventDefault();
-
-      // Verificar valor antes de enviar
-      console.log('Enviando fecha:', birthdateInput.value);
-
       const formData = new FormData();
       formData.append('soulPhrase', soulPhrase.value);
       formData.append('soulColor', soulColor.value);
       formData.append('birthdate', birthdateInput.value);
+      formData.append('soulRole', soulRole.value);
       formData.append('pinnedMoment', pinnedMoment.value || '');
       const file = profileImageInput.files[0];
       if (file) formData.append('profileImage', file);
@@ -261,15 +271,10 @@
       try {
         const res = await fetch(
           `https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`,
-          {
-            method: 'PUT',
-            headers: { Authorization: 'Bearer ' + token },
-            body: formData
-          }
+          { method: 'PUT', headers: { Authorization: 'Bearer ' + token }, body: formData }
         );
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Error actualizando');
-
         responseMessage.textContent = '✅ Soulprint actualizado con éxito.';
         responseMessage.style.color = 'green';
         loadSoulprint();
@@ -288,4 +293,3 @@
   </script>
 </body>
 </html>
-
