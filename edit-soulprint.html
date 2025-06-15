@@ -151,104 +151,134 @@
   </div>
 
   <script>
-    // Obtener username de URL
-    const params = new URLSearchParams(window.location.search);
-    const username = params.get('user');
-    document.getElementById('previewUsername').innerText = '@' + username;
+  const params = new URLSearchParams(window.location.search);
+  const username = params.get('user');
+  document.getElementById('previewUsername').innerText = '@' + username;
 
-    const form = document.getElementById('soulprintForm');
-    const profileImageInput = document.getElementById('profileImageInput');
-    const previewProfileImage = document.getElementById('previewProfileImage');
-    const soulPhrase = document.getElementById('soulPhrase');
-    const previewPhrase = document.getElementById('previewPhrase');
-    const soulColor = document.getElementById('soulColor');
-    const halo = document.getElementById('haloPreview');
-    const pinnedMoment = document.getElementById('pinnedMoment');
-    const previewMoment = document.getElementById('previewMoment');
-    const responseMessage = document.getElementById('responseMessage');
-    const token = localStorage.getItem('token');
+  const form = document.getElementById('soulprintForm');
+  const profileImageInput = document.getElementById('profileImageInput');
+  const previewProfileImage = document.getElementById('previewProfileImage');
+  const soulPhrase = document.getElementById('soulPhrase');
+  const previewPhrase = document.getElementById('previewPhrase');
+  const soulColor = document.getElementById('soulColor');
+  const halo = document.getElementById('haloPreview');
+  const pinnedMoment = document.getElementById('pinnedMoment');
+  const previewMoment = document.getElementById('previewMoment');
+  const responseMessage = document.getElementById('responseMessage');
+  const token = localStorage.getItem('token');
 
-    // Fetch inicial de Soulprint y lista de momentos
-    async function loadSoulprint() {
-      if (!username) return;
-      try {
-        const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Error');
-        const soul = data.soulprint;
+  async function loadSoulprint() {
+    if (!username) return;
 
-        // Rellenar preview y form
-        soulPhrase.value = soul.soulPhrase;
-        previewPhrase.innerText = soul.soulPhrase;
-        soulColor.value = soul.soulColor;
-        halo.style.setProperty('--soul-color', soul.soulColor);
-        previewProfileImage.src = soul.profileImage;
+    try {
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Error');
 
-        // Cargar momentos anclados
-        const momentsRes = await fetch(`https://momento-backend-production.up.railway.app/api/users/${username}/moments`, {
-          headers: { Authorization: 'Bearer ' + token }
-        });
-        const moments = await momentsRes.json();
-        moments.forEach(m => {
-          const opt = document.createElement('option');
-          opt.value = m._id;
-          opt.dataset.url = m.imageUrl;
-          opt.textContent = `Momento #${m._id}`;
-          pinnedMoment.appendChild(opt);
-        });
+      const soul = data.soulprint;
 
-        if (soul.pinnedMoment) {
-          pinnedMoment.value = soul.pinnedMoment._id;
-          previewMoment.src = soul.pinnedMoment.imageUrl;
-          previewMoment.style.display = 'block';
-        }
-      } catch (err) {
-        console.error(err);
-        responseMessage.textContent = '❌ ' + err.message;
-        responseMessage.style.color = 'crimson';
+      soulPhrase.value = soul.soulPhrase;
+      previewPhrase.innerText = soul.soulPhrase;
+      soulColor.value = soul.soulColor;
+      halo.style.setProperty('--soul-color', soul.soulColor);
+      previewProfileImage.src = soul.profileImage;
+
+      if (!token) return;
+
+      const momentsRes = await fetch(`https://momento-backend-production.up.railway.app/api/users/${username}/moments`, {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+
+      const moments = await momentsRes.json();
+
+      // Limpiar el select antes de agregar opciones
+      pinnedMoment.innerHTML = '<option value="">Selecciona uno</option>';
+
+      moments.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m._id;
+        opt.dataset.url = m.imageUrl;
+        opt.textContent = `Momento #${m._id.slice(-4)}`; // muestra últimos 4 caracteres
+        pinnedMoment.appendChild(opt);
+      });
+
+      if (soul.pinnedMoment) {
+        pinnedMoment.value = soul.pinnedMoment._id;
+        previewMoment.src = soul.pinnedMoment.imageUrl;
+        previewMoment.style.display = 'block';
       }
+
+    } catch (err) {
+      console.error(err);
+      responseMessage.textContent = '❌ ' + err.message;
+      responseMessage.style.color = 'crimson';
+    }
+  }
+
+  profileImageInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => previewProfileImage.src = reader.result;
+      reader.readAsDataURL(file);
+    }
+  });
+
+  soulPhrase.addEventListener('input', () => {
+    previewPhrase.innerText = soulPhrase.value;
+  });
+
+  soulColor.addEventListener('input', () => {
+    halo.style.setProperty('--soul-color', soulColor.value);
+  });
+
+  pinnedMoment.addEventListener('change', () => {
+    const sel = pinnedMoment.selectedOptions[0];
+    if (sel && sel.dataset.url) {
+      previewMoment.src = sel.dataset.url;
+      previewMoment.style.display = 'block';
+    } else {
+      previewMoment.style.display = 'none';
+    }
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const file = profileImageInput.files[0];
+
+    if (file) {
+      formData.append('profileImage', file); // redundante, pero explícito por claridad
     }
 
-    // Previews
-    profileImageInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => previewProfileImage.src = reader.result;
-        reader.readAsDataURL(file);
-      }
-    });
-    soulPhrase.addEventListener('input', () => previewPhrase.innerText = soulPhrase.value);
-    soulColor.addEventListener('input', () => halo.style.setProperty('--soul-color', soulColor.value));
-    pinnedMoment.addEventListener('change', () => {
-      const sel = pinnedMoment.selectedOptions[0];
-      previewMoment.src = sel.dataset.url;
-      previewMoment.style.display = sel.value ? 'block' : 'none';
-    });
+    try {
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + token
+        },
+        body: formData
+      });
 
-    // Submit
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      try {
-        const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
-          method: 'PUT',
-          headers: { Authorization: 'Bearer ' + token },
-          body: formData
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Error actualizando');
-        responseMessage.textContent = '✅ Soulprint actualizado con éxito.';
-        responseMessage.style.color = 'green';
-      } catch (err) {
-        console.error(err);
-        responseMessage.textContent = '❌ ' + err.message;
-        responseMessage.style.color = 'crimson';
-      }
-    });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Error actualizando');
 
-    loadSoulprint();
-  </script>
+      responseMessage.textContent = '✅ Soulprint actualizado con éxito.';
+      responseMessage.style.color = 'green';
+
+      // Actualizar preview por si hubo cambios remotos
+      loadSoulprint();
+
+    } catch (err) {
+      console.error(err);
+      responseMessage.textContent = '❌ ' + err.message;
+      responseMessage.style.color = 'crimson';
+    }
+  });
+
+  loadSoulprint();
+</script>
 </body>
 </html>
 
