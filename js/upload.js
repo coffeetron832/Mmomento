@@ -1,8 +1,12 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
   const token = localStorage.getItem("token");
+
+  // 🌙 Aplicar modo oscuro
+  const darkValue = localStorage.getItem('darkMode');
+  const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
+  if (isDarkStored) document.body.classList.add('dark-mode');
 
   // 🔘 Switch modo oscuro
   const toggleCheckbox = document.getElementById('darkModeToggle');
