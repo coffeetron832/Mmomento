@@ -42,16 +42,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-family: 'Host Grotesk', sans-serif;
     }
-
     header.site-header h2 {
       margin: 0;
       font-size: 1.5rem;
       font-weight: 600;
     }
-
-    /* Nuevo contenedor para los botones junto a Soulprint */
     .header-buttons {
       display: flex;
       gap: 0.5rem;
@@ -66,13 +62,11 @@
       border: none;
       border-radius: 6px;
       transition: background-color 0.3s ease, transform 0.1s ease;
-      font-family: 'Host Grotesk', sans-serif;
     }
     .header-buttons .btn:hover {
       background-color: var(--btn-hover);
       transform: scale(1.05);
     }
-
     header.site-header a.soulprint-link {
       background-color: #4f46e5;
       color: white;
@@ -80,12 +74,10 @@
       border-radius: 9999px;
       font-weight: bold;
       text-decoration: none;
-      font-family: 'Host Grotesk', sans-serif;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s;
       margin-left: 1rem;
     }
-
     header.site-header a.soulprint-link:hover {
       background-color: #3730a3;
     }
@@ -99,11 +91,58 @@
       background-color: var(--btn-bg);
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      display: none;
-      font-family: 'Host Grotesk', sans-serif;
+      display: none; /* se mostrará como flex cuando se active */
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    /* ...el resto de tu CSS permanece igual... */
+    .upload-form-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .upload-form-container input[type="file"],
+    .upload-form-container input[type="text"],
+    .upload-form-container select,
+    .upload-form-container button {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .upload-form-container button {
+      background-color: #4f46e5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .upload-form-container button:hover {
+      background-color: #3730a3;
+    }
+
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    /* Eliminar floating-buttons */
+
+    .switch-container {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      z-index: 1002;
+    }
+    .switch-container label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .switch-container input {
+      margin-right: 0.5rem;
+    }
   </style>
 </head>
 <body class="upload-page">
@@ -118,14 +157,33 @@
   </header>
 
   <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
-    <!-- ...formulario de subida... -->
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="image" name="image" accept="image/*" required />
+      <input type="text" name="description" placeholder="Descripción..." />
+      <label for="visibility">Visibilidad:</label>
+      <select name="visibility" id="visibility">
+        <option value="public">Público</option>
+        <option value="private">Privado</option>
+        <option value="circle">Solo para un círculo</option>
+      </select>
+      <label for="duration">Duración:</label>
+      <select name="duration" id="duration" required>
+        <option value="">Selecciona duración</option>
+        <option value="30m">30 minutos</option>
+        <option value="1h">1 hora</option>
+        <option value="3h">3 horas</option>
+        <option value="6h">6 horas</option>
+      </select>
+      <div id="circleSelectorContainer" style="display: none;">
+        <select id="circles" name="circleId"></select>
+      </div>
+      <button type="submit">Subir</button>
+    </form>
   </section>
 
   <main id="timeline" role="main" tabindex="0">
-    <!-- ...timeline de imágenes... -->
+    <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
   </main>
-
-  <!-- Se quita el antiguo .floating-buttons -->
 
   <div class="switch-container">
     <label>
@@ -134,20 +192,42 @@
     </label>
   </div>
 
-  <script src="js/upload.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('toggleUploadBtn');
+      const uploadForm = document.getElementById('uploadFormContainer');
+      const logoutBtn = document.getElementById('logoutBtn');
       const soulprintBtn = document.getElementById('soulprintBtn');
+      const darkToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+
+      // 1) Mostrar/ocultar formulario como flex
+      toggleBtn.addEventListener('click', () => {
+        if (uploadForm.style.display === 'flex') {
+          uploadForm.style.display = 'none';
+          uploadForm.setAttribute('aria-hidden', 'true');
+        } else {
+          uploadForm.style.display = 'flex';
+          uploadForm.setAttribute('aria-hidden', 'false');
+        }
+      });
+
+      // 2) Lógica de logout (puedes reemplazar con tu propia función)
+      logoutBtn.addEventListener('click', () => {
+        // Ejemplo:
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      });
+
+      // 3) Soulprint
       let username = null;
       try {
         const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          username = JSON.parse(storedUser).username;
-        }
+        if (storedUser) username = JSON.parse(storedUser).username;
       } catch {}
-      if (soulprintBtn && username) {
+      if (username) {
         soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-      } else if (soulprintBtn) {
+      } else {
         soulprintBtn.addEventListener('click', e => {
           e.preventDefault();
           alert('Debes iniciar sesión para ver tu Soulprint');
@@ -155,14 +235,18 @@
         });
       }
 
-      // El listener de subida y logout permanece igual
-      document.getElementById('toggleUploadBtn').addEventListener('click', () => {
-        document.getElementById('uploadFormContainer').style.display = 'block';
-      });
-      document.getElementById('logoutBtn').addEventListener('click', () => {
-        // Tu lógica de logout
+      // 4) Modo oscuro
+      // Aplicar guardado
+      if (localStorage.getItem('darkMode') === 'true') {
+        body.classList.add('dark-mode');
+        darkToggle.checked = true;
+      }
+      darkToggle.addEventListener('change', () => {
+        body.classList.toggle('dark-mode', darkToggle.checked);
+        localStorage.setItem('darkMode', darkToggle.checked);
       });
     });
   </script>
 </body>
 </html>
+
