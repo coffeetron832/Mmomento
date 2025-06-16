@@ -1,13 +1,20 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Momento</title>  <!-- Favicon -->  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <title>Momento</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="shortcut icon" href="favicon.ico">  <!-- Fuentes -->  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Parkinsans&display=swap" rel="stylesheet">  <!-- Estilos internos -->  <style>
+  <link rel="shortcut icon" href="favicon.ico">
+  <!-- Fuentes: "Nothing You Could Do", "Sen" -->
+  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Sen:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Estilos internos -->
+  <style>
     body {
       margin: 0;
-      font-family: 'Parkinsans', sans-serif;
+      font-family: 'Sen', sans-serif;
       background: url('fondo.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
@@ -119,35 +126,43 @@
       text-decoration: underline;
       cursor: pointer;
     }
-  </style></head>
+  </style>
+</head>
 <body>
   <!-- Header con solo botón iniciar sesión -->
   <header class="global-header">
     <nav>
       <a href="login.html">Iniciar sesión</a>
     </nav>
-  </header>  <!-- Contenido principal centrado -->  <div class="content-wrapper">
+  </header>
+
+  <!-- Contenido principal centrado -->
+  <div class="content-wrapper">
     <div class="main-text">
       <h1>
-        Tus momentos reales.<br><small>Solo por un <span class="fade-pieces">
+        Tus momentos reales.<br>
+        <small>Solo por un <span class="fade-pieces">
           <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
         </span>.</small>
       </h1>
-    </div><!-- Slideshow centrado -->
-<img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
+    </div>
 
-<!-- Botón Unete a nosotros -->
-<a href="register.html" class="join-btn">Únete a nosotros</a>
+    <!-- Slideshow centrado -->
+    <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
 
-<!-- Footer -->
-<footer class="site-footer">
-  <p>
-    <a href="privacidad.html">Política de Privacidad</a> ·
-    <a href="condiciones.html">Términos y Condiciones</a>
-  </p>
-</footer>
+    <!-- Botón Únete a nosotros -->
+    <a href="register.html" class="join-btn">Únete a nosotros</a>
 
-  </div>  <script>
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>
+        <a href="privacidad.html">Política de Privacidad</a> ·
+        <a href="condiciones.html">Términos y Condiciones</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
       const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
       const slideshow = document.getElementById("slideshow-img");
@@ -161,5 +176,7 @@
         }, 1000);
       }, 4000);
     });
-  </script></body>
-  </html>
+  </script>
+</body>
+</html>
+
