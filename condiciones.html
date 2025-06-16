@@ -4,9 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Términos y Condiciones | Momento</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Grape+Nuts&display=swap" rel="stylesheet" />
+
+  <!-- Fuentes: Host Grotesk y Sarina -->
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700&family=Sarina&display=swap" rel="stylesheet" />
+
+  <!-- Estilos generales -->
   <link rel="stylesheet" href="css/styles.css" />
   <style>
+    body {
+      font-family: 'Host Grotesk', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: #111;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .main-header .logo {
+      font-family: 'Sarina', cursive;
+      font-size: 2.5rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: #111;
+    }
+    body.dark-mode .main-header .logo {
+      color: #eee;
+    }
+
+    main.content-section h1,
+    main.content-section h2 {
+      margin-top: 2rem;
+    }
+
+    main.content-section h1 {
+      font-size: 1.8rem;
+    }
+
+    main.content-section h2 {
+      font-size: 1.4rem;
+    }
+
+    main.content-section p,
+    main.content-section li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    main.content-section ul {
+      padding-left: 1.5rem;
+    }
+
     /* Modo oscuro */
     body.dark-mode {
       background-color: #121212;
@@ -42,14 +95,23 @@
     button#darkModeToggle:hover {
       transform: scale(1.05);
     }
-
     body.dark-mode button#darkModeToggle {
       background-color: #222;
       color: #f0f0f0;
     }
+
+    .main-footer {
+      margin-top: 3rem;
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Botón modo oscuro -->
+  <button id="darkModeToggle">🌙</button>
 
   <div class="container">
     <header class="main-header">
@@ -105,15 +167,13 @@
   </div>
 
   <script>
-    // Aplicar modo oscuro guardado al cargar
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
 
-    if(localStorage.getItem('darkMode') === 'true') {
+    // Cargar modo oscuro si estaba activado
+    if (localStorage.getItem('darkMode') === 'true') {
       body.classList.add('dark-mode');
       toggleBtn.textContent = "☀️";
-    } else {
-      toggleBtn.textContent = "🌙";
     }
 
     // Toggle modo oscuro con cambio de icono
@@ -126,3 +186,4 @@
   </script>
 </body>
 </html>
+
