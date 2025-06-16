@@ -100,10 +100,15 @@
       background-color: var(--btn-bg);
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      display: none; /* Mostrar solo cuando el usuario lo active */
+      display: none;
       flex-direction: column;
       gap: 1rem;
       font-family: 'Host Grotesk', sans-serif;
+    }
+
+    /* Clase que muestra el formulario */
+    .upload-form-container.visible {
+      display: flex;
     }
 
     .upload-form-container form {
@@ -111,7 +116,6 @@
       flex-direction: column;
       gap: 1rem;
     }
-
     .upload-form-container input[type="file"],
     .upload-form-container input[type="text"],
     .upload-form-container select,
@@ -217,17 +221,19 @@
       const darkToggle = document.getElementById('darkModeToggle');
       const body = document.body;
 
+      // Mostrar/ocultar formulario
       toggleBtn.addEventListener('click', () => {
-        const isVisible = uploadForm.style.display === 'flex';
-        uploadForm.style.display = isVisible ? 'none' : 'flex';
-        uploadForm.setAttribute('aria-hidden', isVisible.toString());
+        const isVisible = uploadForm.classList.toggle('visible');
+        uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
       });
 
+      // Logout
       logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('user');
         window.location.href = 'index.html';
       });
 
+      // Soulprint
       let username = null;
       try {
         const storedUser = localStorage.getItem('user');
@@ -243,13 +249,20 @@
         });
       }
 
-      if (localStorage.getItem('darkMode') === 'true') {
-        body.classList.add('dark-mode');
-        darkToggle.checked = true;
-      }
+      // Función para modo oscuro
+      const applyDarkMode = (enabled) => {
+        body.classList.toggle('dark-mode', enabled);
+        localStorage.setItem('darkMode', enabled);
+      };
+
+      // Aplicar configuración guardada
+      const darkModeSetting = localStorage.getItem('darkMode') === 'true';
+      darkToggle.checked = darkModeSetting;
+      applyDarkMode(darkModeSetting);
+
+      // Toggle modo oscuro
       darkToggle.addEventListener('change', () => {
-        body.classList.toggle('dark-mode', darkToggle.checked);
-        localStorage.setItem('darkMode', darkToggle.checked);
+        applyDarkMode(darkToggle.checked);
       });
     });
   </script>
