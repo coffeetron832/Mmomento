@@ -11,6 +11,8 @@
       --btn-bg: #f5f5f5;
       --btn-hover: #e0e0e0;
       --btn-text: #111;
+      --max-width: 600px;
+      --gutter: 1rem;
     }
 
     .dark-mode {
@@ -28,19 +30,26 @@
       background-color: #fff;
       color: #111;
       transition: background-color 0.3s ease, color 0.3s ease;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Contenedor principal tipo feed */
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 0 var(--gutter);
     }
 
     header.site-header {
-      position: fixed;
+      position: sticky;
       top: 0;
-      width: 100%;
       background-color: inherit;
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      z-index: 1001;
+      padding: var(--gutter) 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      z-index: 1001;
     }
 
     header.site-header h2 {
@@ -56,7 +65,6 @@
     }
 
     .header-buttons .btn {
-      font-family: 'Host Grotesk', sans-serif;
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
       cursor: pointer;
@@ -73,58 +81,43 @@
     }
 
     header.site-header a.soulprint-link {
-      font-family: 'Host Grotesk', sans-serif;
       background-color: #4f46e5;
       color: white;
       padding: 0.6rem 1rem;
       border-radius: 9999px;
       font-weight: bold;
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s;
-      margin-left: 1rem;
     }
 
     header.site-header a.soulprint-link:hover {
       background-color: #3730a3;
     }
 
-    main {
-      padding-top: 5rem;
-    }
-
     .upload-form-container {
-      padding: 2rem;
-      max-width: 500px;
-      margin: 6rem auto 2rem;
+      padding: var(--gutter);
+      margin: var(--gutter) 0;
       background-color: var(--btn-bg);
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       display: none;
       flex-direction: column;
       gap: 1rem;
-      font-family: 'Host Grotesk', sans-serif;
     }
 
-    /* Clase que muestra el formulario */
     .upload-form-container.visible {
       display: flex;
     }
 
-    .upload-form-container form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .upload-form-container input[type="file"],
-    .upload-form-container input[type="text"],
+    .upload-form-container input,
     .upload-form-container select,
     .upload-form-container button {
-      font-family: 'Host Grotesk', sans-serif;
+      width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
       border-radius: 6px;
       border: 1px solid #ccc;
+      font-family: 'Host Grotesk', sans-serif;
     }
 
     .upload-form-container button {
@@ -141,77 +134,96 @@
 
     .images-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+      grid-template-columns: 1fr;
+      gap: var(--gutter);
+      margin-bottom: var(--gutter);
+    }
+    @media (min-width: 500px) {
+      .images-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+
+    .image-card {
+      background-color: var(--btn-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .image-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .image-description,
+    .image-user {
+      padding: 0.5rem;
+      font-size: 0.9rem;
     }
 
     .switch-container {
-      position: fixed;
-      bottom: 1rem;
-      left: 1rem;
-      z-index: 1002;
+      margin: var(--gutter) 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
     }
-
     .switch-container label {
-      cursor: pointer;
       user-select: none;
       font-family: 'Host Grotesk', sans-serif;
     }
-
     .switch-container input {
       margin-right: 0.5rem;
     }
   </style>
 </head>
 <body class="upload-page">
-
-  <header class="site-header">
-    <h2>Últimos Momentos 📸</h2>
-    <div class="header-buttons">
-      <button id="toggleUploadBtn" class="btn">Subir imagen</button>
-      <button id="logoutBtn" class="btn">Cerrar sesión</button>
-      <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
-    </div>
-  </header>
-
-  <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
-    <form id="uploadForm" enctype="multipart/form-data">
-      <input type="file" id="image" name="image" accept="image/*" required />
-      <input type="text" name="description" placeholder="Descripción..." />
-      <label for="visibility">Visibilidad:</label>
-      <select name="visibility" id="visibility">
-        <option value="public">Público</option>
-        <option value="private">Privado</option>
-        <option value="circle">Solo para un círculo</option>
-      </select>
-      <label for="duration">Duración:</label>
-      <select name="duration" id="duration" required>
-        <option value="">Selecciona duración</option>
-        <option value="30m">30 minutos</option>
-        <option value="1h">1 hora</option>
-        <option value="3h">3 horas</option>
-        <option value="6h">6 horas</option>
-      </select>
-      <div id="circleSelectorContainer" style="display: none;">
-        <select id="circles" name="circleId"></select>
+  <div class="container">
+    <header class="site-header">
+      <h2>Últimos Momentos 📸</h2>
+      <div class="header-buttons">
+        <button id="toggleUploadBtn" class="btn">Subir imagen</button>
+        <button id="logoutBtn" class="btn">Cerrar sesión</button>
+        <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
       </div>
-      <button type="submit">Subir</button>
-    </form>
-  </section>
+    </header>
 
-  <main id="timeline" role="main" tabindex="0">
-    <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
-  </main>
+    <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="image" name="image" accept="image/*" required />
+        <input type="text" name="description" placeholder="Descripción..." />
+        <label for="visibility">Visibilidad:</label>
+        <select name="visibility" id="visibility">
+          <option value="public">Público</option>
+          <option value="private">Privado</option>
+          <option value="circle">Solo para un círculo</option>
+        </select>
+        <label for="duration">Duración:</label>
+        <select name="duration" id="duration" required>
+          <option value="">Selecciona duración</option>
+          <option value="30m">30 minutos</option>
+          <option value="1h">1 hora</option>
+          <option value="3h">3 horas</option>
+          <option value="6h">6 horas</option>
+        </select>
+        <div id="circleSelectorContainer" style="display: none;">
+          <select id="circles" name="circleId"></select>
+        </div>
+        <button type="submit">Subir</button>
+      </form>
+    </section>
 
-  <div class="switch-container">
-    <label>
-      <input type="checkbox" id="darkModeToggle" />
-      🌙 Modo oscuro
-    </label>
+    <div class="switch-container">
+      <label>
+        <input type="checkbox" id="darkModeToggle" />
+        🌙 Modo oscuro
+      </label>
+    </div>
+
+    <main id="timeline" role="main" tabindex="0">
+      <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
+    </main>
   </div>
 
-  <!-- Script básico para comportamiento general -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const toggleBtn = document.getElementById('toggleUploadBtn');
@@ -229,8 +241,8 @@
 
       // Logout
       logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('user');
-        window.location.href = 'index.html';
+        localStorage.clear();
+        window.location.href = 'login.html';
       });
 
       // Soulprint
@@ -245,29 +257,24 @@
         soulprintBtn.addEventListener('click', e => {
           e.preventDefault();
           alert('Debes iniciar sesión para ver tu Soulprint');
-          window.location.href = 'index.html';
+          window.location.href = 'login.html';
         });
       }
 
-      // Función para modo oscuro
-      const applyDarkMode = (enabled) => {
+      // Modo oscuro
+      const applyDarkMode = enabled => {
         body.classList.toggle('dark-mode', enabled);
         localStorage.setItem('darkMode', enabled);
       };
-
-      // Aplicar configuración guardada
       const darkModeSetting = localStorage.getItem('darkMode') === 'true';
       darkToggle.checked = darkModeSetting;
       applyDarkMode(darkModeSetting);
-
-      // Toggle modo oscuro
       darkToggle.addEventListener('change', () => {
         applyDarkMode(darkToggle.checked);
       });
     });
   </script>
-
-  <!-- Carga lógica principal -->
   <script src="js/upload.js"></script>
 </body>
 </html>
+
