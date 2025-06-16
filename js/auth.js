@@ -70,8 +70,30 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
 
-          // Mostrar mensaje con el nombre del usuario y mensaje personalizado
-          showMessage(`¡Hola, ${result.user.username}! Nos alegra verte de nuevo. 👋`, 'success');
+          function showMessage(message, type) {
+  const box = document.getElementById('messageBox');
+  box.className = ''; // Limpiar clases previas
+  box.classList.add(type);
+
+  // Verifica si es un mensaje de éxito
+  if (type === 'success') {
+    box.innerHTML = `
+      <img src="bienvenido.png" alt="Bienvenido" style="width: 40px; vertical-align: middle; margin-right: 10px;" />
+      <span>${message}</span>
+    `;
+  } else {
+    box.textContent = message;
+  }
+
+  box.style.display = 'flex';
+  box.style.alignItems = 'center';
+  box.style.justifyContent = 'center';
+
+  setTimeout(() => {
+    box.style.display = 'none';
+  }, 3000);
+}
+
 
           // Redirigir después de mostrar mensaje (puedes cambiar el tiempo aquí)
           setTimeout(() => {
