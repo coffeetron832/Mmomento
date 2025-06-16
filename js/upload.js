@@ -67,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const formContainer = document.getElementById('uploadFormContainer');
   if (toggleUploadBtn && formContainer) {
     toggleUploadBtn.addEventListener('click', () => {
-      // Remover foco antes de ocultar para accesibilidad
       if (formContainer.style.display === 'block') {
         document.activeElement.blur();
       }
@@ -101,20 +100,30 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       const formData = new FormData(form);
+
       try {
         const res = await fetch(
           'https://momento-backend-production.up.railway.app/api/images/',
-          { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData }
+          {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData
+          }
         );
         const result = await res.json();
+
         if (!res.ok) {
           console.error('Error servidor:', result);
           alert(result.error || result.message || 'Error al subir la imagen');
           return;
         }
+
         alert('Imagen subida con éxito');
         form.reset();
-        imagesContainer.prepend(createImageCard(result));
+
+        // 🔄 Recarga completa de la galería tras subir
+        await loadImages();
+
         if (circleContainer) circleContainer.style.display = 'none';
       } catch (err) {
         console.error('Error en subida de imagen:', err);
@@ -243,5 +252,3 @@ document.addEventListener("DOMContentLoaded", () => {
   loadImages();
   window.loadUserCircles = loadUserCircles;
 });
-
-
