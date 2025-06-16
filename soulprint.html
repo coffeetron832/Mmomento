@@ -93,6 +93,11 @@
       font-size: 1rem;
       margin-bottom: 1rem;
     }
+    .soulrole {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #444;
+    }
     .butterflies {
       font-size: 0.95rem;
       font-weight: 500;
@@ -118,19 +123,37 @@
 
   <div id="soulprint" class="container" style="display:none;">
     <div class="content">
-      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
+      <img id="profileImage" class="profile-img"
+           src="https://via.placeholder.com/80"
+           alt="Foto de perfil" />
+
       <div class="username" id="usernameDisplay">@usuario</div>
+
       <div class="soulcolor-info">
         <div class="soulcolor-circle" id="soulcolorCircle"></div>
         <span id="soulcolorName">Color del alma</span>
       </div>
-      <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
-      <div class="phrase" id="soulPhraseDisplay">"Frase del alma..."</div>
-      <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
+
+      <div class="birthdate">
+        Mi primer latido: <span id="birthdate">--</span>
+      </div>
+
+      <div class="phrase" id="soulPhraseDisplay">
+        "Frase del alma..."
+      </div>
+
+      <!-- Nuevo: despliegue del rol -->
+      <div class="soulrole" id="soulRoleDisplay"></div>
+
+      <div class="butterflies">
+        🦋 Mariposas recibidas: <span id="butterflyCount">0</span>
+      </div>
     </div>
   </div>
 
-  <div id="errorMessage" class="error" style="display:none;">Soulprint no encontrado 😢</div>
+  <div id="errorMessage" class="error" style="display:none;">
+    Soulprint no encontrado 😢
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -168,31 +191,42 @@
             errorEl.style.display = 'block';
             return;
           }
+
           const { username, soulprint } = body;
           document.getElementById('usernameDisplay').innerText = '@' + username;
-          document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
-          document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
+          document.getElementById('soulPhraseDisplay').innerText =
+            `"${soulprint.soulPhrase || ''}"`;
+          document.getElementById('butterflyCount').innerText =
+            soulprint.butterflies || 0;
 
-          // Formatear fecha de nacimiento
+          // Fecha de nacimiento formateada
           const birthEl = document.getElementById('birthdate');
           if (soulprint.birthdate) {
-            const date = new Date(soulprint.birthdate);
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            birthEl.innerText = date.toLocaleDateString('es-ES', options);
+            const d = new Date(soulprint.birthdate);
+            birthEl.innerText = d.toLocaleDateString('es-ES', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
           } else {
             birthEl.innerText = '--';
           }
 
-          // Mostrar nombre y color del alma
+          // Color del alma
           soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
           const c = soulprint.soulColor || '#aaa';
           container.style.borderColor = c;
           colorCircle.style.backgroundColor = c;
 
+          // Imagen de perfil
           if (soulprint.profileImage) {
             profileImage.src = soulprint.profileImage;
             profileImage.style.borderColor = c;
           }
+
+          // ** Mostrar rol del alma **
+          const roleEl = document.getElementById('soulRoleDisplay');
+          roleEl.innerText = soulprint.soulRole || '';
 
           soulEl.style.display = 'block';
 
@@ -210,5 +244,4 @@
   </script>
 </body>
 </html>
-
 
