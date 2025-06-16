@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
+const API_BASE_URL = 'https://momento-backend-production.up.railway.app';More actions
 
 // Función auxiliar para hacer peticiones al backend con fetch
 async function apiRequest(endpoint, method = 'GET', body = null) {
@@ -69,41 +69,23 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
+          alert(`¡Qué alegría verte de nuevo, ${result.user.username}! 👋`);
+          window.location.href = "upload.html";
 
-          function showMessage(message, type) {
-  const box = document.getElementById('messageBox');
-  box.className = ''; // Limpiar clases previas
-  box.classList.add(type);
-
-  // Verifica si es un mensaje de éxito
-  if (type === 'success') {
-    box.innerHTML = `
-      <img src="bienvenido.png" alt="Bienvenido" style="width: 40px; vertical-align: middle; margin-right: 10px;" />
-      <span>${message}</span>
-    `;
-  } else {
-    box.textContent = message;
-  }
-
-  box.style.display = 'flex';
-  box.style.alignItems = 'center';
-  box.style.justifyContent = 'center';
-
-  setTimeout(() => {
-    box.style.display = 'none';
-  }, 3000);
-}
-
+          // Mostrar mensaje con el nombre del usuario y mensaje personalizado
+          showMessage(`¡Hola, ${result.user.username}! Nos alegra verte de nuevo. 👋`, 'success');
 
           // Redirigir después de mostrar mensaje (puedes cambiar el tiempo aquí)
           setTimeout(() => {
             window.location.href = "upload.html";
           }, 1800);
         } else {
+          alert(result.error || result.message || "Error al iniciar sesión");
           showMessage(result.error || result.message || "Error al iniciar sesión", 'error');
           console.error("⚠️ Error en login:", result);
         }
       } catch (err) {
+        alert("No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.");
         showMessage("No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.", 'error');
         console.error("❌ Error en fetch (login):", err);
       }
@@ -124,15 +106,19 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
+          alert(`¡Bienvenido, ${result.user.username}! Tu aventura empieza aquí ✨`);
+          window.location.href = "upload.html";
           showMessage("Registro exitoso", 'success');
           setTimeout(() => {
             window.location.href = "upload.html";
           }, 1800);
         } else {
+          alert(result.error || result.message || "Error al registrarse");
           showMessage(result.error || result.message || "Error al registrarse", 'error');
           console.error("⚠️ Error en registro:", result);
         }
       } catch (err) {
+        alert("No se pudo registrar. Intenta más tarde.");
         showMessage("No se pudo registrar. Intenta más tarde.", 'error');
         console.error("❌ Error en fetch (registro):", err);
       }
