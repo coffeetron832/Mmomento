@@ -4,14 +4,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Política de Privacidad | Momento</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Grape+Nuts&display=swap" rel="stylesheet" />
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Host+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Estilos generales -->
   <link rel="stylesheet" href="css/styles.css" />
   <style>
+    body {
+      font-family: 'Host Grotesk', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: #111;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .main-header .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .policy-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .policy-section h3 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    .policy-section p, .policy-section li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
     /* Modo oscuro */
     body.dark-mode {
       background-color: #121212;
       color: #ffffff;
     }
+
     body.dark-mode a,
     body.dark-mode p,
     body.dark-mode li,
@@ -20,6 +65,7 @@
     body.dark-mode h3 {
       color: #eee;
     }
+
     body.dark-mode .main-footer {
       border-top: 1px solid #444;
       color: #ccc;
@@ -40,16 +86,27 @@
       z-index: 1000;
       transition: all 0.3s ease;
     }
+
     button#darkModeToggle:hover {
       transform: scale(1.05);
     }
+
     body.dark-mode button#darkModeToggle {
       background-color: #222;
       color: #f0f0f0;
     }
+
+    .main-footer {
+      margin-top: 3rem;
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
+
+  <button id="darkModeToggle">🌙</button>
 
   <div class="container">
     <header class="main-header">
@@ -58,40 +115,42 @@
 
     <section class="policy-section content-section">
       <h2>📜 Política de Privacidad</h2>
-      <p>En <strong>Momento</strong>, nos comprometemos a proteger la privacidad de nuestros usuarios. Esta Política de Privacidad describe cómo recopilamos, utilizamos, almacenamos y protegemos tu información personal cuando accedes y usas nuestra plataforma.</p>
+      <p>En <strong>Momento</strong>, nos comprometemos a proteger la privacidad de nuestros usuarios...</p>
 
       <h3>1. Información que recopilamos</h3>
       <ul>
-        <li><strong>Información de navegación:</strong> dirección IP, tipo de navegador, dispositivo, sistema operativo, páginas visitadas, fecha y hora de acceso.</li>
-        <li><strong>Cookies y tecnologías similares:</strong> utilizamos cookies propias y de terceros para mejorar la experiencia del usuario, analizar el tráfico y mostrar publicidad personalizada.</li>
-        <li><strong>Información proporcionada por el usuario:</strong> al registrarte, subir contenido o comunicarte con nosotros, podemos solicitar tu nombre, dirección de correo electrónico u otros datos identificativos.</li>
+        <li><strong>Información de navegación:</strong> dirección IP, tipo de navegador, etc.</li>
+        <li><strong>Cookies y tecnologías similares:</strong> utilizamos cookies propias y de terceros...</li>
+        <li><strong>Información proporcionada por el usuario:</strong> al registrarte, subir contenido...</li>
       </ul>
 
       <h3>2. Uso de la información</h3>
       <ul>
         <li>Garantizar el funcionamiento correcto y seguro de la plataforma.</li>
         <li>Cumplir con obligaciones legales y normativas.</li>
-        <li>Mostrar anuncios personalizados a través de servicios de terceros, como Google AdSense.</li>
+        <li>Mostrar anuncios personalizados a través de servicios de terceros.</li>
       </ul>
 
       <h3>3. Compartición de datos</h3>
-      <p>No vendemos ni alquilamos tus datos personales. Solo compartimos información con terceros en los siguientes casos:</p>
+      <p>No vendemos ni alquilamos tus datos personales. Solo compartimos información con terceros en:</p>
       <ul>
-        <li>Proveedores de servicios tecnológicos (como plataformas de análisis o anuncios).</li>
-        <li>Requisitos legales, como respuesta a órdenes judiciales o requerimientos de autoridades competentes.</li>
+        <li>Proveedores de servicios tecnológicos.</li>
+        <li>Requisitos legales.</li>
       </ul>
 
       <h3>4. Cookies</h3>
-      <p>Utilizamos cookies para ofrecer funcionalidades esenciales, analizar el rendimiento y mostrar publicidad. Al navegar por nuestro sitio, aceptas el uso de cookies.</p>
-      <p>Para más información sobre cómo Google utiliza cookies en sitios web, podés visitar:<br />
-        <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/ads</a>
+      <p>Utilizamos cookies para ofrecer funcionalidades esenciales...</p>
+      <p>Más información:<br />
+        <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">
+          https://policies.google.com/technologies/ads
+        </a>
       </p>
-      <p>Para ejercer cualquiera de estos derechos, puedes contactarnos a:<br />
+      <p>Contacto:<br />
         📧 <a href="mailto:contacto@momento.com">contacto@momento.com</a>
       </p>
 
       <h3>5. Cambios en esta política</h3>
-      <p>Nos reservamos el derecho de modificar esta Política de Privacidad. Te notificaremos de los cambios relevantes a través del sitio web o por correo electrónico, si corresponde.</p>
+      <p>Nos reservamos el derecho de modificar esta Política de Privacidad...</p>
     </section>
 
     <footer class="main-footer">
@@ -100,18 +159,15 @@
   </div>
 
   <script>
-    // Aplicar modo oscuro guardado al cargar
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
 
+    // Cargar modo oscuro si estaba activado
     if(localStorage.getItem('darkMode') === 'true') {
       body.classList.add('dark-mode');
       toggleBtn.textContent = "☀️";
-    } else {
-      toggleBtn.textContent = "🌙";
     }
 
-    // Toggle modo oscuro con cambio de icono
     toggleBtn.addEventListener('click', () => {
       body.classList.toggle('dark-mode');
       const isDark = body.classList.contains('dark-mode');
@@ -121,4 +177,5 @@
   </script>
 </body>
 </html>
+
 
