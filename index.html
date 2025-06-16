@@ -43,19 +43,6 @@
       background: transparent;
       z-index: 100;
     }
-    header.global-header nav a {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-      border-radius: 6px;
-      text-decoration: none;
-      background-color: var(--btn-secondary-bg);
-      color: var(--btn-secondary-text);
-      transition: background-color 0.3s ease;
-      margin-left: 1rem;
-    }
-    header.global-header nav a:hover {
-      background-color: var(--btn-secondary-hover);
-    }
 
     .content-wrapper {
       display: flex;
@@ -68,7 +55,7 @@
     }
 
     .logo-butterfly {
-      width: 80px;
+      width: 120px; /* aumentado tamaño */
       margin-bottom: 1rem;
     }
 
@@ -100,27 +87,19 @@
       display: flex;
       gap: 1rem;
     }
-    .join-btn,
-    .login-btn {
+    .join-btn {
       padding: 0.75rem 1.5rem;
       font-size: 1rem;
       border-radius: 6px;
       text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-    .join-btn {
       background-color: var(--btn-primary-bg);
       color: var(--btn-primary-text);
+      transition: background-color 0.3s ease;
+      font-family: 'Host Grotesk', sans-serif;
+      border: none;
     }
     .join-btn:hover {
       background-color: var(--btn-primary-hover);
-    }
-    .login-btn {
-      background-color: var(--btn-secondary-bg);
-      color: var(--btn-secondary-text);
-    }
-    .login-btn:hover {
-      background-color: var(--btn-secondary-hover);
     }
 
     footer.site-footer {
@@ -129,6 +108,7 @@
       padding: 10px 0;
       font-size: 0.9rem;
       color: #555;
+      font-family: 'Host Grotesk', sans-serif;
     }
     footer.site-footer a {
       color: #555;
@@ -144,12 +124,8 @@
   </style>
 </head>
 <body>
-  <!-- Header con solo botón iniciar sesión -->
-  <header class="global-header">
-    <nav>
-      <a href="login.html">Iniciar sesión</a>
-    </nav>
-  </header>
+  <!-- Header sin botones -->
+  <header class="global-header"></header>
 
   <!-- Contenido principal centrado -->
   <div class="content-wrapper">
@@ -165,10 +141,9 @@
       </h1>
     </div>
 
-    <!-- Botones ubicados lado a lado -->
+    <!-- Botón Únete a nosotros solo -->
     <div class="buttons-wrapper">
       <a href="register.html" class="join-btn">Únete a nosotros</a>
-      <a href="login.html" class="login-btn">Iniciar sesión</a>
     </div>
 
     <!-- Footer -->
@@ -181,3 +156,4 @@
   </div>
 </body>
 </html>
+
