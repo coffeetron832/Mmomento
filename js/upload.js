@@ -1,4 +1,3 @@
-// upload.js
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
