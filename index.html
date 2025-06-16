@@ -21,7 +21,6 @@
       overflow-x: hidden;
     }
 
-    /* Header global transparente con solo botón, usando flex */
     header.global-header {
       position: fixed;
       top: 0;
@@ -31,12 +30,10 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      /* Aumentamos el padding-right para mover el botón hacia la izquierda */
       padding: 0 40px 0 20px;
       background: transparent;
       z-index: 100;
     }
-    /* Botón Iniciar sesión */
     header.global-header nav a[href="login.html"] {
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
@@ -83,14 +80,6 @@
       0% { opacity: 1; transform: translateY(0) scale(1); }
       50% { opacity: 0; transform: translateY(10px) scale(0.5); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    #slideshow-img {
-      width: 300px;
-      border-radius: 10px;
-      opacity: 1;
-      transition: opacity 1s ease-in-out;
-      margin-top: 40px;
     }
 
     .join-btn {
@@ -151,9 +140,6 @@
       </h1>
     </div>
 
-    <!-- Slideshow centrado -->
-    <img id="slideshow-img" src="img1.png" alt="Imagen dinámica" />
-
     <!-- Botón Únete a nosotros -->
     <a href="register.html" class="join-btn">Únete a nosotros</a>
 
@@ -165,21 +151,5 @@
       </p>
     </footer>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
-      const slideshow = document.getElementById("slideshow-img");
-      let imgIndex = 0;
-      setInterval(() => {
-        slideshow.style.opacity = 0;
-        setTimeout(() => {
-          imgIndex = (imgIndex + 1) % images.length;
-          slideshow.src = images[imgIndex];
-          slideshow.style.opacity = 1;
-        }, 1000);
-      }, 4000);
-    });
-  </script>
 </body>
 </html>
