@@ -27,25 +27,28 @@
       top: 0;
       left: 0;
       width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 10px 20px;
+      height: 60px;
       background: transparent;
       z-index: 100;
     }
-    header.global-header nav a {
-      margin-left: 10px;
+    header.global-header nav {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    /* Botón Iniciar sesión en esquina superior derecha */
+    header.global-header nav a[href="login.html"] {
+      position: absolute;
+      top: 10px;
+      right: 20px;
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
       border-radius: 6px;
       text-decoration: none;
-      transition: all 0.3s ease;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-    header.global-header nav a[href="login.html"] {
-      color: white;
       background: transparent;
+      color: #fff;
+      font-family: 'Host Grotesk', sans-serif;
+      transition: all 0.3s ease;
       border: none;
     }
     header.global-header nav a[href="login.html"]:hover {
@@ -183,4 +186,3 @@
   </script>
 </body>
 </html>
-
