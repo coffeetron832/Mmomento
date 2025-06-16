@@ -121,9 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("No se pudo registrar. Intenta más tarde.");
         showMessage("No se pudo registrar. Intenta más tarde.", 'error');
         console.error("❌ Error en fetch (registro):", err);
-      }
+      }Add commentMore actions
     });
   }
 });
-
-
