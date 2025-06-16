@@ -10,90 +10,88 @@
   <style>
     body {
       font-family: 'Host Grotesk', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #fff;
+      color: #111;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
     body.dark-mode {
       background-color: #121212;
-      color: #ffffff;
-    }
-    body.dark-mode input,
-    body.dark-mode button,
-    body.dark-mode a,
-    body.dark-mode h2,
-    body.dark-mode p {
       color: #eee;
     }
-    body.dark-mode input {
-      background-color: #222;
-      border: 1px solid #555;
+    /* Contenedor dividido */
+    .split-container {
+      display: flex;
+      flex: 1;
     }
-    body.dark-mode button {
-      background-color: #444;
-      border: none;
-      color: #fff;
+    .left-panel, .right-panel {
+      width: 50%;
+      padding: 2rem;
+      box-sizing: border-box;
     }
-
-    button#darkModeToggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 999px;
-      background-color: #f0f0f0;
-      color: #333;
-      cursor: pointer;
-      font-size: 18px;
-      z-index: 1000;
-      transition: all 0.3s ease;
+    /* Panel testimonial */
+    .left-panel {
+      background: var(--btn-bg, #f5f5f5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
-    button#darkModeToggle:hover {
-      transform: scale(1.05);
-    }
-    body.dark-mode button#darkModeToggle {
-      background-color: #222;
-      color: #f0f0f0;
-    }
-
-    h2 {
+    .testimonial {
+      font-size: 1.25rem;
+      line-height: 1.5;
+      max-width: 20rem;
       text-align: center;
-      margin-top: 2rem;
+      font-style: italic;
+    }
+    /* Panel formulario */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .right-panel h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
       font-weight: 600;
     }
     form#registerForm {
       max-width: 320px;
-      margin: 1rem auto 0.5rem;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
-    form#registerForm input {
+    form#registerForm input,
+    form#registerForm button {
+      font-family: inherit;
       padding: 0.75rem 1rem;
       font-size: 1rem;
-      border: 1px solid #ccc;
       border-radius: 6px;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
     }
     form#registerForm input:focus {
       border-color: #5a9bd8;
+      outline: none;
     }
     form#registerForm button {
-      padding: 0.75rem 1rem;
-      font-size: 1.1rem;
-      border-radius: 6px;
-      border: none;
       background-color: #5a9bd8;
-      color: white;
-      cursor: pointer;
+      color: #fff;
+      border: none;
       font-weight: 600;
-      transition: background-color 0.3s ease;
+      cursor: pointer;
     }
     form#registerForm button:hover {
       background-color: #437fc7;
     }
     p {
       text-align: center;
+      margin-top: 1rem;
       font-size: 0.9rem;
     }
     p a {
@@ -103,13 +101,11 @@
     p a:hover {
       text-decoration: underline;
     }
-
     #messageBox {
       max-width: 320px;
-      margin: 0.5rem auto 1.5rem;
+      margin: 0.5rem auto;
       padding: 0.75rem 1rem;
       border-radius: 6px;
-      font-size: 1rem;
       text-align: center;
       display: none;
     }
@@ -123,44 +119,87 @@
       color: #721c24;
       border: 1px solid #f5c6cb;
     }
+    /* Botón modo oscuro */
+    button#darkModeToggle {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 999px;
+      background-color: #f0f0f0;
+      color: #333;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 1000;
+      transition: background-color 0.3s ease;
+    }
+    body.dark-mode button#darkModeToggle {
+      background-color: #222;
+      color: #f0f0f0;
+    }
+    button#darkModeToggle:hover {
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
   <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌙</button>
 
-  <h2>Crear cuenta</h2>
-  <form id="registerForm">
-    <input type="text" id="name" placeholder="Nombre" required autocomplete="name" />
-    <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
-    <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password" />
-    <button type="submit">Registrarse</button>
-  </form>
+  <div class="split-container">
+    <!-- Panel izquierdo: testimonios -->
+    <div class="left-panel">
+      <div class="testimonial" id="testimonial">
+        “Momento cambió la forma en que comparto mis recuerdos. ¡Me encanta!”  
+      </div>
+    </div>
 
-  <div id="messageBox"></div>
+    <!-- Panel derecho: formulario -->
+    <div class="right-panel">
+      <h2>Crear cuenta</h2>
+      <form id="registerForm">
+        <input type="text" id="name" placeholder="Nombre" required autocomplete="name" />
+        <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
+        <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password" />
+        <button type="submit">Registrarse</button>
+      </form>
+      <div id="messageBox"></div>
+      <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+    </div>
+  </div>
 
-  <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+  <script>
+    // Testimonios anónimos
+    const testimonials = [
+      "“Me encanta la sensación de urgencia y autenticidad en cada foto.”",
+      "“Compartir instantes nunca fue tan fácil y divertido.”",
+      "“He conectado con amigos de una manera más genuina.”",
+      "“El diseño es limpio y la experiencia muy intuitiva.”",
+      "“Cada momento desaparece, pero el recuerdo queda.”"
+    ];
+    let idx = 0;
+    const testEl = document.getElementById('testimonial');
+    setInterval(() => {
+      idx = (idx + 1) % testimonials.length;
+      testEl.textContent = testimonials[idx];
+    }, 7000);
+
+    // Modo oscuro
+    const body = document.body;
+    const darkToggle = document.getElementById('darkModeToggle');
+    if (localStorage.getItem('darkMode') === 'true') {
+      body.classList.add('dark-mode');
+      darkToggle.textContent = "☀️";
+    }
+    darkToggle.addEventListener('click', () => {
+      const isDark = body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', isDark);
+      darkToggle.textContent = isDark ? "☀️" : "🌙";
+    });
+  </script>
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
-
-  <script>
-    const body = document.body;
-    const toggleBtn = document.getElementById('darkModeToggle');
-
-    if(localStorage.getItem('darkMode') === 'true') {
-      body.classList.add('dark-mode');
-      toggleBtn.textContent = "☀️";
-    } else {
-      toggleBtn.textContent = "🌙";
-    }
-
-    toggleBtn.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      const isDark = body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDark);
-      toggleBtn.textContent = isDark ? "☀️" : "🌙";
-    });
-  </script>
 </body>
 </html>
 
