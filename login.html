@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
-
-  <!-- Fuente Host Grotesk desde Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     body {
       font-family: 'Host Grotesk', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
     }
 
     /* Modo oscuro */
@@ -36,7 +38,92 @@
       color: #fff;
     }
 
-    /* Botón modo oscuro */
+    /* Paneles */
+    .left-panel,
+    .right-panel {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .left-panel {
+      background-color: #f5f5f5;
+    }
+    body.dark-mode .left-panel {
+      background-color: #1a1a1a;
+    }
+
+    .emotion-slideshow {
+      text-align: center;
+      max-width: 320px;
+    }
+    .emotion-text {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    #slideshow-img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 12px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    /* Formulario */
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    form#loginForm {
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    form#loginForm input {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    form#loginForm button {
+      padding: 0.75rem 1rem;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #5a9bd8;
+      color: white;
+      font-weight: 600;
+    }
+    form#loginForm button:hover {
+      background-color: #437fc7;
+    }
+    p {
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    p a {
+      color: #5a9bd8;
+      text-decoration: none;
+    }
+    p a:hover {
+      text-decoration: underline;
+    }
+
+    /* Mensajes emocionales rotativos */
+    .rotating-message {
+      margin-top: 1rem;
+      font-size: 1rem;
+      text-align: center;
+      font-weight: 500;
+      min-height: 40px;
+    }
+
+    /* Modo oscuro botón */
     button#darkModeToggle {
       position: fixed;
       top: 10px;
@@ -49,70 +136,16 @@
       cursor: pointer;
       font-size: 18px;
       z-index: 1000;
-      transition: all 0.3s ease;
-    }
-    button#darkModeToggle:hover {
-      transform: scale(1.05);
     }
     body.dark-mode button#darkModeToggle {
       background-color: #222;
       color: #f0f0f0;
     }
 
-    /* Formulario y textos */
-    h2 {
-      text-align: center;
-      margin-top: 2rem;
-      font-weight: 600;
-    }
-    form#loginForm {
-      max-width: 320px;
-      margin: 1rem auto 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    form#loginForm input {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease;
-    }
-    form#loginForm input:focus {
-      border-color: #5a9bd8;
-    }
-    form#loginForm button {
-      padding: 0.75rem 1rem;
-      font-size: 1.1rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #5a9bd8;
-      color: white;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-    }
-    form#loginForm button:hover {
-      background-color: #437fc7;
-    }
-    p {
-      text-align: center;
-      font-size: 0.9rem;
-    }
-    p a {
-      color: #5a9bd8;
-      text-decoration: none;
-    }
-    p a:hover {
-      text-decoration: underline;
-    }
-
-    /* Contenedor de mensajes */
+    /* Mensajes de error/éxito */
     #messageBox {
       max-width: 320px;
-      margin: 0 auto 1.5rem;
+      margin: 1rem auto;
       padding: 0.75rem 1rem;
       border-radius: 6px;
       font-size: 1rem;
@@ -135,25 +168,38 @@
 
   <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌙</button>
 
-  <h2>Iniciar sesión</h2>
+  <!-- Lado izquierdo: slideshow emocional -->
+  <div class="left-panel">
+    <div class="emotion-slideshow">
+      <p class="emotion-text">Entra al único lugar donde el alma sí tiene color.</p>
+      <img id="slideshow-img" src="img1.png" alt="Momento destacado" />
+    </div>
+  </div>
 
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
-    <input type="password" id="password" placeholder="Contraseña" required autocomplete="current-password" />
-    <button type="submit">Entrar</button>
-  </form>
+  <!-- Lado derecho: formulario -->
+  <div class="right-panel">
+    <h2>Iniciar sesión</h2>
 
-  <!-- Contenedor para mensajes -->
-  <div id="messageBox"></div>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
+      <input type="password" id="password" placeholder="Contraseña" required autocomplete="current-password" />
+      <button type="submit">Entrar</button>
+    </form>
 
-  <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+    <div id="messageBox"></div>
 
+    <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+
+    <div class="rotating-message" id="rotatingMessage">Tu historia merece un instante eterno.</div>
+  </div>
+
+  <!-- Scripts -->
   <script>
+    // 🌙 Modo oscuro
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
 
-    // Aplicar modo oscuro guardado
-    if(localStorage.getItem('darkMode') === 'true') {
+    if (localStorage.getItem('darkMode') === 'true') {
       body.classList.add('dark-mode');
       toggleBtn.textContent = "☀️";
     } else {
@@ -166,6 +212,34 @@
       localStorage.setItem('darkMode', isDark);
       toggleBtn.textContent = isDark ? "☀️" : "🌙";
     });
+
+    // 📸 Slideshow de imágenes
+    const images = ["img1.png", "img2.png", "img3.png", "img4.png"];
+    const slideshow = document.getElementById("slideshow-img");
+    let imgIndex = 0;
+    setInterval(() => {
+      slideshow.style.opacity = 0;
+      setTimeout(() => {
+        imgIndex = (imgIndex + 1) % images.length;
+        slideshow.src = images[imgIndex];
+        slideshow.style.opacity = 1;
+      }, 800);
+    }, 4000);
+
+    // 💬 Mensajes emocionales rotativos
+    const messages = [
+      "Tu historia merece un instante eterno.",
+      "Aquí las emociones no se esconden: se comparten.",
+      "Cada momento es una obra de arte efímera.",
+      "Lo fugaz también puede ser hermoso.",
+      "Hoy puedes dejar huella con solo una imagen."
+    ];
+    const messageBox = document.getElementById("rotatingMessage");
+    let messageIndex = 0;
+    setInterval(() => {
+      messageIndex = (messageIndex + 1) % messages.length;
+      messageBox.textContent = messages[messageIndex];
+    }, 5000);
   </script>
 
   <script src="js/api.js"></script>
