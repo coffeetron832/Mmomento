@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔘 Switch modo oscuro
   const toggleCheckbox = document.getElementById('darkModeToggle');
+  const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
+  if (isDarkStored) document.body.classList.add('dark-mode');
   if (toggleCheckbox) {
     toggleCheckbox.checked = isDarkStored;
     toggleCheckbox.addEventListener('change', () => {
