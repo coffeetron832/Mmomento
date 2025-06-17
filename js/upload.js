@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (toggleCheckbox) {
     toggleCheckbox.checked = isDarkStored;
     toggleCheckbox.addEventListener('change', () => {
-      const nowDark = document.body.classList.toggle('dark-mode');More actions
+      const nowDark = document.body.classList.toggle('dark-mode');
       localStorage.setItem('darkMode', nowDark.toString());
     });
   }
