@@ -182,27 +182,28 @@
   </div>
 
   <script>
-    // Al cargar página
-    window.addEventListener('DOMContentLoaded', () => {
+    // Fade transitions entre páginas
+    function applyFadeIn() {
       document.documentElement.classList.add('fade-in');
+    }
 
-      // Capturar todos los enlaces internos
-      document.querySelectorAll('a').forEach(link => {
-        const href = link.getAttribute('href');
-        if (href && !href.startsWith('#') && !link.target) {
-          link.addEventListener('click', e => {
-            e.preventDefault();
-            document.documentElement.classList.remove('fade-in');
-            document.documentElement.classList.add('fade');
-            setTimeout(() => {
-              window.location.href = href;
-            }, 300);
-          });
-        }
-      });
+    // Al cargar o volver con back/forward
+    window.addEventListener('DOMContentLoaded', applyFadeIn);
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) applyFadeIn();
+    });
+
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (href && !href.startsWith('#') && !link.target) {
+        e.preventDefault();
+        document.documentElement.classList.remove('fade-in');
+        document.documentElement.classList.add('fade');
+        setTimeout(() => window.location.href = href, 300);
+      }
     });
   </script>
 </body>
 </html>
-
-
