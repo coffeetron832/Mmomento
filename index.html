@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="fade">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Estilos internos -->
   <style>
+    /* Fade page transitions */
+    .fade {
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .fade-in {
+      opacity: 1;
+    }
+
     :root {
       --bg-color: #fafafa;
       --btn-primary-bg: #ff6f61;
@@ -171,6 +180,28 @@
       </p>
     </footer>
   </div>
+
+  <script>
+    // Al cargar página
+    window.addEventListener('DOMContentLoaded', () => {
+      document.documentElement.classList.add('fade-in');
+
+      // Capturar todos los enlaces internos
+      document.querySelectorAll('a').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && !href.startsWith('#') && !link.target) {
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            document.documentElement.classList.remove('fade-in');
+            document.documentElement.classList.add('fade');
+            setTimeout(() => {
+              window.location.href = href;
+            }, 300);
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
 
