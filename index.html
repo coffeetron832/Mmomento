@@ -55,9 +55,11 @@
     }
 
     .main-text h1 {
-      font-size: 4rem; /* tamaño aumentado */
+      font-size: 4rem;
       margin: 0;
       color: #111;
+      display: inline-block;
+      position: relative;
     }
     .main-text small {
       display: block;
@@ -77,9 +79,10 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .logo-butterfly {
-      width: 120px;
-      margin: 1rem 0; /* margen arriba y abajo */
+    .logo-butterfly-inline {
+      width: 100px;
+      vertical-align: middle;
+      margin-left: 0.5rem;
     }
 
     .buttons-wrapper {
@@ -96,7 +99,6 @@
       transition: background-color 0.3s ease;
       font-family: 'Host Grotesk', sans-serif;
       border: none;
-      color: var(--btn-primary-text);
     }
     .join-btn {
       background-color: var(--btn-primary-bg);
@@ -142,15 +144,14 @@
   <div class="content-wrapper">
     <div class="main-text">
       <h1>
-        Tus momentos reales.<br>
+        Tus momentos reales.
+        <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
+        <br>
         <small>Solo por un <span class="fade-pieces">
           <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
         </span>.</small>
       </h1>
     </div>
-
-    <!-- Imagen mariposa debajo del texto -->
-    <img src="mariposamomento.png" alt="Mariposa Momento" class="logo-butterfly" />
 
     <!-- Botones: Únete y luego Iniciar sesión -->
     <div class="buttons-wrapper">
