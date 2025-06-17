@@ -3,14 +3,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const imagesContainer = document.getElementById("imagesContainer");
   const token = localStorage.getItem("token");
 
-  // 🔘 Switch modo oscuro
-  const toggleCheckbox = document.getElementById('darkModeToggle');
+  // 🌙 Aplicar modo oscuro
+  const darkValue = localStorage.getItem('darkMode');
   const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
   if (isDarkStored) document.body.classList.add('dark-mode');
+
+  // 🔘 Switch modo oscuro
+  const toggleCheckbox = document.getElementById('darkModeToggle');
   if (toggleCheckbox) {
     toggleCheckbox.checked = isDarkStored;
     toggleCheckbox.addEventListener('change', () => {
-      const nowDark = document.body.classList.toggle('dark-mode');
+      const nowDark = document.body.classList.toggle('dark-mode');More actions
       localStorage.setItem('darkMode', nowDark.toString());
     });
   }
