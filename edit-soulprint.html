@@ -70,6 +70,11 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       margin-top: -80px; background-color: #ccc;
     }
+    .emoji-choice {
+      width: 40px;
+      height: 40px;
+      display: none;
+    }
     .username {
       font-family: 'DM Serif Display', serif;
       font-size: 1.5rem; margin-top: 1rem; color: #333;
@@ -152,8 +157,7 @@
     </div>
   </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
+  <script>\n    const params = new URLSearchParams(window.location.search);
     const username = params.get('user');
     const token = localStorage.getItem('token');
 
@@ -189,7 +193,7 @@
         img.src = url;
         img.alt = `emoji${i}`;
         img.addEventListener('click', () => {
-          document.querySelectorAll('#emoji-selector img').forEach(el => el.classList.remove('selected')); // fix typo
+          document.querySelectorAll('#emoji-selector img').forEach(el => el.classList.remove('selected'));
           img.classList.add('selected');
           emojiURLInput.value = url;
           previewEmoji.src = url;
@@ -240,10 +244,7 @@
       const moments = await momentsRes.json();
       pinnedMoment.innerHTML = '<option value="">Selecciona uno</option>';
       moments.forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = m._id;
-        opt.dataset.url = m.imageUrl;
-        opt.textContent = `Momento #${m._id.slice(-4)}`;
+        const opt = document.createElement('option'); opt.value = m._id; opt.dataset.url = m.imageUrl; opt.textContent = `Momento #${m._id.slice(-4)}`;
         pinnedMoment.appendChild(opt);
       });
       if (soul.pinnedMoment) {
@@ -253,35 +254,26 @@
       }
     }
 
-    // Live previews
+    // Live preview handlers
     birthdateInput.addEventListener('change', () => {
-      const v = birthdateInput.value;
-      previewBirthdate.innerText = v ? new Date(v).toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' }) : '--';
+      previewBirthdate.innerText = birthdateInput.value
+        ? new Date(birthdateInput.value).toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' })
+        : '--';
     });
     soulPhrase.addEventListener('input', () => previewPhrase.innerText = soulPhrase.value);
     soulColor.addEventListener('input', () => halo.style.setProperty('--soul-color', soulColor.value));
     soulRole.addEventListener('change', () => previewRole.innerText = soulRole.value ? 'Rol del alma: ' + soulRole.value : 'Rol del alma: --');
     profileImageInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => previewProfileImage.src = reader.result;
-        reader.readAsDataURL(file);
-      }
+      const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = () => previewProfileImage.src = r.result; r.readAsDataURL(f); }
     });
     pinnedMoment.addEventListener('change', () => {
       const sel = pinnedMoment.selectedOptions[0];
-      if (sel && sel.dataset.url) {
-        previewMoment.src = sel.dataset.url;
-        previewMoment.style.display = 'block';
-      } else {
-        previewMoment.style.display = 'none';
-      }
+      if (sel.dataset.url) { previewMoment.src = sel.dataset.url; previewMoment.style.display = 'block'; } else previewMoment.style.display = 'none';
     });
 
-    // Carousel navigation
-    document.getElementById('scrollLeft').onclick = () => emojiSelector.scrollBy({ left: -80, behavior: 'smooth'});
-    document.getElementById('scrollRight').onclick = () => emojiSelector.scrollBy({ left: 80, behavior: 'smooth'});
+    // Carousel nav
+    document.getElementById('scrollLeft').onclick = () => emojiSelector.scrollBy({ left: -80, behavior: 'smooth' });
+    document.getElementById('scrollRight').onclick = () => emojiSelector.scrollBy({ left: 80, behavior: 'smooth' });
 
     // Submit
     form.addEventListener('submit', async e => {
@@ -299,11 +291,11 @@
           `https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`,
           { method: 'PUT', headers: { Authorization: 'Bearer ' + token }, body: formData }
         );
-        const data = await res.json(); if (!res.ok) throw new Error(data.message||'Error actualizando');
-        responseMessage.textContent = '✅ Soulprint actualizado con éxito.'; responseMessage.style.color='green';
+        const data = await res.json(); if (!res.ok) throw new Error(data.message || 'Error actualizando');
+        responseMessage.textContent = '✅ Soulprint actualizado con éxito.'; responseMessage.style.color = 'green';
         loadSoulprint();
       } catch(err) {
-        responseMessage.textContent = '❌ '+err.message; responseMessage.style.color='crimson';
+        responseMessage.textContent = '❌ ' + err.message; responseMessage.style.color = 'crimson';
       }
     });
 
@@ -311,4 +303,5 @@
   </script>
 </body>
 </html>
+
 
