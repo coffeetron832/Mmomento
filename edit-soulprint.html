@@ -189,7 +189,7 @@
         img.src = url;
         img.alt = `emoji${i}`;
         img.addEventListener('click', () => {
-          document.uniqueSelectorAll('#emoji-selector img').forEach(el => el.classList.remove('selected')); // fix typo
+          document.querySelectorAll('#emoji-selector img').forEach(el => el.classList.remove('selected')); // fix typo
           img.classList.add('selected');
           emojiURLInput.value = url;
           previewEmoji.src = url;
@@ -311,3 +311,4 @@
   </script>
 </body>
 </html>
+
