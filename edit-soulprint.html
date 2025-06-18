@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=DM+Serif+Display&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
     body {
       margin: 0;
       font-family: 'Quicksand', sans-serif;
@@ -63,31 +64,21 @@
       border-radius: 2rem;
       opacity: 0.5;
     }
-    .profile-img {
-      width: 100px; height: 100px;
-      border-radius: 50%; object-fit: cover;
-      border: 4px solid #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      margin-top: -80px; background-color: #ccc;
-    }
-    .username {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.5rem; margin-top: 1rem; color: #333;
-    }
-    .birthdate-display {
-      font-size: 0.9rem; color: #555; margin-bottom: 1rem;
-    }
-    .phrase {
-      font-style: italic; color: #666; margin: 0.5rem 0 1rem;
-    }
-    .moment-img {
-      width: 100%; max-height: 200px; object-fit: cover;
-      border-radius: 1rem; margin-top: 1rem;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-    }
-    #responseMessage {
-      margin-top: 1rem; font-weight: bold;
-    }
+    .profile-img { width: 100px; height:100px; border-radius:50%; object-fit:cover; border:4px solid #fff; box-shadow:0 0 10px rgba(0,0,0,0.1); margin-top:-80px; background-color:#ccc; }
+    .emoji-choice { width:40px; height:40px; margin-left:10px; vertical-align:middle; }
+    .username { font-family:'DM Serif Display', serif; font-size:1.5rem; margin-top:1rem; color:#333; }
+    .birthdate-display { font-size:0.9rem; color:#555; margin-bottom:1rem; }
+    .phrase { font-style:italic; color:#666; margin:0.5rem 0 1rem; }
+    .moment-img { width:100%; max-height:200px; object-fit:cover; border-radius:1rem; margin-top:1rem; box-shadow:0 0 8px rgba(0,0,0,0.08); }
+    #responseMessage { margin-top:1rem; font-weight:bold; }
+    /* Emoji selector carousel */
+    #emoji-wrapper { display:flex; align-items:center; gap:8px; }
+    #emoji-selector { overflow-x:auto; white-space:nowrap; scroll-behavior:smooth; max-width:220px; padding:5px 0; }
+    #emoji-selector input { display:none; }
+    #emoji-selector label { display:inline-block; margin:0 4px; }
+    #emoji-selector label img { width:40px; opacity:0.6; cursor:pointer; transition:opacity 0.2s; }
+    #emoji-selector input:checked + label img { opacity:1; }
+    #scrollLeft, #scrollRight { background:none; border:none; font-size:1.2rem; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -103,16 +94,28 @@
       <label for="birthdate">Mi primer latido (fecha de nacimiento):</label>
       <input type="date" id="birthdate" name="birthdate" required />
 
-      <!-- Nuevo campo: Rol del alma -->
       <label for="soulRole">¿Cuál es tu rol del alma?</label>
       <select id="soulRole" name="soulRole" required>
-  <option value="">Selecciona uno</option>
-  <option value="💖 Arquitecto/a de Emociones">💖 Arquitecto/a de Emociones</option>
-  <option value="🛹 Alma Callejera">🛹 Alma Callejera</option>
-  <option value="🚀 Corazón Nómada">🚀 Corazón Nómada</option>
-  <option value="🧢 Rompe-esquemas">🧢 Rompe-esquemas</option>
-</select>
+        <option value="">Selecciona uno</option>
+        <option value="💖 Arquitecto/a de Emociones">💖 Arquitecto/a de Emociones</option>
+        <option value="🛹 Alma Callejera">🛹 Alma Callejera</option>
+        <option value="🚀 Corazón Nómada">🚀 Corazón Nómada</option>
+        <option value="🧢 Rompe-esquemas">🧢 Rompe-esquemas</option>
+      </select>
 
+      <!-- Emoji selector -->
+      <label>Elige tu emoji del alma:</label>
+      <div id="emoji-wrapper">
+        <button type="button" id="scrollLeft">←</button>
+        <div id="emoji-selector">
+          <!-- 15 emojis -->
+          ${[...Array(15)].map((_,i)=>
+            `<input type="radio" name="emoji" id="e${i+1}" value="/emoji${i+1}.png" ${i===0?'required':''}>`+
+            `<label for="e${i+1}"><img src="/emoji${i+1}.png" alt="emoji${i+1}"></label>`
+          ).join('')}
+        </div>
+        <button type="button" id="scrollRight">→</button>
+      </div>
 
       <label for="profileImageInput">Foto de perfil:</label>
       <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
@@ -130,13 +133,13 @@
   <div class="preview-container">
     <div class="preview-card">
       <div class="halo" id="haloPreview"></div>
-      <img id="previewProfileImage" class="profile-img" src="/default-avatar.png" alt="Previsualización foto" />
-      <div class="username" id="previewUsername">@usuario</div>
-      <div class="birthdate-display">
-        Mi primer latido: <span id="previewBirthdate">--</span>
+      <div style="display:flex; align-items:center; justify-content:center; gap:12px;">
+        <img id="previewProfileImage" class="profile-img" src="/default-avatar.png" alt="Previsualización foto" />
+        <img id="previewEmoji" class="emoji-choice" src="/emoji1.png" alt="Previsualización emoji" />
       </div>
+      <div class="username" id="previewUsername">@usuario</div>
+      <div class="birthdate-display">Mi primer latido: <span id="previewBirthdate">--</span></div>
       <div class="phrase" id="previewPhrase">Tu frase aparecerá aquí...</div>
-      <!-- Vista previa del rol -->
       <div id="previewRole" style="font-weight:bold;color:#444;margin-top:0.5rem;">Rol del alma: --</div>
       <img id="previewMoment" class="moment-img" style="display:none;" alt="Previsualización momento" />
     </div>
@@ -156,6 +159,7 @@
     const profileImageInput = document.getElementById('profileImageInput');
     const pinnedMoment = document.getElementById('pinnedMoment');
     const responseMessage = document.getElementById('responseMessage');
+    const emojiInputs = document.querySelectorAll('input[name="emoji"]');
 
     // Preview elements
     const previewUsername = document.getElementById('previewUsername');
@@ -165,8 +169,18 @@
     const previewBirthdate = document.getElementById('previewBirthdate');
     const previewRole = document.getElementById('previewRole');
     const previewMoment = document.getElementById('previewMoment');
+    const previewEmoji = document.getElementById('previewEmoji');
 
     previewUsername.innerText = '@' + username;
+
+    function initEmojiSelector(selectedUrl) {
+      emojiInputs.forEach(inp => {
+        if (inp.value === selectedUrl) inp.checked = true;
+        inp.addEventListener('change', () => {
+          previewEmoji.src = inp.value;
+        });
+      });
+    }
 
     async function loadSoulprint() {
       if (!username) return;
@@ -178,33 +192,27 @@
       if (!res.ok) throw new Error(data.message || 'Error cargando Soulprint');
       const soul = data.soulprint;
 
-      // Rellenar formulario
+      // Formular
       soulPhrase.value = soul.soulPhrase || '';
       soulColor.value = soul.soulColor || '#88c0d0';
       birthdateInput.value = soul.birthdate || '';
       soulRole.value = soul.soulRole || '';
 
-      // Previsualización
+      // Emoji
+      initEmojiSelector(soul.emojiURL || '/emoji1.png');
+      previewEmoji.src = soul.emojiURL || '/emoji1.png';
+
+      // Previsualización base
       previewPhrase.innerText = soul.soulPhrase || '';
       halo.style.setProperty('--soul-color', soul.soulColor || '#88c0d0');
       previewProfileImage.src = soul.profileImage || '/default-avatar.png';
-
-      // Fecha
       if (soul.birthdate) {
         const d = new Date(soul.birthdate);
-        previewBirthdate.innerText = d.toLocaleDateString('es-ES', {
-          year: 'numeric', month: 'long', day: 'numeric'
-        });
-      } else {
-        previewBirthdate.innerText = '--';
+        previewBirthdate.innerText = d.toLocaleDateString('es-ES', { year:'numeric',month:'long',day:'numeric' });
       }
+      previewRole.innerText = soul.soulRole ? 'Rol del alma: ' + soul.soulRole : 'Rol del alma: --';
 
-      // Rol
-      previewRole.innerText = soul.soulRole
-        ? 'Rol del alma: ' + soul.soulRole
-        : 'Rol del alma: --';
-
-      // Cargar momentos (resto igual)...
+      // Cargar momentos
       const momentsRes = await fetch(
         `https://momento-backend-production.up.railway.app/api/users/${username}/moments`,
         { headers: { Authorization: 'Bearer ' + token } }
@@ -212,50 +220,35 @@
       const moments = await momentsRes.json();
       pinnedMoment.innerHTML = '<option value="">Selecciona uno</option>';
       moments.forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = m._id;
-        opt.dataset.url = m.imageUrl;
+        const opt = document.createElement('option'); opt.value = m._id; opt.dataset.url = m.imageUrl;
         opt.textContent = `Momento #${m._id.slice(-4)}`;
         pinnedMoment.appendChild(opt);
       });
       if (soul.pinnedMoment) {
         pinnedMoment.value = soul.pinnedMoment._id;
-        previewMoment.src = soul.pinnedMoment.imageUrl;
-        previewMoment.style.display = 'block';
+        previewMoment.src = soul.pinnedMoment.imageUrl; previewMoment.style.display = 'block';
       }
     }
 
-    // Live preview handlers
+    // Live preview
     birthdateInput.addEventListener('change', () => {
       const v = birthdateInput.value;
-      previewBirthdate.innerText = v
-        ? new Date(v).toLocaleDateString('es-ES', { year:'numeric',month:'long',day:'numeric' })
-        : '--';
+      previewBirthdate.innerText = v ? new Date(v).toLocaleDateString('es-ES', { year:'numeric',month:'long',day:'numeric' }) : '--';
     });
     soulPhrase.addEventListener('input', () => previewPhrase.innerText = soulPhrase.value);
     soulColor.addEventListener('input', () => halo.style.setProperty('--soul-color', soulColor.value));
-    soulRole.addEventListener('change', () => {
-      previewRole.innerText = soulRole.value
-        ? 'Rol del alma: ' + soulRole.value
-        : 'Rol del alma: --';
-    });
+    soulRole.addEventListener('change', () => previewRole.innerText = soulRole.value ? 'Rol del alma: ' + soulRole.value : 'Rol del alma: --');
     profileImageInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => previewProfileImage.src = reader.result;
-        reader.readAsDataURL(file);
-      }
+      const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = () => previewProfileImage.src = r.result; r.readAsDataURL(f); }
     });
     pinnedMoment.addEventListener('change', () => {
       const sel = pinnedMoment.selectedOptions[0];
-      if (sel && sel.dataset.url) {
-        previewMoment.src = sel.dataset.url;
-        previewMoment.style.display = 'block';
-      } else {
-        previewMoment.style.display = 'none';
-      }
+      if (sel.dataset.url) { previewMoment.src = sel.dataset.url; previewMoment.style.display = 'block'; } else previewMoment.style.display = 'none';
     });
+
+    // Carousel nav
+    document.getElementById('scrollLeft').onclick = () => document.getElementById('emoji-selector').scrollBy({ left:-80, behavior:'smooth' });
+    document.getElementById('scrollRight').onclick = () => document.getElementById('emoji-selector').scrollBy({ left:80, behavior:'smooth' });
 
     // Submit
     form.addEventListener('submit', async e => {
@@ -265,32 +258,23 @@
       formData.append('soulColor', soulColor.value);
       formData.append('birthdate', birthdateInput.value);
       formData.append('soulRole', soulRole.value);
+      formData.append('emojiURL', document.querySelector('input[name="emoji"]:checked').value);
       formData.append('pinnedMoment', pinnedMoment.value || '');
-      const file = profileImageInput.files[0];
-      if (file) formData.append('profileImage', file);
-
+      const f = profileImageInput.files[0]; if (f) formData.append('profileImage', f);
       try {
         const res = await fetch(
           `https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`,
-          { method: 'PUT', headers: { Authorization: 'Bearer ' + token }, body: formData }
+          { method:'PUT', headers:{ Authorization:'Bearer '+token }, body:formData }
         );
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Error actualizando');
-        responseMessage.textContent = '✅ Soulprint actualizado con éxito.';
-        responseMessage.style.color = 'green';
+        const data = await res.json(); if (!res.ok) throw new Error(data.message||'Error actualizando');
+        responseMessage.textContent = '✅ Soulprint actualizado con éxito.'; responseMessage.style.color='green';
         loadSoulprint();
-      } catch (err) {
-        console.error(err);
-        responseMessage.textContent = '❌ ' + err.message;
-        responseMessage.style.color = 'crimson';
+      } catch(err) {
+        responseMessage.textContent = '❌ '+err.message; responseMessage.style.color='crimson';
       }
     });
 
-    loadSoulprint().catch(err => {
-      console.error(err);
-      responseMessage.textContent = '❌ ' + err.message;
-      responseMessage.style.color = 'crimson';
-    });
+    loadSoulprint();
   </script>
 </body>
 </html>
