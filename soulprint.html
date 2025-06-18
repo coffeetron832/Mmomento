@@ -56,14 +56,25 @@
       background-color: #fff;
       color: #333;
     }
+    /* Perfil y emoji */
+    .profile-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 0.75rem;
+    }
     .profile-img {
       width: 80px;
       height: 80px;
       border-radius: 50%;
       border: 3px solid #fff;
       object-fit: cover;
-      margin: 0 auto 0.75rem;
       background: #ccc;
+    }
+    .emoji-alma {
+      width: 40px;
+      height: 40px;
     }
     .username {
       font-size: 1.25rem;
@@ -112,6 +123,7 @@
     @media (max-width: 480px) {
       .container { max-width: 100%; }
       .profile-img { width: 70px; height: 70px; }
+      .emoji-alma { width: 32px; height: 32px; }
       h1.page-title { font-size: 1.5rem; }
     }
   </style>
@@ -123,9 +135,14 @@
 
   <div id="soulprint" class="container" style="display:none;">
     <div class="content">
-      <img id="profileImage" class="profile-img"
-           src="https://via.placeholder.com/80"
-           alt="Foto de perfil" />
+      <div class="profile-wrapper">
+        <img id="profileImage" class="profile-img"
+             src="https://via.placeholder.com/80"
+             alt="Foto de perfil" />
+        <img id="emojiAlma" class="emoji-alma"
+             src="/emoji-default.png"
+             alt="Emoji del alma" />
+      </div>
 
       <div class="username" id="usernameDisplay">@usuario</div>
 
@@ -142,7 +159,6 @@
         "Frase del alma..."
       </div>
 
-      <!-- Nuevo: despliegue del rol -->
       <div class="soulrole" id="soulRoleDisplay"></div>
 
       <div class="butterflies">
@@ -172,6 +188,7 @@
       const profileImage = document.getElementById('profileImage');
       const colorCircle = document.getElementById('soulcolorCircle');
       const soulcolorName = document.getElementById('soulcolorName');
+      const emojiEl = document.getElementById('emojiAlma');
 
       if (!token) {
         alert('Debes iniciar sesión');
@@ -224,7 +241,11 @@
             profileImage.style.borderColor = c;
           }
 
-          // ** Mostrar rol del alma **
+          // Emoji del alma
+          emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
+          emojiEl.alt = 'Emoji de ' + username;
+
+          // Rol del alma
           const roleEl = document.getElementById('soulRoleDisplay');
           roleEl.innerText = soulprint.soulRole || '';
 
@@ -244,4 +265,5 @@
   </script>
 </body>
 </html>
+
 
