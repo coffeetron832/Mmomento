@@ -37,12 +37,11 @@
       flex: 1;
     }
     .left-panel, .right-panel {
-  width: 50%;
-  padding: 2rem;
-  box-sizing: border-box;
-  background-color: transparent; /* ✅ Fondo transparente */
-}
-
+      width: 50%;
+      padding: 2rem;
+      box-sizing: border-box;
+      background-color: transparent;
+    }
     /* Testimonials */
     .left-panel {
       display: flex;
@@ -164,6 +163,25 @@
     button#darkModeToggle:hover {
       transform: scale(1.05);
     }
+    /* Emoji selector */
+    #emoji-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+    #emoji-selector input {
+      display: none;
+    }
+    #emoji-selector label img {
+      width: 40px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+    #emoji-selector input:checked + label img {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -184,6 +202,20 @@
         <input type="text" id="name" placeholder="Nombre" required autocomplete="name" />
         <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
         <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password" />
+
+        <!-- Emoji selector -->
+        <label>Elige tu emoji del alma:</label>
+        <div id="emoji-selector">
+          <input type="radio" name="emoji" id="emoji1" value="/emoji1.png" required>
+          <label for="emoji1"><img src="/emoji1.png" alt="emoji1"></label>
+
+          <input type="radio" name="emoji" id="emoji2" value="/emoji2.png">
+          <label for="emoji2"><img src="/emoji2.png" alt="emoji2"></label>
+
+          <input type="radio" name="emoji" id="emoji3" value="/emoji3.png">
+          <label for="emoji3"><img src="/emoji3.png" alt="emoji3"></label>
+        </div>
+
         <button type="submit">Registrarse</button>
       </form>
       <div id="messageBox"></div>
@@ -212,20 +244,55 @@
     }, 7000);
 
     // Toggle modo oscuro
-    const body = document.body;
+    const bodyEl = document.body;
     const darkToggle = document.getElementById('darkModeToggle');
     if (localStorage.getItem('darkMode') === 'true') {
-      body.classList.add('dark-mode');
+      bodyEl.classList.add('dark-mode');
       darkToggle.textContent = "☀️";
     }
     darkToggle.addEventListener('click', () => {
-      const isDark = body.classList.toggle('dark-mode');
+      const isDark = bodyEl.classList.toggle('dark-mode');
       localStorage.setItem('darkMode', isDark);
       darkToggle.textContent = isDark ? "☀️" : "🌙";
     });
-  </script>
 
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
+    // Manejo del registro con emoji
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('name').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const emojiURL = document.querySelector('input[name="emoji"]:checked').value;
+
+      const userData = {
+        username,
+        email,
+        password,
+        soulprint: { emojiURL }
+      };
+
+      try {
+        const res = await fetch('/api/users/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData)
+        });
+        const data = await res.json();
+        const msgBox = document.getElementById('messageBox');
+        if (res.ok) {
+          msgBox.textContent = 'Registro exitoso 🎉';
+          msgBox.className = 'success';
+          msgBox.style.display = 'block';
+          setTimeout(() => window.location.href = 'login.html', 1500);
+        } else {
+          msgBox.textContent = data.message || 'Error en el registro';
+          msgBox.className = 'error';
+          msgBox.style.display = 'block';
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
