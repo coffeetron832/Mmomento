@@ -166,10 +166,10 @@
     function initEmojiSelector(selectedUrl) {
       emojiSelector.innerHTML = '';
       for (let i = 1; i <= 15; i++) {
-        const url = /emoji${i}.png;
+        const url = `/emoji${i}.png`;
         const img = document.createElement('img');
         img.src = url;
-        img.alt = emoji${i};
+        img.alt = `emoji${i}`;
         img.addEventListener('click', () => {
           document.querySelectorAll('#emoji-selector img').forEach(el => el.classList.remove('selected'));
           img.classList.add('selected');
@@ -191,7 +191,7 @@
     document.getElementById('scrollRight').onclick = () => emojiSelector.scrollBy({ left: 80, behavior: 'smooth' });
 
     async function loadSoulprint() {
-      const res = await fetch(https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}, {
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
         headers: { Authorization: 'Bearer ' + token }
       });
       const data = await res.json();
@@ -211,7 +211,7 @@
       }
       document.getElementById('previewRole').innerText = soul.soulRole ? 'Rol del alma: ' + soul.soulRole : 'Rol del alma: --';
 
-      const mres = await fetch(https://momento-backend-production.up.railway.app/api/users/${username}/moments, {
+      const mres = await fetch(`https://momento-backend-production.up.railway.app/api/users/${username}/moments`, {
         headers: { Authorization: 'Bearer ' + token }
       });
       const moments = await mres.json();
@@ -221,7 +221,7 @@
         const opt = document.createElement('option');
         opt.value = m._id;
         opt.dataset.url = m.imageUrl;
-        opt.textContent = Momento #${m._id.slice(-4)};
+        opt.textContent = `Momento #${m._id.slice(-4)}`;
         pinnedMoment.appendChild(opt);
       });
       if (soul.pinnedMoment) {
@@ -264,7 +264,7 @@
       const file = document.getElementById('profileImageInput').files[0];
       if (file) formData.append('profileImage', file);
       try {
-        const res = await fetch(https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}, {
+        const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
           method: 'PUT', headers: { Authorization: 'Bearer ' + token }, body: formData
         });
         const result = await res.json();
@@ -282,3 +282,4 @@
   </script>
 </body>
 </html>
+
