@@ -146,6 +146,29 @@
     form.onsubmit = async (e) => {
       e.preventDefault();
       const fd = new FormData(form);
+      // Asegurar envío de emojiURL
+      fd.append('emojiURL', emojiURLInput.value);
+      const file = document.getElementById('profileImageInput').files[0];
+      if (file) fd.append('profileImage', file);
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + token },
+        body: fd
+      });
+      const msg = document.getElementById('responseMessage');
+      if (res.ok) {
+        msg.textContent = '✅ Soulprint actualizado';
+        msg.style.color = 'green';
+        await loadSoulprint();
+      } else {
+        const err = await res.json();
+        msg.textContent = '❌ ' + err.message;
+        msg.style.color = 'crimson';
+      }
+    };
+ (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
       const file = document.getElementById('profileImageInput').files[0];
       if (file) fd.append('profileImage', file);
       const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
@@ -169,4 +192,5 @@
   </script>
 </body>
 </html>
+
 
