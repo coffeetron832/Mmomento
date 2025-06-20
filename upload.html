@@ -37,7 +37,6 @@
       justify-content: center;
     }
 
-    /* Contenedor principal tipo feed */
     .container {
       width: 100%;
       max-width: var(--max-width);
@@ -55,12 +54,25 @@
       z-index: 1001;
     }
 
-    /* Título actualizado con Sarina */
     header.site-header h2 {
       margin: 0;
       font-size: 1.5rem;
       font-weight: 600;
       font-family: 'Sarina', cursive;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .butterfly-emoji {
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    .header-sep {
+      width: 1px;
+      height: 24px;
+      background: #ccc;
+      margin: 0 1rem;
     }
 
     .header-buttons {
@@ -70,6 +82,7 @@
     }
 
     .header-buttons .btn {
+      font-family: 'Host Grotesk', sans-serif;
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
       cursor: pointer;
@@ -79,13 +92,13 @@
       border-radius: 6px;
       transition: background-color 0.3s ease, transform 0.1s ease;
     }
-
     .header-buttons .btn:hover {
       background-color: var(--btn-hover);
       transform: scale(1.05);
     }
 
     header.site-header a.soulprint-link {
+      margin-left: 0.5rem;
       background-color: #4f46e5;
       color: white;
       padding: 0.6rem 1rem;
@@ -93,10 +106,19 @@
       font-weight: bold;
       text-decoration: none;
       transition: background-color 0.3s;
+      font-family: 'Host Grotesk', sans-serif;
     }
-
     header.site-header a.soulprint-link:hover {
       background-color: #3730a3;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .soulprint-link.animate {
+      animation: pulse 0.6s ease-in-out;
     }
 
     .upload-form-container {
@@ -164,6 +186,7 @@
     .image-user {
       padding: 0.5rem;
       font-size: 0.9rem;
+      font-family: 'Host Grotesk', sans-serif;
     }
 
     .switch-container {
@@ -184,8 +207,8 @@
 <body class="upload-page">
   <div class="container">
     <header class="site-header">
-      <!-- Título cambiado -->
-      <h2>Momento</h2>
+      <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
+      <div class="header-sep"></div>
       <div class="header-buttons">
         <button id="toggleUploadBtn" class="btn">Subir imagen</button>
         <button id="logoutBtn" class="btn">Cerrar sesión</button>
@@ -239,19 +262,24 @@
       const darkToggle = document.getElementById('darkModeToggle');
       const body = document.body;
 
-      // Mostrar/ocultar formulario
+      // Animación al cargar o hacer clic en Soulprint
+      soulprintBtn.classList.add('animate');
+      setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
+      soulprintBtn.addEventListener('click', () => {
+        soulprintBtn.classList.add('animate');
+        setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
+      });
+
       toggleBtn.addEventListener('click', () => {
         const isVisible = uploadForm.classList.toggle('visible');
         uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
       });
 
-      // Logout
       logoutBtn.addEventListener('click', () => {
         localStorage.clear();
         window.location.href = 'index.html';
       });
 
-      // Soulprint
       let username = null;
       try {
         const storedUser = localStorage.getItem('user');
@@ -267,7 +295,6 @@
         });
       }
 
-      // Modo oscuro
       const applyDarkMode = enabled => {
         body.classList.toggle('dark-mode', enabled);
         localStorage.setItem('darkMode', enabled);
@@ -283,3 +310,4 @@
   <script src="js/upload.js"></script>
 </body>
 </html>
+
