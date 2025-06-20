@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>últimos momentos subidos📸</title>
+  <title>Últimos Momentos 📸</title>
+  <!-- Host Grotesk para el cuerpo -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Sarina para el título Momento -->
   <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -15,16 +17,6 @@
       --gutter: 1rem;
     }
 
-    body {
-      font-family: 'Host Grotesk', sans-serif;
-      margin: 0;
-      background-color: #fff;
-      color: #111;
-      transition: background-color 0.3s, color 0.3s;
-      display: flex;
-      justify-content: center;
-    }
-
     .dark-mode {
       --btn-bg: #333;
       --btn-hover: #444;
@@ -33,11 +25,21 @@
       color: #f0f0f0;
     }
 
+    body {
+      font-family: 'Host Grotesk', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: #111;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      display: flex;
+      justify-content: center;
+    }
+
     .container {
       width: 100%;
       max-width: var(--max-width);
       padding: 0 var(--gutter);
-      box-sizing: border-box;
     }
 
     header.site-header {
@@ -46,53 +48,56 @@
       background-color: inherit;
       padding: var(--gutter) 0;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
       z-index: 1001;
     }
 
-    header h2 {
+    header.site-header h2 {
       margin: 0;
-      font-family: 'Sarina', cursive;
       font-size: 1.5rem;
+      font-weight: 600;
+      font-family: 'Sarina', cursive;
     }
 
     .header-buttons {
       display: flex;
-      flex-wrap: wrap;
       gap: 0.5rem;
+      align-items: center;
     }
 
-    .btn, .soulprint-link {
+    .header-buttons .btn,
+    header.site-header a.soulprint-link {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
       background-color: var(--btn-bg);
       color: var(--btn-text);
       border: none;
       border-radius: 6px;
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s ease, transform 0.1s ease;
-      white-space: nowrap;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      text-align: center;
     }
 
-    .btn:hover, .soulprint-link:hover {
+    .header-buttons .btn:hover,
+    header.site-header a.soulprint-link:hover {
       background-color: var(--btn-hover);
       transform: scale(1.05);
     }
 
-    .soulprint-link {
+    header.site-header a.soulprint-link {
       background-color: #4f46e5;
       color: white;
+      padding: 0.6rem 1rem;
       border-radius: 9999px;
       font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s;
     }
 
     .upload-form-container {
-      margin: var(--gutter) 0;
       padding: var(--gutter);
+      margin: var(--gutter) 0;
       background-color: var(--btn-bg);
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -114,7 +119,6 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       font-family: 'Host Grotesk', sans-serif;
-      box-sizing: border-box;
     }
 
     .upload-form-container button {
@@ -122,17 +126,11 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .upload-form-container button:hover {
       background-color: #3730a3;
-    }
-
-    .switch-container {
-      margin: var(--gutter) 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
 
     .images-grid {
@@ -142,14 +140,13 @@
       margin-bottom: var(--gutter);
     }
 
-    @media (min-width: 600px) {
+    @media (min-width: 500px) {
       .images-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       }
     }
 
     .image-card {
-      position: relative;
       background-color: var(--btn-bg);
       border-radius: 8px;
       overflow: hidden;
@@ -157,31 +154,9 @@
     }
 
     .image-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
       display: block;
-    }
-
-    .image-card .delete-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .image-card .delete-btn:hover {
-      background: rgba(0,0,0,0.8);
+      width: 100%;
+      height: auto;
     }
 
     .image-description,
@@ -190,18 +165,35 @@
       font-size: 0.9rem;
     }
 
-    @keyframes fadeOut {
-      to { opacity: 0; transform: scale(0.98); }
+    .switch-container {
+      margin: var(--gutter) 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
     }
 
-    .fade-out {
-      animation: fadeOut 0.3s forwards;
+    .switch-container label {
+      user-select: none;
+      font-family: 'Host Grotesk', sans-serif;
     }
 
-    @media (max-width: 400px) {
-      header h2 { font-size: 1.25rem; }
-      .btn, .soulprint-link { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
-      .upload-form-container { padding: 0.75rem; }
+    .switch-container input {
+      margin-right: 0.5rem;
+    }
+
+    /* Responsive botones header */
+    @media (max-width: 480px) {
+      .header-buttons {
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+      }
+      .header-buttons .btn,
+      header.site-header a.soulprint-link {
+        width: 100%;
+        padding: 0.6rem 0;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
@@ -248,8 +240,8 @@
       </label>
     </div>
 
-    <main id="timeline">
-      <div id="imagesContainer" class="images-grid"></div>
+    <main id="timeline" role="main" tabindex="0">
+      <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
     </main>
   </div>
 
@@ -272,24 +264,21 @@
         window.location.href = 'index.html';
       });
 
-      // Navegar con transición
       let username = null;
       try {
         const storedUser = localStorage.getItem('user');
         if (storedUser) username = JSON.parse(storedUser).username;
       } catch {}
-
       if (username) {
+        soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
+      } else {
         soulprintBtn.addEventListener('click', e => {
           e.preventDefault();
-          body.classList.add('fade-out');
-          setTimeout(() => {
-            window.location.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-          }, 300);
+          alert('Debes iniciar sesión para ver tu Soulprint');
+          window.location.href = 'index.html';
         });
       }
 
-      // Dark mode
       const applyDarkMode = enabled => {
         body.classList.toggle('dark-mode', enabled);
         localStorage.setItem('darkMode', enabled);
