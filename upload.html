@@ -258,7 +258,7 @@
         if (storedUser) username = JSON.parse(storedUser).username;
       } catch {}
       if (username) {
-        soulprintBtn.href = soulprint.html?user=${encodeURIComponent(username)};
+        soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
       } else {
         soulprintBtn.addEventListener('click', e => {
           e.preventDefault();
