@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Últimos momentos subidos 📸</title>
+  <title>últimos momentos subidos📸</title>
   <!-- Host Grotesk para el cuerpo -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Sarina para el título Momento -->
   <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
   <style>
     :root {
       --btn-bg: #f5f5f5;
@@ -16,6 +17,7 @@
       --max-width: 600px;
       --gutter: 1rem;
     }
+
     .dark-mode {
       --btn-bg: #333;
       --btn-hover: #444;
@@ -23,6 +25,7 @@
       background-color: #121212;
       color: #f0f0f0;
     }
+
     body {
       font-family: 'Host Grotesk', sans-serif;
       margin: 0;
@@ -33,11 +36,14 @@
       display: flex;
       justify-content: center;
     }
+
+    /* Contenedor principal tipo feed */
     .container {
       width: 100%;
       max-width: var(--max-width);
       padding: 0 var(--gutter);
     }
+
     header.site-header {
       position: sticky;
       top: 0;
@@ -48,10 +54,22 @@
       justify-content: space-between;
       z-index: 1001;
     }
-    header.site-header h2 { font: 1.5rem 'Sarina', cursive; }
-    .header-buttons { display: flex; gap: 0.5rem; align-items: center; }
-    .header-buttons .btn,
-    header.site-header a.soulprint-link {
+
+    /* Título actualizado con Sarina */
+    header.site-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      font-family: 'Sarina', cursive;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .header-buttons .btn {
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
       cursor: pointer;
@@ -60,13 +78,13 @@
       border: none;
       border-radius: 6px;
       transition: background-color 0.3s ease, transform 0.1s ease;
-      text-align: center;
     }
-    .header-buttons .btn:hover,
-    header.site-header a.soulprint-link:hover {
+
+    .header-buttons .btn:hover {
       background-color: var(--btn-hover);
       transform: scale(1.05);
     }
+
     header.site-header a.soulprint-link {
       background-color: #4f46e5;
       color: white;
@@ -74,7 +92,13 @@
       border-radius: 9999px;
       font-weight: bold;
       text-decoration: none;
+      transition: background-color 0.3s;
     }
+
+    header.site-header a.soulprint-link:hover {
+      background-color: #3730a3;
+    }
+
     .upload-form-container {
       padding: var(--gutter);
       margin: var(--gutter) 0;
@@ -85,88 +109,82 @@
       flex-direction: column;
       gap: 1rem;
     }
-    .upload-form-container.visible { display: flex; }
+
+    .upload-form-container.visible {
+      display: flex;
+    }
+
     .upload-form-container input,
     .upload-form-container select,
     .upload-form-container button {
-      width: 100%; padding: 0.75rem; font-size: 1rem;
-      border-radius: 6px; border: 1px solid #ccc;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
       font-family: 'Host Grotesk', sans-serif;
     }
-    .upload-form-container button:hover { background-color: #3730a3; }
+
+    .upload-form-container button {
+      background-color: #4f46e5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .upload-form-container button:hover {
+      background-color: #3730a3;
+    }
 
     .images-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      grid-template-columns: 1fr;
       gap: var(--gutter);
       margin-bottom: var(--gutter);
     }
+    @media (min-width: 500px) {
+      .images-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+
     .image-card {
-      position: relative;
-      background: var(--btn-bg);
+      background-color: var(--btn-bg);
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease;
     }
-    .image-card:hover { transform: scale(1.02); }
     .image-card img {
       display: block;
       width: 100%;
-      height: 120px;
-      object-fit: cover;
+      height: auto;
     }
-    .image-card .overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
-      opacity: 0;
-      transition: opacity 0.2s;
+    .image-description,
+    .image-user {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .switch-container {
+      margin: var(--gutter) 0;
       display: flex;
+      justify-content: flex-start;
       align-items: center;
-      justify-content: center;
-      gap: 1rem;
     }
-    .image-card:hover .overlay { opacity: 1; }
-    .overlay button {
-      background: rgba(255,255,255,0.8);
-      border: none;
-      border-radius: 50%;
-      width: 32px; height: 32px;
-      display: flex; align-items: center;
-      justify-content: center;
-      cursor: pointer;
+    .switch-container label {
+      user-select: none;
+      font-family: 'Host Grotesk', sans-serif;
     }
-    .overlay .zoom-btn::before { content: '\1F50D'; font-size: 1.2rem; }
-    .overlay .close-btn::before { content: '✖'; font-size: 1rem; }
-
-    .modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-    }
-    .modal.active { display: flex; }
-    .modal img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
-    }
-    .error { text-align: center; color: crimson; padding: 2rem; }
-
-    @media (max-width: 480px) {
-      .header-buttons { flex-direction: column; width: 100%; }
-      .header-buttons .btn,
-      header.site-header a.soulprint-link { width: 100%; }
+    .switch-container input {
+      margin-right: 0.5rem;
     }
   </style>
 </head>
 <body class="upload-page">
   <div class="container">
     <header class="site-header">
+      <!-- Título cambiado -->
       <h2>Momento</h2>
       <div class="header-buttons">
         <button id="toggleUploadBtn" class="btn">Subir imagen</button>
@@ -177,7 +195,7 @@
 
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
       <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="imageInput" name="image" accept="image/*" required />
+        <input type="file" id="image" name="image" accept="image/*" required />
         <input type="text" name="description" placeholder="Descripción..." />
         <label for="visibility">Visibilidad:</label>
         <select name="visibility" id="visibility">
@@ -193,23 +211,23 @@
           <option value="3h">3 horas</option>
           <option value="6h">6 horas</option>
         </select>
-        <div id="circleSelectorContainer" style="display: none;"></div>
+        <div id="circleSelectorContainer" style="display: none;">
+          <select id="circles" name="circleId"></select>
+        </div>
         <button type="submit">Subir</button>
       </form>
     </section>
 
     <div class="switch-container">
-      <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
+      <label>
+        <input type="checkbox" id="darkModeToggle" />
+        🌙 Modo oscuro
+      </label>
     </div>
 
     <main id="timeline" role="main" tabindex="0">
       <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
     </main>
-  </div>
-
-  <div class="modal" id="imageModal">
-    <button id="modalClose" class="close-btn"></button>
-    <img src="" alt="Vista ampliada" id="modalImg" />
   </div>
 
   <script>
@@ -219,40 +237,47 @@
       const logoutBtn = document.getElementById('logoutBtn');
       const soulprintBtn = document.getElementById('soulprintBtn');
       const darkToggle = document.getElementById('darkModeToggle');
-      const imagesContainer = document.getElementById('imagesContainer');
-      const modal = document.getElementById('imageModal');
-      const modalImg = document.getElementById('modalImg');
-      const modalClose = document.getElementById('modalClose');
+      const body = document.body;
 
+      // Mostrar/ocultar formulario
       toggleBtn.addEventListener('click', () => {
         const isVisible = uploadForm.classList.toggle('visible');
         uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
       });
-      logoutBtn.addEventListener('click', () => {
-        localStorage.clear(); window.location.href = 'index.html';
-      });
-      let username = null;
-      try { const storedUser = localStorage.getItem('user'); if (storedUser) username = JSON.parse(storedUser).username; } catch {}
-      if (username) soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-      else soulprintBtn.addEventListener('click', e => { e.preventDefault(); alert('Debes iniciar sesión'); window.location.href = 'index.html'; });
-      const applyDark = en => { document.body.classList.toggle('dark-mode', en); localStorage.setItem('darkMode', en); };
-      const dm = localStorage.getItem('darkMode')==='true'; darkToggle.checked=dm; applyDark(dm);
-      darkToggle.addEventListener('change', ()=> applyDark(darkToggle.checked));
 
-      function renderImage({url, id}) {
-        const card = document.createElement('div'); card.className='image-card';
-        const img = document.createElement('img'); img.src=url;
-        const overlay = document.createElement('div'); overlay.className='overlay';
-        const zoom = document.createElement('button'); zoom.className='zoom-btn';
-        const closeBtn = document.createElement('button'); closeBtn.className='close-btn';
-        overlay.append(zoom, closeBtn);
-        card.append(img, overlay);
-        imagesContainer.append(card);
-        zoom.addEventListener('click', ()=>{ modalImg.src=url; modal.classList.add('active'); });
-        closeBtn.addEventListener('click', ()=>{ card.remove(); /* API delete... */ });
+      // Logout
+      logoutBtn.addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'index.html';
+      });
+
+      // Soulprint
+      let username = null;
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) username = JSON.parse(storedUser).username;
+      } catch {}
+      if (username) {
+        soulprintBtn.href = soulprint.html?user=${encodeURIComponent(username)};
+      } else {
+        soulprintBtn.addEventListener('click', e => {
+          e.preventDefault();
+          alert('Debes iniciar sesión para ver tu Soulprint');
+          window.location.href = 'index.html';
+        });
       }
-      modalClose.addEventListener('click', ()=> modal.classList.remove('active'));
-      // ejemplo: dataList.forEach(renderImage);
+
+      // Modo oscuro
+      const applyDarkMode = enabled => {
+        body.classList.toggle('dark-mode', enabled);
+        localStorage.setItem('darkMode', enabled);
+      };
+      const darkModeSetting = localStorage.getItem('darkMode') === 'true';
+      darkToggle.checked = darkModeSetting;
+      applyDarkMode(darkModeSetting);
+      darkToggle.addEventListener('change', () => {
+        applyDarkMode(darkToggle.checked);
+      });
     });
   </script>
   <script src="js/upload.js"></script>
