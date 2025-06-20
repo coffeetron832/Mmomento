@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Últimos Momentos 📸</title>
+  <title>Últimos momentos subidos 📸</title>
   <!-- Host Grotesk para el cuerpo -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Sarina para el título Momento -->
@@ -147,6 +147,7 @@
     }
 
     .image-card {
+      position: relative;
       background-color: var(--btn-bg);
       border-radius: 8px;
       overflow: hidden;
@@ -156,7 +157,26 @@
     .image-card img {
       display: block;
       width: 100%;
-      height: auto;
+      max-height: 250px;
+      object-fit: cover;
+    }
+
+    /* Botón eliminar dentro de image-card */
+    .image-card .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
     }
 
     .image-description,
@@ -195,6 +215,7 @@
         font-size: 1rem;
       }
     }
+
   </style>
 </head>
 <body class="upload-page">
