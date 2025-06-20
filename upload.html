@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Sarina para el título Momento -->
   <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
   <style>
     :root {
       --btn-bg: #f5f5f5;
@@ -37,11 +36,11 @@
       justify-content: center;
     }
 
-    /* Contenedor principal tipo feed */
     .container {
       width: 100%;
       max-width: var(--max-width);
       padding: 0 var(--gutter);
+      box-sizing: border-box;
     }
 
     header.site-header {
@@ -50,12 +49,13 @@
       background-color: inherit;
       padding: var(--gutter) 0;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
+      gap: 0.5rem;
       z-index: 1001;
     }
 
-    /* Título actualizado con Sarina */
     header.site-header h2 {
       margin: 0;
       font-size: 1.5rem;
@@ -65,11 +65,15 @@
 
     .header-buttons {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.5rem;
       align-items: center;
+      justify-content: flex-end;
+      width: auto;
     }
 
-    .header-buttons .btn {
+    .header-buttons .btn,
+    header.site-header a.soulprint-link {
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
       cursor: pointer;
@@ -77,26 +81,22 @@
       color: var(--btn-text);
       border: none;
       border-radius: 6px;
+      text-decoration: none;
       transition: background-color 0.3s ease, transform 0.1s ease;
+      white-space: nowrap;
     }
 
-    .header-buttons .btn:hover {
-      background-color: var(--btn-hover);
+    .header-buttons .btn:hover,
+    header.site-header a.soulprint-link:hover {
+      background-color: var(--btn-hover) !important;
       transform: scale(1.05);
     }
 
     header.site-header a.soulprint-link {
       background-color: #4f46e5;
       color: white;
-      padding: 0.6rem 1rem;
       border-radius: 9999px;
       font-weight: bold;
-      text-decoration: none;
-      transition: background-color 0.3s;
-    }
-
-    header.site-header a.soulprint-link:hover {
-      background-color: #3730a3;
     }
 
     .upload-form-container {
@@ -123,18 +123,34 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       font-family: 'Host Grotesk', sans-serif;
+      box-sizing: border-box;
     }
 
     .upload-form-container button {
       background-color: #4f46e5;
       color: white;
       font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
     }
 
     .upload-form-container button:hover {
       background-color: #3730a3;
+    }
+
+    .switch-container {
+      margin: var(--gutter) 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .switch-container label {
+      user-select: none;
+      font-family: 'Host Grotesk', sans-serif;
+    }
+
+    .switch-container input {
+      margin-right: 0.5rem;
     }
 
     .images-grid {
@@ -143,48 +159,31 @@
       gap: var(--gutter);
       margin-bottom: var(--gutter);
     }
+
     @media (min-width: 500px) {
       .images-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       }
     }
 
-    .image-card {
-      background-color: var(--btn-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .image-card img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    .image-description,
-    .image-user {
-      padding: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .switch-container {
-      margin: var(--gutter) 0;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
-    .switch-container label {
-      user-select: none;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-    .switch-container input {
-      margin-right: 0.5rem;
+    @media (max-width: 400px) {
+      header.site-header h2 {
+        font-size: 1.25rem;
+      }
+      .header-buttons .btn,
+      header.site-header a.soulprint-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+      .upload-form-container {
+        padding: 0.75rem;
+      }
     }
   </style>
 </head>
 <body class="upload-page">
   <div class="container">
     <header class="site-header">
-      <!-- Título cambiado -->
       <h2>Momento</h2>
       <div class="header-buttons">
         <button id="toggleUploadBtn" class="btn">Subir imagen</button>
@@ -239,19 +238,16 @@
       const darkToggle = document.getElementById('darkModeToggle');
       const body = document.body;
 
-      // Mostrar/ocultar formulario
       toggleBtn.addEventListener('click', () => {
         const isVisible = uploadForm.classList.toggle('visible');
         uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
       });
 
-      // Logout
       logoutBtn.addEventListener('click', () => {
         localStorage.clear();
         window.location.href = 'index.html';
       });
 
-      // Soulprint
       let username = null;
       try {
         const storedUser = localStorage.getItem('user');
@@ -267,7 +263,6 @@
         });
       }
 
-      // Modo oscuro
       const applyDarkMode = enabled => {
         body.classList.toggle('dark-mode', enabled);
         localStorage.setItem('darkMode', enabled);
@@ -283,3 +278,4 @@
   <script src="js/upload.js"></script>
 </body>
 </html>
+
