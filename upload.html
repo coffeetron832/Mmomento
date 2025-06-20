@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>últimos momentos subidos📸</title>
-  <!-- Host Grotesk para el cuerpo -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Sarina para el título Momento -->
   <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -17,23 +15,22 @@
       --gutter: 1rem;
     }
 
+    body {
+      font-family: 'Host Grotesk', sans-serif;
+      margin: 0;
+      background-color: #fff;
+      color: #111;
+      transition: background-color 0.3s, color 0.3s;
+      display: flex;
+      justify-content: center;
+    }
+
     .dark-mode {
       --btn-bg: #333;
       --btn-hover: #444;
       --btn-text: #fff;
       background-color: #121212;
       color: #f0f0f0;
-    }
-
-    body {
-      font-family: 'Host Grotesk', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fff;
-      color: #111;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      display: flex;
-      justify-content: center;
     }
 
     .container {
@@ -56,43 +53,37 @@
       z-index: 1001;
     }
 
-    header.site-header h2 {
+    header h2 {
       margin: 0;
-      font-size: 1.5rem;
-      font-weight: 600;
       font-family: 'Sarina', cursive;
+      font-size: 1.5rem;
     }
 
     .header-buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      align-items: center;
-      justify-content: flex-end;
-      width: auto;
     }
 
-    .header-buttons .btn,
-    header.site-header a.soulprint-link {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-      cursor: pointer;
+    .btn, .soulprint-link {
       background-color: var(--btn-bg);
       color: var(--btn-text);
       border: none;
       border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
       text-decoration: none;
-      transition: background-color 0.3s ease, transform 0.1s ease;
+      transition: background 0.3s ease, transform 0.1s ease;
       white-space: nowrap;
     }
 
-    .header-buttons .btn:hover,
-    header.site-header a.soulprint-link:hover {
-      background-color: var(--btn-hover) !important;
+    .btn:hover, .soulprint-link:hover {
+      background-color: var(--btn-hover);
       transform: scale(1.05);
     }
 
-    header.site-header a.soulprint-link {
+    .soulprint-link {
       background-color: #4f46e5;
       color: white;
       border-radius: 9999px;
@@ -100,8 +91,8 @@
     }
 
     .upload-form-container {
-      padding: var(--gutter);
       margin: var(--gutter) 0;
+      padding: var(--gutter);
       background-color: var(--btn-bg);
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -130,6 +121,7 @@
       background-color: #4f46e5;
       color: white;
       font-weight: bold;
+      cursor: pointer;
     }
 
     .upload-form-container button:hover {
@@ -139,18 +131,8 @@
     .switch-container {
       margin: var(--gutter) 0;
       display: flex;
-      justify-content: flex-start;
       align-items: center;
       gap: 0.5rem;
-    }
-
-    .switch-container label {
-      user-select: none;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-
-    .switch-container input {
-      margin-right: 0.5rem;
     }
 
     .images-grid {
@@ -172,28 +154,21 @@
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
     }
 
     .image-card img {
       width: 100%;
       height: 200px;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      display: block;
     }
 
-    .image-card img:hover {
-      transform: scale(1.05);
-    }
-
-    /* Botón de eliminar dentro de la tarjeta */
     .image-card .delete-btn {
       position: absolute;
       top: 8px;
       right: 8px;
       background: rgba(0,0,0,0.6);
-      color: white;
+      color: #fff;
       border: none;
       border-radius: 50%;
       width: 32px;
@@ -209,15 +184,10 @@
       background: rgba(0,0,0,0.8);
     }
 
-    .image-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .image-card img:hover {
-      transform: scale(1.05);
+    .image-description,
+    .image-user {
+      padding: 0.5rem;
+      font-size: 0.9rem;
     }
 
     @keyframes fadeOut {
@@ -229,17 +199,9 @@
     }
 
     @media (max-width: 400px) {
-      header.site-header h2 {
-        font-size: 1.25rem;
-      }
-      .header-buttons .btn,
-      header.site-header a.soulprint-link {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
-      }
-      .upload-form-container {
-        padding: 0.75rem;
-      }
+      header h2 { font-size: 1.25rem; }
+      .btn, .soulprint-link { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+      .upload-form-container { padding: 0.75rem; }
     }
   </style>
 </head>
@@ -286,8 +248,8 @@
       </label>
     </div>
 
-    <main id="timeline" role="main" tabindex="0">
-      <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
+    <main id="timeline">
+      <div id="imagesContainer" class="images-grid"></div>
     </main>
   </div>
 
@@ -310,28 +272,24 @@
         window.location.href = 'index.html';
       });
 
-      // Soulprint con transición
+      // Navegar con transición
       let username = null;
       try {
         const storedUser = localStorage.getItem('user');
         if (storedUser) username = JSON.parse(storedUser).username;
       } catch {}
+
       if (username) {
         soulprintBtn.addEventListener('click', e => {
           e.preventDefault();
-          document.body.classList.add('fade-out');
+          body.classList.add('fade-out');
           setTimeout(() => {
             window.location.href = `soulprint.html?user=${encodeURIComponent(username)}`;
           }, 300);
         });
-      } else {
-        soulprintBtn.addEventListener('click', e => {
-          e.preventDefault();
-          alert('Debes iniciar sesión para ver tu Soulprint');
-          window.location.href = 'index.html';
-        });
       }
 
+      // Dark mode
       const applyDarkMode = enabled => {
         body.classList.toggle('dark-mode', enabled);
         localStorage.setItem('darkMode', enabled);
@@ -347,5 +305,3 @@
   <script src="js/upload.js"></script>
 </body>
 </html>
-
-
