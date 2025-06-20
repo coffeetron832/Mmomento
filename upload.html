@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Últimos momentos 📸</title>
+  <title>últimos momentos subidos📸</title>
   <!-- Host Grotesk para el cuerpo -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Sarina para el título Momento -->
@@ -167,12 +167,46 @@
     }
 
     .image-card {
+      position: relative;
       background-color: var(--btn-bg);
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       display: flex;
       flex-direction: column;
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .image-card img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Botón de eliminar dentro de la tarjeta */
+    .image-card .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .image-card .delete-btn:hover {
+      background: rgba(0,0,0,0.8);
     }
 
     .image-card img {
@@ -313,4 +347,5 @@
   <script src="js/upload.js"></script>
 </body>
 </html>
+
 
