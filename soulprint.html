@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SOULPRINT | Momento</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Fuente Host Grotesk -->
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Reset */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Host Grotesk', sans-serif;
       background-color: #f0f0f0;
       display: flex;
       flex-direction: column;
@@ -17,14 +17,12 @@
       padding: 2rem 1rem;
       color: #333;
     }
-    /* Título */
     h1.page-title {
       font-size: 2rem;
-      font-weight: 800;
+      font-weight: 700;
       margin-bottom: 1.5rem;
       color: #4f46e5;
     }
-    /* Botón Editar */
     .edit-btn {
       position: fixed;
       top: 1rem;
@@ -40,78 +38,69 @@
       transition: background 0.2s;
     }
     .edit-btn:hover { background: #3730a3; }
-    /* Tarjeta Soulprint */
-    .container {
+
+    .soulprint-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
       background: #fff;
       border-radius: 1rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 360px;
+      padding: 1.5rem;
+      max-width: 700px;
       width: 100%;
-      overflow: hidden;
-      border: 4px solid #aaa; /* se ajusta por JS */
+      margin-bottom: 2rem;
     }
-    .content {
-      padding: 1.5rem 1rem;
-      text-align: center;
-      background-color: #fff;
-      color: #333;
+    .soulprint-left {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
     }
-    /* Perfil y emoji */
-    .profile-wrapper {
+    .soulprint-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .username { font-size: 1.25rem; font-weight: 600; }
+    .soulrole { font-size: 0.95rem; font-weight: 500; color: #444; }
+    .soulcolor-info {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 0.75rem;
+      gap: 6px;
+      font-size: 0.9rem;
+    }
+    .soulcolor-circle {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+    .birthdate { font-size: 0.9rem; color: #555; }
+    .phrase {
+      font-style: italic;
+      font-size: 1rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+    .butterflies {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
     }
     .profile-img {
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      border: 3px solid #fff;
       object-fit: cover;
       background: #ccc;
     }
     .emoji-alma {
-      width: 40px;
-      height: 40px;
-    }
-    .username {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .soulcolor-info {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.95rem;
-      margin-bottom: 0.5rem;
-    }
-    .soulcolor-circle {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: currentColor;
-    }
-    .birthdate {
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-    }
-    .phrase {
-      font-style: italic;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-    .soulrole {
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-      color: #444;
-    }
-    .butterflies {
-      font-size: 0.95rem;
-      font-weight: 500;
+      width: 56px;
+      height: 56px;
     }
     .error {
       text-align: center;
@@ -119,58 +108,37 @@
       font-size: 1.1rem;
       padding: 2rem;
     }
-    /* Responsive */
-    @media (max-width: 480px) {
-      .container { max-width: 100%; }
+    @media (max-width: 600px) {
+      .soulprint-card { flex-direction: column; align-items: flex-start; }
+      .soulprint-right { flex-direction: row; justify-content: flex-start; margin-top: 1rem; }
       .profile-img { width: 70px; height: 70px; }
-      .emoji-alma { width: 32px; height: 32px; }
-      h1.page-title { font-size: 1.5rem; }
+      .emoji-alma { width: 48px; height: 48px; }
     }
   </style>
 </head>
 <body>
-
   <h1 class="page-title">SOULPRINT</h1>
   <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
-
-  <div id="soulprint" class="container" style="display:none;">
-    <div class="content">
-      <div class="profile-wrapper">
-        <img id="profileImage" class="profile-img"
-             src="https://via.placeholder.com/80"
-             alt="Foto de perfil" />
-        <img id="emojiAlma" class="emoji-alma"
-             src="/emoji-default.png"
-             alt="Emoji del alma" />
-      </div>
-
+  <div id="soulprint" class="soulprint-card" style="display:none;">
+    <div class="soulprint-left">
       <div class="username" id="usernameDisplay">@usuario</div>
-
+      <div class="soulrole" id="soulRoleDisplay">Rol del alma</div>
       <div class="soulcolor-info">
         <div class="soulcolor-circle" id="soulcolorCircle"></div>
         <span id="soulcolorName">Color del alma</span>
       </div>
-
-      <div class="birthdate">
-        Mi primer latido: <span id="birthdate">--</span>
-      </div>
-
-      <div class="phrase" id="soulPhraseDisplay">
-        "Frase del alma..."
-      </div>
-
-      <div class="soulrole" id="soulRoleDisplay"></div>
-
-      <div class="butterflies">
-        🦋 Mariposas recibidas: <span id="butterflyCount">0</span>
-      </div>
+      <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
+      <div class="phrase" id="soulPhraseDisplay">"Frase del alma..."</div>
+      <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
+    </div>
+    <div class="soulprint-right">
+      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
+      <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
     </div>
   </div>
-
   <div id="errorMessage" class="error" style="display:none;">
     Soulprint no encontrado 😢
   </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const user = new URLSearchParams(window.location.search).get('user');
@@ -184,10 +152,9 @@
       const soulEl = document.getElementById('soulprint');
       const errorEl = document.getElementById('errorMessage');
       const editBtn = document.getElementById('editBtn');
-      const container = document.querySelector('.container');
-      const profileImage = document.getElementById('profileImage');
       const colorCircle = document.getElementById('soulcolorCircle');
       const soulcolorName = document.getElementById('soulcolorName');
+      const profileImage = document.getElementById('profileImage');
       const emojiEl = document.getElementById('emojiAlma');
 
       if (!token) {
@@ -211,41 +178,24 @@
 
           const { username, soulprint } = body;
           document.getElementById('usernameDisplay').innerText = '@' + username;
-          document.getElementById('soulPhraseDisplay').innerText =
-            `"${soulprint.soulPhrase || ''}"`;
-          document.getElementById('butterflyCount').innerText =
-            soulprint.butterflies || 0;
+          document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
+          document.getElementById('butterflyCount').innerText = soulprint.butterflies || 0;
 
-          // Fecha de nacimiento formateada
           const birthEl = document.getElementById('birthdate');
           if (soulprint.birthdate) {
             const d = new Date(soulprint.birthdate);
-            birthEl.innerText = d.toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            });
+            birthEl.innerText = d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
           } else {
             birthEl.innerText = '--';
           }
 
-          // Color del alma
           soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
-          const c = soulprint.soulColor || '#aaa';
-          container.style.borderColor = c;
-          colorCircle.style.backgroundColor = c;
+          colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
 
-          // Imagen de perfil
-          if (soulprint.profileImage) {
-            profileImage.src = soulprint.profileImage;
-            profileImage.style.borderColor = c;
-          }
-
-          // Emoji del alma
+          if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
           emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
           emojiEl.alt = 'Emoji de ' + username;
 
-          // Rol del alma
           const roleEl = document.getElementById('soulRoleDisplay');
           roleEl.innerText = soulprint.soulRole || '';
 
@@ -265,5 +215,6 @@
   </script>
 </body>
 </html>
+
 
 
