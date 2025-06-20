@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SOULPRINT | Momento</title>
+  <!-- Fuente Host Grotesk -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,60 +40,67 @@
     .edit-btn:hover { background: #3730a3; }
 
     .soulprint-card {
-      display: grid;
-      grid-template-columns: 60px 1fr 80px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
       background: #fff;
-      border-radius: 0.75rem;
+      border-radius: 1rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 1.25rem;
-      max-width: 600px;
-      width: 85mm;
-      height: 53mm;
-      gap: 1rem;
-      align-items: start;
+      padding: 1.5rem;
+      max-width: 700px;
+      width: 100%;
+      margin-bottom: 2rem;
     }
-    .emoji-alma {
-      width: 56px;
-      height: 56px;
-      margin-top: 0.5rem;
-    }
-    .soulprint-content {
+    .soulprint-left {
+      flex: 2;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
-      border-left: 1px solid #ddd;
-      padding-left: 1rem;
+      gap: 0.6rem;
     }
-    .username { font-size: 1.1rem; font-weight: 600; }
-    .soulrole { font-size: 0.9rem; color: #444; }
+    .soulprint-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .username { font-size: 1.25rem; font-weight: 600; }
+    .soulrole { font-size: 0.95rem; font-weight: 500; color: #444; }
     .soulcolor-info {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
     .soulcolor-circle {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background-color: currentColor;
     }
-    .birthdate { font-size: 0.85rem; color: #555; }
+    .birthdate { font-size: 0.9rem; color: #555; }
     .phrase {
       font-style: italic;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #666;
+      margin-top: 0.5rem;
     }
     .butterflies {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 500;
+      margin-top: 0.5rem;
     }
     .profile-img {
-      width: 72px;
-      height: 72px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       object-fit: cover;
       background: #ccc;
+    }
+    .emoji-alma {
+      width: 56px;
+      height: 56px;
     }
     .error {
       text-align: center;
@@ -101,19 +109,10 @@
       padding: 2rem;
     }
     @media (max-width: 600px) {
-      .soulprint-card {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        height: auto;
-        width: 100%;
-      }
-      .soulprint-content {
-        border-left: none;
-        padding-left: 0;
-      }
-      .profile-img, .emoji-alma {
-        align-self: center;
-      }
+      .soulprint-card { flex-direction: column; align-items: flex-start; }
+      .soulprint-right { flex-direction: row; justify-content: flex-start; margin-top: 1rem; }
+      .profile-img { width: 70px; height: 70px; }
+      .emoji-alma { width: 48px; height: 48px; }
     }
   </style>
 </head>
@@ -121,8 +120,7 @@
   <h1 class="page-title">SOULPRINT</h1>
   <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
   <div id="soulprint" class="soulprint-card" style="display:none;">
-    <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
-    <div class="soulprint-content">
+    <div class="soulprint-left">
       <div class="username" id="usernameDisplay">@usuario</div>
       <div class="soulrole" id="soulRoleDisplay">Rol del alma</div>
       <div class="soulcolor-info">
@@ -133,10 +131,13 @@
       <div class="phrase" id="soulPhraseDisplay">"Frase del alma..."</div>
       <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
     </div>
-    <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
+    <div class="soulprint-right">
+      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
+      <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
+    </div>
   </div>
   <div id="errorMessage" class="error" style="display:none;">
-    Soulprint no encontrado 😞
+    Soulprint no encontrado 😢
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -170,7 +171,7 @@
         .then(res => res.json().then(body => ({ status: res.status, body })))
         .then(({ status, body }) => {
           if (status !== 200) {
-            errorEl.textContent = body.message || 'Soulprint no encontrado 😞';
+            errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
             errorEl.style.display = 'block';
             return;
           }
@@ -198,7 +199,7 @@
           const roleEl = document.getElementById('soulRoleDisplay');
           roleEl.innerText = soulprint.soulRole || '';
 
-          soulEl.style.display = 'grid';
+          soulEl.style.display = 'block';
 
           if (logged === username) {
             editBtn.style.display = 'inline-block';
@@ -214,7 +215,6 @@
   </script>
 </body>
 </html>
-
 
 
 
