@@ -309,7 +309,7 @@ async function loadNotifications() {
       'https://momento-backend-production.up.railway.app/api/notifications',
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       }
     );
@@ -320,20 +320,22 @@ async function loadNotifications() {
 
     if (!notifications.length) {
       notifList.innerHTML = '<li style="padding:0.5rem;">Sin notificaciones nuevas</li>';
-      notifCount.style.display = 'none';
       return;
     }
 
-    // Mostrar máximo 10 notificaciones
     notifications.slice(0, 10).forEach(n => {
+      const senderName = n.sender?.username || 'Alguien';
       const li = document.createElement('li');
-     let senderName = n.sender?.username || 'Alguien';
-    let cleanedMessage = n.message.replace('Alguien', '').trim();
-      li.textContent = `🦋 ${senderName} ${cleanedMessage}`;
+      li.textContent = `🦋 ${senderName} ${n.message}`;
       li.style.padding = '0.5rem';
       li.style.borderBottom = '1px solid #eee';
       notifList.appendChild(li);
     });
+  } catch (e) {
+    console.error('Error al cargar notificaciones:', e);
+    notifList.innerHTML = '<li style="padding:0.5rem;color:red;">Error al cargar notificaciones</li>';
+  }
+}
 
     // Actualizar contador
     notifCount.textContent = notifications.length;
