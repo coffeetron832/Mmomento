@@ -41,16 +41,17 @@
     }
 
     .container {
-      width: 100%;
-      max-width: var(--max-width);
-      padding: var(--gutter);
-      margin-top: var(--header-height);
-      text-align: center;
-    }
+  width: 100%;
+  max-width: var(--max-width);
+  padding: var(--gutter);
+  margin-top: calc(var(--header-height) + 1rem); /* espacio adicional */
+  text-align: center;
+}
 
-    header.site-header {
+
+   header.site-header {
   position: fixed;
-  top: 1.2rem;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -62,15 +63,7 @@
   align-items: center;
   gap: 0.5rem;
   z-index: 1001;
-  opacity: 0;
-  transform: translateY(-30px) translateX(-50%);
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-header.site-header.show {
   opacity: 1;
-  transform: translateY(0) translateX(-50%);
   pointer-events: all;
 }
 
@@ -333,7 +326,6 @@ header.site-header.show {
     </div>
   </header>
 
-  <button id="toggleHeaderBtn" aria-label="Mostrar/Ocultar cabecera">➡️</button>
 
   <div class="container">
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
@@ -375,20 +367,12 @@ header.site-header.show {
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
 
-    const header = document.querySelector('header.site-header');
-    const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
-
     // ✅ Mostrar header al cargar con animación
     setTimeout(() => {
       header.classList.add('show');
       toggleHeaderBtn.textContent = '⬅️';
     }, 100); // pequeño retraso para permitir animación
 
-    // ✅ Alternar visibilidad al hacer clic en el botón
-    toggleHeaderBtn.addEventListener('click', () => {
-      const isVisible = header.classList.toggle('show');
-      toggleHeaderBtn.textContent = isVisible ? '⬅️' : '➡️';
-    });
 
     soulprintBtn.classList.add('animate');
     setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
