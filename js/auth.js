@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value;
 
       try {
-        const result = await apiRequest(`${API_BASE_URL}/api/auth/register`, "POST", { name, email, password });
+        const result = await apiRequest(`${API_BASE_URL}/api/users/register`, "POST", { name, email, password });
 
         if (result.token) {
           localStorage.clear();
