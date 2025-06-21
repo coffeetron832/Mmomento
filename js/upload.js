@@ -285,3 +285,51 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
   loadImages();
   window.loadUserCircles = loadUserCircles;
 });
+
+// 🔔 Botón para mostrar notificaciones
+const notifBtn = document.getElementById('notifBtn');
+const notifDropdown = document.getElementById('notifDropdown');
+const notifList = document.getElementById('notifList');
+
+if (notifBtn && notifDropdown) {
+  notifBtn.addEventListener('click', async () => {
+    notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
+    if (notifDropdown.style.display === 'block') {
+      await loadNotifications();
+    }
+  });
+}
+
+// 🔄 Cargar notificaciones del usuario
+async function loadNotifications() {
+  try {
+    const res = await fetch(
+      'https://momento-backend-production.up.railway.app/api/notifications',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    if (!res.ok) throw new Error('Error al obtener notificaciones');
+
+    const notifications = await res.json();
+    notifList.innerHTML = '';
+
+    if (!notifications.length) {
+      notifList.innerHTML = '<li style="padding:0.5rem;">Sin notificaciones nuevas</li>';
+      return;
+    }
+
+    notifications.slice(0, 10).forEach(n => {
+      const li = document.createElement('li');
+      li.textContent = `🦋 ${n.message}`;
+      li.style.padding = '0.5rem';
+      li.style.borderBottom = '1px solid #eee';
+      notifList.appendChild(li);
+    });
+  } catch (e) {
+    console.error('Error al cargar notificaciones:', e);
+    notifList.innerHTML = '<li style="padding:0.5rem;color:red;">Error al cargar notificaciones</li>';
+  }
+}
