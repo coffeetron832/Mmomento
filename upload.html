@@ -40,13 +40,16 @@
       justify-content: center;
     }
 
+    /* Container with top margin for fixed header */
     .container {
       width: 100%;
       max-width: var(--max-width);
       padding: var(--gutter);
       margin-top: var(--header-height);
+      text-align: center;
     }
 
+    /* Fixed header */
     header.site-header {
       position: fixed;
       top: 0;
@@ -71,7 +74,6 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      text-align: center;
     }
     .butterfly-emoji {
       font-size: 1.1rem;
@@ -79,95 +81,62 @@
     }
 
     .header-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem; /* Aumenta la separación entre botones */
-  justify-content: center;
-}
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
 
     .header-buttons .btn {
       font-family: 'Host Grotesk', sans-serif;
       padding: 0.4rem 0.8rem;
       font-size: 0.85rem;
-      cursor: pointer;
       background-color: var(--btn-bg);
       color: var(--btn-text);
       border: none;
       border-radius: 6px;
+      cursor: pointer;
       transition: background-color 0.3s ease, transform 0.1s ease;
     }
     .header-buttons .btn:hover {
       background-color: var(--btn-hover);
       transform: scale(1.03);
     }
-
-    header.site-header a.soulprint-link {
+    .header-buttons .soulprint-link {
       background-color: #4f46e5;
       color: white;
       padding: 0.45rem 0.9rem;
-      font-size: 0.85rem;
       border-radius: 9999px;
       font-weight: bold;
       text-decoration: none;
-      transition: background-color 0.3s;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-    header.site-header a.soulprint-link:hover {
-      background-color: #3730a3;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-    .soulprint-link.animate {
-      animation: pulse 0.6s ease-in-out;
-    }
-
-    .upload-form-container {
-      padding: var(--gutter);
-      margin: var(--gutter) 0;
-      background-color: var(--btn-bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .upload-form-container.visible {
+    /* Arrow to toggle header */
+    #toggleHeaderBtn {
+      position: fixed;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      z-index: 1002;
+      background: var(--btn-bg);
+      border: none;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
       display: flex;
-    }
-
-    .upload-form-container input,
-    .upload-form-container select,
-    .upload-form-container button {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-
-    .upload-form-container button {
-      background-color: #4f46e5;
-      color: white;
-      font-weight: bold;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    .upload-form-container button:hover {
-      background-color: #3730a3;
-    }
-
+    /* Images grid */
     .images-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: var(--gutter);
       margin-bottom: var(--gutter);
+      justify-items: center;
     }
     @media (min-width: 500px) {
       .images-grid {
@@ -175,104 +144,49 @@
       }
     }
 
-    .image-card {
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: none;
-  position: relative;
-}
     .image-card img {
-      display: block;
       width: 100%;
       height: auto;
-    }
-    .image-description,
-    .image-user {
-      padding: 0.5rem;
-      font-size: 0.9rem;
-      font-family: 'Host Grotesk', sans-serif;
+      display: block;
+      border-radius: 8px;
     }
 
-    .butterfly-btn {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background: none;
+    /* Load more button */
+    #loadMoreBtn {
+      margin: var(--gutter) auto;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
       border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      opacity: 0.3;
-      transition: opacity 0.3s ease;
-    }
-    .butterfly-btn.active {
-      opacity: 1;
-      animation: flutter 0.6s ease;
-    }
-    @keyframes flutter {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3) rotate(5deg); }
-      100% { transform: scale(1); }
-    }
-
-    .switch-container {
-      margin-top: 0.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.9rem;
-    }
-
-    /* Notificaciones */
-    #notificationsContainer {
-      position: relative;
-    }
-    #notifDropdown {
-      display: false;
-      position: absolute;
-      top: 2.5rem;
-      right: 0;
-      background-color: var(--notif-bg);
-      border: 1px solid var(--notif-border);
+      padding: 0.6rem 1.2rem;
       border-radius: 6px;
-      max-height: 250px;
-      overflow-y: auto;
-      width: 300px;
-      color: inherit;
-      z-index: 100;
+      font-family: 'Host Grotesk', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
     }
-    #notifCount {
-      font-size: 0.75rem;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      padding: 0 6px;
-      margin-left: 4px;
-      display: none;
+    #loadMoreBtn:hover {
+      background-color: var(--btn-hover);
     }
+
   </style>
 </head>
 <body class="upload-page">
-  <div class="container">
-    <header class="site-header">
-      <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
-      <div class="header-buttons">
-        <button id="toggleUploadBtn" class="btn">Subir imagen</button>
-        <button id="logoutBtn" class="btn">Cerrar sesión</button>
-        <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
-        <div id="notificationsContainer">
-          <button id="notifBtn" class="btn" aria-label="Ver notificaciones">🔔<span id="notifCount">0</span></button>
-          <div id="notifDropdown">
-            <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
-          </div>
-        </div>
-        <div class="switch-container">
-          <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
-        </div>
-      </div>
-    </header>
+  <header class="site-header">
+    <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
+    <div class="header-buttons">
+      <button id="toggleUploadBtn" class="btn">Subir imagen</button>
+      <button id="logoutBtn" class="btn">Cerrar sesión</button>
+      <a id="soulprintBtn" href="#" class="soulprint-link btn">Mi Soulprint</a>
+      <button id="notifBtn" class="btn" aria-label="Ver notificaciones">🔔<span id="notifCount">0</span></button>
+      <div class="switch-container"><label><input type="checkbox" id="darkModeToggle" /> 🌙</label></div>
+    </div>
+  </header>
 
+  <!-- Toggle header visibility -->
+  <button id="toggleHeaderBtn">➡️</button>
+
+  <div class="container">
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
       <form id="uploadForm" enctype="multipart/form-data">
         <input type="file" id="image" name="image" accept="image/*" required />
@@ -291,9 +205,7 @@
           <option value="3h">3 horas</option>
           <option value="6h">6 horas</option>
         </select>
-        <div id="circleSelectorContainer" style="display: none;">
-          <select id="circles" name="circleId"></select>
-        </div>
+        <div id="circleSelectorContainer" style="display: none;"></div>
         <button type="submit">Subir</button>
       </form>
     </section>
@@ -301,9 +213,37 @@
     <main id="timeline" role="main" tabindex="0">
       <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
     </main>
-  </div>
 
+    <!-- Load more images -->
+    <button id="loadMoreBtn">⬇️ Ver más</button>
+  </div>
+  
  <script>
+
+  document.addEventListener('DOMContentLoaded', () => {
+      const header = document.querySelector('header.site-header');
+      const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      const imagesContainer = document.getElementById('imagesContainer');
+
+      // Toggle header visibility
+      let headerVisible = true;
+      toggleHeaderBtn.addEventListener('click', () => {
+        headerVisible = !headerVisible;
+        header.style.display = headerVisible ? 'flex' : 'none';
+        toggleHeaderBtn.textContent = headerVisible ? '➡️' : '⬅️';
+      });
+
+      // Placeholder for "load more" functionality
+      loadMoreBtn.addEventListener('click', () => {
+        // Aquí iría la lógica para cargar más imágenes
+        alert('Cargando más momentos...');
+      });
+
+      // Resto de inicialización (dark mode, upload form, logout, etc.)
+      // ... (deja tu código existente o intégralo aquí)
+    });
+   
   document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('toggleUploadBtn');
     const uploadForm = document.getElementById('uploadFormContainer');
