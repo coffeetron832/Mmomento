@@ -211,17 +211,30 @@ header.site-header.show {
       height: auto;
       display: block;
     }
-    .image-description,
-.image-user {
+    .image-description {
   padding: 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-family: 'Host Grotesk', sans-serif;
-  background-color: transparent; /* sin fondo */
-  color: var(--btn-text);        /* se adapta al modo claro/oscuro */
-  border: none;                  /* sin borde */
-  box-shadow: none;              /* sin sombra */
+  background-color: transparent;
+  color: var(--btn-text);
+  border: none;
+  box-shadow: none;
   margin-top: 0.25rem;
+  text-align: left;
 }
+
+.image-user {
+  padding: 0.2rem 0;
+  font-size: 0.85rem;
+  font-style: italic; /* opcional: cursiva */
+  color: var(--btn-text);
+  text-align: right;
+  margin-top: 0;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
 
     .butterfly-btn {
       position: absolute;
