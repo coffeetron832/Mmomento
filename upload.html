@@ -353,20 +353,15 @@ header.site-header.show {
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
 
-    document.addEventListener('DOMContentLoaded', () => {
-  const header = document.querySelector('header.site-header');
-  const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
+    // 👉 FIX del botón para mostrar/ocultar header
+    const header = document.querySelector('header.site-header');
+    const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
 
-  // Inicia oculto
-  header.classList.remove('show');
+    toggleHeaderBtn.addEventListener('click', () => {
+      const isVisible = header.classList.toggle('show');
+      toggleHeaderBtn.textContent = isVisible ? '⬅️' : '➡️';
+    });
 
-  toggleHeaderBtn.addEventListener('click', () => {
-    const isVisible = header.classList.toggle('show');
-    toggleHeaderBtn.textContent = isVisible ? '⬅️' : '➡️';
-  });
-});
-
-    
     // Animación Soulprint
     soulprintBtn.classList.add('animate');
     setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
@@ -394,6 +389,7 @@ header.site-header.show {
         token = storedUser.token;
       }
     } catch {}
+
     if (username) {
       soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
     } else {
@@ -414,7 +410,7 @@ header.site-header.show {
     darkToggle.addEventListener('change', () => {
       applyDarkMode(darkToggle.checked);
     });
-    
+
     // 🖼️ Cargar imágenes del backend
     async function loadImages() {
       try {
@@ -426,7 +422,6 @@ header.site-header.show {
       }
     }
 
-    // 🎴 Renderizar tarjetas de imagen con botón mariposa
     function renderImages(images) {
       imagesContainer.innerHTML = '';
       images.forEach(image => {
@@ -451,13 +446,11 @@ header.site-header.show {
           card.appendChild(user);
         }
 
-        // 🦋 Botón de mariposa
         const btn = document.createElement('button');
         btn.className = 'butterfly-btn';
         btn.innerHTML = '🦋';
         btn.dataset.id = image._id;
 
-        // Si el usuario ya ha dado like
         if (image.likes && image.likes.includes(username)) {
           btn.classList.add('active');
         }
