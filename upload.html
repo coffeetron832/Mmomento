@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>últimos momentos subidos📸</title>
-  <!-- Host Grotesk para el cuerpo -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Sarina para el título Momento -->
   <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
@@ -14,8 +12,8 @@
       --btn-bg: #f5f5f5;
       --btn-hover: #e0e0e0;
       --btn-text: #111;
-      --max-width: 600px;
-      --gutter: 1.5rem;
+      --max-width: 1000px;
+      --gutter: 2.5rem;
       --notif-bg: #fff;
       --notif-border: #ccc;
     }
@@ -53,42 +51,38 @@
       background-color: inherit;
       padding: var(--gutter) 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      gap: 1rem;
       z-index: 1001;
     }
 
     header.site-header h2 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: 600;
       font-family: 'Sarina', cursive;
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.5rem;
+      text-align: center;
     }
     .butterfly-emoji {
-      font-size: 1.2rem;
-      opacity: 0.7;
-    }
-
-    .header-sep {
-      width: 1px;
-      height: 24px;
-      background: #ccc;
-      margin: 0 1rem;
+      font-size: 1.4rem;
+      opacity: 0.8;
     }
 
     .header-buttons {
       display: flex;
-      gap: var(--gutter);
-      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
     }
 
     .header-buttons .btn {
       font-family: 'Host Grotesk', sans-serif;
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
       cursor: pointer;
       background-color: var(--btn-bg);
       color: var(--btn-text);
@@ -102,10 +96,9 @@
     }
 
     header.site-header a.soulprint-link {
-      margin-left: 0.5rem;
       background-color: #4f46e5;
       color: white;
-      padding: 0.6rem 1rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 9999px;
       font-weight: bold;
       text-decoration: none;
@@ -194,7 +187,6 @@
       font-family: 'Host Grotesk', sans-serif;
     }
 
-    /* Botón de mariposa */
     .butterfly-btn {
       position: absolute;
       top: 0.5rem;
@@ -217,23 +209,15 @@
     }
 
     .switch-container {
-      margin: var(--gutter) 0;
+      margin-top: 1rem;
       display: flex;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
-    }
-    .switch-container label {
-      user-select: none;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-    .switch-container input {
-      margin-right: 0.5rem;
     }
 
     /* Notificaciones */
     #notificationsContainer {
       position: relative;
-      margin: var(--gutter) 0 0 0;
     }
     #notifDropdown {
       display: none;
@@ -264,7 +248,6 @@
   <div class="container">
     <header class="site-header">
       <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
-      <div class="header-sep"></div>
       <div class="header-buttons">
         <button id="toggleUploadBtn" class="btn">Subir imagen</button>
         <button id="logoutBtn" class="btn">Cerrar sesión</button>
@@ -274,6 +257,9 @@
           <div id="notifDropdown">
             <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
           </div>
+        </div>
+        <div class="switch-container">
+          <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
         </div>
       </div>
     </header>
@@ -302,10 +288,6 @@
         <button type="submit">Subir</button>
       </form>
     </section>
-
-    <div class="switch-container">
-      <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
-    </div>
 
     <main id="timeline" role="main" tabindex="0">
       <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
