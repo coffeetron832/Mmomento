@@ -325,14 +325,14 @@ async function loadNotifications() {
     }
 
     // Mostrar máximo 10 notificaciones
-    notifications.slice(0, 10).forEach(n => {
+   notifications.slice(0, 10).forEach(n => {
   const li = document.createElement('li');
-  const senderName = n.sender?.username || 'Alguien';
-  li.textContent = `🦋 ${senderName} ${n.message}`;
+  li.textContent = `🦋 ${n.sender?.username || 'Alguien'} ${n.message}`;
   li.style.padding = '0.5rem';
   li.style.borderBottom = '1px solid #eee';
   notifList.appendChild(li);
 });
+
 
     // Actualizar contador
     notifCount.textContent = notifications.length;
