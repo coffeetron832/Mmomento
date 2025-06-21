@@ -287,13 +287,21 @@
         window.location.href = 'index.html';
       });
 
+      // Soulprint button logic
+      let stored = null;
+      try { stored = JSON.parse(localStorage.getItem('user')); } catch {}
+      if (stored && stored.username) {
+        soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(stored.username)}`;
+      } else {
+        soulprintBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          alert('Debes iniciar sesión para ver tu Soulprint');
+          window.location.href = 'index.html';
+        });
+      }
       // Soulprint animation
       soulprintBtn.classList.add('animate');
       setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
-      soulprintBtn.addEventListener('click', () => {
-        soulprintBtn.classList.add('animate');
-        setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
-      });
 
       // Dark mode
       const applyDark = enabled => { body.classList.toggle('dark-mode', enabled); localStorage.setItem('darkMode', enabled); };
