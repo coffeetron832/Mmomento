@@ -14,13 +14,14 @@
       --btn-text: #111;
       --notif-bg: #fff;
       --notif-border: #ccc;
+      --accent: #4f46e5;
     }
 
     .dark-mode {
       --btn-bg: #333;
       --btn-hover: #444;
       --btn-text: #fff;
-      --notif-bg: #333;
+      --notif-bg: #1f1f1f;
       --notif-border: #444;
       background-color: #121212;
       color: #f0f0f0;
@@ -50,11 +51,25 @@
       position: sticky;
       top: 0;
       height: 100vh;
+      background-color: #fafafa;
+      padding: 1rem;
+      border-radius: 12px;
+    }
+
+    .dark-mode aside.left-panel {
+      background-color: #1e1e1e;
     }
 
     .main-content {
       flex: 1;
       max-width: 800px;
+      background-color: #fafafa;
+      padding: 2rem;
+      border-radius: 12px;
+    }
+
+    .dark-mode .main-content {
+      background-color: #1e1e1e;
     }
 
     header.site-header {
@@ -64,7 +79,7 @@
     }
 
     header.site-header h2 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-family: 'Sarina', cursive;
       display: flex;
       align-items: center;
@@ -78,25 +93,27 @@
     }
 
     .header-buttons .btn, .soulprint-link {
-      padding: 0.6rem 1.1rem;
-      font-size: 0.95rem;
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
       border-radius: 6px;
       border: none;
       font-family: 'Host Grotesk', sans-serif;
       background-color: var(--btn-bg);
       color: var(--btn-text);
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
       text-decoration: none;
       text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .header-buttons .btn:hover, .soulprint-link:hover {
       background-color: var(--btn-hover);
+      transform: scale(1.03);
     }
 
     .soulprint-link {
-      background-color: #4f46e5;
+      background-color: var(--accent);
       color: #fff;
     }
 
@@ -114,6 +131,11 @@
       padding: 1.5rem;
       border-radius: 12px;
       margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .dark-mode .upload-form-container {
+      background-color: #2a2a2a;
     }
 
     .upload-form-container.visible {
@@ -130,10 +152,11 @@
     }
 
     .upload-form-container button {
-      background-color: #4f46e5;
+      background-color: var(--accent);
       color: white;
       font-weight: bold;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .upload-form-container button:hover {
@@ -155,8 +178,18 @@
       background-color: var(--btn-bg);
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .dark-mode .image-card {
+      background-color: #2a2a2a;
+    }
+
+    .image-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .image-card img {
@@ -167,6 +200,11 @@
     .image-description, .image-user {
       padding: 0.6rem;
       font-size: 0.9rem;
+    }
+
+    .dark-mode .image-description,
+    .dark-mode .image-user {
+      color: #e0e0e0;
     }
 
     .butterfly-btn {
@@ -233,6 +271,7 @@
       </main>
     </div>
   </div>
+
   
  <script>
   document.addEventListener('DOMContentLoaded', () => {
