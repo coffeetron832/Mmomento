@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>últimos momentos subidos📸</title>
+  <!-- Host Grotesk para el cuerpo -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Sarina para el título Momento -->
   <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
@@ -12,16 +14,17 @@
       --btn-bg: #f5f5f5;
       --btn-hover: #e0e0e0;
       --btn-text: #111;
+      --max-width: 600px;
+      --gutter: 1.5rem;
       --notif-bg: #fff;
       --notif-border: #ccc;
-      --accent: #4f46e5;
     }
 
     .dark-mode {
       --btn-bg: #333;
       --btn-hover: #444;
       --btn-text: #fff;
-      --notif-bg: #1f1f1f;
+      --notif-bg: #333;
       --notif-border: #444;
       background-color: #121212;
       color: #f0f0f0;
@@ -38,104 +41,99 @@
       justify-content: center;
     }
 
-    .layout {
-      display: flex;
+    .container {
       width: 100%;
-      max-width: 1280px;
-      padding: 2rem;
-      gap: 2rem;
-    }
-
-    aside.left-panel {
-      flex: 0 0 280px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      background-color: #fafafa;
-      padding: 1rem;
-      border-radius: 12px;
-    }
-
-    .dark-mode aside.left-panel {
-      background-color: #1e1e1e;
-    }
-
-    .main-content {
-      flex: 1;
-      max-width: 800px;
-      background-color: #fafafa;
-      padding: 2rem;
-      border-radius: 12px;
-    }
-
-    .dark-mode .main-content {
-      background-color: #1e1e1e;
+      max-width: var(--max-width);
+      padding: var(--gutter);
     }
 
     header.site-header {
+      position: sticky;
+      top: 0;
+      background-color: inherit;
+      padding: var(--gutter) 0;
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1001;
     }
 
     header.site-header h2 {
-      font-size: 2.5rem;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
       font-family: 'Sarina', cursive;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.25rem;
+    }
+    .butterfly-emoji {
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    .header-sep {
+      width: 1px;
+      height: 24px;
+      background: #ccc;
+      margin: 0 1rem;
     }
 
     .header-buttons {
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      gap: var(--gutter);
+      align-items: center;
     }
 
-    .header-buttons .btn, .soulprint-link {
-      padding: 0.7rem 1.2rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
+    .header-buttons .btn {
       font-family: 'Host Grotesk', sans-serif;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
       background-color: var(--btn-bg);
       color: var(--btn-text);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease, transform 0.1s ease;
     }
-
-    .header-buttons .btn:hover, .soulprint-link:hover {
+    .header-buttons .btn:hover {
       background-color: var(--btn-hover);
-      transform: scale(1.03);
+      transform: scale(1.05);
     }
 
-    .soulprint-link {
-      background-color: var(--accent);
-      color: #fff;
+    header.site-header a.soulprint-link {
+      margin-left: 0.5rem;
+      background-color: #4f46e5;
+      color: white;
+      padding: 0.6rem 1rem;
+      border-radius: 9999px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      font-family: 'Host Grotesk', sans-serif;
+    }
+    header.site-header a.soulprint-link:hover {
+      background-color: #3730a3;
     }
 
-    .switch-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .soulprint-link.animate {
+      animation: pulse 0.6s ease-in-out;
     }
 
     .upload-form-container {
+      padding: var(--gutter);
+      margin: var(--gutter) 0;
+      background-color: var(--btn-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       display: none;
       flex-direction: column;
       gap: 1rem;
-      background-color: var(--btn-bg);
-      padding: 1.5rem;
-      border-radius: 12px;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .dark-mode .upload-form-container {
-      background-color: #2a2a2a;
     }
 
     .upload-form-container.visible {
@@ -145,14 +143,16 @@
     .upload-form-container input,
     .upload-form-container select,
     .upload-form-container button {
-      padding: 0.9rem;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
       border-radius: 6px;
       border: 1px solid #ccc;
-      font-size: 1rem;
+      font-family: 'Host Grotesk', sans-serif;
     }
 
     .upload-form-container button {
-      background-color: var(--accent);
+      background-color: #4f46e5;
       color: white;
       font-weight: bold;
       cursor: pointer;
@@ -165,12 +165,13 @@
 
     .images-grid {
       display: grid;
-      gap: 1.5rem;
+      grid-template-columns: 1fr;
+      gap: var(--gutter);
+      margin-bottom: var(--gutter);
     }
-
-    @media (min-width: 600px) {
+    @media (min-width: 500px) {
       .images-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       }
     }
 
@@ -178,100 +179,138 @@
       background-color: var(--btn-bg);
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       position: relative;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
-    .dark-mode .image-card {
-      background-color: #2a2a2a;
-    }
-
-    .image-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
     .image-card img {
-      width: 100%;
       display: block;
+      width: 100%;
+      height: auto;
     }
-
-    .image-description, .image-user {
-      padding: 0.6rem;
+    .image-description,
+    .image-user {
+      padding: 0.5rem;
       font-size: 0.9rem;
+      font-family: 'Host Grotesk', sans-serif;
     }
 
-    .dark-mode .image-description,
-    .dark-mode .image-user {
-      color: #e0e0e0;
-    }
-
+    /* Botón de mariposa */
     .butterfly-btn {
       position: absolute;
       top: 0.5rem;
       right: 0.5rem;
-      font-size: 1.5rem;
       background: none;
       border: none;
-      opacity: 0.3;
+      font-size: 1.5rem;
       cursor: pointer;
+      opacity: 0.3;
       transition: opacity 0.3s ease;
     }
-
     .butterfly-btn.active {
       opacity: 1;
+      animation: flutter 0.6s ease;
+    }
+    @keyframes flutter {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3) rotate(5deg); }
+      100% { transform: scale(1); }
+    }
+
+    .switch-container {
+      margin: var(--gutter) 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .switch-container label {
+      user-select: none;
+      font-family: 'Host Grotesk', sans-serif;
+    }
+    .switch-container input {
+      margin-right: 0.5rem;
+    }
+
+    /* Notificaciones */
+    #notificationsContainer {
+      position: relative;
+      margin: var(--gutter) 0 0 0;
+    }
+    #notifDropdown {
+      display: none;
+      position: absolute;
+      top: 2.5rem;
+      right: 0;
+      background-color: var(--notif-bg);
+      border: 1px solid var(--notif-border);
+      border-radius: 6px;
+      max-height: 250px;
+      overflow-y: auto;
+      width: 300px;
+      color: inherit;
+      z-index: 100;
+    }
+    #notifCount {
+      font-size: 0.75rem;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 0 6px;
+      margin-left: 4px;
+      display: none;
     }
   </style>
 </head>
 <body class="upload-page">
-  <div class="layout">
-    <aside class="left-panel">
-      <header class="site-header">
-        <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
-        <div class="header-buttons">
-          <button id="toggleUploadBtn" class="btn">Subir imagen</button>
-          <button id="logoutBtn" class="btn">Cerrar sesión</button>
-          <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
-          <div class="switch-container">
-            <label><input type="checkbox" id="darkModeToggle" /> Modo oscuro</label>
+  <div class="container">
+    <header class="site-header">
+      <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
+      <div class="header-sep"></div>
+      <div class="header-buttons">
+        <button id="toggleUploadBtn" class="btn">Subir imagen</button>
+        <button id="logoutBtn" class="btn">Cerrar sesión</button>
+        <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
+        <div id="notificationsContainer">
+          <button id="notifBtn" aria-label="Ver notificaciones">🔔<span id="notifCount">0</span></button>
+          <div id="notifDropdown">
+            <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
           </div>
         </div>
-      </header>
-    </aside>
+      </div>
+    </header>
 
-    <div class="main-content">
-      <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
-        <form id="uploadForm" enctype="multipart/form-data">
-          <input type="file" id="image" name="image" accept="image/*" required />
-          <input type="text" name="description" placeholder="Descripción..." />
-          <label for="visibility">Visibilidad:</label>
-          <select name="visibility" id="visibility">
-            <option value="public">Público</option>
-            <option value="private">Privado</option>
-            <option value="circle">Solo para un círculo</option>
-          </select>
-          <label for="duration">Duración:</label>
-          <select name="duration" id="duration" required>
-            <option value="">Selecciona duración</option>
-            <option value="30m">30 minutos</option>
-            <option value="1h">1 hora</option>
-            <option value="3h">3 horas</option>
-            <option value="6h">6 horas</option>
-          </select>
-          <div id="circleSelectorContainer" style="display: none;">
-            <select id="circles" name="circleId"></select>
-          </div>
-          <button type="submit">Subir</button>
-        </form>
-      </section>
+    <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="image" name="image" accept="image/*" required />
+        <input type="text" name="description" placeholder="Descripción..." />
+        <label for="visibility">Visibilidad:</label>
+        <select name="visibility" id="visibility">
+          <option value="public">Público</option>
+          <option value="private">Privado</option>
+          <option value="circle">Solo para un círculo</option>
+        </select>
+        <label for="duration">Duración:</label>
+        <select name="duration" id="duration" required>
+          <option value="">Selecciona duración</option>
+          <option value="30m">30 minutos</option>
+          <option value="1h">1 hora</option>
+          <option value="3h">3 horas</option>
+          <option value="6h">6 horas</option>
+        </select>
+        <div id="circleSelectorContainer" style="display: none;">
+          <select id="circles" name="circleId"></select>
+        </div>
+        <button type="submit">Subir</button>
+      </form>
+    </section>
 
-      <main id="timeline" role="main" tabindex="0">
-        <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
-      </main>
+    <div class="switch-container">
+      <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
     </div>
-  </div>
 
+    <main id="timeline" role="main" tabindex="0">
+      <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
+    </main>
+  </div>
   
  <script>
   document.addEventListener('DOMContentLoaded', () => {
