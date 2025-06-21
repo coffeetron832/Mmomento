@@ -181,6 +181,8 @@ function createImageCard(image) {
   card.append(img, desc, userInfo);
 
   // 🦋 Botón mariposa
+  // 🦋 Botón mariposa (solo si el usuario NO es el dueño)
+if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
   const butterflyBtn = document.createElement('button');
   butterflyBtn.className = 'butterfly-btn';
   butterflyBtn.innerHTML = '🦋';
@@ -210,6 +212,7 @@ function createImageCard(image) {
   });
 
   card.appendChild(butterflyBtn);
+}
 
   // 🗑 Si es dueño, botón de eliminar
   if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
