@@ -327,11 +327,42 @@ async function loadNotifications() {
     // Mostrar máximo 10 notificaciones
    notifications.slice(0, 10).forEach(n => {
   const li = document.createElement('li');
-  li.textContent = `🦋 ${n.message}`; // ¡aquí solo n.message!
+  li.style.display = 'flex';
+  li.style.justifyContent = 'space-between';
+  li.style.alignItems = 'center';
   li.style.padding = '0.5rem';
   li.style.borderBottom = '1px solid #eee';
+
+  const msg = document.createElement('span');
+  msg.textContent = `🦋 ${n.message}`;
+
+  const delBtn = document.createElement('button');
+  delBtn.textContent = '✖'; // ❌ o X
+  delBtn.style.border = 'none';
+  delBtn.style.background = 'transparent';
+  delBtn.style.color = '#999';
+  delBtn.style.cursor = 'pointer';
+  delBtn.title = 'Eliminar notificación';
+  delBtn.addEventListener('click', async () => {
+    try {
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/notifications/${n._id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!res.ok) throw new Error('No se pudo eliminar');
+      li.remove();
+    } catch (e) {
+      console.error('Error eliminando notificación:', e);
+      alert('Error al eliminar notificación');
+    }
+  });
+
+  li.append(msg, delBtn);
   notifList.appendChild(li);
 });
+
 
     // Actualizar contador
     notifCount.textContent = notifications.length;
