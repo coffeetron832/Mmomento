@@ -290,6 +290,8 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
 const notifBtn = document.getElementById('notifBtn');
 const notifDropdown = document.getElementById('notifDropdown');
 const notifList = document.getElementById('notifList');
+const notifCount = document.getElementById('notifCount');
+
 
 if (notifBtn && notifDropdown) {
   notifBtn.addEventListener('click', async () => {
@@ -318,9 +320,11 @@ async function loadNotifications() {
 
     if (!notifications.length) {
       notifList.innerHTML = '<li style="padding:0.5rem;">Sin notificaciones nuevas</li>';
+      notifCount.style.display = 'none';
       return;
     }
 
+    // Mostrar máximo 10 notificaciones
     notifications.slice(0, 10).forEach(n => {
       const li = document.createElement('li');
       li.textContent = `🦋 ${n.message}`;
@@ -328,8 +332,13 @@ async function loadNotifications() {
       li.style.borderBottom = '1px solid #eee';
       notifList.appendChild(li);
     });
+
+    // Actualizar contador
+    notifCount.textContent = notifications.length;
+    notifCount.style.display = 'inline-block';
   } catch (e) {
     console.error('Error al cargar notificaciones:', e);
     notifList.innerHTML = '<li style="padding:0.5rem;color:red;">Error al cargar notificaciones</li>';
+    notifCount.style.display = 'none';
   }
 }
