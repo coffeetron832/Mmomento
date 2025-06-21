@@ -48,6 +48,20 @@
       text-align: center;
     }
 
+    /* Upload form container */
+    .upload-form-container {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      background-color: var(--btn-bg);
+      padding: var(--gutter);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .upload-form-container.visible {
+      display: flex;
+    }
+
     header.site-header {
       position: fixed;
       top: 0;
