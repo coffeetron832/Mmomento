@@ -285,27 +285,43 @@
       // Submit upload form and refresh images
       uploadFormElement.addEventListener('submit', async (e) => {
         e.preventDefault();
+        // Ensure user is logged in
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user || !user.token) {
+          alert('Debes iniciar sesión para subir imágenes.');
+          window.location.href = 'index.html';
+          return;
+        }
         const formData = new FormData(uploadFormElement);
         try {
           const res = await fetch('https://momento-backend-production.up.railway.app/api/images', {
             method: 'POST',
             body: formData,
             headers: {
-              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`
+              'Authorization': `Bearer ${user.token}`
             }
           });
-          if (res.ok) {
-            // Clear form and hide
-            uploadFormElement.reset();
-            uploadFormContainer.classList.remove('visible');
-            uploadFormContainer.setAttribute('aria-hidden', 'true');
-            // Reload images
-            loadImages();
-          } else {
-            console.error('Error subiendo imagen', await res.text());
+          if (res.status === 401) {
+            alert('Token inválido o expirado. Por favor inicia sesión de nuevo.');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+            return;
           }
+          if (!res.ok) {
+            const err = await res.json();
+            console.error('Error subiendo imagen', err);
+            alert(`Error subiendo imagen: ${err.error || res.statusText}`);
+            return;
+          }
+          // Clear form and hide
+          uploadFormElement.reset();
+          uploadFormContainer.classList.remove('visible');
+          uploadFormContainer.setAttribute('aria-hidden', 'true');
+          // Reload images
+          loadImages();
         } catch (err) {
           console.error('Error en petición de subida', err);
+          alert('Error de red al subir la imagen.');
         }
       });
 
