@@ -1,7 +1,7 @@
+const token = localStorage.getItem("token");
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
-  const token = localStorage.getItem("token");
 
   // 🌙 Aplicar modo oscuro
   const darkValue = localStorage.getItem('darkMode');
