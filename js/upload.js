@@ -327,7 +327,8 @@ async function loadNotifications() {
     // Mostrar máximo 10 notificaciones
     notifications.slice(0, 10).forEach(n => {
       const li = document.createElement('li');
-      li.textContent = `🦋 ${n.message}`;
+      let senderName = n.sender?.username || 'Alguien';
+      li.textContent = `🦋 ${senderName} ${n.message}`;
       li.style.padding = '0.5rem';
       li.style.borderBottom = '1px solid #eee';
       notifList.appendChild(li);
