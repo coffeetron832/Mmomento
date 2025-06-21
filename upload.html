@@ -176,12 +176,16 @@
     }
 
     .image-card {
-      background-color: var(--btn-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      position: relative;
-    }
+  /* Quitar bordes redondeados y fondo */
+  border-radius: 0;
+  background-color: transparent;
+  /* Eliminar sombra */
+  box-shadow: none;
+  /* Asegurar que no recorte nada extra */
+  overflow: hidden;
+  position: relative;
+}
+
     .image-card img {
       display: block;
       width: 100%;
