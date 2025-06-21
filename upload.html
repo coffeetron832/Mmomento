@@ -250,7 +250,8 @@
       const notifDropdown = document.getElementById('notifDropdown');
       const loadMoreBtn = document.getElementById('loadMoreBtn');
       const toggleUploadBtn = document.getElementById('toggleUploadBtn');
-      const uploadForm = document.getElementById('uploadFormContainer');
+      const uploadFormContainer = document.getElementById('uploadFormContainer');
+      const uploadFormElement = document.getElementById('uploadForm');
       const logoutBtn = document.getElementById('logoutBtn');
       const soulprintBtn = document.getElementById('soulprintBtn');
       const darkToggle = document.getElementById('darkModeToggle');
@@ -277,8 +278,35 @@
 
       // Upload form toggle
       toggleUploadBtn.addEventListener('click', () => {
-        const visible = uploadForm.classList.toggle('visible');
-        uploadForm.setAttribute('aria-hidden', (!visible).toString());
+        const visible = uploadFormContainer.classList.toggle('visible');
+        uploadFormContainer.setAttribute('aria-hidden', (!visible).toString());
+      });
+
+      // Submit upload form and refresh images
+      uploadFormElement.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(uploadFormElement);
+        try {
+          const res = await fetch('https://momento-backend-production.up.railway.app/api/images', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`
+            }
+          });
+          if (res.ok) {
+            // Clear form and hide
+            uploadFormElement.reset();
+            uploadFormContainer.classList.remove('visible');
+            uploadFormContainer.setAttribute('aria-hidden', 'true');
+            // Reload images
+            loadImages();
+          } else {
+            console.error('Error subiendo imagen', await res.text());
+          }
+        } catch (err) {
+          console.error('Error en petición de subida', err);
+        }
       });
 
       // Logout
@@ -309,36 +337,45 @@
       darkToggle.checked = dark; applyDark(dark);
       darkToggle.addEventListener('change', () => applyDark(darkToggle.checked));
 
-      // Load images
-      const renderImages = images => {
+      // Load images from backend
+      async function loadImages() {
+        try {
+          const res = await fetch('https://momento-backend-production.up.railway.app/api/images/public');
+          const data = await res.json();
+          renderImages(data);
+        } catch (e) { console.error('Error cargando imágenes:', e); }
+      }
+      // Render images
+      function renderImages(images) {
         imagesContainer.innerHTML = '';
         images.forEach(data => {
-          const card = document.createElement('div'); card.className = 'image-card';
-          const img = document.createElement('img'); img.src = data.imageUrl; card.appendChild(img);
+          const card = document.createElement('div');
+          card.className = 'image-card';
+          const img = document.createElement('img');
+          img.src = data.imageUrl;
+          card.appendChild(img);
           if (data.description) {
-            const d = document.createElement('div'); d.className='image-description'; d.textContent=data.description; card.appendChild(d);
+            const d = document.createElement('div'); d.className = 'image-description'; d.textContent = data.description; card.appendChild(d);
           }
           if (data.username) {
-            const u = document.createElement('div'); u.className='image-user'; u.textContent=`@${data.username}`; card.appendChild(u);
+            const u = document.createElement('div'); u.className = 'image-user'; u.textContent = `@${data.username}`; card.appendChild(u);
           }
-          const btn = document.createElement('button'); btn.className='butterfly-btn'; btn.textContent='🦋';
+          const btn = document.createElement('button');
+          btn.className = 'butterfly-btn';
+          btn.textContent = '🦋';
           btn.addEventListener('click', async () => {
-            await fetch(`https://momento-backend-production.up.railway.app/api/images/${data._id}/like`, { method:'POST', headers:{ 'Authorization':`Bearer ${localStorage.getItem('user')?.token}` } });
+            await fetch(`https://momento-backend-production.up.railway.app/api/images/${data._id}/like`, { method: 'POST', headers: { 'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')|| '{}').token}` } });
             btn.classList.toggle('active');
           });
           card.appendChild(btn);
           imagesContainer.appendChild(card);
         });
-      };
-
-      (async() => {
-        try {
-          const res = await fetch('https://momento-backend-production.up.railway.app/api/images/public');
-          renderImages(await res.json());
-        } catch(e) { console.error(e); }
-      })();
+      }
+      // Initial load
+      loadImages();
     });
   </script>
 </body>
 </html>
+
 
