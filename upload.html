@@ -176,16 +176,13 @@
     }
 
     .image-card {
-  /* Quitar bordes redondeados y fondo */
-  border-radius: 0;
-  background-color: transparent;
-  /* Eliminar sombra */
-  box-shadow: none;
-  /* Asegurar que no recorte nada extra */
-  overflow: hidden;
-  position: relative;
-}
-
+      background-color: transparent;
+      border-radius: 8px;
+      overflow: hidden;
+      /* Se eliminó la sombra para quitar el rectángulo de fondo */
+      box-shadow: none;
+      position: relative;
+    }
     .image-card img {
       display: block;
       width: 100%;
