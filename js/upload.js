@@ -327,12 +327,11 @@ async function loadNotifications() {
     // Mostrar máximo 10 notificaciones
    notifications.slice(0, 10).forEach(n => {
   const li = document.createElement('li');
-  li.textContent = `🦋 ${n.sender?.username || 'Alguien'} ${n.message}`;
+  li.textContent = `🦋 ${n.message}`; // ¡aquí solo n.message!
   li.style.padding = '0.5rem';
   li.style.borderBottom = '1px solid #eee';
   notifList.appendChild(li);
 });
-
 
     // Actualizar contador
     notifCount.textContent = notifications.length;
