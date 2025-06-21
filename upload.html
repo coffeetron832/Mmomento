@@ -352,16 +352,21 @@ header.site-header.show {
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
 
-    // 👉 FIX del botón para mostrar/ocultar header
     const header = document.querySelector('header.site-header');
     const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
 
+    // ✅ Mostrar header al cargar con animación
+    setTimeout(() => {
+      header.classList.add('show');
+      toggleHeaderBtn.textContent = '⬅️';
+    }, 100); // pequeño retraso para permitir animación
+
+    // ✅ Alternar visibilidad al hacer clic en el botón
     toggleHeaderBtn.addEventListener('click', () => {
       const isVisible = header.classList.toggle('show');
       toggleHeaderBtn.textContent = isVisible ? '⬅️' : '➡️';
     });
 
-    // Animación Soulprint
     soulprintBtn.classList.add('animate');
     setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
     soulprintBtn.addEventListener('click', () => {
