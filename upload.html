@@ -128,6 +128,20 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
+    #notifDropdown {
+      display: none;
+      position: absolute;
+      top: 2.5rem;
+      right: 0;
+      background-color: var(--notif-bg);
+      border: 1px solid var(--notif-border);
+      border-radius: 6px;
+      max-height: 250px;
+      overflow-y: auto;
+      width: 300px;
+      z-index: 1003;
+    }
+
     .images-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -161,6 +175,7 @@
       transition: background-color 0.3s;
     }
     #loadMoreBtn:hover { background-color: var(--btn-hover); }
+
   </style>
 </head>
 <body class="upload-page">
@@ -170,7 +185,12 @@
       <button id="toggleUploadBtn" class="btn">Subir imagen</button>
       <button id="logoutBtn" class="btn">Cerrar sesión</button>
       <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
-      <button id="notifBtn" class="btn" aria-label="Ver notificaciones">🔔<span id="notifCount">0</span></button>
+      <button id="notifBtn" class="btn" aria-haspopup="true" aria-expanded="false">🔔<span id="notifCount">0</span></button>
+      <div id="notificationsContainer" style="position:relative;">
+        <div id="notifDropdown">
+          <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
+        </div>
+      </div>
       <div class="switch-container"><label><input type="checkbox" id="darkModeToggle" /> 🌙</label></div>
     </div>
   </header>
@@ -201,21 +221,29 @@
       </form>
     </section>
 
-    <main id="timeline" role="main">
+    <main id="timeline" role="main" tabindex="0">
       <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
     </main>
 
     <button id="loadMoreBtn">⬇️ Ver más</button>
   </div>
 
- <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
       const header = document.querySelector('header.site-header');
       const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
+      const notifBtn = document.getElementById('notifBtn');
+      const notifDropdown = document.getElementById('notifDropdown');
       const loadMoreBtn = document.getElementById('loadMoreBtn');
+      const toggleUploadBtn = document.getElementById('toggleUploadBtn');
+      const uploadForm = document.getElementById('uploadFormContainer');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const soulprintBtn = document.getElementById('soulprintBtn');
+      const darkToggle = document.getElementById('darkModeToggle');
       const imagesContainer = document.getElementById('imagesContainer');
+      const body = document.body;
 
-      // Toggle header visibility
+      // Toggle header
       let headerVisible = true;
       toggleHeaderBtn.addEventListener('click', () => {
         headerVisible = !headerVisible;
@@ -223,144 +251,72 @@
         toggleHeaderBtn.textContent = headerVisible ? '➡️' : '⬅️';
       });
 
-      // Placeholder for "load more" functionality
-      loadMoreBtn.addEventListener('click', () => {
-        // Aquí iría la lógica para cargar más imágenes
-        alert('Cargando más momentos...');
+      // Notifications dropdown
+      notifBtn.addEventListener('click', () => {
+        const isOpen = notifDropdown.style.display === 'block';
+        notifDropdown.style.display = isOpen ? 'none' : 'block';
+        notifBtn.setAttribute('aria-expanded', String(!isOpen));
       });
 
-      // Resto de inicialización (dark mode, upload form, logout, etc.)
-      // ... (deja tu código existente o intégralo aquí)
-    });
-   
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleBtn = document.getElementById('toggleUploadBtn');
-    const uploadForm = document.getElementById('uploadFormContainer');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const soulprintBtn = document.getElementById('soulprintBtn');
-    const darkToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-    const imagesContainer = document.getElementById('imagesContainer');
+      // Load more placeholder
+      loadMoreBtn.addEventListener('click', () => alert('Cargando más momentos...'));
 
-    // Animación Soulprint
-    soulprintBtn.classList.add('animate');
-    setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
-    soulprintBtn.addEventListener('click', () => {
-      soulprintBtn.classList.add('animate');
-      setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
-    });
+      // Upload form toggle
+      toggleUploadBtn.addEventListener('click', () => {
+        const visible = uploadForm.classList.toggle('visible');
+        uploadForm.setAttribute('aria-hidden', (!visible).toString());
+      });
 
-    toggleBtn.addEventListener('click', () => {
-      const isVisible = uploadForm.classList.toggle('visible');
-      uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
-    });
-
-    logoutBtn.addEventListener('click', () => {
-      localStorage.clear();
-      window.location.href = 'index.html';
-    });
-
-    let username = null;
-    let token = null;
-    try {
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      if (storedUser) {
-        username = storedUser.username;
-        token = storedUser.token;
-      }
-    } catch {}
-    if (username) {
-      soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-    } else {
-      soulprintBtn.addEventListener('click', e => {
-        e.preventDefault();
-        alert('Debes iniciar sesión para ver tu Soulprint');
+      // Logout
+      logoutBtn.addEventListener('click', () => {
+        localStorage.clear();
         window.location.href = 'index.html';
       });
-    }
 
-    const applyDarkMode = enabled => {
-      body.classList.toggle('dark-mode', enabled);
-      localStorage.setItem('darkMode', enabled);
-    };
-    const darkModeSetting = localStorage.getItem('darkMode') === 'true';
-    darkToggle.checked = darkModeSetting;
-    applyDarkMode(darkModeSetting);
-    darkToggle.addEventListener('change', () => {
-      applyDarkMode(darkToggle.checked);
-    });
-
-    // 🖼️ Cargar imágenes del backend
-    async function loadImages() {
-      try {
-        const res = await fetch('https://momento-backend-production.up.railway.app/api/images/public');
-        const data = await res.json();
-        renderImages(data);
-      } catch (err) {
-        console.error('Error cargando imágenes:', err);
-      }
-    }
-
-    // 🎴 Renderizar tarjetas de imagen con botón mariposa
-    function renderImages(images) {
-      imagesContainer.innerHTML = '';
-      images.forEach(image => {
-        const card = document.createElement('div');
-        card.classList.add('image-card');
-
-        const img = document.createElement('img');
-        img.src = image.imageUrl;
-        card.appendChild(img);
-
-        if (image.description) {
-          const desc = document.createElement('div');
-          desc.className = 'image-description';
-          desc.textContent = image.description;
-          card.appendChild(desc);
-        }
-
-        if (image.username) {
-          const user = document.createElement('div');
-          user.className = 'image-user';
-          user.textContent = `@${image.username}`;
-          card.appendChild(user);
-        }
-
-        // 🦋 Botón de mariposa
-        const btn = document.createElement('button');
-        btn.className = 'butterfly-btn';
-        btn.innerHTML = '🦋';
-        btn.dataset.id = image._id;
-
-        // Si el usuario ya ha dado like
-        if (image.likes && image.likes.includes(username)) {
-          btn.classList.add('active');
-        }
-
-        btn.addEventListener('click', async () => {
-          try {
-            const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-              }
-            });
-            if (response.ok) {
-              btn.classList.toggle('active');
-            }
-          } catch (error) {
-            console.error('Error al enviar mariposa:', error);
-          }
-        });
-
-        card.appendChild(btn);
-        imagesContainer.appendChild(card);
+      // Soulprint animation
+      soulprintBtn.classList.add('animate');
+      setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
+      soulprintBtn.addEventListener('click', () => {
+        soulprintBtn.classList.add('animate');
+        setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
       });
-    }
 
-    loadImages();
-  });
-</script>
-  <script src="js/upload.js"></script>
+      // Dark mode
+      const applyDark = enabled => { body.classList.toggle('dark-mode', enabled); localStorage.setItem('darkMode', enabled); };
+      const dark = localStorage.getItem('darkMode') === 'true';
+      darkToggle.checked = dark; applyDark(dark);
+      darkToggle.addEventListener('change', () => applyDark(darkToggle.checked));
+
+      // Load images
+      const renderImages = images => {
+        imagesContainer.innerHTML = '';
+        images.forEach(data => {
+          const card = document.createElement('div'); card.className = 'image-card';
+          const img = document.createElement('img'); img.src = data.imageUrl; card.appendChild(img);
+          if (data.description) {
+            const d = document.createElement('div'); d.className='image-description'; d.textContent=data.description; card.appendChild(d);
+          }
+          if (data.username) {
+            const u = document.createElement('div'); u.className='image-user'; u.textContent=`@${data.username}`; card.appendChild(u);
+          }
+          const btn = document.createElement('button'); btn.className='butterfly-btn'; btn.textContent='🦋';
+          btn.addEventListener('click', async () => {
+            await fetch(`https://momento-backend-production.up.railway.app/api/images/${data._id}/like`, { method:'POST', headers:{ 'Authorization':`Bearer ${localStorage.getItem('user')?.token}` } });
+            btn.classList.toggle('active');
+          });
+          card.appendChild(btn);
+          imagesContainer.appendChild(card);
+        });
+      };
+
+      (async() => {
+        try {
+          const res = await fetch('https://momento-backend-production.up.railway.app/api/images/public');
+          renderImages(await res.json());
+        } catch(e) { console.error(e); }
+      })();
+    });
+  </script>
 </body>
 </html>
+
