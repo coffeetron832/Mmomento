@@ -148,62 +148,94 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 🧩 Crear tarjeta
-  function createImageCard(image) {
-    const card = document.createElement('div');
-    card.className = 'image-card';
+function createImageCard(image) {
+  const card = document.createElement('div');
+  card.className = 'image-card';
 
-    const img = document.createElement('img');
-    img.src = image.imageUrl || image.url || '';
-    img.alt = image.description || 'Imagen subida';
+  const img = document.createElement('img');
+  img.src = image.imageUrl || image.url || '';
+  img.alt = image.description || 'Imagen subida';
 
-    const desc = document.createElement('p');
-    desc.className = 'image-description';
-    desc.textContent = image.description || '';
+  const desc = document.createElement('p');
+  desc.className = 'image-description';
+  desc.textContent = image.description || '';
 
-    const userInfo = document.createElement('p');
-    userInfo.className = 'image-user';
+  const userInfo = document.createElement('p');
+  userInfo.className = 'image-user';
 
-    let ownerId = null;
-    if (image.userId && typeof image.userId === 'object') {
-      ownerId = image.userId._id || image.userId.id;
-      userInfo.textContent = image.userId.username
-        ? `Subido por: ${image.userId.username}`
-        : 'Subido por: Anónimo';
-    } else if (typeof image.userId === 'string') {
-      ownerId = image.userId;
-      userInfo.textContent = currentUserId === image.userId
-        ? 'Subido por: Tú'
-        : 'Subido por: Usuario desconocido';
-    } else {
-      userInfo.textContent = 'Subido por: Anónimo';
-    }
-
-    card.append(img, desc, userInfo);
-
-    if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
-      const container = document.createElement('div');
-      container.className = 'delete-container';
-      container.style.position = 'relative';
-
-      const delButton = document.createElement('button');
-      delButton.className = 'bin';
-      delButton.addEventListener('click', () => deleteImage(image._id, card));
-
-      const decorDiv = document.createElement('div');
-      decorDiv.className = 'div';
-
-      const small = document.createElement('small');
-      const icon = document.createElement('i');
-      small.appendChild(icon);
-      decorDiv.appendChild(small);
-
-      container.appendChild(delButton);
-      container.appendChild(decorDiv);
-      card.appendChild(container);
-    }
-
-    return card;
+  let ownerId = null;
+  if (image.userId && typeof image.userId === 'object') {
+    ownerId = image.userId._id || image.userId.id;
+    userInfo.textContent = image.userId.username
+      ? `Subido por: ${image.userId.username}`
+      : 'Subido por: Anónimo';
+  } else if (typeof image.userId === 'string') {
+    ownerId = image.userId;
+    userInfo.textContent = currentUserId === image.userId
+      ? 'Subido por: Tú'
+      : 'Subido por: Usuario desconocido';
+  } else {
+    userInfo.textContent = 'Subido por: Anónimo';
   }
+
+  card.append(img, desc, userInfo);
+
+  // 🦋 Botón mariposa
+  const butterflyBtn = document.createElement('button');
+  butterflyBtn.className = 'butterfly-btn';
+  butterflyBtn.innerHTML = '🦋';
+
+  const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
+  if (hasLiked) butterflyBtn.classList.add('active');
+
+  butterflyBtn.addEventListener('click', async () => {
+    try {
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
+      const result = await res.json();
+      butterflyBtn.classList.toggle('active', result.liked);
+    } catch (err) {
+      console.error('Error al dar mariposa:', err);
+      alert('Error al dar/quitar mariposa');
+    }
+  });
+
+  card.appendChild(butterflyBtn);
+
+  // 🗑 Si es dueño, botón de eliminar
+  if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
+    const container = document.createElement('div');
+    container.className = 'delete-container';
+    container.style.position = 'relative';
+
+    const delButton = document.createElement('button');
+    delButton.className = 'bin';
+    delButton.addEventListener('click', () => deleteImage(image._id, card));
+
+    const decorDiv = document.createElement('div');
+    decorDiv.className = 'div';
+
+    const small = document.createElement('small');
+    const icon = document.createElement('i');
+    small.appendChild(icon);
+    decorDiv.appendChild(small);
+
+    container.appendChild(delButton);
+    container.appendChild(decorDiv);
+    card.appendChild(container);
+  }
+
+  return card;
+}
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
