@@ -303,7 +303,7 @@ if (notifBtn && notifDropdown) {
 }
 
 // 🔄 Cargar notificaciones del usuario
-async function loadNotifications() {More actions
+async function loadNotifications() {
   try {
     const res = await fetch(
       'https://momento-backend-production.up.railway.app/api/notifications',
