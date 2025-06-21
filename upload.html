@@ -16,6 +16,7 @@
       --gutter: 2.5rem;
       --notif-bg: #fff;
       --notif-border: #ccc;
+      --header-height: 3.5rem;
     }
 
     .dark-mode {
@@ -43,11 +44,16 @@
       width: 100%;
       max-width: var(--max-width);
       padding: var(--gutter);
+      margin-top: var(--header-height);
     }
 
     header.site-header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: var(--max-width);
       background-color: inherit;
       padding: 0.75rem 0;
       display: flex;
@@ -295,10 +301,6 @@
       <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
     </main>
   </div>
-  <script src="js/upload.js"></script>
-</body>
-</html>
-
 
  <script>
   document.addEventListener('DOMContentLoaded', () => {
