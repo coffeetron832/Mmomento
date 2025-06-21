@@ -49,20 +49,31 @@
     }
 
     header.site-header {
-      position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: var(--max-width);
-      background-color: inherit;
-      padding: 0.75rem 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      z-index: 1001;
-    }
+  position: fixed;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--max-width);
+  background-color: inherit;
+  padding: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 1001;
+  opacity: 0;
+  transform: translateY(-30px) translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+header.site-header.show {
+  opacity: 1;
+  transform: translateY(0) translateX(-50%);
+  pointer-events: all;
+}
+
 
     header.site-header h2 {
       margin: 0;
@@ -342,6 +353,20 @@
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
 
+    document.addEventListener('DOMContentLoaded', () => {
+  const header = document.querySelector('header.site-header');
+  const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
+
+  // Inicia oculto
+  header.classList.remove('show');
+
+  toggleHeaderBtn.addEventListener('click', () => {
+    const isVisible = header.classList.toggle('show');
+    toggleHeaderBtn.textContent = isVisible ? '⬅️' : '➡️';
+  });
+});
+
+    
     // Animación Soulprint
     soulprintBtn.classList.add('animate');
     setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
@@ -389,7 +414,7 @@
     darkToggle.addEventListener('change', () => {
       applyDarkMode(darkToggle.checked);
     });
-
+    
     // 🖼️ Cargar imágenes del backend
     async function loadImages() {
       try {
