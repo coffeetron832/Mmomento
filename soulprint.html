@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SOULPRINT | Momento</title>
-  <!-- Fuente Host Grotesk -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,7 +43,6 @@
       border-radius: 1rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       padding: 1.5rem;
-      /* Reducido ancho para no verse muy extenso */
       max-width: 500px;
       width: 90%;
       display: flex;
@@ -113,15 +111,10 @@
       .card-header { justify-content: flex-start; }
       .profile-img { width: 70px; height: 70px; }
       .emoji-alma { width: 48px; height: 48px; }
-
-      /* Móvil: posicionar botón Editar debajo del título */
       .edit-btn {
         position: static;
         margin: 0.5rem 0;
       }
-    }
-      .profile-img { width: 70px; height: 70px; }
-      .emoji-alma { width: 48px; height: 48px; }
     }
   </style>
 </head>
@@ -180,44 +173,48 @@
         return;
       }
 
-      fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`)
-        .then(res => res.json().then(body => ({ status: res.status, body })))
-        .then(({ status, body }) => {
-          if (status !== 200) {
-            errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
-            errorEl.style.display = 'block';
-            return;
-          }
-
-          const { username, soulprint } = body;
-          document.getElementById('usernameDisplay').innerText = '@' + username;
-          document.getElementById('soulRoleDisplay').innerText = soulprint.soulRole || '';
-          document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
-          document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
-
-          const birthEl = document.getElementById('birthdate');
-          if (soulprint.birthdate) {
-            const d = new Date(soulprint.birthdate);
-            birthEl.innerText = d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-          }
-
-          soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
-          colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
-
-          if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
-          emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
-
-          soulEl.style.display = 'flex';
-          if (logged === username) {
-            editBtn.style.display = 'inline-block';
-            editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          errorEl.textContent = 'Error al obtener Soulprint';
+      fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(res => res.json().then(body => ({ status: res.status, body })))
+      .then(({ status, body }) => {
+        if (status !== 200) {
+          errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
           errorEl.style.display = 'block';
-        });
+          return;
+        }
+
+        const { username, soulprint } = body;
+        document.getElementById('usernameDisplay').innerText = '@' + username;
+        document.getElementById('soulRoleDisplay').innerText = soulprint.soulRole || '';
+        document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
+        document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
+
+        const birthEl = document.getElementById('birthdate');
+        if (soulprint.birthdate) {
+          const d = new Date(soulprint.birthdate);
+          birthEl.innerText = d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
+        colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
+
+        if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
+        emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
+
+        soulEl.style.display = 'flex';
+        if (logged === username) {
+          editBtn.style.display = 'inline-block';
+          editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        errorEl.textContent = 'Error al obtener Soulprint';
+        errorEl.style.display = 'block';
+      });
     });
   </script>
 </body>
