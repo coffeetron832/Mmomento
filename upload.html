@@ -14,17 +14,14 @@
       --btn-text: #111;
       --max-width: 800px;
       --gutter: 2.5rem;
-      --notif-bg: #fff;
-      --notif-border: #ccc;
       --header-height: 3.5rem;
+      --accent: #4f46e5;
     }
 
     .dark-mode {
       --btn-bg: #333;
       --btn-hover: #444;
       --btn-text: #fff;
-      --notif-bg: #333;
-      --notif-border: #444;
       background-color: #121212;
       color: #f0f0f0;
     }
@@ -33,11 +30,11 @@
       font-family: 'Host Grotesk', sans-serif;
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
       background-color: #fff;
       color: #111;
       transition: background-color 0.3s ease, color 0.3s ease;
-      display: flex;
-      justify-content: center;
     }
 
     .container {
@@ -61,6 +58,11 @@
       align-items: center;
       gap: 0.5rem;
       z-index: 1001;
+      transition: transform 0.5s ease;
+    }
+    .site-header.centered {
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
 
     header.site-header h2 {
@@ -73,58 +75,66 @@
       gap: 0.4rem;
       text-align: center;
     }
-    .butterfly-emoji {
-      font-size: 1.1rem;
-      opacity: 0.8;
-    }
+    .butterfly-emoji { font-size: 1.1rem; opacity: 0.8; }
 
     .header-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem; /* Aumenta la separación entre botones */
-  justify-content: center;
-}
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
 
-    .header-buttons .btn {
-      font-family: 'Host Grotesk', sans-serif;
+    .header-buttons .btn,
+    header.site-header a.soulprint-link {
       padding: 0.4rem 0.8rem;
       font-size: 0.85rem;
-      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      font-family: 'Host Grotesk', sans-serif;
       background-color: var(--btn-bg);
       color: var(--btn-text);
-      border: none;
-      border-radius: 6px;
+      cursor: pointer;
       transition: background-color 0.3s ease, transform 0.1s ease;
-    }
-    .header-buttons .btn:hover {
-      background-color: var(--btn-hover);
-      transform: scale(1.03);
-    }
-
-    header.site-header a.soulprint-link {
-      background-color: #4f46e5;
-      color: white;
-      padding: 0.45rem 0.9rem;
-      font-size: 0.85rem;
-      border-radius: 9999px;
-      font-weight: bold;
       text-decoration: none;
-      transition: background-color 0.3s;
-      font-family: 'Host Grotesk', sans-serif;
     }
-    header.site-header a.soulprint-link:hover {
-      background-color: #3730a3;
+    .header-buttons .btn:hover,
+    header.site-header a.soulprint-link:hover { background-color: var(--btn-hover); transform: scale(1.03); }
+    header.site-header a.soulprint-link { background-color: var(--accent); color: #fff; }
+
+    .switch-container { margin-top: 0.5rem; display: flex; align-items: center; font-size: 0.9rem; }
+
+    .images-grid {
+      display: grid;
+      gap: var(--gutter);
+      justify-content: center;
+    }
+    @media (min-width: 500px) {
+      .images-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+    .image-card { background: transparent; overflow: hidden; border-radius: 0; box-shadow: none; }
+    .image-card img { width: 100%; height: auto; display: block; }
+    .image-description, .image-user { padding: 0.5rem; font-size: 0.9rem; }
+
+    /* Flechas */
+    .arrow-down {
+      font-size: 2rem;
+      text-align: center;
+      cursor: pointer;
+      margin: 1rem auto;
+      width: 100%;
     }
-    .soulprint-link.animate {
-      animation: pulse 0.6s ease-in-out;
+    .arrow-right {
+      position: fixed;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      cursor: pointer;
+      z-index: 1002;
     }
 
+    /* Upload Form */
     .upload-form-container {
       padding: var(--gutter);
       margin: var(--gutter) 0;
@@ -136,143 +146,31 @@
       gap: 1rem;
     }
 
-    .upload-form-container.visible {
-      display: flex;
-    }
-
+    .upload-form-container.visible { display: flex; }
     .upload-form-container input,
     .upload-form-container select,
-    .upload-form-container button {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-
-    .upload-form-container button {
-      background-color: #4f46e5;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .upload-form-container button:hover {
-      background-color: #3730a3;
-    }
-
-    .images-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--gutter);
-      margin-bottom: var(--gutter);
-    }
-    @media (min-width: 500px) {
-      .images-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      }
-    }
-
-    .image-card {
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: none;
-  position: relative;
-}
-    .image-card img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    .image-description,
-    .image-user {
-      padding: 0.5rem;
-      font-size: 0.9rem;
-      font-family: 'Host Grotesk', sans-serif;
-    }
-
-    .butterfly-btn {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      opacity: 0.3;
-      transition: opacity 0.3s ease;
-    }
-    .butterfly-btn.active {
-      opacity: 1;
-      animation: flutter 0.6s ease;
-    }
-    @keyframes flutter {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3) rotate(5deg); }
-      100% { transform: scale(1); }
-    }
-
-    .switch-container {
-      margin-top: 0.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.9rem;
-    }
+    .upload-form-container button { padding: 0.75rem; font-size: 1rem; border-radius: 6px; font-family: 'Host Grotesk', sans-serif; }
+    .upload-form-container button { background-color: var(--accent); color: #fff; font-weight: bold; }
+    .upload-form-container button:hover { background-color: #3730a3; }
 
     /* Notificaciones */
-    #notificationsContainer {
-      position: relative;
-    }
-    #notifDropdown {
-      display: false;
-      position: absolute;
-      top: 2.5rem;
-      right: 0;
-      background-color: var(--notif-bg);
-      border: 1px solid var(--notif-border);
-      border-radius: 6px;
-      max-height: 250px;
-      overflow-y: auto;
-      width: 300px;
-      color: inherit;
-      z-index: 100;
-    }
-    #notifCount {
-      font-size: 0.75rem;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      padding: 0 6px;
-      margin-left: 4px;
-      display: none;
-    }
+    .btn.notification { background-color: var(--btn-bg) !important; }
   </style>
 </head>
 <body class="upload-page">
-  <div class="container">
-    <header class="site-header">
-      <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
-      <div class="header-buttons">
-        <button id="toggleUploadBtn" class="btn">Subir imagen</button>
-        <button id="logoutBtn" class="btn">Cerrar sesión</button>
-        <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
-        <div id="notificationsContainer">
-          <button id="notifBtn" class="btn" aria-label="Ver notificaciones">🔔<span id="notifCount">0</span></button>
-          <div id="notifDropdown">
-            <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
-          </div>
-        </div>
-        <div class="switch-container">
-          <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
-        </div>
+  <header class="site-header" id="siteHeader">
+    <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
+    <div class="header-buttons">
+      <button id="toggleUploadBtn" class="btn">Subir imagen</button>
+      <button id="logoutBtn" class="btn">Cerrar sesión</button>
+      <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
+      <button id="notifBtn" class="btn notification" aria-label="Ver notificaciones">🔔<span id="notifCount">0</span></button>
+      <div class="switch-container">
+        <label><input type="checkbox" id="darkModeToggle" /> 🌙</label>
       </div>
-    </header>
-
+    </div>
+  </header>
+  <div class="container">
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
       <form id="uploadForm" enctype="multipart/form-data">
         <input type="file" id="image" name="image" accept="image/*" required />
@@ -291,17 +189,27 @@
           <option value="3h">3 horas</option>
           <option value="6h">6 horas</option>
         </select>
-        <div id="circleSelectorContainer" style="display: none;">
-          <select id="circles" name="circleId"></select>
-        </div>
         <button type="submit">Subir</button>
       </form>
     </section>
-
     <main id="timeline" role="main" tabindex="0">
       <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
+      <div class="arrow-down" id="loadMoreBtn">⬇️</div>
     </main>
   </div>
+  <div class="arrow-right" id="toggleHeaderBtn">➡️</div>
+  <script>
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    loadMoreBtn.addEventListener('click', () => {
+      window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+    });
+
+    const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
+    const siteHeader = document.getElementById('siteHeader');
+    toggleHeaderBtn.addEventListener('click', () => {
+      siteHeader.classList.toggle('centered');
+    });
+  </script>
 
  <script>
   document.addEventListener('DOMContentLoaded', () => {
