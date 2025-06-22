@@ -205,7 +205,7 @@ form#registerForm button {
   </style>
 </head>
 <body>
-  <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌙</button>
+  
 
   <main>
     <div id="testimonial" class="testimonial visible">
@@ -214,10 +214,10 @@ form#registerForm button {
   </main>
 
   <footer>
-    <form id="registerForm">
-      <input type="text" id="name" placeholder="Nombre" required autocomplete="name" />
-      <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
-      <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password" />
+  <form id="registerForm" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; justify-content: center; width: 100%; margin: 0; padding: 0;">
+    <input type="text" id="name" placeholder="Nombre" required autocomplete="name" style="padding: 0.4rem 0.6rem; font-size: 0.9rem; border-radius: 4px; border: 1px solid #555;" />
+    <input type="email" id="email" placeholder="Correo" required autocomplete="email" style="padding: 0.4rem 0.6rem; font-size: 0.9rem; border-radius: 4px; border: 1px solid #555;" />
+    <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password" style="padding: 0.4rem 0.6rem; font-size: 0.9rem; border-radius: 4px; border: 1px solid #555;" />
 
       <!-- Emoji carousel selector -->
         <label>Elige tu emoji del alma:</label>
@@ -244,12 +244,11 @@ form#registerForm button {
           <button type="button" id="scrollRight" aria-label="Siguiente">→</button>
         </div>
 
-      <button type="submit">Registrarse</button>
-    </form>
-
-    <div id="messageBox"></div>
-    <p class="link">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
-  </footer>
+      <button type="submit" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-radius: 4px; background-color: #5a9bd8; color: #fff; border: none; font-weight: 600; cursor: pointer;">
+      Registrarse
+    </button>
+  </form>
+</footer>
   <script>
     // Testimonios con transición fade
     const testimonials = [
@@ -270,18 +269,6 @@ form#registerForm button {
       }, 500);
     }, 7000);
 
-    // Toggle modo oscuro
-    const bodyEl = document.body;
-    const darkToggle = document.getElementById('darkModeToggle');
-    if (localStorage.getItem('darkMode') === 'true') {
-      bodyEl.classList.add('dark-mode');
-      darkToggle.textContent = "☀️";
-    }
-    darkToggle.addEventListener('click', () => {
-      const isDark = bodyEl.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', isDark);
-      darkToggle.textContent = isDark ? "☀️" : "🌙";
-    });
 
     // Emoji carousel navigation
     document.getElementById('scrollLeft').addEventListener('click', () => {
