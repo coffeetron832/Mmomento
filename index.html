@@ -202,18 +202,20 @@
  /* Efecto de aviso tipo neón sutil */
 @keyframes neonPulse {
   0%, 100% {
-    text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff, 0 0 15px #00f0ff;
-    color: #e0ffff;
+    text-shadow: 0 0 2px #00f0ff, 0 0 4px #00f0ff;
+    color: #ccfaff;
   }
   50% {
-    text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 30px #00f0ff;
+    text-shadow: 0 0 4px #00f0ff, 0 0 6px #00f0ff;
     color: #ffffff;
   }
 }
 
 .neon-link {
-  animation: neonPulse 1.8s infinite ease-in-out;
+  animation: neonPulse 2s ease-in-out infinite;
   font-weight: 500;
+  color: #ccfaff;
+  transition: color 0.3s ease;
 }
 
     
