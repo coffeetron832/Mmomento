@@ -27,9 +27,12 @@
     body {
   margin: 0;
   font-family: 'Host Grotesk', sans-serif;
-  background-color: #000; /* Fondo negro */
-  color: #fff; /* Cambia el texto a blanco si lo deseas */
+  background-color: #000;
+  color: #fff;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 
@@ -48,16 +51,14 @@
     }
 
     .content-wrapper {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding-top: 80px;
-      text-align: center;
-      z-index: 1;
-    }
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 80px;
+  text-align: center;
+}
 
     .main-text h1 {
       font-size: 4rem;
@@ -170,6 +171,39 @@
   opacity: 0.7;
 }
 
+  .footer-compact {
+  background: rgba(0, 0, 0, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 0.85rem;
+  margin-top: auto; /* clave para el footer fijo */
+}
+
+.footer-compact .footer-link {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.footer-compact .footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .footer-compact {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+    
 
     /* Ajustes móviles */
     @media (max-width: 480px) {
@@ -189,35 +223,28 @@
   <header class="global-header"></header>
 
   <!-- Fondo animado Parallax -->
- <div class="parallax-container">
-  <img src="nube1.jpg" class="parallax-item" data-depth="10" style="top: 10%; left: 15%;" />
-  <img src="nube2.jpg" class="parallax-item" data-depth="20" style="top: 30%; left: 70%;" />
-  <img src="nube3.jpg" class="parallax-item" data-depth="40" style="top: 70%; left: 40%;" />
-</div>
+  <div class="parallax-container">
+    <img src="nube1.jpg" class="parallax-item" data-depth="10" style="top: 10%; left: 15%;" />
+    <img src="nube2.jpg" class="parallax-item" data-depth="20" style="top: 30%; left: 70%;" />
+    <img src="nube3.jpg" class="parallax-item" data-depth="40" style="top: 70%; left: 40%;" />
+  </div>
 
   <!-- Contenido principal -->
   <div class="content-wrapper">
     <div class="main-text">
       <h1>
-        Tus momentos reales.
+        Momento
         <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
         <br>
-        <small>Solo por un <span class="fade-pieces">
-          <span>i</span><span>n</span><span>s</span><span>t</span><span>a</span><span>n</span><span>t</span><span>e</span>
-        </span>.</small>
       </h1>
     </div>
 
-    <div class="buttons-wrapper">
-      <a href="register.html" class="join-btn">Únete a nosotros</a>
-      <a href="login.html" class="login-btn">Iniciar sesión</a>
-    </div>
-
-    <footer class="site-footer">
-      <p>
-        <a href="privacidad.html">Política de Privacidad</a> ·
-        <a href="condiciones.html">Términos y Condiciones</a>
-      </p>
+    <!-- Footer compacto unificado -->
+    <footer class="footer-compact">
+      <a href="register.html" class="footer-link">Únete a nosotros</a>
+      <a href="login.html" class="footer-link">Iniciar sesión</a>
+      <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
+      <a href="condiciones.html" class="footer-link">Términos y Condiciones</a>
     </footer>
   </div>
 
