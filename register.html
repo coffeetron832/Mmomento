@@ -213,19 +213,25 @@ form#registerForm button {
     </div>
   </main>
 
-  <footer>
-  <form id="registerForm" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; justify-content: center; width: 100%; margin: 0; padding: 0;">
-    <input type="text" id="name" placeholder="Nombre" required autocomplete="name" style="padding: 0.4rem 0.6rem; font-size: 0.9rem; border-radius: 4px; border: 1px solid #555;" />
-    <input type="email" id="email" placeholder="Correo" required autocomplete="email" style="padding: 0.4rem 0.6rem; font-size: 0.9rem; border-radius: 4px; border: 1px solid #555;" />
-    <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password" style="padding: 0.4rem 0.6rem; font-size: 0.9rem; border-radius: 4px; border: 1px solid #555;" />
+  <footer style="padding: 0.5rem 1rem; background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center;">
+  <form id="registerForm" style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: nowrap; margin: 0; padding: 0; width: 100%; overflow-x: auto;">
+    
+    <input type="text" id="name" placeholder="Nombre" required autocomplete="name"
+      style="padding: 0.3rem 0.5rem; font-size: 0.85rem; border-radius: 4px; border: 1px solid #555; width: 110px;" />
+    
+    <input type="email" id="email" placeholder="Correo" required autocomplete="email"
+      style="padding: 0.3rem 0.5rem; font-size: 0.85rem; border-radius: 4px; border: 1px solid #555; width: 130px;" />
+    
+    <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password"
+      style="padding: 0.3rem 0.5rem; font-size: 0.85rem; border-radius: 4px; border: 1px solid #555; width: 110px;" />
+    
+    <div style="display: flex; align-items: center; gap: 4px;">
+      <button type="button" id="scrollLeft" aria-label="Anterior"
+        style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">←</button>
 
-      <!-- Emoji carousel selector -->
-        <label>Elige tu emoji del alma:</label>
-        <div id="emoji-wrapper">
-          <button type="button" id="scrollLeft" aria-label="Anterior">←</button>
-          <div id="emoji-selector">
-            <!-- 15 emojis -->
-            <input type="radio" name="emoji" id="emoji1" value="/emoji1.png" required><label for="emoji1"><img src="/emoji1.png" alt="emoji1"></label>
+      <div id="emoji-selector" style="display: flex; gap: 4px; overflow-x: auto; max-width: 140px; padding: 2px 0;">
+        <!-- Emojis compactos -->
+        <input type="radio" name="emoji" id="emoji1" value="/emoji1.png" required><label for="emoji1"><img src="/emoji1.png" alt="emoji1"></label>
             <input type="radio" name="emoji" id="emoji2" value="/emoji2.png"><label for="emoji2"><img src="/emoji2.png" alt="emoji2"></label>
             <input type="radio" name="emoji" id="emoji3" value="/emoji3.png"><label for="emoji3"><img src="/emoji3.png" alt="emoji3"></label>
             <input type="radio" name="emoji" id="emoji4" value="/emoji4.png"><label for="emoji4"><img src="/emoji4.png" alt="emoji4"></label>
@@ -240,15 +246,20 @@ form#registerForm button {
             <input type="radio" name="emoji" id="emoji13" value="/emoji13.png"><label for="emoji13"><img src="/emoji13.png" alt="emoji13"></label>
             <input type="radio" name="emoji" id="emoji14" value="/emoji14.png"><label for="emoji14"><img src="/emoji14.png" alt="emoji14"></label>
             <input type="radio" name="emoji" id="emoji15" value="/emoji15.png"><label for="emoji15"><img src="/emoji15.png" alt="emoji15"></label>
-          </div>
-          <button type="button" id="scrollRight" aria-label="Siguiente">→</button>
-        </div>
+      </div>
 
-      <button type="submit" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-radius: 4px; background-color: #5a9bd8; color: #fff; border: none; font-weight: 600; cursor: pointer;">
-      Registrarse
+      <button type="button" id="scrollRight" aria-label="Siguiente"
+        style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">→</button>
+    </div>
+
+    <button type="submit"
+      style="padding: 0.3rem 0.7rem; font-size: 0.85rem; border-radius: 4px; background-color: #5a9bd8; color: #fff; border: none; font-weight: 600; cursor: pointer;">
+      Registrar
     </button>
+
   </form>
 </footer>
+
   <script>
     // Testimonios con transición fade
     const testimonials = [
