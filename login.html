@@ -148,39 +148,37 @@
       }
     }
 
-    .cube-scene {
-  perspective: 600px;
-  width: 250px;
-  height: 250px;
-  margin: 2rem auto;
-}
-.cube {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.1s ease-out;
-}
-.cube-face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  box-sizing: border-box;
-  font-size: 1rem;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-.cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(125px); }
-.cube-face:nth-child(2) { transform: rotateY(60deg) translateZ(125px); }
-.cube-face:nth-child(3) { transform: rotateY(120deg) translateZ(125px); }
-.cube-face:nth-child(4) { transform: rotateY(180deg) translateZ(125px); }
-.cube-face:nth-child(5) { transform: rotateY(240deg) translateZ(125px); }
-.cube-face:nth-child(6) { transform: rotateY(300deg) translateZ(125px); }
+    .cube {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+    position: relative;
+  }
+
+  .cube-face {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    backface-visibility: hidden;
+  }
+
+  .cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(100px); }
+  .cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(100px); }
+  .cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(100px); }
+  .cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(100px); }
+  .cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(100px); }
+  .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(100px); }
   </style>
 </head>
 <body>
