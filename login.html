@@ -235,6 +235,7 @@
   <script>
   const cube = document.getElementById('cssBox');
   let isDragging = false;
+  document.body.style.userSelect = '';
   let startX, startY;
   let currentX = 0, currentY = 0;
 
@@ -246,6 +247,7 @@
 
   function onMouseDown(e) {
     isDragging = true;
+    document.body.style.userSelect = 'none';
     startX = e.clientX;
     startY = e.clientY;
   }
