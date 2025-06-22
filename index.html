@@ -4,22 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Momento</title>
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="shortcut icon" href="favicon.ico">
-  <!-- Fuente Host Grotesk -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Estilos internos -->
+
   <style>
     /* Fade page transitions */
-    .fade {
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-    }
-    .fade-in {
-      opacity: 1;
-    }
+    .fade { opacity: 0; transition: opacity 0.3s ease-in-out; }
+    .fade-in { opacity: 1; }
 
     :root {
       --bg-color: #fafafa;
@@ -32,13 +25,13 @@
     }
 
     body {
-  margin: 0;
-  font-family: 'Host Grotesk', sans-serif;
-  background-color: #000; /* Fondo negro puro */
-  color: #fff; /* Ajustamos texto a blanco para contraste */
-  overflow-x: hidden;
-}
-
+      margin: 0;
+      font-family: 'Host Grotesk', sans-serif;
+      background: url('fondoo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #111;
+      overflow-x: hidden;
+    }
 
     header.global-header {
       position: fixed;
@@ -55,6 +48,7 @@
     }
 
     .content-wrapper {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -62,22 +56,24 @@
       min-height: 100vh;
       padding-top: 80px;
       text-align: center;
+      z-index: 1;
     }
 
     .main-text h1 {
       font-size: 4rem;
       margin: 0;
-      color: #fff; /* Blanco para mejor contraste */
+      color: #fff;
       text-shadow: 0 2px 4px rgba(0,0,0,0.6);
       display: inline-block;
       position: relative;
     }
+
     .main-text small {
       display: block;
       font-size: 1.2rem;
       margin-top: 10px;
       font-weight: 300;
-      color: #fff; /* Aumenta contraste */
+      color: #fff;
       text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
 
@@ -102,6 +98,7 @@
       display: flex;
       gap: 1rem;
     }
+
     .join-btn,
     .login-btn {
       padding: 0.75rem 1.5rem;
@@ -112,17 +109,21 @@
       font-family: 'Host Grotesk', sans-serif;
       border: none;
     }
+
     .join-btn {
       background-color: var(--btn-primary-bg);
       color: var(--btn-primary-text);
     }
+
     .join-btn:hover {
       background-color: var(--btn-primary-hover);
     }
+
     .login-btn {
       background-color: var(--btn-secondary-bg);
       color: var(--btn-secondary-text);
     }
+
     .login-btn:hover {
       background-color: var(--btn-secondary-hover);
     }
@@ -132,60 +133,71 @@
       text-align: center;
       padding: 10px 0;
       font-size: 0.9rem;
-      color: #fff; /* texto en blanco para mejor contraste */
+      color: #fff;
     }
+
     footer.site-footer a {
-      color: #fff; /* enlaces en blanco */
+      color: #fff;
       text-decoration: none;
       margin: 0 8px;
       transition: color 0.3s ease;
       text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
+
     footer.site-footer a:hover {
       color: #ddd;
       text-decoration: underline;
       cursor: pointer;
     }
-    
+
+    /* Parallax Floating */
+    .parallax-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .parallax-layer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 250px;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      transition: transform 0.1s ease-out;
+      opacity: 0.5;
+    }
+
     /* Ajustes móviles */
     @media (max-width: 480px) {
-      .main-text h1 {
-        font-size: 2.5rem;
-      }
-      .main-text small {
-        font-size: 1rem;
-      }
-      .logo-butterfly-inline {
-        width: 100px;
-        margin-left: 0.25rem;
-      }
-      .buttons-wrapper {
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-      .join-btn,
-      .login-btn {
-        width: 100%;
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-      }
-      header.global-header {
-        padding: 0 20px;
-      }
-      .content-wrapper {
-        padding-top: 60px;
-      }
-      footer.site-footer {
-        font-size: 0.8rem;
-      }
+      .main-text h1 { font-size: 2.5rem; }
+      .main-text small { font-size: 1rem; }
+      .logo-butterfly-inline { width: 100px; margin-left: 0.25rem; }
+      .buttons-wrapper { flex-direction: column; gap: 0.75rem; }
+      .join-btn, .login-btn { width: 100%; padding: 0.6rem 1rem; font-size: 0.9rem; }
+      header.global-header { padding: 0 20px; }
+      .content-wrapper { padding-top: 60px; }
+      footer.site-footer { font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Header limpio -->
+  <!-- Header -->
   <header class="global-header"></header>
 
-  <!-- Contenido principal centrado -->
+  <!-- Fondo animado Parallax -->
+  <div class="parallax-container">
+    <img src="img/nube1.png" class="parallax-layer" data-depth="0.1" alt="Nube 1" />
+    <img src="img/nube2.png" class="parallax-layer" data-depth="0.3" alt="Nube 2" />
+    <img src="img/nube3.png" class="parallax-layer" data-depth="0.6" alt="Nube 3" />
+  </div>
+
+  <!-- Contenido principal -->
   <div class="content-wrapper">
     <div class="main-text">
       <h1>
@@ -198,13 +210,11 @@
       </h1>
     </div>
 
-    <!-- Botones: Únete y luego Iniciar sesión -->
     <div class="buttons-wrapper">
       <a href="register.html" class="join-btn">Únete a nosotros</a>
       <a href="login.html" class="login-btn">Iniciar sesión</a>
     </div>
 
-    <!-- Footer -->
     <footer class="site-footer">
       <p>
         <a href="privacidad.html">Política de Privacidad</a> ·
@@ -219,7 +229,6 @@
       document.documentElement.classList.add('fade-in');
     }
 
-    // Al cargar o volver con back/forward
     window.addEventListener('DOMContentLoaded', applyFadeIn);
     window.addEventListener('pageshow', event => {
       if (event.persisted) applyFadeIn();
@@ -235,6 +244,23 @@
         document.documentElement.classList.add('fade');
         setTimeout(() => window.location.href = href, 300);
       }
+    });
+
+    // Parallax floating effect
+    const container = document.querySelector('.parallax-container');
+    const layers = document.querySelectorAll('.parallax-layer');
+
+    container.addEventListener('mousemove', e => {
+      const { left, top, width, height } = container.getBoundingClientRect();
+      const x = (e.clientX - left) / width - 0.5;
+      const y = (e.clientY - top) / height - 0.5;
+
+      layers.forEach(layer => {
+        const depth = parseFloat(layer.dataset.depth);
+        const moveX = x * depth * 40;
+        const moveY = y * depth * 40;
+        layer.style.transform = `translate3d(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px), 0)`;
+      });
     });
   </script>
 </body>
