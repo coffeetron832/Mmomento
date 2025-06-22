@@ -162,16 +162,14 @@
       z-index: 0;
     }
 
-    .parallax-layer {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 250px;
-      transform: translate(-50%, -50%);
-      will-change: transform;
-      transition: transform 0.1s ease-out;
-      opacity: 0.5;
-    }
+    .parallax-item {
+  position: absolute;
+  width: 200px;
+  transition: transform 0.2s ease-out;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 
     /* Ajustes móviles */
     @media (max-width: 480px) {
@@ -191,10 +189,10 @@
   <header class="global-header"></header>
 
   <!-- Fondo animado Parallax -->
-  <div class="parallax-container">
-  <img src="nube1.jpg" class="parallax-layer" data-depth="0.1" alt="Nube 1" />
-  <img src="nube2.jpg" class="parallax-layer" data-depth="0.3" alt="Nube 2" />
-  <img src="nube3.jpg" class="parallax-layer" data-depth="0.6" alt="Nube 3" />
+ <div class="parallax-container">
+  <img src="nube1.png" class="parallax-item" data-depth="10" style="top: 10%; left: 15%;" />
+  <img src="nube2.png" class="parallax-item" data-depth="20" style="top: 30%; left: 70%;" />
+  <img src="nube3.png" class="parallax-item" data-depth="40" style="top: 70%; left: 40%;" />
 </div>
 
   <!-- Contenido principal -->
@@ -247,21 +245,21 @@
     });
 
     // Parallax floating effect
-    const container = document.querySelector('.parallax-container');
-    const layers = document.querySelectorAll('.parallax-layer');
+    const items = document.querySelectorAll('.parallax-item');
 
-    container.addEventListener('mousemove', e => {
-      const { left, top, width, height } = container.getBoundingClientRect();
-      const x = (e.clientX - left) / width - 0.5;
-      const y = (e.clientY - top) / height - 0.5;
+  document.addEventListener('mousemove', e => {
+    const { innerWidth, innerHeight } = window;
+    const centerX = innerWidth / 2;
+    const centerY = innerHeight / 2;
 
-      layers.forEach(layer => {
-        const depth = parseFloat(layer.dataset.depth);
-        const moveX = x * depth * 40;
-        const moveY = y * depth * 40;
-        layer.style.transform = `translate3d(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px), 0)`;
-      });
+    items.forEach(item => {
+      const depth = parseFloat(item.dataset.depth);
+      const offsetX = (e.clientX - centerX) / depth;
+      const offsetY = (e.clientY - centerY) / depth;
+
+      item.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
     });
+  });
   </script>
 </body>
 </html>
