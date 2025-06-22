@@ -413,19 +413,27 @@
   </div>
 
   <footer class="footer-compact">
-    <div class="footer-brand">Momento🦋</div>
-    <div class="footer-buttons">
-      <button id="toggleUploadBtn" class="footer-link">Subir imagen</button>
-      <button id="logoutBtn" class="footer-link">Cerrar sesión</button>
-      <a id="soulprintBtn" href="#" class="footer-link">Mi Soulprint</a>
+  <div class="footer-brand">Momento🦋</div>
+  <div class="footer-buttons">
+    <button id="toggleUploadBtn" class="footer-link">Subir imagen</button>
+    <button id="logoutBtn" class="footer-link">Cerrar sesión</button>
+    <a id="soulprintBtn" href="#" class="footer-link">Mi Soulprint</a>
+
+    <!-- Envolvemos botón y dropdown en un solo contenedor -->
+    <div id="notificationsContainer">
       <button id="notifBtn" class="footer-link" aria-label="Ver notificaciones">
         🔔<span id="notifCount">0</span>
       </button>
-      <div class="switch-container">
-        <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
+      <div id="notifDropdown">
+        <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
       </div>
     </div>
-  </footer>
+
+    <div class="switch-container">
+      <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
+    </div>
+  </div>
+</footer>
 </body>
   
   <script>
