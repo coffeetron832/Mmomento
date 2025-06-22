@@ -148,51 +148,49 @@
       }
     }
 
-    .cube-scene {
+   .cube-scene {
   width: 200px;
   height: 200px;
-  margin: 2rem auto;
+  margin: 3rem auto;
   perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cube {
   width: 200px;
   height: 200px;
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease-out;
   position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(0deg);
+  transition: transform 0.5s ease;
 }
 
-.cube-scene {
+.cube-face {
+  position: absolute;
+  width: 200px;
+  height: 200px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+  color: white;
+  backface-visibility: hidden;
 }
 
-    
-  .cube-face {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: 500;
-    padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 10px rgba(255,255,255,0.05);
-    backface-visibility: hidden;
-  }
-
-  .cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(100px); }
-  .cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(100px); }
-  .cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(100px); }
-  .cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(100px); }
-  .cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(100px); }
-  .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(100px); }
+/* Posición 3D de las caras */
+.cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(100px); }
+.cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(100px); }
+.cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(100px); }
+.cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(100px); }
+.cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(100px); }
+.cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(100px); }
   </style>
 </head>
 <body>
