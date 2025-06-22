@@ -199,25 +199,6 @@
     text-decoration: underline;
   }
 
- /* Efecto de aviso tipo neón sutil */
-@keyframes neonPulse {
-  0%, 100% {
-    text-shadow: 0 0 2px #00f0ff, 0 0 4px #00f0ff;
-    color: #ccfaff;
-  }
-  50% {
-    text-shadow: 0 0 4px #00f0ff, 0 0 6px #00f0ff;
-    color: #ffffff;
-  }
-}
-
-.neon-link {
-  animation: neonPulse 2s ease-in-out infinite;
-  font-weight: 500;
-  color: #ccfaff;
-  transition: color 0.3s ease;
-}
-
     
   /* Ajustes móviles */
   @media (max-width: 480px) {
@@ -283,7 +264,7 @@
 </div>
 
 <footer class="footer-compact">
-  <a href="register.html" class="footer-link neon-link">Únete a nosotros</a>
+  <a href="register.html" class="footer-link">Únete a nosotros</a>
   <a href="login.html" class="footer-link">Iniciar sesión</a>
   <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
   <a href="condiciones.html" class="footer-link">Términos y Condiciones</a>
