@@ -184,6 +184,17 @@
   backface-visibility: hidden;
 }
 
+.cube-scene {
+  user-select: none;        /* Evita selección de texto */
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  cursor: grab;
+}
+.cube-scene:active {
+  cursor: grabbing;
+}
+    
 /* Posición 3D de las caras */
 .cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(100px); }
 .cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(100px); }
