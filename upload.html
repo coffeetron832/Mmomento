@@ -382,30 +382,12 @@
   </style>
 </head>
 <body class="upload-page">
-    <footer class="footer-compact">
-  <div class="footer-brand">Momento🦋</div>
-  <div class="footer-buttons">
-    <button id="toggleUploadBtn" class="footer-link">Subir imagen</button>
-    <button id="logoutBtn" class="footer-link">Cerrar sesión</button>
-    <a id="soulprintBtn" href="#" class="footer-link">Mi Soulprint</a>
-    <div id="notificationsContainer">
-      <button id="notifBtn" class="footer-link" aria-label="Ver notificaciones">
-        🔔<span id="notifCount">0</span>
-      </button>
-      <div id="notifDropdown">
-        <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
-      </div>
-    </div>
-    <div class="switch-container">
-      <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
-    </div>
-  </div>
-</footer>
+  <div class="main-content">
+    <header class="site-header">
+      <h2>Momento <span class="butterfly-emoji">🦋</span></h2>
+    </header>
 
-
-
-
-  <div class="container">
+    <div class="container">
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
       <form id="uploadForm" enctype="multipart/form-data">
         <input type="file" id="image" name="image" accept="image/*" required />
@@ -428,13 +410,28 @@
         <button type="submit">Subir</button>
       </form>
     </section>
-
-    <main id="timeline" role="main" tabindex="0">
-      <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
-    </main>
-   
+      <main id="timeline" role="main" tabindex="0">
+        <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
+      </main>
+    </div>
   </div>
 
+  <footer class="footer-compact">
+    <div class="footer-brand">Momento🦋</div>
+    <div class="footer-buttons">
+      <button id="toggleUploadBtn" class="footer-link">Subir imagen</button>
+      <button id="logoutBtn" class="footer-link">Cerrar sesión</button>
+      <a id="soulprintBtn" href="#" class="footer-link">Mi Soulprint</a>
+      <button id="notifBtn" class="footer-link" aria-label="Ver notificaciones">
+        🔔<span id="notifCount">0</span>
+      </button>
+      <div class="switch-container">
+        <label><input type="checkbox" id="darkModeToggle" /> 🌙 Modo oscuro</label>
+      </div>
+    </div>
+  </footer>
+</body>
+  
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('toggleUploadBtn');
