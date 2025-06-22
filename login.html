@@ -12,41 +12,21 @@
       font-family: 'Host Grotesk', sans-serif;
       margin: 0;
       padding: 0;
-    }
-
-    .container {
-      display: flex;
-      height: 100vh;
-    }
-
-    .left-panel,
-    .right-panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    /* Se elimina el fondo gris */
-    .left-panel {
-      background-color: transparent;
-    }
-
-    body.dark-mode .left-panel {
-      background-color: transparent;
+      background-color: #000;
+      color: #fff;
     }
 
     .emotion-slideshow {
       text-align: center;
       max-width: 320px;
+      margin: 80px auto 20px;
     }
 
     .emotion-text {
-      font-size: 1.3rem;
-      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
       font-weight: 600;
+      color: #fff;
     }
 
     #slideshow-img {
@@ -54,90 +34,6 @@
       max-width: 280px;
       border-radius: 12px;
       transition: opacity 1s ease-in-out;
-    }
-    
-    
-    .right-panel h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    form#loginForm {
-      width: 100%;
-      max-width: 320px;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    form#loginForm input {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    form#loginForm button {
-      padding: 0.75rem 1rem;
-      font-size: 1.1rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #5a9bd8;
-      color: white;
-      font-weight: 600;
-    }
-
-    form#loginForm button:hover {
-      background-color: #437fc7;
-    }
-
-    p {
-      font-size: 0.9rem;
-      text-align: center;
-    }
-
-    p a {
-      color: #5a9bd8;
-      text-decoration: none;
-    }
-
-    p a:hover {
-      text-decoration: underline;
-    }
-
-    button#darkModeToggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 999px;
-      background-color: #f0f0f0;
-      color: #333;
-      cursor: pointer;
-      font-size: 18px;
-      z-index: 1000;
-    }
-
-    body.dark-mode button#darkModeToggle {
-      background-color: #222;
-      color: #f0f0f0;
-    }
-
-    body.dark-mode {
-      background-color: #121212;
-      color: #ffffff;
-    }
-
-    body.dark-mode input {
-      background-color: #222;
-      color: #eee;
-      border: 1px solid #555;
-    }
-
-    body.dark-mode button {
-      background-color: #444;
-      color: white;
     }
 
     #messageBox {
@@ -162,65 +58,85 @@
       border: 1px solid #f5c6cb;
     }
 
-    /* Responsivo */
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
+    footer {
+      padding: 1rem 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-      .left-panel,
-      .right-panel {
-        width: 100%;
-        padding: 1.5rem;
-      }
+    form#loginForm {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0;
+      padding: 0;
+    }
+
+    form#loginForm input {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      border: 1px solid #555;
+      background-color: #111;
+      color: #fff;
+    }
+
+    form#loginForm button {
+      padding: 0.4rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      background-color: #5a9bd8;
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    p.link {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    p.link a {
+      color: #5a9bd8;
+      text-decoration: none;
+    }
+
+    p.link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <button id="darkModeToggle" aria-label="Alternar modo oscuro">🌙</button>
 
-  <div class="container">
-    <!-- Izquierda -->
-    <div class="left-panel">
-      <div class="emotion-slideshow">
-        <p class="emotion-text">Entra al único lugar donde el alma sí tiene color.</p>
-        <img id="slideshow-img" src="img1.png" alt="Momento destacado" />
-      </div>
-    </div>
-
-    <!-- Derecha -->
-    <div class="right-panel">
-      <h2>Iniciar sesión</h2>
-
-      <form id="loginForm">
-        <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
-        <input type="password" id="password" placeholder="Contraseña" required autocomplete="current-password" />
-        <button type="submit">Entrar</button>
-      </form>
-
-      <div id="messageBox"></div>
-
-      <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
-    </div>
+  <!-- Frase y slideshow -->
+  <div class="emotion-slideshow">
+    <p class="emotion-text">Entra al único lugar donde el alma sí tiene color.</p>
+    <img id="slideshow-img" src="img1.png" alt="Momento destacado" />
   </div>
 
+  <!-- Mensaje de error/success -->
+  <div id="messageBox"></div>
+
+  <!-- Formulario compacto -->
+  <footer>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Correo" required autocomplete="email" />
+      <input type="password" id="password" placeholder="Contraseña" required autocomplete="current-password" />
+      <button type="submit">Entrar</button>
+    </form>
+  </footer>
+
+  <!-- Link a registro -->
+  <p class="link">¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+
   <script>
-    // Modo oscuro
-    const body = document.body;
-    const toggleBtn = document.getElementById('darkModeToggle');
-
-    if (localStorage.getItem('darkMode') === 'true') {
-      body.classList.add('dark-mode');
-      toggleBtn.textContent = "☀️";
-    }
-
-    toggleBtn.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      const isDark = body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDark);
-      toggleBtn.textContent = isDark ? "☀️" : "🌙";
-    });
-
     // Slideshow
     const images = ["img1.png", "img2.png"];
     const slideshow = document.getElementById("slideshow-img");
