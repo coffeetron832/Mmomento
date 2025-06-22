@@ -190,18 +190,33 @@ form#registerForm button {
       transform: scale(1.2);
     }
 
-    @media (max-width: 480px) {
-      footer {
-        flex-direction: column;
-        align-items: center;
-      }
-      form#registerForm input,
-      form#registerForm select,
-      form#registerForm button {
-        width: 100%;
-        min-width: unset;
-      }
-    }
+    @media (max-width: 600px) {
+  form#registerForm {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+
+  form#registerForm input,
+  form#registerForm select,
+  form#registerForm button {
+    width: 100% !important;
+    font-size: 1rem;
+  }
+
+  #emoji-selector {
+    max-width: 100% !important;
+  }
+
+  #scrollLeft,
+  #scrollRight {
+    font-size: 1.3rem;
+  }
+
+  footer {
+    padding: 1rem;
+  }
+}
   </style>
 </head>
 <body>
