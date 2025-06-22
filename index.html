@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" class="fade">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Momento</title>
@@ -257,11 +258,10 @@
   <!-- Contenido principal -->
   <div class="content-wrapper">
   <div class="main-text">
-    <h1>
-      Momento
-      <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
-    </h1>
-  </div>
+  <h1>
+    <span id="typewriter"></span>
+    <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
+  </h1>
 </div>
 
 <footer class="footer-compact">
@@ -295,6 +295,21 @@
     }
   });
 
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    new Typed('#typewriter', {
+      strings: ['Momento'],
+      typeSpeed: 100,
+      backSpeed: 40,
+      startDelay: 500,
+      loop: false,
+      showCursor: true,
+      cursorChar: '|',
+    });
+  });
+
+
+    
   // Parallax animación (mouse y giroscopio)
   function setupParallax() {
     const items = document.querySelectorAll('.parallax-item');
