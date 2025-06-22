@@ -147,15 +147,54 @@
         min-width: unset;
       }
     }
+
+    .cube-scene {
+  perspective: 600px;
+  width: 250px;
+  height: 250px;
+  margin: 2rem auto;
+}
+.cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
+.cube-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(125px); }
+.cube-face:nth-child(2) { transform: rotateY(60deg) translateZ(125px); }
+.cube-face:nth-child(3) { transform: rotateY(120deg) translateZ(125px); }
+.cube-face:nth-child(4) { transform: rotateY(180deg) translateZ(125px); }
+.cube-face:nth-child(5) { transform: rotateY(240deg) translateZ(125px); }
+.cube-face:nth-child(6) { transform: rotateY(300deg) translateZ(125px); }
   </style>
 </head>
 <body>
 
-  <!-- Frase y slideshow -->
-  <div class="emotion-slideshow">
-    <p class="emotion-text">Entra al único lugar donde el alma sí tiene color.</p>
-    <img id="slideshow-img" src="img1.png" alt="Momento destacado" />
+  <div class="cube-scene">
+  <div class="cube" id="cssBox">
+    <div class="cube-face">Conecta con tu alma</div>
+    <div class="cube-face">Tu viaje, tus momentos</div>
+    <div class="cube-face">Siente cada color</div>
+    <div class="cube-face">Solo por ti</div>
+    <div class="cube-face">Aquí y ahora</div>
+    <div class="cube-face">Comparte instantes</div>
   </div>
+</div>
 
   <!-- Mensaje de error/success -->
   <div id="messageBox"></div>
@@ -173,18 +212,18 @@
   <p class="link">¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
 
   <script>
-    // Slideshow
-    const images = ["img1.png", "img2.png"];
-    const slideshow = document.getElementById("slideshow-img");
-    let imgIndex = 0;
-    setInterval(() => {
-      slideshow.style.opacity = 0;
-      setTimeout(() => {
-        imgIndex = (imgIndex + 1) % images.length;
-        slideshow.src = images[imgIndex];
-        slideshow.style.opacity = 1;
-      }, 500);
-    }, 4000);
+   const cube = document.getElementById('cssBox');
+  document.querySelector('.cube-scene').addEventListener('mousemove', e => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width/2)/rect.width;
+    const y = (e.clientY - rect.top - rect.height/2)/rect.height;
+    const rotY = x * 30; // grados
+    const rotX = -y * 30;
+    cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+  });
+  document.querySelector('.cube-scene').addEventListener('mouseleave', () => {
+    cube.style.transform = '';
+  });
   </script>
 
   <script src="js/api.js"></script>
