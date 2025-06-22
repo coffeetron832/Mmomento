@@ -246,65 +246,60 @@
 
 
   <script>
-    // Fade transitions entre páginas
-    function applyFadeIn() {
-      document.documentElement.classList.add('fade-in');
+  // Fade transitions entre páginas
+  function applyFadeIn() {
+    document.documentElement.classList.add('fade-in');
+  }
+
+  window.addEventListener('DOMContentLoaded', applyFadeIn);
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) applyFadeIn();
+  });
+
+  document.addEventListener('click', e => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (href && !href.startsWith('#') && !link.target) {
+      e.preventDefault();
+      document.documentElement.classList.remove('fade-in');
+      document.documentElement.classList.add('fade');
+      setTimeout(() => window.location.href = href, 300);
+    }
+  });
+
+  // Parallax animación (mouse y giroscopio)
+  function setupParallax() {
+    const items = document.querySelectorAll('.parallax-item');
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    function handleMouseMove(e) {
+      const { innerWidth, innerHeight } = window;
+      const centerX = innerWidth / 2;
+      const centerY = innerHeight / 2;
+
+      items.forEach(item => {
+        const depth = parseFloat(item.dataset.depth);
+        const offsetX = (e.clientX - centerX) / depth;
+        const offsetY = (e.clientY - centerY) / depth;
+        item.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      });
     }
 
-    window.addEventListener('DOMContentLoaded', applyFadeIn);
-    window.addEventListener('pageshow', event => {
-      if (event.persisted) applyFadeIn();
-    });
+    function handleOrientation(event) {
+      const gamma = event.gamma || 0;
+      const beta = event.beta || 0;
 
-    document.addEventListener('click', e => {
-      const link = e.target.closest('a');
-      if (!link) return;
-      const href = link.getAttribute('href');
-      if (href && !href.startsWith('#') && !link.target) {
-        e.preventDefault();
-        document.documentElement.classList.remove('fade-in');
-        document.documentElement.classList.add('fade');
-        setTimeout(() => window.location.href = href, 300);
-      }
-    });
-
-    const items = document.querySelectorAll('.parallax-item');
-
-  // Efecto para escritorio
-  function handleMouseMove(e) {
-    const { innerWidth, innerHeight } = window;
-    const centerX = innerWidth / 2;
-    const centerY = innerHeight / 2;
-
-    items.forEach(item => {
-      const depth = parseFloat(item.dataset.depth);
-      const offsetX = (e.clientX - centerX) / depth;
-      const offsetY = (e.clientY - centerY) / depth;
-
-      item.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-    });
-  }
-
-  // Efecto para móviles con giroscopio
-  function handleOrientation(event) {
-    const gamma = event.gamma || 0; // izq-der
-    const beta = event.beta || 0;   // arriba-abajo
-
-    items.forEach(item => {
-      const depth = parseFloat(item.dataset.depth);
-      const offsetX = gamma * 2 / depth;
-      const offsetY = beta * 2 / depth;
-
-      item.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-    });
-  }
-
-  function setupParallax() {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      items.forEach(item => {
+        const depth = parseFloat(item.dataset.depth);
+        const offsetX = gamma * 2 / depth;
+        const offsetY = beta * 2 / depth;
+        item.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      });
+    }
 
     if (isMobile && typeof DeviceOrientationEvent !== 'undefined') {
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS necesita permiso
         DeviceOrientationEvent.requestPermission()
           .then(permissionState => {
             if (permissionState === 'granted') {
@@ -315,34 +310,14 @@
           })
           .catch(console.error);
       } else {
-        // Android u otros
         window.addEventListener('deviceorientation', handleOrientation, true);
       }
     } else {
-      // Escritorio
       document.addEventListener('mousemove', handleMouseMove);
     }
   }
 
   window.addEventListener('load', setupParallax);
-
-    
-    // Parallax floating effect
-    const items = document.querySelectorAll('.parallax-item');
-
-  document.addEventListener('mousemove', e => {
-    const { innerWidth, innerHeight } = window;
-    const centerX = innerWidth / 2;
-    const centerY = innerHeight / 2;
-
-    items.forEach(item => {
-      const depth = parseFloat(item.dataset.depth);
-      const offsetX = (e.clientX - centerX) / depth;
-      const offsetY = (e.clientY - centerY) / depth;
-
-      item.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-    });
-  });
-  </script>
+</script>
 </body>
 </html>
