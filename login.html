@@ -8,12 +8,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
+    :root {
+      --btn-bg: #f5f5f5;
+      --btn-hover: #e0e0e0;
+      --btn-text: #111;
+    }
+
     body {
       font-family: 'Host Grotesk', sans-serif;
       margin: 0;
       padding: 0;
       background-color: #000;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
     }
 
     .emotion-slideshow {
@@ -37,11 +55,11 @@
     }
 
     #messageBox {
-      max-width: 320px;
-      margin: 1rem auto;
+      width: 100%;
+      max-width: 600px;
+      margin: 0.5rem auto;
       padding: 0.75rem 1rem;
       border-radius: 6px;
-      font-size: 1rem;
       text-align: center;
       display: none;
     }
@@ -59,42 +77,47 @@
     }
 
     footer {
-      padding: 1rem 1rem 2rem;
+      background: rgba(0, 0, 0, 0.7);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 0.5rem 1rem;
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
+      gap: 0.5rem;
+      height: auto;
+      min-height: 80px;
     }
 
     form#loginForm {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
       flex-wrap: wrap;
+      gap: 1rem;
       justify-content: center;
-      width: 100%;
-      max-width: 1000px;
-      margin: 0;
-      padding: 0;
+      align-items: center;
     }
 
-    form#loginForm input {
-      padding: 0.4rem 0.6rem;
+    form#loginForm input,
+    form#loginForm button {
+      font-family: inherit;
+      padding: 0.4rem 0.8rem;
       font-size: 0.9rem;
-      border-radius: 4px;
-      border: 1px solid #555;
+      border-radius: 5px;
+      border: 1px solid #444;
       background-color: #111;
       color: #fff;
+      min-width: 120px;
     }
 
     form#loginForm button {
-      padding: 0.4rem 1rem;
-      font-size: 0.9rem;
-      border-radius: 4px;
-      background-color: #5a9bd8;
-      color: #fff;
+      background-color: #ff6f61;
       border: none;
-      font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    form#loginForm button:hover {
+      background-color: #e55a4f;
     }
 
     p.link {
@@ -110,6 +133,19 @@
 
     p.link a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      footer {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      form#loginForm input,
+      form#loginForm button {
+        width: 100%;
+        min-width: unset;
+      }
     }
   </style>
 </head>
