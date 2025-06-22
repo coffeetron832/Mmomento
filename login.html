@@ -222,19 +222,65 @@
   <p class="link">¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
 
   <script>
-   const cube = document.getElementById('cssBox');
-  document.querySelector('.cube-scene').addEventListener('mousemove', e => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width/2)/rect.width;
-    const y = (e.clientY - rect.top - rect.height/2)/rect.height;
-    const rotY = x * 30; // grados
-    const rotX = -y * 30;
-    cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+  const cube = document.getElementById('cssBox');
+  let isDragging = false;
+  let startX, startY;
+  let currentX = 0, currentY = 0;
+
+  function rotateCube(deltaX, deltaY) {
+    currentX += deltaX;
+    currentY += deltaY;
+    cube.style.transform = `rotateX(${currentY}deg) rotateY(${currentX}deg)`;
+  }
+
+  function onMouseDown(e) {
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+  }
+
+  function onMouseMove(e) {
+    if (!isDragging) return;
+    const deltaX = (e.clientX - startX) * 0.5;
+    const deltaY = (e.clientY - startY) * 0.5;
+    rotateCube(deltaX, -deltaY);
+    startX = e.clientX;
+    startY = e.clientY;
+  }
+
+  function onMouseUp() {
+    isDragging = false;
+  }
+
+  // Mouse events
+  const scene = document.querySelector('.cube-scene');
+  scene.addEventListener('mousedown', onMouseDown);
+  scene.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+
+  // Touch events (para móviles)
+  scene.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    isDragging = true;
   });
-  document.querySelector('.cube-scene').addEventListener('mouseleave', () => {
-    cube.style.transform = '';
+
+  scene.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const deltaX = (touch.clientX - startX) * 0.5;
+    const deltaY = (touch.clientY - startY) * 0.5;
+    rotateCube(deltaX, -deltaY);
+    startX = touch.clientX;
+    startY = touch.clientY;
   });
-  </script>
+
+  scene.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+</script>
+
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
