@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Últimos momentos subidos 📸</title>
+  <title>Momentos 📸</title>
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
@@ -304,16 +304,38 @@
   box-shadow: none;
 }
 
+.footer-link {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: 'Host Grotesk', sans-serif;
+  cursor: pointer;
+}
 
+.footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+
+    
   </style>
 </head>
 <body class="upload-page">
   <header class="site-header">
     <h2>Momento<span class="butterfly-emoji">🦋</span></h2>
     <div class="header-buttons">
-      <button id="toggleUploadBtn" class="btn">Subir imagen</button>
-      <button id="logoutBtn" class="btn">Cerrar sesión</button>
-      <a id="soulprintBtn" href="#" class="soulprint-link">Mi Soulprint</a>
+      <button id="toggleUploadBtn" class="btn footer-link">Subir imagen</button>
+<button id="logoutBtn" class="btn footer-link">Cerrar sesión</button>
+<a id="soulprintBtn" href="#" class="soulprint-link footer-link">Mi Soulprint</a>
+
       <div id="notificationsContainer">
         <button id="notifBtn" class="btn" aria-label="Ver notificaciones">🔔<span id="notifCount">0</span></button>
         <div id="notifDropdown">
