@@ -404,30 +404,51 @@
   </style>
 </head>
 <body class="upload-page">
+
+  <!-- 🔵 Mensaje flotante para cerrar sesión y otros globales -->
   <div id="uploadSuccessMessage" style="
-  display: none;
-  position: fixed;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #4f46e5;
-  color: #fff;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  font-family: 'Roboto', cursive;
-  font-size: 1rem;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  max-width: 80%;
-  text-align: center;
-"></div>
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4f46e5;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Roboto', cursive;
+    font-size: 1rem;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    max-width: 80%;
+    text-align: center;
+  "></div>
+
+  <!-- 🔹 Mensaje suave dentro del contenido (subida o eliminación de imágenes) -->
   <div class="main-content">
     <div class="container">
-      <div id="imageActionMessage" style="display:none; padding: 1rem; border-radius: 12px; background: #d1fae5; color: #065f46; font-size: 1rem; margin-bottom: 1.5rem; font-family: 'Host Grotesk', sans-serif; box-shadow: 0 0 8px rgba(0,0,0,0.1); text-align: center;">
-  🌟 ¡Tu momento ha sido compartido con el alma!
-</div>
+      
+      <div id="imageActionMessage" style="
+        display: none;
+        padding: 1rem;
+        border-radius: 12px;
+        background: #d1fae5;
+        color: #065f46;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        font-family: 'Host Grotesk', sans-serif;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      ">
+        🌟 ¡Tu momento ha sido compartido con el alma!
+      </div>
+
+      <!-- El contenido sigue aquí 👇 -->
+
 
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
 
