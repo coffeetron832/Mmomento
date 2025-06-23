@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
         msgBox.style.display = 'none';
         localStorage.clear();
         window.location.href = 'index.html';
-      }, 300); // tiempo para ocultar bonito antes de redirigir
-    }, 2000); // tiempo visible antes de redirigir
+      }, 3000); // tiempo para ocultar bonito antes de redirigir
+    }, 4000); // tiempo visible antes de redirigir
   } else {
     // Fallback por si no existe el div
     localStorage.clear();
