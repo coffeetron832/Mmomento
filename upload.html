@@ -502,16 +502,19 @@
       });
     }
 
-    const applyDarkMode = enabled => {
-      body.classList.toggle('dark-mode', enabled);
-      localStorage.setItem('darkMode', enabled);
-    };
-    const darkModeSetting = localStorage.getItem('darkMode') === 'true';
-    darkToggle.checked = darkModeSetting;
-    applyDarkMode(darkModeSetting);
-    darkToggle.addEventListener('change', () => {
-      applyDarkMode(darkToggle.checked);
-    });
+    const applyDarkMode = (enabled) => {
+  body.classList.toggle('dark-mode', enabled);
+  localStorage.setItem('darkMode', enabled ? 'true' : 'false'); // Asegura string
+};
+
+const darkModeSetting = localStorage.getItem('darkMode') === 'true';
+darkToggle.checked = darkModeSetting;
+applyDarkMode(darkModeSetting);
+
+darkToggle.addEventListener('change', () => {
+  const isEnabled = darkToggle.checked;
+  applyDarkMode(isEnabled);
+});
 
     // 🖼️ Cargar imágenes del backend
     async function loadImages() {
