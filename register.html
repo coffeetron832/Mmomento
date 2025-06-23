@@ -227,6 +227,30 @@ form#registerForm button[type="submit"]:hover {
   }
 }
 
+    button[type="submit"]::after {
+  content: attr(title);
+  position: absolute;
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  transform: translate(-50%, -120%);
+  top: -10px;
+  left: 50%;
+  z-index: 10;
+}
+
+button[type="submit"]:hover::after {
+  opacity: 1;
+}
+
+
+    
     /* Más abajo, también reemplazado esto: */
     input, select, button, textarea {
       font-family: 'Roboto', sans-serif;
