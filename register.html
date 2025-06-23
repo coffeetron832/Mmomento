@@ -212,9 +212,18 @@
         font-size: 1rem;
       }
       #emoji-selector {
-        max-width: 100%;
-      }
-    }
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #emoji-selector label {
+    margin: 2px;
+  }
+
+  #emoji-selector label img {
+    width: 32px;
+  }
+}
 
     /* Responsive: tablets y pantallas medianas */
     @media (max-width: 900px) {
