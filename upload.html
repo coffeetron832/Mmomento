@@ -45,9 +45,11 @@
   width: 100%;
   max-width: var(--max-width);
   padding: var(--gutter);
-  margin-top: calc(var(--header-height) + 1rem); /* espacio adicional */
+  margin-top: calc(var(--header-height) + 1rem);
   text-align: center;
+  padding-bottom: 6rem; /* nuevo, espacio para el footer fijo */
 }
+
 
 
    header.site-header {
@@ -326,6 +328,11 @@
 }
 
 .footer-compact {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -335,6 +342,7 @@
   color: #fff;
   font-family: 'Host Grotesk', sans-serif;
   text-align: center;
+  backdrop-filter: blur(6px); /* opcional para darle un efecto nice */
 }
 
 
