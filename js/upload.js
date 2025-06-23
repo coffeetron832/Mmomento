@@ -84,38 +84,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔓 Cerrar sesión
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
-  logoutBtn.addEventListener('click', async e => {
-    e.preventDefault();
+  logoutBtn.addEventListener('click', () => {
+  const msgBox = document.getElementById('uploadSuccessMessage');
+  if (msgBox) {
+    msgBox.textContent = '👋 Cerraste sesión con éxito. Esperamos verte pronto 💙';
+    msgBox.style.display = 'block';
+    msgBox.style.opacity = '1';
 
-    const msg = document.getElementById('uploadSuccessMessage');
-    if (msg) {
-      const frasesLogout = [
-        "🌙 Te esperamos cuando tu alma quiera volver.",
-        "🦋 Cerraste sesión. Gracias por compartirte.",
-        "🌌 Vuelve pronto a dejar otro pedazo de cielo.",
-        "🌠 Hasta pronto, viajero del instante.",
-        "💫 Tu Momento seguirá aquí cuando vuelvas."
-      ];
-      const elegida = frasesLogout[Math.floor(Math.random() * frasesLogout.length)];
+    setTimeout(() => {
+      msgBox.style.opacity = '0';
+      setTimeout(() => {
+        msgBox.style.display = 'none';
+        localStorage.clear();
+        window.location.href = 'index.html';
+      }, 300); // tiempo para ocultar bonito antes de redirigir
+    }, 2000); // tiempo visible antes de redirigir
+  } else {
+    // Fallback por si no existe el div
+    localStorage.clear();
+    window.location.href = 'index.html';
+  }
+});
 
-      msg.innerHTML = elegida;
-      msg.style.display = 'block';
-      msg.style.opacity = '0';
-
-      await new Promise(resolve => setTimeout(resolve, 100)); // pequeña pausa
-      msg.style.opacity = '1';
-
-      // Esperar 3 segundos completos para que el usuario lo lea
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
-      localStorage.clear();
-      window.location.href = 'index.html';
-    } else {
-      localStorage.clear();
-      window.location.href = 'index.html';
-    }
-  });
-}
 
 
 
