@@ -85,11 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) logoutBtn.addEventListener('click', e => {
   e.preventDefault(); // <- ⚠️ clave para detener el redireccionamiento inmediato
+
   const msg = document.getElementById('uploadSuccessMessage');
   if (msg) {
     const frasesLogout = [
       "🌙 Te esperamos cuando tu alma quiera volver.",
       "🦋 Cerraste sesión. Gracias por compartirte.",
+      "🌌 Vuelve pronto a dejar otro pedazo de cielo.",
+      "🌠 Hasta pronto, viajero del instante.",
       "💫 Tu Momento seguirá aquí cuando vuelvas."
     ];
     const elegida = frasesLogout[Math.floor(Math.random() * frasesLogout.length)];
@@ -97,22 +100,23 @@ document.addEventListener("DOMContentLoaded", () => {
     msg.innerHTML = elegida;
     msg.style.display = 'block';
     msg.style.opacity = '0';
-    msg.style.transition = 'opacity 0.8s ease';
 
+    // animación fade in
     setTimeout(() => {
       msg.style.opacity = '1';
     }, 100);
 
-    // Esperar un poquito antes de redirigir
+    // esperar y luego cerrar sesión
     setTimeout(() => {
       localStorage.clear();
       window.location.href = 'index.html';
-    }, 2500); // 2.5 segundos de visualización antes de redirigir
+    }, 2600); // 2.6 segundos para que el mensaje se vea
   } else {
     localStorage.clear();
     window.location.href = 'index.html';
   }
 });
+
 
 
   // 🚫 Redirigir si no autenticado
