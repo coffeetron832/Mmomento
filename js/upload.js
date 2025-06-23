@@ -83,39 +83,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔓 Cerrar sesión
   const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) logoutBtn.addEventListener('click', e => {
-  e.preventDefault(); // <- ⚠️ clave para detener el redireccionamiento inmediato
+  if (logoutBtn) {
+  logoutBtn.addEventListener('click', async e => {
+    e.preventDefault();
 
-  const msg = document.getElementById('uploadSuccessMessage');
-  if (msg) {
-    const frasesLogout = [
-      "🌙 Te esperamos cuando tu alma quiera volver.",
-      "🦋 Cerraste sesión. Gracias por compartirte.",
-      "🌌 Vuelve pronto a dejar otro pedazo de cielo.",
-      "🌠 Hasta pronto, viajero del instante.",
-      "💫 Tu Momento seguirá aquí cuando vuelvas."
-    ];
-    const elegida = frasesLogout[Math.floor(Math.random() * frasesLogout.length)];
+    const msg = document.getElementById('uploadSuccessMessage');
+    if (msg) {
+      const frasesLogout = [
+        "🌙 Te esperamos cuando tu alma quiera volver.",
+        "🦋 Cerraste sesión. Gracias por compartirte.",
+        "🌌 Vuelve pronto a dejar otro pedazo de cielo.",
+        "🌠 Hasta pronto, viajero del instante.",
+        "💫 Tu Momento seguirá aquí cuando vuelvas."
+      ];
+      const elegida = frasesLogout[Math.floor(Math.random() * frasesLogout.length)];
 
-    msg.innerHTML = elegida;
-    msg.style.display = 'block';
-    msg.style.opacity = '0';
+      msg.innerHTML = elegida;
+      msg.style.display = 'block';
+      msg.style.opacity = '0';
 
-    // animación fade in
-    setTimeout(() => {
+      await new Promise(resolve => setTimeout(resolve, 100)); // pequeña pausa
       msg.style.opacity = '1';
-    }, 100);
 
-    // esperar y luego cerrar sesión
-    setTimeout(() => {
+      // Esperar 3 segundos completos para que el usuario lo lea
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
       localStorage.clear();
       window.location.href = 'index.html';
-    }, 2600); // 2.6 segundos para que el mensaje se vea
-  } else {
-    localStorage.clear();
-    window.location.href = 'index.html';
-  }
-});
+    } else {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+  });
+}
+
 
 
 
