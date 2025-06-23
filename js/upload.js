@@ -82,29 +82,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 🔓 Cerrar sesión
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) {
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
-  const msgBox = document.getElementById('uploadSuccessMessage');
-  if (msgBox) {
-    msgBox.textContent = '👋 Cerraste sesión con éxito. Esperamos verte pronto 💙';
-    msgBox.style.display = 'block';
-    msgBox.style.opacity = '1';
-
-    setTimeout(() => {
-      msgBox.style.opacity = '0';
-      setTimeout(() => {
-        msgBox.style.display = 'none';
-        localStorage.clear();
-        window.location.href = 'index.html';
-      }, 3000); // tiempo para ocultar bonito antes de redirigir
-    }, 4000); // tiempo visible antes de redirigir
-  } else {
-    // Fallback por si no existe el div
+    // Guardar el mensaje temporalmente
+    localStorage.setItem('logoutMessage', '👋 Cerraste sesión con éxito. Esperamos verte pronto 💙');
+    
+    // Limpiar todo excepto el mensaje
+    const logoutMsg = localStorage.getItem('logoutMessage');
     localStorage.clear();
+    localStorage.setItem('logoutMessage', logoutMsg);
+
+    // Redirigir
     window.location.href = 'index.html';
-  }
-});
+  });
+}
+
 
 
 
