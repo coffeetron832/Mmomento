@@ -72,8 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.href = "upload.html";
 
           // Mostrar mensaje con el nombre del usuario y mensaje personalizado
-          localStorage.setItem('welcomeBackMessage', '🫂 Nos alegra verte de nuevo, ' + user.name + ' 💫');
-
+          showMessage(`¡Hola, ${result.user.username}! Nos alegra verte de nuevo. 👋`, 'success');
           
           // Redirigir después de mostrar mensaje (puedes cambiar el tiempo aquí)
           setTimeout(() => {
