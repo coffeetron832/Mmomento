@@ -123,7 +123,25 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        alert('Imagen subida con éxito');
+        const successMsg = document.getElementById('uploadSuccessMessage');
+if (successMsg) {
+  successMsg.innerHTML = '🌟 ¡Tu momento ha sido compartido con el alma!';
+  successMsg.style.display = 'block';
+  successMsg.style.opacity = '0';
+  successMsg.style.transition = 'opacity 0.8s ease';
+
+  setTimeout(() => {
+    successMsg.style.opacity = '1';
+  }, 100);
+
+  setTimeout(() => {
+    successMsg.style.opacity = '0';
+    setTimeout(() => {
+      successMsg.style.display = 'none';
+    }, 800);
+  }, 5000);
+}
+
         form.reset();
 
         // 🔄 Recarga completa de la galería tras subir
