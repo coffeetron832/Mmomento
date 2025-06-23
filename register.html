@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/styles.css" />
   <!-- Fuente Host Grotesk -->
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
+  <style>More actions
     :root {
       --btn-bg: #f5f5f5;
       --btn-hover: #e0e0e0;
@@ -45,15 +45,15 @@
 
     /* Versión adaptada de testimonial para frase central */
     .testimonial {
-  font-size: clamp(1.2rem, 2.5vw, 2rem);
-  line-height: 1.4;
-  max-width: 90%;
-  font-style: italic;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-  color: #f5f5f5;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
-}
+      font-size: 1.8rem;
+      line-height: 1.4;
+      max-width: 80%;
+      font-style: italic;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      color: #f5f5f5;
+      text-shadow: 0 0 12px rgba(255,255,255,0.2);
+    }
     .testimonial.visible {
       opacity: 1;
     }
@@ -73,16 +73,12 @@
 
 
     form#registerForm {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
 
     form#registerForm input,
 form#registerForm select,
@@ -94,10 +90,8 @@ form#registerForm button {
   border: 1px solid #444;
   background-color: #111;
   color: #fff;
-  width: 100%;
-  max-width: 250px;
+  min-width: 120px;
 }
-
 
 
     form#registerForm button {
@@ -196,58 +190,45 @@ form#registerForm button {
       transform: scale(1.2);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 480px) {
+      footer {
+        flex-direction: column;
+        align-items: center;
+      }
+      form#registerForm input,
+      form#registerForm select,
+      form#registerForm button {
+        width: 100%;
+        min-width: unset;
+      }
+    }
+    @media (max-width: 600px) {
   form#registerForm {
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-  max-width: 320px;
-  font-size: 1rem;
+    align-items: stretch;
+    gap: 0.6rem;
   }
 
   form#registerForm input,
   form#registerForm select,
   form#registerForm button {
-    width: 100%;
-    max-width: 320px;
+    width: 100% !important;
     font-size: 1rem;
   }
 
   #emoji-selector {
-    max-width: 100%;
-  }
-
-  footer {
-    padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  footer {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  form#registerForm {
-    gap: 0.6rem;
+    max-width: 100% !important;
   }
 
   #scrollLeft,
   #scrollRight {
     font-size: 1.3rem;
   }
-}
 
-form#registerForm button[type="submit"] {
-  width: 100%;
-  max-width: 320px;
-  font-size: 1rem;
-  padding: 0.6rem 1rem;
+  footer {
+    padding: 1rem;
+  }
 }
-
-    
   </style>
 </head>
 <body>
@@ -260,16 +241,16 @@ form#registerForm button[type="submit"] {
   </main>
 
   <footer style="padding: 0.5rem 1rem; background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center;">
-  <form id="registerForm">
+  <form id="registerForm" style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: nowrap; margin: 0; padding: 0; width: 100%; overflow-x: auto;">
 
     <input type="text" id="name" placeholder="Nombre" required autocomplete="name"
-      
+      style="padding: 0.3rem 0.5rem; font-size: 0.85rem; border-radius: 4px; border: 1px solid #555; width: 110px;" />
 
     <input type="email" id="email" placeholder="Correo" required autocomplete="email"
-      
+      style="padding: 0.3rem 0.5rem; font-size: 0.85rem; border-radius: 4px; border: 1px solid #555; width: 130px;" />
 
     <input type="password" id="password" placeholder="Contraseña" required autocomplete="new-password"
-      
+      style="padding: 0.3rem 0.5rem; font-size: 0.85rem; border-radius: 4px; border: 1px solid #555; width: 110px;" />
 
     <div style="display: flex; align-items: center; gap: 4px;">
       <button type="button" id="scrollLeft" aria-label="Anterior"
@@ -298,8 +279,10 @@ form#registerForm button[type="submit"] {
         style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">→</button>
     </div>
 
-    <button type="submit">Registrar</button>
-
+    <button type="submit"
+      style="padding: 0.3rem 0.7rem; font-size: 0.85rem; border-radius: 4px; background-color: #5a9bd8; color: #fff; border: none; font-weight: 600; cursor: pointer;">
+      Registrar
+    </button>
 
   </form>
 </footer>
