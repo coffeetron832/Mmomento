@@ -299,6 +299,26 @@
 
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const logoutMsg = localStorage.getItem('logoutMessage');
+  const box = document.getElementById('logoutMessageBox');
+  if (logoutMsg && box) {
+    box.textContent = logoutMsg;
+    box.style.display = 'block';
+    setTimeout(() => {
+      box.style.opacity = '1';
+      setTimeout(() => {
+        box.style.opacity = '0';
+        setTimeout(() => {
+          box.style.display = 'none';
+        }, 500);
+      }, 3000);
+    }, 100);
+    localStorage.removeItem('logoutMessage');
+  }
+});
+
+    
   // Fade transitions entre páginas
   function applyFadeIn() {
     document.documentElement.classList.add('fade-in');
