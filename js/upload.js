@@ -11,12 +11,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔘 Switch modo oscuro
   const toggleCheckbox = document.getElementById('darkModeToggle');
   if (toggleCheckbox) {
-    toggleCheckbox.checked = isDarkStored;
-    toggleCheckbox.addEventListener('change', () => {
-      const nowDark = document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', nowDark.toString());
-    });
-  }
+  toggleCheckbox.checked = isDarkStored;
+  toggleCheckbox.addEventListener('change', () => {
+    const checked = toggleCheckbox.checked;
+    if (checked) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'false');
+    }
+  });
+}
+
 
   // 👋 Modal de bienvenida
   const hasSeenModal = sessionStorage.getItem('hasSeenModal') === 'true';
