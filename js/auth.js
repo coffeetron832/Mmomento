@@ -69,10 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
-          alert(`¡Qué alegría verte de nuevo, ${result.user.username}! 👋`);
           window.location.href = "upload.html";
 
-
+          // Mostrar mensaje con el nombre del usuario y mensaje personalizado
+          showMessage(`¡Hola, ${result.user.username}! Nos alegra verte de nuevo. 👋`, 'success');
+          
           // Redirigir después de mostrar mensaje (puedes cambiar el tiempo aquí)
           setTimeout(() => {
             window.location.href = "upload.html";
