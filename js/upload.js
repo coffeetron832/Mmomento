@@ -83,7 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔓 Cerrar sesión
   const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) logoutBtn.addEventListener('click', () => {
+  if (logoutBtn) logoutBtn.addEventListener('click', e => {
+  e.preventDefault(); // <- ⚠️ clave para detener el redireccionamiento inmediato
   const msg = document.getElementById('uploadSuccessMessage');
   if (msg) {
     const frasesLogout = [
