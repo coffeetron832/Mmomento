@@ -292,8 +292,7 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
       }, 800);
     }, 5000);
   }
-}
-else {
+} else {
         const data = await res.json();
         alert(data.error || 'Error al eliminar imagen');
       }
