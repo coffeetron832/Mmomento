@@ -3,6 +3,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
 
+  const welcomeBackMessage = localStorage.getItem('welcomeBackMessage');
+if (welcomeBackMessage) {
+  const msgBox = document.getElementById('uploadSuccessMessage');
+  if (msgBox) {
+    msgBox.textContent = welcomeBackMessage;
+    msgBox.style.display = 'block';
+    msgBox.style.opacity = '1';
+
+    setTimeout(() => {
+      msgBox.style.opacity = '0';
+      setTimeout(() => {
+        msgBox.style.display = 'none';
+        localStorage.removeItem('welcomeBackMessage'); // Solo se muestra una vez
+      }, 2000);
+    }, 3000);
+  }
+}
+
   // 🌙 Aplicar modo oscuro
   const darkValue = localStorage.getItem('darkMode');
   const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
