@@ -71,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("user", JSON.stringify(result.user));
           
           // ✅ Guarda mensaje en localStorage para mostrar en upload.html
-  localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${result.user.name}! Nos alegra verte de nuevo 💫`);
+  const userName = result.user.username || result.user.name || 'viajero';
+  localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${userName}! Nos alegra verte de nuevo 💫`);
 
   // ✅ Redirige a la página donde se mostrará el mensaje
   window.location.href = "upload.html";
