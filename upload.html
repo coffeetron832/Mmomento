@@ -395,6 +395,11 @@
   border: 1px solid #10b981;
 }
 
+    body.dark-mode #uploadSuccessMessage {
+  background-color: #1f1b70;
+  color: #f4f4f4;
+}
+
     
   </style>
 </head>
@@ -406,6 +411,26 @@
 </div>
 
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
+      <div id="uploadSuccessMessage" style="
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4f46e5;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', cursive;
+  font-size: 1rem;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  max-width: 80%;
+  text-align: center;
+"></div>
+
       <form id="uploadForm" enctype="multipart/form-data">
         <input type="file" id="image" name="image" accept="image/*" required />
         <input type="text" name="description" placeholder="Descripción..." />
