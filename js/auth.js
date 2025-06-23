@@ -72,8 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(`¡Qué alegría verte de nuevo, ${result.user.username}! 👋`);
           window.location.href = "upload.html";
 
-          // Mostrar mensaje con el nombre del usuario y mensaje personalizado
-          showMessage(`¡Hola, ${result.user.username}! Nos alegra verte de nuevo. 👋`, 'success');
 
           // Redirigir después de mostrar mensaje (puedes cambiar el tiempo aquí)
           setTimeout(() => {
