@@ -273,9 +273,27 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
         { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.ok) {
-        alert('Imagen eliminada exitosamente');
-        el.remove();
-      } else {
+  el.remove();
+  const msg = document.getElementById('uploadSuccessMessage');
+  if (msg) {
+    msg.innerHTML = '🗑️ Tu Momento ya no está... pero dejó huella.';
+    msg.style.display = 'block';
+    msg.style.opacity = '0';
+    msg.style.transition = 'opacity 0.8s ease';
+
+    setTimeout(() => {
+      msg.style.opacity = '1';
+    }, 100);
+
+    setTimeout(() => {
+      msg.style.opacity = '0';
+      setTimeout(() => {
+        msg.style.display = 'none';
+      }, 800);
+    }, 5000);
+  }
+}
+else {
         const data = await res.json();
         alert(data.error || 'Error al eliminar imagen');
       }
