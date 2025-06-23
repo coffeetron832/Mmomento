@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const successMsg = document.getElementById('uploadSuccessMessage');
+        const successMsg = document.getElementById('imageActionMessage');
 if (successMsg) {
   successMsg.innerHTML = '🌟 ¡Tu momento ha sido compartido con el alma!';
   successMsg.style.display = 'block';
