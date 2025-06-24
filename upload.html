@@ -488,12 +488,71 @@
 }
 
 
-  
+  /* Menú en modo oscuro */
+body.dark-mode #menuOverlay {
+  background-color: #111;
+  color: #fff;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+}
+
+/* Estilo botones del menú igual a los del footer */
+#menuOverlay .footer-link {
+  background-color: #4f46e5;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  text-align: center;
+}
+#menuOverlay .footer-link:hover {
+  background-color: #3730a3;
+}
+
+    
     
   </style>
 </head>
 <body class="upload-page">
 
+  <!-- Botón hamburguesa flotante -->
+<button id="menuToggleBtn" aria-label="Menú" style="
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1003;
+">
+  ☰
+</button>
+
+<!-- Menú flotante -->
+<div id="menuOverlay" style="
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1002;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1re
+
+  
   <!-- 🔵 Mensaje flotante para cerrar sesión y otros globales -->
   <div id="uploadSuccessMessage" style="
     display: none;
@@ -578,8 +637,6 @@
 
   <div class="footer-buttons">
     <button id="toggleUploadBtn" class="footer-link">Subir imagen</button>
-    <button id="logoutBtn" class="footer-link">Cerrar sesión</button>
-    <a id="soulprintBtn" href="#" class="footer-link">Mi Soulprint</a>
     <div id="notificationsContainer">
       <button id="notifBtn" class="footer-link" aria-label="Ver notificaciones">
         🔔<span id="notifCount">0</span>
@@ -604,8 +661,35 @@
     const darkToggle = document.getElementById('darkModeToggle');
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const logoutMenuBtn = document.getElementById('logoutMenuBtn');
+  const logoutFooterBtn = document.getElementById('logoutBtn');
+  const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
+  const soulprintFooterBtn = document.getElementById('soulprintBtn');
 
+  menuToggleBtn.addEventListener('click', () => {
+    const isVisible = menuOverlay.style.transform === 'translateX(0%)';
+    menuOverlay.style.transform = isVisible ? 'translateX(100%)' : 'translateX(0%)';
+  });
 
+  // Opcional: cerrar el menú al hacer clic fuera
+  document.addEventListener('click', (e) => {
+    if (!menuOverlay.contains(e.target) && e.target !== menuToggleBtn) {
+      menuOverlay.style.transform = 'translateX(100%)';
+    }
+  });
+
+  // Reutilizamos las acciones de los botones ya existentes
+  logoutMenuBtn.addEventListener('click', () => {
+    logoutFooterBtn.click();
+  });
+
+  soulprintMenuBtn.addEventListener('click', () => {
+    soulprintFooterBtn.click();
+  });
+
+    
     soulprintBtn.classList.add('animate');
     setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
     soulprintBtn.addEventListener('click', () => {
