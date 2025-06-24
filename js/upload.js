@@ -212,66 +212,47 @@ if (successMsg) {
 
   // Crear tarjeta de imagen
   function createImageCard(image) {
-    const card = document.createElement('div');
-    card.className = 'image-card';
+  const card = document.createElement('div');
+  card.className = 'image-card';
 
-    const img = document.createElement('img');
-    img.src = image.imageUrl || image.url || '';
-    img.alt = image.description || 'Imagen subida';
+  const img = document.createElement('img');
+  img.src = image.imageUrl || image.url || '';
+  img.alt = image.description || 'Imagen subida';
 
-    const desc = document.createElement('p');
-    desc.className = 'image-description';
-    desc.textContent = image.description || '';
+  const desc = document.createElement('p');
+  desc.className = 'image-description';
+  desc.textContent = image.description || '';
 
-    const userInfo = document.createElement('p');
-    userInfo.className = 'image-user';
+  const userInfo = document.createElement('p');
+  userInfo.className = 'image-user';
 
-    // Determinar dueño
-    let ownerId = null;
-    if (image.userId && typeof image.userId === 'object') {
-      ownerId = image.userId._id || image.userId.id;
-      userInfo.textContent = image.userId.username
-        ? `Subido por: ${image.userId.username}`
-        : 'Subido por: Anónimo';
-    } else if (typeof image.userId === 'string') {
-      ownerId = image.userId;
-      userInfo.textContent = currentUserId === image.userId
-        ? 'Subido por: Tú'
-        : 'Subido por: Usuario desconocido';
-    } else {
-      userInfo.textContent = 'Subido por: Anónimo';
-    }
-
-    card.append(img, desc, userInfo);
-
-    // 🗑️ Botón eliminar (si sos dueño)
-    if (ownerId?.toString() === currentUserId?.toString()) {
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'delete-btn';
-      deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
-      deleteBtn.innerText = '✖️';
-      deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
-      card.appendChild(deleteBtn);
-    }
-
-    return card;
+  // Determinar dueño
+  let ownerId = null;
+  if (image.userId && typeof image.userId === 'object') {
+    ownerId = image.userId._id || image.userId.id;
+    userInfo.textContent = image.userId.username
+      ? `Subido por: ${image.userId.username}`
+      : 'Subido por: Anónimo';
+  } else if (typeof image.userId === 'string') {
+    ownerId = image.userId;
+    userInfo.textContent = currentUserId === image.userId
+      ? 'Subido por: Tú'
+      : 'Subido por: Usuario desconocido';
+  } else {
+    userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // Eliminar imagen
-  async function deleteImage(id, el) {
-    try {
-      const res = await fetch(
-        `https://momento-backend-production.up.railway.app/api/images/${id}`,
-        { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (!res.ok) throw new Error('Error al eliminar imagen');
-      el.remove();
-    } catch (e) {
-      console.error(e);
-      alert(e.message || 'No se pudo eliminar la imagen');
-    }
+  card.append(img, desc, userInfo);
+
+  // 🗑️ Botón eliminar (si es dueño)
+  if (ownerId?.toString() === currentUserId?.toString()) {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+    deleteBtn.innerText = '✖️';
+    deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
+    card.appendChild(deleteBtn);
   }
-});
 
   // 🦋 Botón mariposa (si NO es dueño)
   if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
@@ -306,9 +287,9 @@ if (successMsg) {
     card.appendChild(butterflyBtn);
   }
 
-  card.append(img, desc, userInfo);
   return card;
 }
+
 
 
 
