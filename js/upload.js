@@ -60,14 +60,7 @@ if (welcomeBackMessage) {
 
   const token = localStorage.getItem("token");
 
-// 👤 Usuario actual global
-let currentUserId = null;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("uploadForm");
-  const imagesContainer = document.getElementById("imagesContainer");
-
-  // 🧠 Obtener usuario
+// 👤 Usuario actual
   let user = {};
   try {
     const stored = localStorage.getItem('user');
@@ -75,16 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch {
     console.warn('Usuario mal formado en localStorage');
   }
-
   currentUserId = user._id || user.id || null;
 
   // 👋 Mostrar nombre
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
 
-  // 🔄 Cargar imágenes
+  // 🔄 Cargar imágenes desde el inicio
   loadImages();
-});
 
 
 
@@ -209,16 +200,18 @@ if (successMsg) {
       );
       if (!res.ok) throw new Error('Error al obtener imágenes');
       const imgs = await res.json();
-
       imagesContainer.innerHTML = '';
-      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
+      imgs.forEach(imgObj => {
+        imagesContainer.appendChild(createImageCard(imgObj));
+      });
     } catch (e) {
-      console.error('Error cargando imágenes:', e);
+      console.error(e);
       imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
     }
   }
 
- function createImageCard(image) {
+  // Crear tarjeta de imagen
+  function createImageCard(image) {
     const card = document.createElement('div');
     card.className = 'image-card';
 
@@ -233,6 +226,7 @@ if (successMsg) {
     const userInfo = document.createElement('p');
     userInfo.className = 'image-user';
 
+    // Determinar dueño
     let ownerId = null;
     if (image.userId && typeof image.userId === 'object') {
       ownerId = image.userId._id || image.userId.id;
@@ -249,19 +243,35 @@ if (successMsg) {
     }
 
     card.append(img, desc, userInfo);
+
+    // 🗑️ Botón eliminar (si sos dueño)
+    if (ownerId?.toString() === currentUserId?.toString()) {
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+      deleteBtn.innerText = '✖️';
+      deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
+      card.appendChild(deleteBtn);
+    }
+
     return card;
   }
-});
 
-  // 🗑️ Botón eliminar
-  if (ownerId?.toString() === currentUserId?.toString()) {
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
-    deleteBtn.innerText = '✖️';
-    deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
-    card.appendChild(deleteBtn);
+  // Eliminar imagen
+  async function deleteImage(id, el) {
+    try {
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/images/${id}`,
+        { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) throw new Error('Error al eliminar imagen');
+      el.remove();
+    } catch (e) {
+      console.error(e);
+      alert(e.message || 'No se pudo eliminar la imagen');
+    }
   }
+});
 
   // 🦋 Botón mariposa (si NO es dueño)
   if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
