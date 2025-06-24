@@ -248,7 +248,7 @@ if (ownerId === currentUserId) {
   card.appendChild(deleteBtn);
 }
 
-document.querySelector('.images-grid').appendChild(card);
+document.getElementById('imagesContainer').appendChild(card);
 
 
   // 🦋 Botón mariposa
