@@ -183,7 +183,7 @@ if (successMsg) {
     });
   }
 
-  // 🔄 Cargar imágenesMore actions
+  // 🔄 Cargar imágenes
   async function loadImages() {
     try {
       const res = await fetch(
@@ -232,7 +232,17 @@ function createImageCard(image) {
   }
 
   // ✅ Si el usuario actual es el dueño, mostrar botón de eliminar
+  if (ownerId === currentUserId) {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+    deleteBtn.innerText = '✖️'; // Puedes usar también '🧼' o '❌'
+    deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
+    card.appendChild(deleteBtn);
+  }
+
   card.append(img, desc, userInfo);
+  document.getElementById('imagesContainer').appendChild(card);
 
 if (ownerId === currentUserId) {
   const deleteBtn = document.createElement('button');
@@ -243,7 +253,8 @@ if (ownerId === currentUserId) {
   card.appendChild(deleteBtn);
 }
 
-document.getElementById('imagesContainer').appendChild(card);
+document.getElementById('imagesContainer').appendChild(card);Add commentMore actions
+
 
 
   // 🦋 Botón mariposa
