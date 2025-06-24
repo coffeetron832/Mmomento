@@ -657,7 +657,9 @@ darkToggle.addEventListener('change', () => {
     // 🖼️ Cargar imágenes del backend
     async function loadImages() {
       try {
-        const res = await fetch('https://momento-backend-production.up.railway.app/api/images/public');
+        const res = await fetch('https://momento-backend-production.up.railway.app/api/images/public', {
+  headers: token ? { Authorization: `Bearer ${token}` } : {},
+});
         const data = await res.json();
         renderImages(data);
       } catch (err) {
