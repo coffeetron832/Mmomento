@@ -529,11 +529,6 @@
   background-color: #3730a3;
 }
 
-/* Oculto por defecto */
-.menu-overlay.hidden {
-  transform: translateX(100%);
-}
-
 .menu-overlay.show {
   transform: translateX(0); /* Visible */
 }
@@ -730,12 +725,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ✅ Menú lateral
-  menuToggleBtn.addEventListener('click', () => {
-    const isNowHidden = menuOverlay.classList.toggle('hidden');
-    menuOverlay.setAttribute('aria-hidden', isNowHidden ? 'true' : 'false');
-  });
-
-
   menuToggleBtn.addEventListener('click', () => {
     const isNowVisible = menuOverlay.classList.toggle('show');
     menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
