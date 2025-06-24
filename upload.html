@@ -676,16 +676,33 @@ body.dark-mode .menu-overlay .footer-link:hover {
   <!-- Aquí va tu script, antes de cerrar body -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const menuToggleBtn = document.getElementById('menuToggleBtn');
-      const menuOverlay   = document.getElementById('menuOverlay');
+  const menuToggleBtn     = document.getElementById('menuToggleBtn');
+  const menuOverlay       = document.getElementById('menuOverlay');
+  const logoutMenuBtn     = document.getElementById('logoutMenuBtn');
+  const soulprintMenuBtn  = document.getElementById('soulprintMenuBtn');
+  const username          = localStorage.getItem('username');
 
-      menuToggleBtn.addEventListener('click', () => {
-  const isNowVisible = menuOverlay.classList.toggle('show');
-  menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
+  menuToggleBtn.addEventListener('click', () => {
+    const isNowVisible = menuOverlay.classList.toggle('show');
+    menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
+  });
+
+  logoutMenuBtn.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'index.html';
+  });
+
+  if (username) {
+    soulprintMenuBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
+  } else {
+    soulprintMenuBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('Debes iniciar sesión para ver tu Soulprint');
+      window.location.href = 'index.html';
+    });
+  }
 });
 
-      
-    });
   </script>
 </body>
 </html>
