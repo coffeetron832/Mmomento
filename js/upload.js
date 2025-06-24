@@ -231,29 +231,22 @@ function createImageCard(image) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // ✅ Si el usuario actual es el dueño, mostrar botón de eliminar
+  // Botón de eliminar solo si es el dueño
   if (ownerId === currentUserId) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
-    deleteBtn.innerText = '✖️'; // Puedes usar también '🧼' o '❌'
+    deleteBtn.innerText = '✖️';
     deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
     card.appendChild(deleteBtn);
   }
 
   card.append(img, desc, userInfo);
-  document.getElementById('imagesContainer').appendChild(card);
 
-if (ownerId === currentUserId) {
-  const deleteBtn = document.createElement('button');
-  deleteBtn.className = 'delete-btn';
-  deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
-  deleteBtn.innerText = '✖️';
-  deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
-  card.appendChild(deleteBtn);
+  // Finalmente, agregar la tarjeta al contenedor
+  document.getElementById('imagesContainer').appendChild(card);
 }
 
-document.getElementById('imagesContainer').appendChild(card);
 
 
 
