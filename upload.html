@@ -682,6 +682,28 @@ body.dark-mode .menu-overlay .footer-link:hover {
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const menuOverlay = document.getElementById('menuOverlay');
 
+    // ✅ PRIMERO definimos username y token
+    let username = null;
+    let token = null;
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (storedUser) {
+        username = storedUser.username;
+        token = storedUser.token;
+      }
+    } catch {}
+
+    if (username) {
+      soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
+    } else {
+      soulprintBtn.addEventListener('click', e => {
+        e.preventDefault();
+        alert('Debes iniciar sesión para ver tu Soulprint');
+        window.location.href = 'index.html';
+      });
+    }
+
+
     
     // Menú flotante lateral
     menuToggleBtn.addEventListener('click', () => {
@@ -722,26 +744,7 @@ body.dark-mode .menu-overlay .footer-link:hover {
       window.location.href = 'index.html';
     });
 
-    let username = null;
-    let token = null;
-    try {
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      if (storedUser) {
-        username = storedUser.username;
-        token = storedUser.token;
-      }
-    } catch {}
-
-    if (username) {
-      soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-    } else {
-      soulprintBtn.addEventListener('click', e => {
-        e.preventDefault();
-        alert('Debes iniciar sesión para ver tu Soulprint');
-        window.location.href = 'index.html';
-      });
-    }
-
+    
     const applyDarkMode = (enabled) => {
   body.classList.toggle('dark-mode', enabled);
   localStorage.setItem('darkMode', enabled ? 'true' : 'false'); // Asegura string
