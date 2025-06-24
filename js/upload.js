@@ -198,31 +198,31 @@ if (successMsg) {
         'https://momento-backend-production.up.railway.app/api/images/',
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      if (!res.ok) throw new Error('Error al obtener imágenes');
+      if (!res.ok) throw new Error(res.statusText);
       const imgs = await res.json();
       imagesContainer.innerHTML = '';
-      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
-    } catch (e) {
-      console.error('Error cargando imágenes:', e);
+      imgs.forEach(imgData => {
+        const card = createImageCard(imgData);
+        imagesContainer.appendChild(card);
+      });
+    } catch (err) {
+      console.error('Error cargando imágenes:', err);
       imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
     }
   }
 
   // 🧩 Crear tarjeta
 function createImageCard(image) {
-  const card = document.createElement('div');
-  card.className = 'image-card';
+    const card = document.createElement('div');
+    card.className = 'image-card';
 
-  const img = document.createElement('img');
-  img.src = image.imageUrl || image.url || '';
-  img.alt = image.description || 'Imagen subida';
+    const imgEl = document.createElement('img');
+    imgEl.src = image.imageUrl;
+    imgEl.alt = image.description || '';
 
-  const desc = document.createElement('p');
-  desc.className = 'image-description';
-  desc.textContent = image.description || '';
-
-  const userInfo = document.createElement('p');
-  userInfo.className = 'image-user';
+    const desc = document.createElement('p');
+    desc.className = 'image-description';
+    desc.textContent = image.description || '';
 
   let ownerId = null;
   if (image.userId && typeof image.userId === 'object') {
