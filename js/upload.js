@@ -25,7 +25,7 @@ if (welcomeBackMessage) {
 
   // 🌙 Aplicar modo oscuro
   const darkValue = localStorage.getItem('darkMode');
-  const isDarkStored = darkValue === 'true' || darkValue === 'enabled';More actions
+  const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
   if (isDarkStored) document.body.classList.add('dark-mode');
 
   // 🔘 Switch modo oscuro
