@@ -210,7 +210,6 @@ if (successMsg) {
     }
   }
 
-  // Crear tarjeta de imagen
   function createImageCard(image) {
   const card = document.createElement('div');
   card.className = 'image-card';
@@ -226,7 +225,6 @@ if (successMsg) {
   const userInfo = document.createElement('p');
   userInfo.className = 'image-user';
 
-  // Determinar dueño
   let ownerId = null;
   if (image.userId && typeof image.userId === 'object') {
     ownerId = image.userId._id || image.userId.id;
@@ -244,7 +242,6 @@ if (successMsg) {
 
   card.append(img, desc, userInfo);
 
-  // 🗑️ Botón eliminar (si es dueño)
   if (ownerId?.toString() === currentUserId?.toString()) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
@@ -254,43 +251,48 @@ if (successMsg) {
     card.appendChild(deleteBtn);
   }
 
+  return card;
+}
+
+
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
-    try {
-      const res = await fetch(
-        `https://momento-backend-production.up.railway.app/api/images/${id}`,
-        { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (res.ok) {
-  el.remove();
-  const msg = document.getElementById('uploadSuccessMessage');
-  if (msg) {
-    msg.innerHTML = '🗑️ Tu Momento ya no está... pero dejó huella.';
-    msg.style.display = 'block';
-    msg.style.opacity = '0';
-    msg.style.transition = 'opacity 0.8s ease';
+  try {
+    const res = await fetch(
+      `https://momento-backend-production.up.railway.app/api/images/${id}`,
+      { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
+    );
+    if (res.ok) {
+      el.remove();
+      const msg = document.getElementById('uploadSuccessMessage');
+      if (msg) {
+        msg.innerHTML = '🗑️ Tu Momento ya no está... pero dejó huella.';
+        msg.style.display = 'block';
+        msg.style.opacity = '0';
+        msg.style.transition = 'opacity 0.8s ease';
 
-    setTimeout(() => {
-      msg.style.opacity = '1';
-    }, 100);
+        setTimeout(() => {
+          msg.style.opacity = '1';
+        }, 100);
 
-    setTimeout(() => {
-      msg.style.opacity = '0';
-      setTimeout(() => {
-        msg.style.display = 'none';
-      }, 800);
-    }, 5000);
-  }
-} else {
-        const data = await res.json();
-        alert(data.error || 'Error al eliminar imagen');
+        setTimeout(() => {
+          msg.style.opacity = '0';
+          setTimeout(() => {
+            msg.style.display = 'none';
+          }, 800);
+        }, 5000);
       }
-    } catch (e) {
-      console.error('Error eliminando imagen:', e);
-      alert('Error al eliminar la imagen');
+    } else {
+      const data = await res.json();
+      alert(data.error || 'Error al eliminar imagen');
     }
+  } catch (e) {
+    console.error('Error eliminando imagen:', e);
+    alert('Error al eliminar la imagen');
   }
+}
+
 
   
 
