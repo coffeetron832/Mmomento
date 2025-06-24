@@ -216,8 +216,7 @@ if (successMsg) {
     }
   }
 
-  // 🧩 Crear tarjeta
-function createImageCard(image) {
+ function createImageCard(image) {
   const card = document.createElement('div');
   card.className = 'image-card';
 
@@ -247,7 +246,8 @@ function createImageCard(image) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  if (ownerId === currentUserId) {
+  // ✅ Compara como strings
+  if (ownerId?.toString() === currentUserId?.toString()) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
@@ -257,8 +257,9 @@ function createImageCard(image) {
   }
 
   card.append(img, desc, userInfo);
-  return card; // 👈 esto es clave
+  return card;
 }
+
 
 
 
