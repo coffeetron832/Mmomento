@@ -666,10 +666,26 @@ body.dark-mode .menu-overlay .footer-link:hover {
     <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
   </div>
 </div>
+
+  <!-- Aquí, antes de cerrar body -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuToggleBtn = document.getElementById('menuToggleBtn');
+      const menuOverlay   = document.getElementById('menuOverlay');
+
+      menuToggleBtn.addEventListener('click', () => {
+        // Solo toggle de 'show'
+        const isVisible = menuOverlay.classList.toggle('show');
+        menuOverlay.setAttribute('aria-hidden', (!isVisible).toString());
+      });
+
+      // logout / soulprint… (igual que antes)
+    });
+  </script>
 </body>
 </html>
 
-  <script defer>
+  <script>
 document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn         = document.getElementById('toggleUploadBtn');
   const uploadForm        = document.getElementById('uploadFormContainer');
