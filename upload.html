@@ -684,22 +684,6 @@ body.dark-mode .menu-overlay .footer-link:hover {
   menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
 });
 
-if (username) {
-    soulprintMenuBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-  } else {
-    soulprintMenuBtn.addEventListener('click', e => {
-      e.preventDefault();
-      alert('Debes iniciar sesión para ver tu Soulprint');
-      window.location.href = 'index.html';
-    });
-  }
-
-  logoutMenuBtn.addEventListener('click', () => {
-    localStorage.clear();
-    window.location.href = 'index.html';
-  });
-});
-
       
     });
   </script>
