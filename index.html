@@ -235,28 +235,30 @@
 .tooltip-container::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: 130%; /* encima de la mariposa */
+  bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #4f46e5;
-  color: white;
-  padding: 0.65rem 1rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  line-height: 1.3;
+  width: 260px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.4;
+  text-align: justify;
   white-space: normal;
-  max-width: 260px;
-  text-align: center;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  z-index: 999;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
 .tooltip-container:hover::after {
   opacity: 1;
 }
+
 
     
   /* Ajustes móviles */
@@ -337,9 +339,10 @@
   <div class="main-text">
   <h1>
     <span id="typewriter"></span>
-    <span class="tooltip-container" data-tooltip="Momento es una red emocional donde tus imágenes viven solo 6 horas. Cada mariposa representa que alguien sintió lo que compartiste.">
+    <span class="tooltip-container mariposa-tooltip" data-tooltip="Momento es un refugio efímero donde tus recuerdos florecen por 6 horas. Aquí, cada imagen es una emoción suspendida en el tiempo, y cada mariposa que recibes es un alma que conectó contigo.">
   <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
 </span>
+
   </h1>
 </div>
 </div>
