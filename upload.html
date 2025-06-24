@@ -684,9 +684,10 @@ body.dark-mode .menu-overlay .footer-link:hover {
     
     // Menú flotante lateral
     menuToggleBtn.addEventListener('click', () => {
-      const isHidden = menuOverlay.classList.toggle('hidden');
-      menuOverlay.setAttribute('aria-hidden', isHidden.toString());
-    });
+  const isNowHidden = menuOverlay.classList.toggle('hidden');
+  menuOverlay.setAttribute('aria-hidden', isNowHidden ? 'true' : 'false');
+});
+
 
 
     // Acción para ir a Soulprint
