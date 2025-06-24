@@ -249,7 +249,7 @@ if (successMsg) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // ✅ Compara como strings
+  // 🗑️ Si el usuario es dueño, mostrar botón eliminar
   if (ownerId?.toString() === currentUserId?.toString()) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
@@ -257,49 +257,41 @@ if (successMsg) {
     deleteBtn.innerText = '✖️';
     deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
     card.appendChild(deleteBtn);
+  } else if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
+    // 🦋 Mostrar botón mariposa si NO es el dueño
+    const butterflyBtn = document.createElement('button');
+    butterflyBtn.className = 'butterfly-btn';
+    butterflyBtn.innerHTML = '🦋';
+
+    const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
+    if (hasLiked) butterflyBtn.classList.add('active');
+
+    butterflyBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(
+          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
+        const result = await res.json();
+        butterflyBtn.classList.toggle('active', result.liked);
+      } catch (err) {
+        console.error('Error al dar mariposa:', err);
+        alert('Error al dar/quitar mariposa');
+      }
+    });
+
+    card.appendChild(butterflyBtn);
   }
 
   card.append(img, desc, userInfo);
   return card;
-}
-
-
-
-
-
-
-  // 🦋 Botón mariposa
-  // 🦋 Botón mariposa (solo si el usuario NO es el dueño)
-if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
-  const butterflyBtn = document.createElement('button');
-  butterflyBtn.className = 'butterfly-btn';
-  butterflyBtn.innerHTML = '🦋';
-
-  const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
-  if (hasLiked) butterflyBtn.classList.add('active');
-
-  butterflyBtn.addEventListener('click', async () => {
-    try {
-      const res = await fetch(
-        `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
-      const result = await res.json();
-      butterflyBtn.classList.toggle('active', result.liked);
-    } catch (err) {
-      console.error('Error al dar mariposa:', err);
-      alert('Error al dar/quitar mariposa');
-    }
-  });
-
-  card.appendChild(butterflyBtn);
 }
 
 
