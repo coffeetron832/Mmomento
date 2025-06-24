@@ -488,52 +488,83 @@
 }
 
 
-  /* Menú en modo oscuro */
-body.dark-mode #menuOverlay {
-  background-color: #111;
-  color: #fff;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+  /* Menú lateral flotante */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 240px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: -3px 0 10px rgba(0,0,0,0.3);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1003;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Estilo botones del menú igual a los del footer */
-#menuOverlay .footer-link {
-  background-color: #4f46e5;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: bold;
-  transition: background 0.3s ease;
-  text-align: center;
+.menu-overlay .menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 2rem 1rem;
 }
-#menuOverlay .footer-link:hover {
+
+.menu-overlay .footer-link {
+  background-color: #4f46e5;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.menu-overlay .footer-link:hover {
   background-color: #3730a3;
 }
 
-    
+/* Oculto por defecto */
+.menu-overlay.hidden {
+  transform: translateX(100%);
+}
+
+/* Modo oscuro del menú */
+body.dark-mode .menu-overlay {
+  background: rgba(17, 17, 17, 0.95);
+  color: white;
+}
+
+body.dark-mode .menu-overlay .footer-link {
+  background-color: #1f1b70;
+}
+
+body.dark-mode .menu-overlay .footer-link:hover {
+  background-color: #4338ca;
+}
+
+    <!-- Menú desplegable -->
+<div id="menuOverlay" class="menu-overlay hidden" aria-hidden="true">
+  <div class="menu-content">
+    <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
+    <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
+  </div>
+</div>
+
     
   </style>
 </head>
 <body class="upload-page">
 
-  <!-- Botón hamburguesa flotante -->
-<button id="menuToggleBtn" aria-label="Menú" style="
-  position: fixed;
-  bottom: 5rem;
-  right: 1rem;
-  background: #4f46e5;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  z-index: 1003;
-">
-  ☰
-</button>
+  <!-- Botón hamburguesa -->
+<!-- Botón menú dentro del footer -->
+<button id="menuToggleBtn" class="footer-link" aria-label="Abrir menú">☰</button>
+
 
 <!-- Menú flotante -->
 <div id="menuOverlay" style="
@@ -661,33 +692,34 @@ body.dark-mode #menuOverlay {
     const darkToggle = document.getElementById('darkModeToggle');
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
-    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    <script>
+  const menuToggleBtn = document.getElementById('menuToggleBtn');
   const menuOverlay = document.getElementById('menuOverlay');
   const logoutMenuBtn = document.getElementById('logoutMenuBtn');
-  const logoutFooterBtn = document.getElementById('logoutBtn');
+  const logoutFooterBtn = document.getElementById('logoutBtn'); // aún existe en DOM aunque esté oculto
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
   const soulprintFooterBtn = document.getElementById('soulprintBtn');
 
   menuToggleBtn.addEventListener('click', () => {
-    const isVisible = menuOverlay.style.transform === 'translateX(0%)';
-    menuOverlay.style.transform = isVisible ? 'translateX(100%)' : 'translateX(0%)';
+    menuOverlay.classList.toggle('hidden');
   });
 
-  // Opcional: cerrar el menú al hacer clic fuera
+  // Ocultar menú si hacen clic fuera de él
   document.addEventListener('click', (e) => {
     if (!menuOverlay.contains(e.target) && e.target !== menuToggleBtn) {
-      menuOverlay.style.transform = 'translateX(100%)';
+      menuOverlay.classList.add('hidden');
     }
   });
 
-  // Reutilizamos las acciones de los botones ya existentes
   logoutMenuBtn.addEventListener('click', () => {
-    logoutFooterBtn.click();
+    if (logoutFooterBtn) logoutFooterBtn.click();
   });
 
   soulprintMenuBtn.addEventListener('click', () => {
-    soulprintFooterBtn.click();
+    if (soulprintFooterBtn) soulprintFooterBtn.click();
   });
+</script>
+
 
     
     soulprintBtn.classList.add('animate');
