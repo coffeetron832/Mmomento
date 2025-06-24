@@ -62,7 +62,7 @@ if (welcomeBackMessage) {
 
   const token = localStorage.getItem("token");
 
-// 👤 Usuario actual
+// 👤 Usuario
   let user = {};
   try {
     const stored = localStorage.getItem('user');
@@ -70,14 +70,10 @@ if (welcomeBackMessage) {
   } catch {
     console.warn('Usuario mal formado en localStorage');
   }
-  currentUserId = user._id ? user._id.toString() : user.id ? user.id.toString() : null;
+  const currentUserId = user._id || user.id || null;
 
-  // 👋 Mostrar nombre
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
-
-  // 🔄 Cargar imágenes desde el inicio
-  loadImages();
 
 
 
@@ -133,7 +129,7 @@ if (logoutBtn) {
     return;
   }
 
-  // 📤 Subida de imagen
+  // 📤 Subida de imagenMore actions
   if (form) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -203,16 +199,15 @@ if (successMsg) {
       if (!res.ok) throw new Error('Error al obtener imágenes');
       const imgs = await res.json();
       imagesContainer.innerHTML = '';
-      imgs.forEach(imgObj => {
-        imagesContainer.appendChild(createImageCard(imgObj));
-      });
+      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
     } catch (e) {
-      console.error(e);
+      console.error('Error cargando imágenes:', e);
       imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
     }
   }
 
-  function createImageCard(image) {
+  // 🧩 Crear tarjeta
+function createImageCard(image) {
   const card = document.createElement('div');
   card.className = 'image-card';
 
@@ -229,7 +224,7 @@ if (successMsg) {
 
   let ownerId = null;
   if (image.userId && typeof image.userId === 'object') {
-    ownerId = image.userId._id?.toString() || image.userId.id?.toString();
+    ownerId = image.userId._id || image.userId.id;
     userInfo.textContent = image.userId.username
       ? `Subido por: ${image.userId.username}`
       : 'Subido por: Anónimo';
@@ -242,60 +237,108 @@ if (successMsg) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // Mostrar botón eliminar si el usuario actual es el dueño
-  if (ownerId?.toString() === currentUserId?.toString()) {
+  // ✅ Si el usuario actual es el dueño, mostrar botón de eliminar
+  // Botón de eliminar solo si es el dueño
+  if (ownerId === currentUserId) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+    deleteBtn.innerText = '✖️'; // Puedes usar también '🧼' o '❌'
     deleteBtn.innerText = '✖️';
     deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
     card.appendChild(deleteBtn);
   }
 
   card.append(img, desc, userInfo);
-  return card;
+  document.getElementById('imagesContainer').appendChild(card);
+
+if (ownerId === currentUserId) {
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+  deleteBtn.innerText = '✖️';
+  deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
+  card.appendChild(deleteBtn);
+  // Finalmente, agregar la tarjeta al contenedor
+  document.getElementById('imagesContainer').appendChild(card);
 }
 
+document.getElementById('imagesContainer').appendChild(card);Add commentMore actions
 
+
+
+
+  // 🦋 Botón mariposaMore actions
+  // 🦋 Botón mariposa (solo si el usuario NO es el dueño)
+if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
+  const butterflyBtn = document.createElement('button');
+  butterflyBtn.className = 'butterfly-btn';
+  butterflyBtn.innerHTML = '🦋';
+
+  const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
+  if (hasLiked) butterflyBtn.classList.add('active');
+
+  butterflyBtn.addEventListener('click', async () => {
+    try {
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
+      const result = await res.json();
+      butterflyBtn.classList.toggle('active', result.liked);
+    } catch (err) {
+      console.error('Error al dar mariposa:', err);
+      alert('Error al dar/quitar mariposa');
+    }
+  });
+
+  card.appendChild(butterflyBtn);
+}
 
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
-  try {
-    const res = await fetch(
-      `https://momento-backend-production.up.railway.app/api/images/${id}`,
-      { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
-    );
-    if (res.ok) {
-      el.remove();
-      const msg = document.getElementById('uploadSuccessMessage');
-      if (msg) {
-        msg.innerHTML = '🗑️ Tu Momento ya no está... pero dejó huella.';
-        msg.style.display = 'block';
-        msg.style.opacity = '0';
-        msg.style.transition = 'opacity 0.8s ease';
+    try {
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/images/${id}`,
+        { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (res.ok) {
+  el.remove();
+  const msg = document.getElementById('uploadSuccessMessage');
+  if (msg) {
+    msg.innerHTML = '🗑️ Tu Momento ya no está... pero dejó huella.';
+    msg.style.display = 'block';
+    msg.style.opacity = '0';
+    msg.style.transition = 'opacity 0.8s ease';
 
-        setTimeout(() => {
-          msg.style.opacity = '1';
-        }, 100);
+    setTimeout(() => {
+      msg.style.opacity = '1';
+    }, 100);
 
-        setTimeout(() => {
-          msg.style.opacity = '0';
-          setTimeout(() => {
-            msg.style.display = 'none';
-          }, 800);
-        }, 5000);
-      }
-    } else {
-      const data = await res.json();
-      alert(data.error || 'Error al eliminar imagen');
-    }
-  } catch (e) {
-    console.error('Error eliminando imagen:', e);
-    alert('Error al eliminar la imagen');
+    setTimeout(() => {
+      msg.style.opacity = '0';
+      setTimeout(() => {
+        msg.style.display = 'none';
+      }, 800);
+    }, 5000);
   }
-}
-
+} else {
+        const data = await res.json();
+        alert(data.error || 'Error al eliminar imagen');
+      }
+    } catch (e) {
+      console.error('Error eliminando imagen:', e);
+      alert('Error al eliminar la imagen');
+    }
+  }
 
   
 
