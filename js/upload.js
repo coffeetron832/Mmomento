@@ -285,28 +285,6 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
   card.appendChild(butterflyBtn);
 }
 
-  // 🗑 Si es dueño, botón de eliminar
-  if (currentUserId && ownerId && currentUserId === ownerId.toString()) {
-    const container = document.createElement('div');
-    container.className = 'delete-container';
-    container.style.position = 'relative';
-
-    
-    const decorDiv = document.createElement('div');
-    decorDiv.className = 'div';
-
-    const small = document.createElement('small');
-    const icon = document.createElement('i');
-    small.appendChild(icon);
-    decorDiv.appendChild(small);
-
-    container.appendChild(delButton);
-    container.appendChild(decorDiv);
-    card.appendChild(container);
-  }
-
-  return card;
-}
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
