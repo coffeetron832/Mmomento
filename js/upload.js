@@ -249,7 +249,7 @@ if (successMsg) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // 🗑️ Si el usuario es dueño, mostrar botón eliminar
+  // 🗑️ Botón eliminar
   if (ownerId?.toString() === currentUserId?.toString()) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
@@ -257,8 +257,10 @@ if (successMsg) {
     deleteBtn.innerText = '✖️';
     deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
     card.appendChild(deleteBtn);
-  } else if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
-    // 🦋 Mostrar botón mariposa si NO es el dueño
+  }
+
+  // 🦋 Botón mariposa (si NO es dueño)
+  if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
     const butterflyBtn = document.createElement('button');
     butterflyBtn.className = 'butterfly-btn';
     butterflyBtn.innerHTML = '🦋';
@@ -293,6 +295,7 @@ if (successMsg) {
   card.append(img, desc, userInfo);
   return card;
 }
+
 
 
   // 🗑 Eliminar imagen
