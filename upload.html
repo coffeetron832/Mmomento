@@ -566,22 +566,7 @@ body.dark-mode .menu-overlay .footer-link:hover {
 <button id="menuToggleBtn" class="footer-link" aria-label="Abrir menú">☰</button>
 
 
-<!-- Menú flotante -->
-<div id="menuOverlay" style="
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 220px;
-  height: 100%;
-  background-color: #fff;
-  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-  z-index: 1002;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1re
+
 
   
   <!-- 🔵 Mensaje flotante para cerrar sesión y otros globales -->
@@ -663,13 +648,6 @@ body.dark-mode .menu-overlay .footer-link:hover {
     </div>
   </div>
 
-  <!-- Menú flotante -->
-<div id="menuOverlay" class="menu-overlay hidden" aria-hidden="true">
-  <div class="menu-content">
-    <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
-    <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
-  </div>
-</div>
 
   
  <footer class="footer-compact">
@@ -701,31 +679,19 @@ body.dark-mode .menu-overlay .footer-link:hover {
     const darkToggle = document.getElementById('darkModeToggle');
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
-    
-  const menuToggleBtn = document.getElementById('menuToggleBtn');
-  const menuOverlay = document.getElementById('menuOverlay');
-  const logoutMenuBtn = document.getElementById('logoutMenuBtn');
-  const logoutFooterBtn = document.getElementById('logoutBtn'); // aún existe en DOM aunque esté oculto
-  const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
-  const soulprintFooterBtn = document.getElementById('soulprintBtn');
+    const menuBtn = document.getElementById("menuToggleBtn");
+    const menuOverlay = document.getElementById("menuOverlay");
 
-  menuToggleBtn.addEventListener('click', () => {
-    menuOverlay.classList.toggle('hidden');
-  });
+    menuBtn.addEventListener("click", () => {
+      menuOverlay.classList.toggle("hidden");
+    });
 
-  // Ocultar menú si hacen clic fuera de él
-  document.addEventListener('click', (e) => {
-    if (!menuOverlay.contains(e.target) && e.target !== menuToggleBtn) {
-      menuOverlay.classList.add('hidden');
-    }
-  });
-
-  logoutMenuBtn.addEventListener('click', () => {
-    if (logoutFooterBtn) logoutFooterBtn.click();
-  });
-
-  soulprintMenuBtn.addEventListener('click', () => {
-    if (soulprintFooterBtn) soulprintFooterBtn.click();
+    // Opcional: cerrar menú al hacer clic fuera del overlay
+    document.addEventListener("click", (e) => {
+      if (!menuOverlay.contains(e.target) && e.target !== menuBtn) {
+        menuOverlay.classList.add("hidden");
+      }
+    });
   });
 
     
