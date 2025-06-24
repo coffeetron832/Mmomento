@@ -441,6 +441,25 @@
   }
 }
 
+/* ✂️ Eliminar sombra y contorno de los botones del footer */
+.footer-buttons .footer-link,
+#toggleUploadBtn,
+#logoutBtn,
+#soulprintBtn,
+#notifBtn {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Opcional: también aseguramos que en focus no aparezca ningún borde visible */
+.footer-buttons .footer-link:focus,
+#toggleUploadBtn:focus,
+#logoutBtn:focus,
+#soulprintBtn:focus,
+#notifBtn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
 
     
   </style>
