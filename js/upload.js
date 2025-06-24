@@ -241,7 +241,7 @@ if (ownerId === currentUserId) {
   deleteBtn.innerText = '✖️';
   deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
   card.appendChild(deleteBtn);
-}More actions
+}
 
 document.getElementById('imagesContainer').appendChild(card);
 
