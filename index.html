@@ -226,6 +226,38 @@
   white-space: nowrap;
 }
 
+    .tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-container::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%; /* encima de la mariposa */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  white-space: normal;
+  max-width: 260px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.tooltip-container:hover::after {
+  opacity: 1;
+}
+
     
   /* Ajustes móviles */
   @media (max-width: 480px) {
@@ -305,7 +337,9 @@
   <div class="main-text">
   <h1>
     <span id="typewriter"></span>
-    <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
+    <span class="tooltip-container" data-tooltip="Momento es una red emocional donde tus imágenes viven solo 6 horas. Cada mariposa representa que alguien sintió lo que compartiste.">
+  <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
+</span>
   </h1>
 </div>
 </div>
