@@ -186,22 +186,27 @@ if (successMsg) {
   }
 
   // 🔄 Cargar imágenes
-  // 🔄 Cargar imágenes
   async function loadImages() {
-    try {
-      const res = await fetch(
-        'https://momento-backend-production.up.railway.app/api/images/',
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (!res.ok) throw new Error('Error al obtener imágenes');
-      const imgs = await res.json();
-      imagesContainer.innerHTML = '';
-      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
-    } catch (e) {
-      console.error('Error cargando imágenes:', e);
-      imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
-    }
+  try {
+    const res = await fetch(
+      'https://momento-backend-production.up.railway.app/api/images/',
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+
+    const imgs = await res.json();
+    imagesContainer.innerHTML = '';
+
+    imgs.forEach(imgData => {
+      const card = createImageCard(imgData);
+      imagesContainer.appendChild(card);
+    });
+  } catch (e) {
+    console.error('Error cargando imágenes:', e);
+    imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
   }
+}
+
 
   // 🧩 Crear tarjeta
 function createImageCard(image) {
