@@ -58,7 +58,16 @@ if (welcomeBackMessage) {
   const username = localStorage.getItem('username');
   if (soulprintBtn && username) soulprintBtn.href = `/soulprint.html?user=${username}`;
 
-  // 👤 Usuario
+  const token = localStorage.getItem("token");
+
+// 👤 Usuario actual global
+let currentUserId = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("uploadForm");
+  const imagesContainer = document.getElementById("imagesContainer");
+
+  // Obtener usuario desde localStorage
   let user = {};
   try {
     const stored = localStorage.getItem('user');
@@ -66,10 +75,17 @@ if (welcomeBackMessage) {
   } catch {
     console.warn('Usuario mal formado en localStorage');
   }
-  const currentUserId = user._id || user.id || null;
 
+  // 🧠 Asignar userId globalmente
+  currentUserId = user._id || user.id || null;
+
+  // 👋 Mostrar nombre
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
+
+  // ... (resto del código de upload.js sigue igual)
+});
+
 
   // 👁 Mostrar selector de círculos
   const visibilitySelect = document.getElementById('visibility');
