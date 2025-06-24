@@ -647,7 +647,7 @@ body.dark-mode .menu-overlay .footer-link:hover {
 
   
  <footer class="footer-compact">
-  <div class="footer-brand">MOMENT(:)🦋</div>
+  <div class="footer-brand">MOMENT(:)</div>
   <div class="footer-buttons">
     <button id="toggleUploadBtn" class="footer-link">Subir imagen</button>
     <button id="menuToggleBtn" class="footer-link" aria-label="Abrir menú">☰</button>
@@ -673,129 +673,88 @@ body.dark-mode .menu-overlay .footer-link:hover {
     </div>
   </div>
 
-  <!-- Aquí va tu script, antes de cerrar body -->
+</body>
+</html>
+
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-  const menuToggleBtn     = document.getElementById('menuToggleBtn');
-  const menuOverlay       = document.getElementById('menuOverlay');
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn         = document.getElementById('toggleUploadBtn');
+  const uploadForm        = document.getElementById('uploadFormContainer');
+  const logoutBtn         = document.getElementById('logoutBtn');
+  const soulprintBtn      = document.getElementById('soulprintBtn');
   const logoutMenuBtn     = document.getElementById('logoutMenuBtn');
   const soulprintMenuBtn  = document.getElementById('soulprintMenuBtn');
-  const username          = localStorage.getItem('username');
+  const menuToggleBtn     = document.getElementById('menuToggleBtn');
+  const menuOverlay       = document.getElementById('menuOverlay');
+  const darkToggle        = document.getElementById('darkModeToggle');
+  const body              = document.body;
 
-  menuToggleBtn.addEventListener('click', () => {
-    const isNowVisible = menuOverlay.classList.toggle('show');
-    menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
+  // ✅ Cargar usuario desde localStorage
+  let username = null;
+  try {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      username = storedUser.username;
+    }
+  } catch (e) {
+    console.error('Error leyendo localStorage', e);
+  }
+
+  // ✅ Soulprint desde botón principal
+  if (username) {
+    soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
+    soulprintMenuBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
+  } else {
+    const redirectToLogin = (e) => {
+      e.preventDefault();
+      alert('Debes iniciar sesión para ver tu Soulprint');
+      window.location.href = 'index.html';
+    };
+    soulprintBtn.addEventListener('click', redirectToLogin);
+    soulprintMenuBtn.addEventListener('click', redirectToLogin);
+  }
+
+  // ✅ Animación Soulprint
+  soulprintBtn.classList.add('animate');
+  setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
+  soulprintBtn.addEventListener('click', () => {
+    soulprintBtn.classList.add('animate');
+    setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
   });
 
+  // ✅ Mostrar/ocultar formulario
+  toggleBtn.addEventListener('click', () => {
+    const isVisible = uploadForm.classList.toggle('visible');
+    uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
+  });
+
+  // ✅ Menú lateral
+  menuToggleBtn.addEventListener('click', () => {
+    const isNowHidden = menuOverlay.classList.toggle('hidden');
+    menuOverlay.setAttribute('aria-hidden', isNowHidden ? 'true' : 'false');
+  });
+
+  // ✅ Cerrar sesión
+  logoutBtn.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'index.html';
+  });
   logoutMenuBtn.addEventListener('click', () => {
     localStorage.clear();
     window.location.href = 'index.html';
   });
 
-  if (username) {
-    soulprintMenuBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-  } else {
-    soulprintMenuBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Debes iniciar sesión para ver tu Soulprint');
-      window.location.href = 'index.html';
-    });
-  }
-});
-
-  </script>
-</body>
-</html>
-
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleBtn = document.getElementById('toggleUploadBtn');
-    const uploadForm = document.getElementById('uploadFormContainer');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const soulprintBtn = document.getElementById('soulprintBtn');
-    const darkToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-    const imagesContainer = document.getElementById('imagesContainer');
-    const logoutMenuBtn = document.getElementById('logoutMenuBtn');
-    const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
-    const menuToggleBtn = document.getElementById('menuToggleBtn');
-    const menuOverlay = document.getElementById('menuOverlay');
-
-    // ✅ PRIMERO definimos username y token
-    let username = null;
-    let token = null;
-    try {
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      if (storedUser) {
-        username = storedUser.username;
-        token = storedUser.token;
-      }
-    } catch {}
-
-    if (username) {
-      soulprintBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-    } else {
-      soulprintBtn.addEventListener('click', e => {
-        e.preventDefault();
-        alert('Debes iniciar sesión para ver tu Soulprint');
-        window.location.href = 'index.html';
-      });
-    }
-
-
-    
-    // Menú flotante lateral
-    menuToggleBtn.addEventListener('click', () => {
-  const isNowHidden = menuOverlay.classList.toggle('hidden');
-  menuOverlay.setAttribute('aria-hidden', isNowHidden ? 'true' : 'false');
-});
-
-
-
-    // Acción para ir a Soulprint
-    if (username) {
-      soulprintMenuBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
-    } else {
-      soulprintMenuBtn.addEventListener('click', e => {
-        e.preventDefault();
-        alert('Debes iniciar sesión para ver tu Soulprint');
-        window.location.href = 'index.html';
-      });
-    }
+  // ✅ Dark mode
+  const applyDarkMode = (enabled) => {
+    body.classList.toggle('dark-mode', enabled);
+    localStorage.setItem('darkMode', enabled ? 'true' : 'false');
+  };
+  const darkModeSetting = localStorage.getItem('darkMode') === 'true';
+  darkToggle.checked = darkModeSetting;
+  applyDarkMode(darkModeSetting);
+  darkToggle.addEventListener('change', () => {
+    applyDarkMode(darkToggle.checked);
   });
-
-
-    
-    soulprintBtn.classList.add('animate');
-    setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
-    soulprintBtn.addEventListener('click', () => {
-      soulprintBtn.classList.add('animate');
-      setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
-    });
-
-    toggleBtn.addEventListener('click', () => {
-      const isVisible = uploadForm.classList.toggle('visible');
-      uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
-    });
-
-    logoutBtn.addEventListener('click', () => {
-      localStorage.clear();
-      window.location.href = 'index.html';
-    });
-
-    
-    const applyDarkMode = (enabled) => {
-  body.classList.toggle('dark-mode', enabled);
-  localStorage.setItem('darkMode', enabled ? 'true' : 'false'); // Asegura string
-};
-
-const darkModeSetting = localStorage.getItem('darkMode') === 'true';
-darkToggle.checked = darkModeSetting;
-applyDarkMode(darkModeSetting);
-
-darkToggle.addEventListener('change', () => {
-  const isEnabled = darkToggle.checked;
-  applyDarkMode(isEnabled);
 });
 
     // 🖼️ Cargar imágenes del backend
