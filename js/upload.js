@@ -70,7 +70,7 @@ if (welcomeBackMessage) {
   } catch {
     console.warn('Usuario mal formado en localStorage');
   }
-  currentUserId = user._id || user.id || null;
+  currentUserId = user._id ? user._id.toString() : user.id ? user.id.toString() : null;
 
   // 👋 Mostrar nombre
   const welcomeEl = document.getElementById('welcomeText');
