@@ -25,7 +25,7 @@ if (welcomeBackMessage) {
 
   // 🌙 Aplicar modo oscuro
   const darkValue = localStorage.getItem('darkMode');
-  const isDarkStored = darkValue === 'true' || darkValue === 'enabled';
+  const isDarkStored = darkValue === 'true' || darkValue === 'enabled';More actions
   if (isDarkStored) document.body.classList.add('dark-mode');
 
   // 🔘 Switch modo oscuro
@@ -60,9 +60,7 @@ if (welcomeBackMessage) {
   const username = localStorage.getItem('username');
   if (soulprintBtn && username) soulprintBtn.href = `/soulprint.html?user=${username}`;
 
-  const token = localStorage.getItem("token");
-
-// 👤 Usuario
+  // 👤 Usuario
   let user = {};
   try {
     const stored = localStorage.getItem('user');
@@ -70,14 +68,10 @@ if (welcomeBackMessage) {
   } catch {
     console.warn('Usuario mal formado en localStorage');
   }
-  
-  currentUserId = user._id || user.id || null;
-
+  const currentUserId = user._id || user.id || null;
 
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
-
-
 
   // 👁 Mostrar selector de círculos
   const visibilitySelect = document.getElementById('visibility');
@@ -113,7 +107,7 @@ if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     // Guardar el mensaje temporalmente
     localStorage.setItem('logoutMessage', '👋 Cerraste sesión con éxito. Esperamos verte pronto 💙');
-    
+
     // Limpiar todo excepto el mensaje
     const logoutMsg = localStorage.getItem('logoutMessage');
     localStorage.clear();
@@ -131,7 +125,7 @@ if (logoutBtn) {
     return;
   }
 
-  // 📤 Subida de imagenMore actions
+  // 📤 Subida de imagen
   if (form) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -181,7 +175,7 @@ if (successMsg) {
         form.reset();
 
         // 🔄 Recarga completa de la galería tras subir
-        setTimeout(() => loadImages(), 1500); // Espera 1.5 segundos antes de recargar
+        await loadImages();
 
         if (circleContainer) circleContainer.style.display = 'none';
       } catch (err) {
@@ -192,37 +186,38 @@ if (successMsg) {
   }
 
   // 🔄 Cargar imágenes
+  // 🔄 Cargar imágenes
   async function loadImages() {
     try {
       const res = await fetch(
         'https://momento-backend-production.up.railway.app/api/images/',
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      if (!res.ok) throw new Error(res.statusText);
+      if (!res.ok) throw new Error('Error al obtener imágenes');
       const imgs = await res.json();
       imagesContainer.innerHTML = '';
-      imgs.forEach(imgData => {
-        const card = createImageCard(imgData);
-        imagesContainer.appendChild(card);
-      });
-    } catch (err) {
-      console.error('Error cargando imágenes:', err);
+      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
+    } catch (e) {
+      console.error('Error cargando imágenes:', e);
       imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
     }
   }
 
   // 🧩 Crear tarjeta
 function createImageCard(image) {
-    const card = document.createElement('div');
-    card.className = 'image-card';
+  const card = document.createElement('div');
+  card.className = 'image-card';
 
-    const imgEl = document.createElement('img');
-    imgEl.src = image.imageUrl;
-    imgEl.alt = image.description || '';
+  const img = document.createElement('img');
+  img.src = image.imageUrl || image.url || '';
+  img.alt = image.description || 'Imagen subida';
 
-    const desc = document.createElement('p');
-    desc.className = 'image-description';
-    desc.textContent = image.description || '';
+  const desc = document.createElement('p');
+  desc.className = 'image-description';
+  desc.textContent = image.description || '';
+
+  const userInfo = document.createElement('p');
+  userInfo.className = 'image-user';
 
   let ownerId = null;
   if (image.userId && typeof image.userId === 'object') {
@@ -240,13 +235,11 @@ function createImageCard(image) {
   }
 
   // ✅ Si el usuario actual es el dueño, mostrar botón de eliminar
-  // Botón de eliminar solo si es el dueño
   if (ownerId === currentUserId) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
     deleteBtn.innerText = '✖️'; // Puedes usar también '🧼' o '❌'
-    deleteBtn.innerText = '✖️';
     deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
     card.appendChild(deleteBtn);
   }
@@ -261,16 +254,14 @@ if (ownerId === currentUserId) {
   deleteBtn.innerText = '✖️';
   deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
   card.appendChild(deleteBtn);
-  // Finalmente, agregar la tarjeta al contenedor
-  document.getElementById('imagesContainer').appendChild(card);
 }
 
 document.getElementById('imagesContainer').appendChild(card);
+document.getElementById('imagesContainer').appendChild(card);Add commentMore actions
 
 
 
-
-  // 🦋 Botón mariposaMore actions
+  // 🦋 Botón mariposa
   // 🦋 Botón mariposa (solo si el usuario NO es el dueño)
 if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
   const butterflyBtn = document.createElement('button');
@@ -342,7 +333,7 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
     }
   }
 
-  // 🔁 Cargar círculosMore actions
+  // 🔁 Cargar círculos
   async function loadUserCircles() {
     const select = document.getElementById('circles');
     if (!select) return;
