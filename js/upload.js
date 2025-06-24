@@ -214,10 +214,6 @@ if (successMsg) {
   const card = document.createElement('div');
   card.className = 'image-card';
 
-  const img = documfunction createImageCard(image) {
-  const card = document.createElement('div');
-  card.className = 'image-card';
-
   const img = document.createElement('img');
   img.src = image.imageUrl || image.url || '';
   img.alt = image.description || 'Imagen subida';
@@ -244,7 +240,7 @@ if (successMsg) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // ✅ Compara como strings
+  // Mostrar botón eliminar si el usuario actual es el dueño
   if (ownerId?.toString() === currentUserId?.toString()) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
