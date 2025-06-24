@@ -747,11 +747,7 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
   });
 
-  // ✅ Menú lateral
-  menuToggleBtn.addEventListener('click', () => {
-    const isNowVisible = menuOverlay.classList.toggle('show');
-    menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
-  });
+  
   
 
   // ✅ Cerrar sesión
