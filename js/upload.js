@@ -254,44 +254,6 @@ if (successMsg) {
     card.appendChild(deleteBtn);
   }
 
-  // 🦋 Botón mariposa (si NO es dueño)
-  if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
-    const butterflyBtn = document.createElement('button');
-    butterflyBtn.className = 'butterfly-btn';
-    butterflyBtn.innerHTML = '🦋';
-
-    const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
-    if (hasLiked) butterflyBtn.classList.add('active');
-
-    butterflyBtn.addEventListener('click', async () => {
-      try {
-        const res = await fetch(
-          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
-        const result = await res.json();
-        butterflyBtn.classList.toggle('active', result.liked);
-      } catch (err) {
-        console.error('Error al dar mariposa:', err);
-        alert('Error al dar/quitar mariposa');
-      }
-    });
-
-    card.appendChild(butterflyBtn);
-  }
-
-  return card;
-}
-
-
-
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
