@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Momentos 📸</title>
-  <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
   <style>
     :root {
@@ -399,6 +399,48 @@
   background-color: #1f1b70;
   color: #f4f4f4;
 }
+
+
+  /* ✅ Estilo de fuente Indie Flower para el nombre de marca */
+.footer-brand {
+  font-family: 'Indie Flower', cursive !important;
+}
+
+/* ✅ Fuente Roboto para los botones del footer */
+.footer-buttons .footer-link {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+/* ✅ Estilo responsive para convertir los botones en emojis en pantallas pequeñas */
+@media screen and (max-width: 600px) {
+  #toggleUploadBtn::before {
+    content: "📤";
+  }
+  #logoutBtn::before {
+    content: "🔒";
+  }
+  #soulprintBtn::before {
+    content: "🧬";
+  }
+
+  #toggleUploadBtn,
+  #logoutBtn,
+  #soulprintBtn {
+    font-size: 0;
+    padding: 0.75rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    text-align: center;
+  }
+
+  #toggleUploadBtn::before,
+  #logoutBtn::before,
+  #soulprintBtn::before {
+    font-size: 1.2rem;
+  }
+}
+
 
     
   </style>
