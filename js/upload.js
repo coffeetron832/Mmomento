@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
 
-  // Obtener usuario desde localStorage
+  // 🧠 Obtener usuario
   let user = {};
   try {
     const stored = localStorage.getItem('user');
@@ -76,18 +76,16 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn('Usuario mal formado en localStorage');
   }
 
-  // 🧠 Asignar userId globalmente
   currentUserId = user._id || user.id || null;
-
-  // 🔄 Inicializar
-  loadImages();
 
   // 👋 Mostrar nombre
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
 
-  // ... (resto del código de upload.js sigue igual)
+  // 🔄 Cargar imágenes
+  loadImages();
 });
+
 
 
   // 👁 Mostrar selector de círculos
