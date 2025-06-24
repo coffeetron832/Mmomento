@@ -601,12 +601,6 @@
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
 
-    // ✅ Mostrar header al cargar con animación
-    setTimeout(() => {
-      header.classList.add('show');
-      toggleHeaderBtn.textContent = '⬅️';
-    }, 100); // pequeño retraso para permitir animación
-
 
     soulprintBtn.classList.add('animate');
     setTimeout(() => soulprintBtn.classList.remove('animate'), 800);
