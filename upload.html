@@ -534,6 +534,11 @@
   transform: translateX(100%);
 }
 
+.menu-overlay.show {
+  transform: translateX(0); /* Visible */
+}
+
+    
 /* Modo oscuro del menú */
 body.dark-mode .menu-overlay {
   background: rgba(17, 17, 17, 0.95);
@@ -675,9 +680,10 @@ body.dark-mode .menu-overlay .footer-link:hover {
       const menuOverlay   = document.getElementById('menuOverlay');
 
       menuToggleBtn.addEventListener('click', () => {
-        const nowHidden = menuOverlay.classList.toggle('hidden');
-        menuOverlay.setAttribute('aria-hidden', nowHidden);
-      });
+  const isNowVisible = menuOverlay.classList.toggle('show');
+  menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
+});
+
     });
   </script>
 </body>
