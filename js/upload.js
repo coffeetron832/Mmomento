@@ -263,7 +263,7 @@ if (ownerId === currentUserId) {
   document.getElementById('imagesContainer').appendChild(card);
 }
 
-document.getElementById('imagesContainer').appendChild(card);Add commentMore actions
+document.getElementById('imagesContainer').appendChild(card);
 
 
 
@@ -340,7 +340,31 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
     }
   }
 
-  
+  // 🔁 Cargar círculosMore actions
+  async function loadUserCircles() {
+    const select = document.getElementById('circles');
+    if (!select) return;
+    select.innerHTML = '<option disabled>Cargando círculos...</option>';
+    try {
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/circles/user/${currentUserId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) throw new Error('Error al obtener círculos');
+      const circles = await res.json();
+      select.innerHTML = circles.length
+        ? circles.map(c => `<option value="${c._id||c.id}">${c.name||'Círculo'}</option>`).join('')
+        : '<option disabled>No tienes círculos</option>';
+    } catch (e) {
+      console.error('Error cargando círculos:', e);
+      select.innerHTML = '<option disabled>Error cargando círculos</option>';
+    }
+  }
+
+  // 🔄 Inicializar
+  loadImages();
+  window.loadUserCircles = loadUserCircles;
+});
 
 // 🔔 Botón para mostrar notificaciones
 const notifBtn = document.getElementById('notifBtn');
