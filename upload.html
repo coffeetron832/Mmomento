@@ -689,10 +689,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const darkToggle        = document.getElementById('darkModeToggle');
   const body              = document.body;
 
-  menuToggleBtn.addEventListener('click', () => {
-    const isNowVisible = menuOverlay.classList.toggle('show');
-    menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
-  });
 
   // ✅ Cargar usuario desde localStorage
   let username = null;
@@ -738,6 +734,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const isNowHidden = menuOverlay.classList.toggle('hidden');
     menuOverlay.setAttribute('aria-hidden', isNowHidden ? 'true' : 'false');
   });
+
+
+  menuToggleBtn.addEventListener('click', () => {
+    const isNowVisible = menuOverlay.classList.toggle('show');
+    menuOverlay.setAttribute('aria-hidden', (!isNowVisible).toString());
+  });
+  
 
   // ✅ Cerrar sesión
   logoutBtn.addEventListener('click', () => {
