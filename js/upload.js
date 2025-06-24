@@ -193,7 +193,7 @@ if (successMsg) {
       if (!res.ok) throw new Error('Error al obtener imágenes');
       const imgs = await res.json();
       imagesContainer.innerHTML = '';
-      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
+      imgs.forEach(i => createImageCard(i));
     } catch (e) {
       console.error('Error cargando imágenes:', e);
       imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
@@ -231,7 +231,6 @@ function createImageCard(image) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // Botón de eliminar solo si es el dueño
   if (ownerId === currentUserId) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
@@ -242,10 +241,9 @@ function createImageCard(image) {
   }
 
   card.append(img, desc, userInfo);
-
-  // Finalmente, agregar la tarjeta al contenedor
-  document.getElementById('imagesContainer').appendChild(card);
+  return card; // 👈 esto es clave
 }
+
 
 
 
