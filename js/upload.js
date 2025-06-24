@@ -1,4 +1,4 @@
-const token = localStorage.getItem("token");
+let token = localStorage.getItem("token"); // antes era const (duplicado)
 let currentUserId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -70,7 +70,9 @@ if (welcomeBackMessage) {
   } catch {
     console.warn('Usuario mal formado en localStorage');
   }
-  const currentUserId = user._id || user.id || null;
+  
+  currentUserId = user._id || user.id || null;
+
 
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
