@@ -253,7 +253,7 @@ if (ownerId === currentUserId) {
   card.appendChild(deleteBtn);
 }
 
-document.getElementById('imagesContainer').appendChild(card);Add commentMore actions
+document.getElementById('imagesContainer').appendChild(card);
 
 
 
