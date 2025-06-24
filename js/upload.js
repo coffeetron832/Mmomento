@@ -229,7 +229,7 @@ if (successMsg) {
 
   let ownerId = null;
   if (image.userId && typeof image.userId === 'object') {
-    ownerId = image.userId._id || image.userId.id;
+    ownerId = image.userId._id?.toString() || image.userId.id?.toString();
     userInfo.textContent = image.userId.username
       ? `Subido por: ${image.userId.username}`
       : 'Subido por: Anónimo';
