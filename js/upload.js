@@ -291,10 +291,7 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
     container.className = 'delete-container';
     container.style.position = 'relative';
 
-    const delButton = document.createElement('button');
-    delButton.className = 'bin';
-    delButton.addEventListener('click', () => deleteImage(image._id, card));
-
+    
     const decorDiv = document.createElement('div');
     decorDiv.className = 'div';
 
