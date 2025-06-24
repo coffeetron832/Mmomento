@@ -565,8 +565,9 @@ body.dark-mode .menu-overlay .footer-link:hover {
 <!-- Botón menú dentro del footer -->
 <button id="menuToggleBtn" class="footer-link" aria-label="Abrir menú">☰</button>
 
-
-
+<!-- Botones ocultos para funcionalidad de Soulprint y Logout -->
+<a id="soulprintBtn" href="#" style="display:none;"></a>
+<button id="logoutBtn" style="display:none;"></button>
 
   
   <!-- 🔵 Mensaje flotante para cerrar sesión y otros globales -->
@@ -681,6 +682,14 @@ body.dark-mode .menu-overlay .footer-link:hover {
     const imagesContainer = document.getElementById('imagesContainer');
     const logoutMenuBtn = document.getElementById('logoutMenuBtn');
     const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+  const menuOverlay = document.getElementById('menuOverlay');
+
+menuToggleBtn.addEventListener('click', () => {
+  const isHidden = menuOverlay.classList.toggle('hidden');
+  menuOverlay.setAttribute('aria-hidden', isHidden.toString());
+});
+
 
 // Acción para cerrar sesión
 logoutMenuBtn.addEventListener('click', () => {
