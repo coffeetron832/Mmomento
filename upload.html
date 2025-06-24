@@ -548,13 +548,6 @@ body.dark-mode .menu-overlay .footer-link:hover {
   background-color: #4338ca;
 }
 
-    <!-- Menú desplegable -->
-<div id="menuOverlay" class="menu-overlay hidden" aria-hidden="true">
-  <div class="menu-content">
-    <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
-    <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
-  </div>
-</div>
 
     
   </style>
@@ -564,6 +557,17 @@ body.dark-mode .menu-overlay .footer-link:hover {
 <!-- Botones ocultos para funcionalidad de Soulprint y Logout -->
 <a id="soulprintBtn" href="#" style="display:none;"></a>
 <button id="logoutBtn" style="display:none;"></button>
+
+
+    <!-- Menú desplegable (debe ir **fuera** de <style>) -->
+  <div id="menuOverlay" class="menu-overlay hidden" aria-hidden="true">
+    <div class="menu-content">
+      <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
+      <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
+    </div>
+  </div>
+</body>
+</html>
 
   
   <!-- 🔵 Mensaje flotante para cerrar sesión y otros globales -->
