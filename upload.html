@@ -660,13 +660,28 @@ body.dark-mode .menu-overlay .footer-link:hover {
   </div>
 </footer>
 
-<!-- Menú desplegable (debe ir **fuera** de <style>) -->
+<!-- El overlay del menú, *solo uno* y *fuera* de <style> -->
   <div id="menuOverlay" class="menu-overlay hidden" aria-hidden="true">
     <div class="menu-content">
       <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
-      <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
+      <a href="#"    id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
     </div>
   </div>
+
+  <!-- Aquí va tu script, antes de cerrar body -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuToggleBtn = document.getElementById('menuToggleBtn');
+      const menuOverlay   = document.getElementById('menuOverlay');
+
+      menuToggleBtn.addEventListener('click', () => {
+        const nowHidden = menuOverlay.classList.toggle('hidden');
+        menuOverlay.setAttribute('aria-hidden', nowHidden);
+      });
+    });
+  </script>
+</body>
+</html>
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
