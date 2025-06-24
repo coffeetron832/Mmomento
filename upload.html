@@ -663,11 +663,20 @@ body.dark-mode .menu-overlay .footer-link:hover {
     </div>
   </div>
 
+  <!-- Menú flotante -->
+<div id="menuOverlay" class="menu-overlay hidden" aria-hidden="true">
+  <div class="menu-content">
+    <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
+    <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
+  </div>
+</div>
+
+  
  <footer class="footer-compact">
   <div class="footer-brand">MOMENT(:)🦋</div>
-
   <div class="footer-buttons">
     <button id="toggleUploadBtn" class="footer-link">Subir imagen</button>
+    <button id="menuToggleBtn" class="footer-link" aria-label="Abrir menú">☰</button>
     <div id="notificationsContainer">
       <button id="notifBtn" class="footer-link" aria-label="Ver notificaciones">
         🔔<span id="notifCount">0</span>
@@ -692,7 +701,7 @@ body.dark-mode .menu-overlay .footer-link:hover {
     const darkToggle = document.getElementById('darkModeToggle');
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
-    <script>
+    
   const menuToggleBtn = document.getElementById('menuToggleBtn');
   const menuOverlay = document.getElementById('menuOverlay');
   const logoutMenuBtn = document.getElementById('logoutMenuBtn');
@@ -718,8 +727,6 @@ body.dark-mode .menu-overlay .footer-link:hover {
   soulprintMenuBtn.addEventListener('click', () => {
     if (soulprintFooterBtn) soulprintFooterBtn.click();
   });
-</script>
-
 
     
     soulprintBtn.classList.add('animate');
