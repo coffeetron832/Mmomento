@@ -236,7 +236,20 @@ function createImageCard(image) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
+  // ✅ Si el usuario actual es el dueño, mostrar botón de eliminar
+  if (ownerId === currentUserId) {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+    deleteBtn.innerText = '✖️'; // Puedes usar también '🧼' o '❌'
+    deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
+    card.appendChild(deleteBtn);
+  }
+
   card.append(img, desc, userInfo);
+  document.getElementById('imagesContainer').appendChild(card);
+}
+
 
   // 🦋 Botón mariposa
   // 🦋 Botón mariposa (solo si el usuario NO es el dueño)
