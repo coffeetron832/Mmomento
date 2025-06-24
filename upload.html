@@ -679,20 +679,26 @@ body.dark-mode .menu-overlay .footer-link:hover {
     const darkToggle = document.getElementById('darkModeToggle');
     const body = document.body;
     const imagesContainer = document.getElementById('imagesContainer');
-    const menuBtn = document.getElementById("menuToggleBtn");
-    const menuOverlay = document.getElementById("menuOverlay");
+    const logoutMenuBtn = document.getElementById('logoutMenuBtn');
+    const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
 
-    menuBtn.addEventListener("click", () => {
-      menuOverlay.classList.toggle("hidden");
-    });
+// Acción para cerrar sesión
+logoutMenuBtn.addEventListener('click', () => {
+  localStorage.clear();
+  window.location.href = 'index.html';
+});
 
-    // Opcional: cerrar menú al hacer clic fuera del overlay
-    document.addEventListener("click", (e) => {
-      if (!menuOverlay.contains(e.target) && e.target !== menuBtn) {
-        menuOverlay.classList.add("hidden");
-      }
-    });
+// Acción para ir a Soulprint
+if (username) {
+  soulprintMenuBtn.href = `soulprint.html?user=${encodeURIComponent(username)}`;
+} else {
+  soulprintMenuBtn.addEventListener('click', e => {
+    e.preventDefault();
+    alert('Debes iniciar sesión para ver tu Soulprint');
+    window.location.href = 'index.html';
   });
+}
+
 
     
     soulprintBtn.classList.add('animate');
