@@ -1,4 +1,6 @@
 const token = localStorage.getItem("token");
+let currentUserId = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
@@ -181,7 +183,7 @@ if (successMsg) {
         form.reset();
 
         // 🔄 Recarga completa de la galería tras subir
-        await loadImages();
+        setTimeout(() => loadImages(), 1500); // Espera 1.5 segundos antes de recargar
 
         if (circleContainer) circleContainer.style.display = 'none';
       } catch (err) {
