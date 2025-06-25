@@ -186,6 +186,33 @@ if (successMsg) {
     });
   }
 
+
+function renderImages(images) {
+  const container = document.getElementById('imagesContainer');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  images.forEach(img => {
+    const card = document.createElement('div');
+    card.className = 'image-card';
+
+    const image = document.createElement('img');
+    image.src = img.url;
+    image.alt = img.title || 'Momento';
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '🗑️';
+    delBtn.className = 'delete-btn';
+    delBtn.addEventListener('click', () => deleteImage(img._id, card));
+
+    card.appendChild(image);
+    card.appendChild(delBtn);
+    container.appendChild(card);
+  });
+}
+
+  
     // 🔄 Cargar imágenes
   async function loadImages() {
     try {
