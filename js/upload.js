@@ -126,56 +126,71 @@ if (logoutBtn) {
     return;
   }
 
-  // 📤 Subida de imagen
-  form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  // 📤 Subida de imagenAdd commentMore actions
+  if (form) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const fileInput = document.getElementById('image');
+      if (!fileInput || !fileInput.files.length) {
+        alert('Selecciona una imagen');
+        return;
+      }
+      const formData = new FormData(form);
 
-  const fileInput = document.getElementById("image");
-  if (!fileInput || !fileInput.files.length) {
-    alert("Selecciona una imagen");
-    return;
-  }
+      // ✅ Asegura que la descripción esté dentro de formData
+const descriptionInput = document.getElementById('description');
+formData.set('description', descriptionInput?.value?.trim() || '(sin descripción)');
 
-  const formData = new FormData(form);            // <-- usar 'form'
-  const descriptionInput = document.getElementById("description");
-  formData.set("description", descriptionInput?.value.trim() || "(sin descripción)");
+      try {
+        const res = await fetch(
+          'https://momento-backend-production.up.railway.app/api/images/',
+          {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: Bearer ${token} },
+            body: formData
+          }
+        );
+        const result = await res.json();
 
-  try {
-    const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },  // <-- un solo headers
-      body: formData
-    });
+        if (!res.ok) {
+          console.error('Error servidor:', result);
+          alert(result.error || result.message || 'Error al subir la imagen');
+          return;
+        }
 
-    const result = await res.json();
+        const successMsg = document.getElementById('imageActionMessage');
+if (successMsg) {
+  successMsg.innerHTML = '🌟 ¡Tu momento ha sido compartido con el alma!';
+  successMsg.style.display = 'block';
+  successMsg.style.opacity = '0';
+  successMsg.style.transition = 'opacity 0.8s ease';
 
-    if (!res.ok) {
-      console.error("Error servidor:", result);
-      alert(result.error || result.message || "Error al subir la imagen");
-      return;
-    }
+  setTimeout(() => {
+    successMsg.style.opacity = '1';
+  }, 100);
 
-    // mostrar mensaje de éxito...
-    imageActionMessage.innerHTML = "🌟 ¡Tu momento ha sido compartido con el alma!";
-    imageActionMessage.style.display = "block";
-    imageActionMessage.style.opacity = "0";
-    imageActionMessage.style.transition = "opacity 0.8s ease";
-    setTimeout(() => (imageActionMessage.style.opacity = "1"), 100);
+  setTimeout(() => {
+    successMsg.style.opacity = '0';
     setTimeout(() => {
-      imageActionMessage.style.opacity = "0";
-      setTimeout(() => (imageActionMessage.style.display = "none"), 800);
-    }, 5000);
+      successMsg.style.display = 'none';
+    }, 800);
+  }, 5000);
+}
 
-    form.reset();
-    await loadImages();
-    circleContainer.style.display = "none";
-  } catch (err) {
-    console.error("Error en subida de imagen:", err);
-    alert("Error en la subida de la imagen");
+        form.reset();
+
+        // 🔄 Recarga completa de la galería tras subir
+        await loadImages();
+
+        if (circleContainer) circleContainer.style.display = 'none';
+      } catch (err) {
+        console.error('Error en subida de imagen:', err);
+        alert('Error en la subida de la imagen');
+      }
+    });
   }
-});
 
-  
   // 🔄 Cargar imágenes
   async function loadImages() {
   try {
@@ -197,7 +212,6 @@ if (logoutBtn) {
 
 
 
-   // 💠 Crear tarjeta de imagen
   function createImageCard(image) {
   const card = document.createElement('div');
   card.className = 'image-card-hover';
