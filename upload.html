@@ -849,20 +849,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html';
   });
 
-    // 🖼️ Cargar imágenes del backend
-    async function loadImages() {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
-  headers: token ? { Authorization: `Bearer ${token}` } : {},
-});
-        const data = await res.json();
-        renderImages(data);
-      } catch (err) {
-        console.error('Error cargando imágenes:', err);
-      }
-    }
-
     function renderImages(images) {
   imagesContainer.innerHTML = '';
   images.forEach(image => {
