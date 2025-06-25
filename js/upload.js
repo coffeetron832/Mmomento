@@ -147,7 +147,6 @@ if (logoutBtn) {
           {
             method: 'POST',
             headers: { Authorization: `Bearer ${token}` },
-            headers: { Authorization: Bearer ${token} },
             body: formData
           }
         );
@@ -184,9 +183,6 @@ if (logoutBtn) {
       }
     });
   }
-
-        // 🔄 Recarga completa de la galería tras subir
-        loadImages();
   
   // 🔄 Cargar imágenes
   async function loadImages() {
