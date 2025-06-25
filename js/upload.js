@@ -206,8 +206,10 @@ if (successMsg) {
     renderImages(data.images);
   });
 
-    }
-  }
+    // 🔄 Cargar imágenes al cargar la página
+  loadImages();
+});  // <- Cierre final del addEventListener
+
   
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
