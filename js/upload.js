@@ -11,7 +11,8 @@ form.addEventListener('submit', async (e) => {
 
     e.preventDefault();
 
-    const formData = new FormData(uploadForm);
+    // Usa la variable `form`, no `uploadForm`
+    const formData = new FormData(form);
     const token = localStorage.getItem('token');
 
     try {
