@@ -674,6 +674,8 @@
 
     <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
   <div class="menu-content">
+    <!-- Dentro de .menu-content -->
+    <button id="closeMenuBtn" class="footer-link">✖️ Cerrar</button>
     <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
     <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
   </div>
@@ -691,6 +693,14 @@
         menuOverlay.setAttribute('aria-hidden', (!isVisible).toString());
       });
 
+      const closeMenuBtn = document.getElementById('closeMenuBtn');
+closeMenuBtn.addEventListener('click', () => {
+  menuOverlay.classList.remove('show');
+  menuOverlay.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('menu-open');
+});
+
+      
      /* ——— Lógica para “Mi Soulprint” ——— */
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
   let userObj = null;
