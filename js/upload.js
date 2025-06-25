@@ -126,7 +126,6 @@ if (logoutBtn) {
   }
 
   // 📤 Subida de imagen
-  // 📤 Subida de imagen
   if (form) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
