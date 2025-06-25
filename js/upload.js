@@ -126,6 +126,7 @@ if (logoutBtn) {
   }
 
   // 📤 Subida de imagen
+  // 📤 Subida de imagen
   if (form) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -145,7 +146,7 @@ formData.set('description', descriptionInput?.value?.trim() || '(sin descripció
           'https://momento-backend-production.up.railway.app/api/images/',
           {
             method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: Bearer ${token} },
             body: formData
           }
         );
