@@ -349,7 +349,7 @@ if (
   // 🔄 Inicializar
   loadImages();
   window.loadUserCircles = loadUserCircles;
-});
+}
 
 // 🔔 Botón para mostrar notificaciones
 const notifBtn = document.getElementById('notifBtn');
