@@ -194,23 +194,30 @@ function renderImages(images) {
   container.innerHTML = '';
 
   images.forEach(img => {
-    const card = document.createElement('div');
-    card.className = 'image-card';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'image-hover-wrapper';
+
+    const description = document.createElement('div');
+    description.className = 'image-description';
+    description.textContent = img.description || 'Momento';
 
     const image = document.createElement('img');
     image.src = img.url;
-    image.alt = img.title || 'Momento';
+    image.alt = img.description || 'Momento';
+    image.className = 'hidden-image';
 
     const delBtn = document.createElement('button');
     delBtn.textContent = '🗑️';
     delBtn.className = 'delete-btn';
-    delBtn.addEventListener('click', () => deleteImage(img._id, card));
+    delBtn.addEventListener('click', () => deleteImage(img._id, wrapper));
 
-    card.appendChild(image);
-    card.appendChild(delBtn);
-    container.appendChild(card);
+    wrapper.appendChild(description);
+    wrapper.appendChild(image);
+    wrapper.appendChild(delBtn);
+    container.appendChild(wrapper);
   });
 }
+
 
   
     // 🔄 Cargar imágenes
