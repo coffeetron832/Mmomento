@@ -563,6 +563,29 @@
   }
 }
 
+      .close-menu-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10000; /* Encima de todo */
+}
+
+.close-menu-btn:hover {
+  color: #aaa;
+  transform: scale(1.1);
+}
+
+    @media (min-width: 601px) {
+  .close-menu-btn {
+    display: none;
+  }
+}
+
     
     
   </style>
@@ -673,9 +696,9 @@
 </footer>
 
     <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
-  <div class="menu-content">
-    <!-- Dentro de .menu-content -->
+      <!-- Dentro de .menu-content -->
     <button id="closeMenuBtn" class="footer-link">✖️ Cerrar</button>
+  <div class="menu-content">
     <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
     <a href="#" id="soulprintMenuBtn" class="footer-link">🧬 Mi Soulprint</a>
   </div>
