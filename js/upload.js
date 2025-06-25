@@ -227,7 +227,7 @@ if (logoutBtn) {
   }
 
         // 🔄 Recarga completa de la galería tras subir
-        await loadImages();
+        loadImages();
   
   // 🔄 Cargar imágenes
   async function loadImages() {
