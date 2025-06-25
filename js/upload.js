@@ -126,7 +126,7 @@ if (logoutBtn) {
     return;
   }
 
-  // 📤 Subida de imagenAdd commentMore actions
+  // 📤 Subida de imagenMore actionsMore actions
   if (form) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -136,10 +136,6 @@ if (logoutBtn) {
         return;
       }
       const formData = new FormData(form);
-
-      // ✅ Asegura que la descripción esté dentro de formData
-const descriptionInput = document.getElementById('description');
-formData.set('description', descriptionInput?.value?.trim() || '(sin descripción)');
 
       try {
         const res = await fetch(
@@ -180,7 +176,7 @@ if (successMsg) {
         form.reset();
 
         // 🔄 Recarga completa de la galería tras subir
-        await loadImages();
+        setTimeout(() => loadImages(), 1500); // Espera 1.5 segundos antes de recargar
 
         if (circleContainer) circleContainer.style.display = 'none';
       } catch (err) {
@@ -192,100 +188,116 @@ if (successMsg) {
 
   // 🔄 Cargar imágenes
   async function loadImages() {
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const imgs = await res.json();
-    console.log('🖼️ loadImages recibió estos datos:', imgs);
-    imagesContainer.innerHTML = '';
-    imgs.forEach(imgData => {
-      console.log('  • procesando imgData:', imgData);
-      const card = createImageCard(imgData);
-      imagesContainer.appendChild(card);
-    });
-  } catch (e) {
-    console.error('Error cargando imágenes:', e);
+    try {
+      const res = await fetch(
+        'https://momento-backend-production.up.railway.app/api/images/',
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) throw new Error('Error al obtener imágenes');
+      const imgs = await res.json();
+      imagesContainer.innerHTML = '';
+      imgs.forEach(i => imagesContainer.appendChild(createImageCard(i)));
+    } catch (e) {
+      console.error('Error cargando imágenes:', e);
+      imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
+    }
   }
-}
 
-
-
-  function createImageCard(image) {
+  // 🧩 Crear tarjeta
+function createImageCard(image) {
   const card = document.createElement('div');
-  card.className = 'image-card-hover';
-
-  // Imagen oculta hasta hover
-  const preview = document.createElement('div');
-  preview.className = 'image-preview-hover';
+  card.className = 'image-card';
 
   const img = document.createElement('img');
   img.src = image.imageUrl || image.url || '';
   img.alt = image.description || 'Imagen subida';
-  preview.appendChild(img);
-  card.appendChild(preview);
 
-  // Descripción que aparece en hover
-  const desc = document.createElement('div');
-  desc.className = 'image-description-hover';
-  desc.textContent = image.description || '(sin descripción)';
-  card.appendChild(desc);
+  const desc = document.createElement('p');
+  desc.className = 'image-description';
+  desc.textContent = image.description || '';
 
-  // Usuario
-  const userInfo = document.createElement('div');
+  const userInfo = document.createElement('p');
   userInfo.className = 'image-user';
 
-  const ownerId = typeof image.userId === 'object' && image.userId !== null
-    ? image.userId._id || image.userId.id
-    : image.userId;
-
+  let ownerId = null;
   if (image.userId && typeof image.userId === 'object') {
-    userInfo.textContent = `@${image.userId.username || 'anónimo'}`;
+    ownerId = image.userId._id || image.userId.id;
+    userInfo.textContent = image.userId.username
+      ? `Subido por: ${image.userId.username}`
+      : 'Subido por: Anónimo';
+  } else if (typeof image.userId === 'string') {
+    ownerId = image.userId;
+    userInfo.textContent = currentUserId === image.userId
+      ? 'Subido por: Tú'
+      : 'Subido por: Usuario desconocido';
   } else {
-    userInfo.textContent = 'Subido por: desconocido';
-  }
-  card.appendChild(userInfo);
-
-  // 🦋 Botón mariposa si no es tuyo
-  if (
-    currentUserId &&
-    ownerId &&
-    String(currentUserId) !== String(ownerId)
-  ) {
-    const butterflyBtn = document.createElement('button');
-    butterflyBtn.className = 'butterfly-btn';
-    butterflyBtn.innerHTML = '🦋';
-
-    const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
-    if (hasLiked) butterflyBtn.classList.add('active');
-
-    butterflyBtn.addEventListener('click', async () => {
-      try {
-        const res = await fetch(
-          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
-        const result = await res.json();
-        butterflyBtn.classList.toggle('active', result.liked);
-      } catch (err) {
-        console.error('Error al dar mariposa:', err);
-        alert('Error al dar/quitar mariposa');
-      }
-    });
-
-    card.appendChild(butterflyBtn);
+    userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  return card;
+  // ✅ Si el usuario actual es el dueño, mostrar botón de eliminar
+  // Botón de eliminar solo si es el dueño
+  if (ownerId === currentUserId) {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+    deleteBtn.innerText = '✖️'; // Puedes usar también '🧼' o '❌'
+    deleteBtn.innerText = '✖️';
+    deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
+    card.appendChild(deleteBtn);
+  }
+
+  card.append(img, desc, userInfo);
+  document.getElementById('imagesContainer').appendChild(card);
+
+if (ownerId === currentUserId) {
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
+  deleteBtn.innerText = '✖️';
+  deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
+  card.appendChild(deleteBtn);
+  // Finalmente, agregar la tarjeta al contenedor
+  document.getElementById('imagesContainer').appendChild(card);
 }
 
+document.getElementById('imagesContainer').appendChild(card);
+
+
+
+
+  // 🦋 Botón mariposaMore actions
+  // 🦋 Botón mariposa (solo si el usuario NO es el dueño)
+if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
+  const butterflyBtn = document.createElement('button');
+  butterflyBtn.className = 'butterfly-btn';
+  butterflyBtn.innerHTML = '🦋';
+
+  const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
+  if (hasLiked) butterflyBtn.classList.add('active');
+
+  butterflyBtn.addEventListener('click', async () => {
+    try {
+      const res = await fetch(
+        `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
+      const result = await res.json();
+      butterflyBtn.classList.toggle('active', result.liked);
+    } catch (err) {
+      console.error('Error al dar mariposa:', err);
+      alert('Error al dar/quitar mariposa');
+    }
+  });
+
+  card.appendChild(butterflyBtn);
+}
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
     try {
