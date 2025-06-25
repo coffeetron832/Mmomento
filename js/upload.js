@@ -288,16 +288,20 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
         }
       );
       if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
-      const result = await res.json();
-      butterflyBtn.classList.toggle('active', result.liked);
-    } catch (err) {
-      console.error('Error al dar mariposa:', err);
-      alert('Error al dar/quitar mariposa');
-    }
-  });
+        const result = await res.json();
+        butterflyBtn.classList.toggle('active', result.liked);
+      } catch (err) {
+        console.error('Error al dar mariposa:', err);
+        alert('Error al dar/quitar mariposa');
+      }
+    });
 
-  card.appendChild(butterflyBtn);
+    card.appendChild(butterflyBtn);
+  }
+
+  return card; // 👈 ESTO ES LO QUE FALTABA
 }
+  
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
     try {
