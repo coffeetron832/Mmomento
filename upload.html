@@ -874,70 +874,75 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.createElement('div');
     card.classList.add('image-card-hover');
 
-    // Descripción visible
+    // ✅ Descripción visible
     const desc = document.createElement('div');
     desc.className = 'image-description-hover';
     desc.textContent = image.description || '(sin descripción)';
     card.appendChild(desc);
 
-    // Imagen oculta para mostrar al pasar cursor
+    // ✅ Imagen oculta
     const preview = document.createElement('div');
     preview.className = 'image-preview-hover';
 
     const img = document.createElement('img');
     img.src = image.imageUrl;
-    img.alt = 'Momento';
+    img.alt = 'Imagen flotante';
     preview.appendChild(img);
-
     card.appendChild(preview);
 
-    // Mostrar imagen al pasar mouse por descripción
+    // ✅ Mostrar imagen al pasar el cursor por la descripción
     desc.addEventListener('mouseenter', () => {
-      preview.classList.add('show');
+      preview.style.display = 'block';
+      setTimeout(() => preview.style.opacity = '1', 10); // animación suave
     });
+
     desc.addEventListener('mouseleave', () => {
-      preview.classList.remove('show');
+      preview.style.opacity = '0';
+      setTimeout(() => preview.style.display = 'none', 300);
     });
 
+    // ✅ (Opcional) mostrar el usuario debajo
+    if (image.username) {
+      const user = document.createElement('div');
+      user.className = 'image-user';
+      user.textContent = `@${image.username}`;
+      card.appendChild(user);
+    }
 
-          // Si tiene usuario
-          if (image.username) {
-            const user = document.createElement('div');
-            user.className = 'image-user';
-            user.textContent = `@${image.username}`;
-            card.appendChild(user);
+    // ✅ (Opcional) botón mariposa
+    const btn = document.createElement('button');
+    btn.className = 'butterfly-btn';
+    btn.innerHTML = '🦋';
+    btn.dataset.id = image._id;
+
+    const token = localStorage.getItem('token');
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const username = storedUser?.username;
+
+    if (image.likes && image.likes.includes(username)) {
+      btn.classList.add('active');
+    }
+
+    btn.addEventListener('click', async () => {
+      try {
+        const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
           }
-
-          // Botón mariposa
-          const btn = document.createElement('button');
-          btn.className = 'butterfly-btn';
-          btn.innerHTML = '🦋';
-          btn.dataset.id = image._id;
-
-          if (image.likes && image.likes.includes(username)) {
-            btn.classList.add('active');
-          }
-
-          btn.addEventListener('click', async () => {
-            try {
-              const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${token}`,
-                }
-              });
-              if (response.ok) {
-                btn.classList.toggle('active');
-              }
-            } catch (error) {
-              console.error('Error al enviar mariposa:', error);
-            }
-          });
-
-          card.appendChild(btn);
-          imagesContainer.appendChild(card);
         });
+        if (response.ok) {
+          btn.classList.toggle('active');
+        }
+      } catch (error) {
+        console.error('Error al enviar mariposa:', error);
       }
+    });
+
+    card.appendChild(btn);
+    imagesContainer.appendChild(card);
+  });
+}
 
     });
   </script>
