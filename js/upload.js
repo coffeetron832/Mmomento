@@ -212,24 +212,9 @@ if (successMsg) {
 }
 
 
-  // 🧩 Crear tarjeta
-
-  // Descripción visible
-  const desc = document.createElement('div');
-  desc.className = 'image-description-hover';
-  desc.textContent = image.description || '(sin descripción)';
-  card.appendChild(desc);
-
-  // Imagen oculta hasta hover
-  const preview = document.createElement('div');
-  preview.className = 'image-preview-hover';
-
-  const img = document.createElement('img');
-  img.src = image.imageUrl || image.url || '';
-  img.alt = image.description || 'Imagen subida';
-  preview.appendChild(img);
-
-  card.appendChild(preview);
+  function createImageCard(image) {
+  const card = document.createElement('div');
+  card.className = 'image-card-hover';
 
   // Imagen oculta hasta hover
   const preview = document.createElement('div');
@@ -248,11 +233,8 @@ if (successMsg) {
   card.appendChild(desc);
 
   // Usuario
-const userInfo = document.createElement('div');
-userInfo.className = 'image-user';
-function createImageCard(image) {
-  const card = document.createElement('div');
-  card.className = 'image-card-hover'; // Asegúrate que en CSS esto tenga position: relative
+  const userInfo = document.createElement('div');
+  userInfo.className = 'image-user';
 
   const ownerId =
     typeof image.userId === 'object' && image.userId !== null
@@ -267,11 +249,7 @@ function createImageCard(image) {
   card.appendChild(userInfo);
 
   // 🦋 Botón mariposa si no es tuyo
-  if (
-    currentUserId &&
-    ownerId &&
-    String(currentUserId) !== String(ownerId)
-  ) {
+  if (currentUserId && ownerId && String(currentUserId) !== String(ownerId)) {
     const butterflyBtn = document.createElement('button');
     butterflyBtn.className = 'butterfly-btn';
     butterflyBtn.innerHTML = '🦋';
@@ -287,8 +265,8 @@ function createImageCard(image) {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
+              'Content-Type': 'application/json',
+            },
           }
         );
         if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
@@ -305,6 +283,7 @@ function createImageCard(image) {
 
   return card;
 }
+
 
 
 
