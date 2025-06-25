@@ -231,17 +231,22 @@ function createImageCard(image) {
   card.appendChild(preview);
 
   // Usuario
-  const userInfo = document.createElement('div');
-  userInfo.className = 'image-user';
-  if (image.userId && typeof image.userId === 'object') {
-    userInfo.textContent = `@${image.userId.username || 'anónimo'}`;
-  } else {
-    userInfo.textContent = 'Subido por: desconocido';
-  }
-  card.appendChild(userInfo);
+const userInfo = document.createElement('div');
+userInfo.className = 'image-user';
 
-  // Mariposa
-  // 🦋 Mostrar botón mariposa solo si NO es el dueño
+const ownerId =
+  typeof image.userId === 'object' && image.userId !== null
+    ? image.userId._id || image.userId.id
+    : image.userId;
+
+if (image.userId && typeof image.userId === 'object') {
+  userInfo.textContent = `@${image.userId.username || 'anónimo'}`;
+} else {
+  userInfo.textContent = 'Subido por: desconocido';
+}
+card.appendChild(userInfo);
+
+// 🦋 Mostrar botón mariposa solo si NO es el dueño
 if (
   currentUserId &&
   ownerId &&
