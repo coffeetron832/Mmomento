@@ -441,10 +441,13 @@ async function loadNotifications() {
 
     // Actualizar contador
     notifCount.textContent = notifications.length;
-    notifCount.style.display = 'inline-block';
+      notifCount.style.display = 'inline-block';
   } catch (e) {
     console.error('Error al cargar notificaciones:', e);
     notifList.innerHTML = '<li style="padding:0.5rem;color:red;">Error al cargar notificaciones</li>';
     notifCount.style.display = 'none';
   }
 }
+
+// 👇👇👇 AGREGA ESTO para cerrar el `DOMContentLoaded`
+});  // <- Cierre de addEventListener
