@@ -274,13 +274,6 @@ function createImageCard(image) {
   return card;
 }
 
-
-  // Agregar elementos
-  card.append(img, desc, userInfo);
-  return card; // ✅ Esto es esencial
-}
-
-
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
     try {
