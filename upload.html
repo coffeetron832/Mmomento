@@ -560,54 +560,32 @@
 }
 
 
-.image-card-hover {
+.image-hover-wrapper {
   position: relative;
-  margin-bottom: 1.5rem;
-  cursor: default;
-  width: 100%;
-  max-width: 300px;
+  margin-bottom: 1rem;
 }
 
-.image-description-hover {
-  font-family: 'Host Grotesk', sans-serif;
-  font-size: 1rem;
-  color: var(--btn-text);
-  background: transparent;
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid transparent;
-  transition: border-color 0.3s ease;
+.image-description {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
 }
 
-.image-description-hover:hover {
-  border-color: var(--btn-hover);
-}
-
-.image-preview-hover {
-  position: absolute;
-  top: 110%; /* justo debajo del texto */
-  left: 0;
+.hidden-image {
   display: none;
-  max-width: 300px;
-  max-height: 200px;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 10;
-  background: black;
-}
-
-.image-preview-hover img {
-  width: 100%;
-  height: auto;
+  margin-top: 0.5rem;
+  max-width: 100%;
   border-radius: 8px;
 }
 
-.image-preview-hover.show {
+/* Mostrar imagen al pasar el mouse */
+.image-hover-wrapper:hover .hidden-image {
   display: block;
-  opacity: 1;
 }
+
 
 
 
