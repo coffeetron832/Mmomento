@@ -202,7 +202,7 @@ function renderImages(images) {
     description.textContent = img.description || 'Momento';
 
     const image = document.createElement('img');
-    image.src = img.url;
+    image.src = img.imageUrl || img.url || '';
     image.alt = img.description || 'Momento';
     image.className = 'hidden-image';
 
