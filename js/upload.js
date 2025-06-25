@@ -236,10 +236,9 @@ if (successMsg) {
   const userInfo = document.createElement('div');
   userInfo.className = 'image-user';
 
-  const ownerId =
-    typeof image.userId === 'object' && image.userId !== null
-      ? image.userId._id || image.userId.id
-      : image.userId;
+  const ownerId = typeof image.userId === 'object' && image.userId !== null
+    ? image.userId._id || image.userId.id
+    : image.userId;
 
   if (image.userId && typeof image.userId === 'object') {
     userInfo.textContent = `@${image.userId.username || 'anónimo'}`;
@@ -249,7 +248,11 @@ if (successMsg) {
   card.appendChild(userInfo);
 
   // 🦋 Botón mariposa si no es tuyo
-  if (currentUserId && ownerId && String(currentUserId) !== String(ownerId)) {
+  if (
+    currentUserId &&
+    ownerId &&
+    String(currentUserId) !== String(ownerId)
+  ) {
     const butterflyBtn = document.createElement('button');
     butterflyBtn.className = 'butterfly-btn';
     butterflyBtn.innerHTML = '🦋';
@@ -265,8 +268,8 @@ if (successMsg) {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
+              'Content-Type': 'application/json'
+            }
           }
         );
         if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
@@ -283,6 +286,7 @@ if (successMsg) {
 
   return card;
 }
+
 
 
 
