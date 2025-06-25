@@ -2,10 +2,9 @@ let token = localStorage.getItem("token"); // antes era const (duplicado)
 let currentUserId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadImages();
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
-  const imageActionMessage = document.getElementById('imageActionMessage');
+  const imageActionMessage = document.getElementById("imageActionMessage");
 
   if (!form) return;
 form.addEventListener('submit', async (e) => {
@@ -172,70 +171,62 @@ if (logoutBtn) {
 
   // 📤 Subida de imagen
   if (form) {
-    form.addEventListener('submit', async e => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const fileInput = document.getElementById('image');
+
+      const fileInput = document.getElementById("image");
       if (!fileInput || !fileInput.files.length) {
-        alert('Selecciona una imagen');
+        alert("Selecciona una imagen");
         return;
       }
-      const formData = new FormData(form);
 
-      // ✅ Asegura que la descripción esté dentro de formData
-const descriptionInput = document.getElementById('description');
-formData.set('description', descriptionInput?.value?.trim() || '(sin descripción)');
+      const formData = new FormData(form);
+      const descriptionInput = document.getElementById("description");
+      formData.set("description", descriptionInput?.value?.trim() || "(sin descripción)");
 
       try {
-        const res = await fetch(
-          'https://momento-backend-production.up.railway.app/api/images/',
-          {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData
-          }
-        );
+        const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+
         const result = await res.json();
 
         if (!res.ok) {
-          console.error('Error servidor:', result);
-          alert(result.error || result.message || 'Error al subir la imagen');
+          console.error("Error servidor:", result);
+          alert(result.error || result.message || "Error al subir la imagen");
           return;
         }
 
-        const successMsg = document.getElementById('imageActionMessage');
-if (successMsg) {
-  successMsg.innerHTML = '🌟 ¡Tu momento ha sido compartido con el alma!';
-  successMsg.style.display = 'block';
-  successMsg.style.opacity = '0';
-  successMsg.style.transition = 'opacity 0.8s ease';
+        // ✅ Mensaje suave de éxito
+        if (imageActionMessage) {
+          imageActionMessage.innerHTML = "🌟 ¡Tu momento ha sido compartido con el alma!";
+          imageActionMessage.style.display = "block";
+          imageActionMessage.style.opacity = "0";
+          imageActionMessage.style.transition = "opacity 0.8s ease";
 
-  setTimeout(() => {
-    successMsg.style.opacity = '1';
-  }, 100);
-
-  setTimeout(() => {
-    successMsg.style.opacity = '0';
-    setTimeout(() => {
-      successMsg.style.display = 'none';
-    }, 800);
-  }, 5000);
-}
+          setTimeout(() => (imageActionMessage.style.opacity = "1"), 100);
+          setTimeout(() => {
+            imageActionMessage.style.opacity = "0";
+            setTimeout(() => (imageActionMessage.style.display = "none"), 800);
+          }, 5000);
+        }
 
         form.reset();
-
-        // 🔄 Recarga completa de la galería tras subir
         await loadImages();
 
-        if (circleContainer) circleContainer.style.display = 'none';
+        const circleContainer = document.getElementById("circleSelectorContainer");
+        if (circleContainer) circleContainer.style.display = "none";
       } catch (err) {
-        console.error('Error en subida de imagen:', err);
-        alert('Error en la subida de la imagen');
+        console.error("Error en subida de imagen:", err);
+        alert("Error en la subida de la imagen");
       }
     });
   }
 
-
-
+        // 🔄 Recarga completa de la galería tras subir
+        await loadImages();
   
   // 🔄 Cargar imágenes
   async function loadImages() {
@@ -258,84 +249,77 @@ if (successMsg) {
 
 
 
+   // 💠 Crear tarjeta de imagen
   function createImageCard(image) {
-  const card = document.createElement('div');
-  card.className = 'image-card-hover';
+    const card = document.createElement("div");
+    card.className = "image-card-hover";
 
-  // Imagen oculta hasta hover
-  const preview = document.createElement('div');
-  preview.className = 'image-preview-hover';
+    const preview = document.createElement("div");
+    preview.className = "image-preview-hover";
+    const img = document.createElement("img");
+    img.src = image.imageUrl || image.url || "";
+    img.alt = image.description || "Imagen subida";
+    preview.appendChild(img);
+    card.appendChild(preview);
 
-  const img = document.createElement('img');
-  img.src = image.imageUrl || image.url || '';
-  img.alt = image.description || 'Imagen subida';
-  preview.appendChild(img);
-  card.appendChild(preview);
+    const desc = document.createElement("div");
+    desc.className = "image-description-hover";
+    desc.textContent = image.description || "(sin descripción)";
+    card.appendChild(desc);
 
-  // Descripción que aparece en hover
-  const desc = document.createElement('div');
-  desc.className = 'image-description-hover';
-  desc.textContent = image.description || '(sin descripción)';
-  card.appendChild(desc);
+    const userInfo = document.createElement("div");
+    userInfo.className = "image-user";
 
-  // Usuario
-  const userInfo = document.createElement('div');
-  userInfo.className = 'image-user';
+    const ownerId = typeof image.userId === "object" && image.userId !== null
+      ? image.userId._id || image.userId.id
+      : image.userId;
 
-  const ownerId = typeof image.userId === 'object' && image.userId !== null
-    ? image.userId._id || image.userId.id
-    : image.userId;
+    if (image.userId && typeof image.userId === "object") {
+      userInfo.textContent = `@${image.userId.username || "anónimo"}`;
+    } else {
+      userInfo.textContent = "Subido por: desconocido";
+    }
+    card.appendChild(userInfo);
 
-  if (image.userId && typeof image.userId === 'object') {
-    userInfo.textContent = `@${image.userId.username || 'anónimo'}`;
-  } else {
-    userInfo.textContent = 'Subido por: desconocido';
-  }
-  card.appendChild(userInfo);
+    // 🦋 Mariposa (solo si no es tuyo)
+    if (currentUserId && ownerId && String(currentUserId) !== String(ownerId)) {
+      const butterflyBtn = document.createElement("button");
+      butterflyBtn.className = "butterfly-btn";
+      butterflyBtn.innerHTML = "🦋";
 
-  // 🦋 Botón mariposa si no es tuyo
-  if (
-    currentUserId &&
-    ownerId &&
-    String(currentUserId) !== String(ownerId)
-  ) {
-    const butterflyBtn = document.createElement('button');
-    butterflyBtn.className = 'butterfly-btn';
-    butterflyBtn.innerHTML = '🦋';
+      const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
+      if (hasLiked) butterflyBtn.classList.add("active");
 
-    const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
-    if (hasLiked) butterflyBtn.classList.add('active');
-
-    butterflyBtn.addEventListener('click', async () => {
-      try {
-        const res = await fetch(
-          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json'
+      butterflyBtn.addEventListener("click", async () => {
+        try {
+          const res = await fetch(
+            `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
             }
-          }
-        );
-        if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
-        const result = await res.json();
-        butterflyBtn.classList.toggle('active', result.liked);
-      } catch (err) {
-        console.error('Error al dar mariposa:', err);
-        alert('Error al dar/quitar mariposa');
-      }
-    });
+          );
+          if (!res.ok) throw new Error("No se pudo dar/quitar mariposa");
+          const result = await res.json();
+          butterflyBtn.classList.toggle("active", result.liked);
+        } catch (err) {
+          console.error("Error al dar mariposa:", err);
+          alert("Error al dar/quitar mariposa");
+        }
+      });
 
-    card.appendChild(butterflyBtn);
+      card.appendChild(butterflyBtn);
+    }
+
+    return card;
   }
 
-  return card;
-}
-
-
-
-
+  // ✅ Cargar imágenes iniciales
+  loadImages();
+});
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
