@@ -136,6 +136,10 @@ if (logoutBtn) {
       }
       const formData = new FormData(form);
 
+      // ✅ Asegura que la descripción esté dentro de formData
+const descriptionInput = document.getElementById('description');
+formData.set('description', descriptionInput?.value?.trim() || '(sin descripción)');
+
       try {
         const res = await fetch(
           'https://momento-backend-production.up.railway.app/api/images/',
