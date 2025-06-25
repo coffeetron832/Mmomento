@@ -853,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadImages() {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('https://momento-backend-production.up.railway.app/api/images/public', {
+        const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
   headers: token ? { Authorization: `Bearer ${token}` } : {},
 });
         const data = await res.json();
