@@ -234,60 +234,40 @@ function createImageCard(image) {
     userInfo.textContent = 'Subido por: Anónimo';
   }
 
-  // ✅ Si el usuario actual es el dueño, mostrar botón de eliminar
-  // Botón de eliminar solo si es el dueño
+  card.append(img, desc, userInfo);
+
+  // Botón de eliminar
   if (ownerId === currentUserId) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
-    deleteBtn.innerText = '✖️'; // Puedes usar también '🧼' o '❌'
     deleteBtn.innerText = '✖️';
     deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
     card.appendChild(deleteBtn);
   }
 
-  card.append(img, desc, userInfo);
-  document.getElementById('imagesContainer').appendChild(card);
+  // Botón mariposa
+  if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
+    const butterflyBtn = document.createElement('button');
+    butterflyBtn.className = 'butterfly-btn';
+    butterflyBtn.innerHTML = '🦋';
 
-if (ownerId === currentUserId) {
-  const deleteBtn = document.createElement('button');
-  deleteBtn.className = 'delete-btn';
-  deleteBtn.setAttribute('aria-label', 'Eliminar imagen');
-  deleteBtn.innerText = '✖️';
-  deleteBtn.addEventListener('click', () => deleteImage(image._id, card));
-  card.appendChild(deleteBtn);
-  // Finalmente, agregar la tarjeta al contenedor
-  document.getElementById('imagesContainer').appendChild(card);
-}
+    const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
+    if (hasLiked) butterflyBtn.classList.add('active');
 
-document.getElementById('imagesContainer').appendChild(card);
-
-
-
-
-  // 🦋 Botón mariposaMore actions
-  // 🦋 Botón mariposa (solo si el usuario NO es el dueño)
-if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
-  const butterflyBtn = document.createElement('button');
-  butterflyBtn.className = 'butterfly-btn';
-  butterflyBtn.innerHTML = '🦋';
-
-  const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
-  if (hasLiked) butterflyBtn.classList.add('active');
-
-  butterflyBtn.addEventListener('click', async () => {
-    try {
-      const res = await fetch(
-        `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
+    butterflyBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(
+          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
           }
-        }
-      );
-      if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
+        );
+        if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
         const result = await res.json();
         butterflyBtn.classList.toggle('active', result.liked);
       } catch (err) {
@@ -299,8 +279,9 @@ if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
     card.appendChild(butterflyBtn);
   }
 
-  return card; // 👈 ESTO ES LO QUE FALTABA
+  return card;
 }
+
   
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
