@@ -581,14 +581,6 @@
   color: #ccc;
   transform: scale(1.1);
 }
-
-
-    @media (min-width: 601px) {
-  .close-menu-btn {
-    display: none;
-  }
-}
-
     
     
   </style>
@@ -700,7 +692,7 @@
 
     <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
       <!-- Dentro de .menu-content -->
-    <button id="closeMenuBtn" class="footer-link">✖️ Cerrar</button>
+     <button id="closeMenuBtn" class="close-menu-btn" aria-label="Cerrar menú">✖</button>
       
   <div class="menu-content">
     <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
