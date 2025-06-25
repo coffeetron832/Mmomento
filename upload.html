@@ -560,14 +560,55 @@
 }
 
 
+.image-card-hover {
+  position: relative;
+  margin-bottom: 1.5rem;
+  cursor: default;
+  width: 100%;
+  max-width: 300px;
+}
+
+.image-description-hover {
+  font-family: 'Host Grotesk', sans-serif;
+  font-size: 1rem;
+  color: var(--btn-text);
+  background: transparent;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.image-description-hover:hover {
+  border-color: var(--btn-hover);
+}
+
 .image-preview-hover {
+  position: absolute;
+  top: 110%; /* justo debajo del texto */
+  left: 0;
   display: none;
-  margin-top: 0.5rem;
-  transition: opacity 0.3s ease-in-out;
-  max-height: 300px;
-  overflow: hidden;
+  max-width: 300px;
+  max-height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  background: black;
+}
+
+.image-preview-hover img {
+  width: 100%;
+  height: auto;
   border-radius: 8px;
 }
+
+.image-preview-hover.show {
+  display: block;
+  opacity: 1;
+}
+
 
 
 
@@ -826,34 +867,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
     function renderImages(images) {
-        imagesContainer.innerHTML = '';
-        images.forEach(image => {
-          const card = document.createElement('div');
-          card.classList.add('image-card-hover');
+  const imagesContainer = document.getElementById('imagesContainer');
+  imagesContainer.innerHTML = '';
 
-          const desc = document.createElement('div');
-          desc.className = 'image-description-hover';
-          desc.textContent = image.description || '(sin descripción)';
-          card.appendChild(desc);
+  images.forEach(image => {
+    const card = document.createElement('div');
+    card.classList.add('image-card-hover');
 
-          const preview = document.createElement('div');
-          preview.className = 'image-preview-hover';
-          preview.style.display = 'none';
+    // Descripción visible
+    const desc = document.createElement('div');
+    desc.className = 'image-description-hover';
+    desc.textContent = image.description || '(sin descripción)';
+    card.appendChild(desc);
 
-          const img = document.createElement('img');
-          img.src = image.imageUrl;
-          img.alt = 'Momento';
-          preview.appendChild(img);
+    // Imagen oculta para mostrar al pasar cursor
+    const preview = document.createElement('div');
+    preview.className = 'image-preview-hover';
 
-          card.appendChild(preview);
+    const img = document.createElement('img');
+    img.src = image.imageUrl;
+    img.alt = 'Momento';
+    preview.appendChild(img);
 
-          // Mostrar imagen al pasar el mouse por la descripción
-          desc.addEventListener('mouseenter', () => {
-            preview.style.display = 'block';
-          });
-          desc.addEventListener('mouseleave', () => {
-            preview.style.display = 'none';
-          });
+    card.appendChild(preview);
+
+    // Mostrar imagen al pasar mouse por descripción
+    desc.addEventListener('mouseenter', () => {
+      preview.classList.add('show');
+    });
+    desc.addEventListener('mouseleave', () => {
+      preview.classList.remove('show');
+    });
+
 
           // Si tiene usuario
           if (image.username) {
