@@ -5,50 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
   const imageActionMessage = document.getElementById("imageActionMessage");
-
-  if (!form) return;
-form.addEventListener('submit', async (e) => {
-
-    e.preventDefault();
-
-    // Usa la variable `form`, no `uploadForm`
-    const formData = new FormData(form);
-    const token = localStorage.getItem('token');
-
-    try {
-      const res = await fetch('https://momento-backend-production.up.railway.app/api/images/upload', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
-
-      const result = await res.json();
-
-      if (res.ok) {
-        // Mostrar mensaje suave
-        imageActionMessage.textContent = '🌟 ¡Tu momento ha sido compartido con el alma!';
-        imageActionMessage.style.display = 'block';
-        imageActionMessage.style.opacity = '1';
-
-        setTimeout(() => {
-          imageActionMessage.style.opacity = '0';
-          setTimeout(() => imageActionMessage.style.display = 'none', 500);
-        }, 3000);
-
-        uploadForm.reset(); // limpiar campos del formulario
-      } else {
-        alert(`❌ Error al subir: ${result.message || 'Intenta de nuevo'}`);
-      }
-    } catch (err) {
-      console.error('❌ Error inesperado:', err);
-      alert('❌ Ocurrió un error inesperado al subir tu momento.');
-    }
-  });
-});
-
-
   
   const welcomeBackMessage = localStorage.getItem('welcomeBackMessage');
 if (welcomeBackMessage) {
