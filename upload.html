@@ -826,75 +826,76 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
     function renderImages(images) {
-  imagesContainer.innerHTML = '';
-  images.forEach(image => {
-    const card = document.createElement('div');
-    card.classList.add('image-card-hover');
+        imagesContainer.innerHTML = '';
+        images.forEach(image => {
+          const card = document.createElement('div');
+          card.classList.add('image-card-hover');
 
-    const desc = document.createElement('div');
-    desc.className = 'image-description-hover';
-    desc.textContent = image.description || '(sin descripción)';
-    card.appendChild(desc);
+          const desc = document.createElement('div');
+          desc.className = 'image-description-hover';
+          desc.textContent = image.description || '(sin descripción)';
+          card.appendChild(desc);
 
-    const preview = document.createElement('div');
-    preview.className = 'image-preview-hover';
-    preview.style.display = 'none';
+          const preview = document.createElement('div');
+          preview.className = 'image-preview-hover';
+          preview.style.display = 'none';
 
-    const img = document.createElement('img');
-    img.src = image.imageUrl;
-    img.alt = 'Momento';
-    preview.appendChild(img);
+          const img = document.createElement('img');
+          img.src = image.imageUrl;
+          img.alt = 'Momento';
+          preview.appendChild(img);
 
-    card.appendChild(preview);
+          card.appendChild(preview);
 
-    // Mostrar imagen al pasar el mouse por la descripción
-    desc.addEventListener('mouseenter', () => {
-      preview.style.display = 'block';
-    });
-    desc.addEventListener('mouseleave', () => {
-      preview.style.display = 'none';
-    });
+          // Mostrar imagen al pasar el mouse por la descripción
+          desc.addEventListener('mouseenter', () => {
+            preview.style.display = 'block';
+          });
+          desc.addEventListener('mouseleave', () => {
+            preview.style.display = 'none';
+          });
 
-    // Si tiene usuario
-    if (image.username) {
-      const user = document.createElement('div');
-      user.className = 'image-user';
-      user.textContent = `@${image.username}`;
-      card.appendChild(user);
-    }
-
-    // Botón mariposa
-    const btn = document.createElement('button');
-    btn.className = 'butterfly-btn';
-    btn.innerHTML = '🦋';
-    btn.dataset.id = image._id;
-
-    if (image.likes && image.likes.includes(username)) {
-      btn.classList.add('active');
-    }
-
-    btn.addEventListener('click', async () => {
-      try {
-        const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
+          // Si tiene usuario
+          if (image.username) {
+            const user = document.createElement('div');
+            user.className = 'image-user';
+            user.textContent = `@${image.username}`;
+            card.appendChild(user);
           }
+
+          // Botón mariposa
+          const btn = document.createElement('button');
+          btn.className = 'butterfly-btn';
+          btn.innerHTML = '🦋';
+          btn.dataset.id = image._id;
+
+          if (image.likes && image.likes.includes(username)) {
+            btn.classList.add('active');
+          }
+
+          btn.addEventListener('click', async () => {
+            try {
+              const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                }
+              });
+              if (response.ok) {
+                btn.classList.toggle('active');
+              }
+            } catch (error) {
+              console.error('Error al enviar mariposa:', error);
+            }
+          });
+
+          card.appendChild(btn);
+          imagesContainer.appendChild(card);
         });
-        if (response.ok) {
-          btn.classList.toggle('active');
-        }
-      } catch (error) {
-        console.error('Error al enviar mariposa:', error);
       }
+
     });
-
-    card.appendChild(btn);
-    imagesContainer.appendChild(card);
-  });
-}
-
-</script>
+  </script>
   <script src="js/upload.js"></script>
 </body>
 </html>
