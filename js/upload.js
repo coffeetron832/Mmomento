@@ -236,7 +236,7 @@ function createImageCard(image) {
 
   card.append(img, desc, userInfo);
 
-  // Botón de eliminar
+  // 🗑 Botón eliminar si es del usuario actual
   if (ownerId === currentUserId) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
@@ -246,7 +246,7 @@ function createImageCard(image) {
     card.appendChild(deleteBtn);
   }
 
-  // Botón mariposa
+  // 🦋 Botón mariposa si NO es del usuario
   if (currentUserId && ownerId && currentUserId !== ownerId.toString()) {
     const butterflyBtn = document.createElement('button');
     butterflyBtn.className = 'butterfly-btn';
@@ -281,6 +281,7 @@ function createImageCard(image) {
 
   return card;
 }
+
 
   
   // 🗑 Eliminar imagen
