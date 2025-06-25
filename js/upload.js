@@ -234,11 +234,6 @@ function createImageCard(image) {
 
   card.appendChild(preview);
 
-  // Usuario
-function createImageCard(image) {
-  const card = document.createElement('div');
-  card.className = 'image-card-hover'; // Asegúrate que en CSS esto tenga position: relative
-
   // Imagen oculta hasta hover
   const preview = document.createElement('div');
   preview.className = 'image-preview-hover';
