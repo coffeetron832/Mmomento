@@ -565,23 +565,35 @@
   margin-bottom: 1rem;
 }
 
+.image-hover-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 1rem;
+}
+
 .image-description {
-  font-weight: bold;
   cursor: pointer;
+  font-weight: bold;
   padding: 0.5rem;
-  background: #f0f0f0;
-  border-radius: 8px;
   text-align: center;
+  border-radius: 8px;
+  background: var(--accent, #f0f0f0);
 }
 
 .hidden-image {
   display: none;
-  margin-top: 0.5rem;
-  max-width: 100%;
+  position: absolute;
+  top: 120%; /* o bottom: 100% si prefieres que aparezca arriba */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 300px; /* controla el tamaño */
+  max-height: 300px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   border-radius: 8px;
+  z-index: 10;
 }
 
-/* Mostrar imagen al pasar el mouse */
+/* Mostrar imagen al pasar el cursor por el texto */
 .image-hover-wrapper:hover .hidden-image {
   display: block;
 }
