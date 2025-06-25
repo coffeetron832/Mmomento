@@ -213,9 +213,6 @@ if (successMsg) {
 
 
   // 🧩 Crear tarjeta
-function createImageCard(image) {
-  const card = document.createElement('div');
-  card.className = 'image-card-hover';
 
   // Descripción visible
   const desc = document.createElement('div');
@@ -251,8 +248,11 @@ function createImageCard(image) {
   card.appendChild(desc);
 
   // Usuario
-  const userInfo = document.createElement('div');
-  userInfo.className = 'image-user';
+const userInfo = document.createElement('div');
+userInfo.className = 'image-user';
+function createImageCard(image) {
+  const card = document.createElement('div');
+  card.className = 'image-card-hover'; // Asegúrate que en CSS esto tenga position: relative
 
   const ownerId =
     typeof image.userId === 'object' && image.userId !== null
