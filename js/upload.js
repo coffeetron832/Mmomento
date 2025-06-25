@@ -2,13 +2,14 @@ let token = localStorage.getItem("token"); // antes era const (duplicado)
 let currentUserId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadImages();
   const form = document.getElementById("uploadForm");
   const imagesContainer = document.getElementById("imagesContainer");
   const imageActionMessage = document.getElementById('imageActionMessage');
 
-  if (!uploadForm) return;
+  if (!form) return;
+form.addEventListener('submit', async (e) => {
 
-  uploadForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = new FormData(uploadForm);
