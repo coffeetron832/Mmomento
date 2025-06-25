@@ -186,31 +186,20 @@ if (successMsg) {
     });
   }
 
-  // 🔄 Cargar imágenes
+    // 🔄 Cargar imágenes
   async function loadImages() {
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error('Error al obtener imágenes');
-    const images = await res.json();
-    renderImages(images);
-  } catch (e) {
-    console.error('Error cargando imágenes:', e);
+    try {
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Error al obtener imágenes');
+      const images = await res.json();
+      renderImages(images);
+    } catch (e) {
+      console.error('Error cargando imágenes:', e);
+    }
   }
-}
 
-      fetch('https://momento-backend-production.up.railway.app/api/images/')
-  .then(res => res.json())
-  .then(data => {
-    renderImages(data.images);
-  });
-
-    // 🔄 Cargar imágenes al cargar la página
-  loadImages();
-});  // <- Cierre final del addEventListener
-
-  
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
     try {
@@ -219,26 +208,26 @@ if (successMsg) {
         { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.ok) {
-  el.remove();
-  const msg = document.getElementById('uploadSuccessMessage');
-  if (msg) {
-    msg.innerHTML = '🗑️ Tu Momento ya no está... pero dejó huella.';
-    msg.style.display = 'block';
-    msg.style.opacity = '0';
-    msg.style.transition = 'opacity 0.8s ease';
+        el.remove();
+        const msg = document.getElementById('uploadSuccessMessage');
+        if (msg) {
+          msg.innerHTML = '🗑️ Tu Momento ya no está... pero dejó huella.';
+          msg.style.display = 'block';
+          msg.style.opacity = '0';
+          msg.style.transition = 'opacity 0.8s ease';
 
-    setTimeout(() => {
-      msg.style.opacity = '1';
-    }, 100);
+          setTimeout(() => {
+            msg.style.opacity = '1';
+          }, 100);
 
-    setTimeout(() => {
-      msg.style.opacity = '0';
-      setTimeout(() => {
-        msg.style.display = 'none';
-      }, 800);
-    }, 5000);
-  }
-} else {
+          setTimeout(() => {
+            msg.style.opacity = '0';
+            setTimeout(() => {
+              msg.style.display = 'none';
+            }, 800);
+          }, 5000);
+        }
+      } else {
         const data = await res.json();
         alert(data.error || 'Error al eliminar imagen');
       }
@@ -248,95 +237,92 @@ if (successMsg) {
     }
   }
 
+  // 🔔 Botón para mostrar notificaciones
+  const notifBtn = document.getElementById('notifBtn');
+  const notifDropdown = document.getElementById('notifDropdown');
+  const notifList = document.getElementById('notifList');
+  const notifCount = document.getElementById('notifCount');
 
-
-// 🔔 Botón para mostrar notificaciones
-const notifBtn = document.getElementById('notifBtn');
-const notifDropdown = document.getElementById('notifDropdown');
-const notifList = document.getElementById('notifList');
-const notifCount = document.getElementById('notifCount');
-
-
-if (notifBtn && notifDropdown) {
-  notifBtn.addEventListener('click', async () => {
-    notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
-    if (notifDropdown.style.display === 'block') {
-      await loadNotifications();
-    }
-  });
-}
-
-// 🔄 Cargar notificaciones del usuario
-async function loadNotifications() {
-  try {
-    const res = await fetch(
-      'https://momento-backend-production.up.railway.app/api/notifications',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+  if (notifBtn && notifDropdown) {
+    notifBtn.addEventListener('click', async () => {
+      notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
+      if (notifDropdown.style.display === 'block') {
+        await loadNotifications();
       }
-    );
-    if (!res.ok) throw new Error('Error al obtener notificaciones');
-
-    const notifications = await res.json();
-    notifList.innerHTML = '';
-
-    if (!notifications.length) {
-      notifList.innerHTML = '<li style="padding:0.5rem;">Sin notificaciones nuevas</li>';
-      notifCount.style.display = 'none';
-      return;
-    }
-
-    // Mostrar máximo 10 notificaciones
-   notifications.slice(0, 10).forEach(n => {
-  const li = document.createElement('li');
-  li.style.display = 'flex';
-  li.style.justifyContent = 'space-between';
-  li.style.alignItems = 'center';
-  li.style.padding = '0.5rem';
-  li.style.borderBottom = '1px solid #eee';
-
-  const msg = document.createElement('span');
-  msg.textContent = `🦋 ${n.message}`;
-
-  const delBtn = document.createElement('button');
-  delBtn.textContent = '✖'; // ❌ o X
-  delBtn.style.border = 'none';
-  delBtn.style.background = 'transparent';
-  delBtn.style.color = '#999';
-  delBtn.style.cursor = 'pointer';
-  delBtn.title = 'Eliminar notificación';
-  delBtn.addEventListener('click', async () => {
-    try {
-      const res = await fetch(`https://momento-backend-production.up.railway.app/api/notifications/${n._id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (!res.ok) throw new Error('No se pudo eliminar');
-      li.remove();
-    } catch (e) {
-      console.error('Error eliminando notificación:', e);
-      alert('Error al eliminar notificación');
-    }
-  });
-
-  li.append(msg, delBtn);
-  notifList.appendChild(li);
-});
-
-
-    // Actualizar contador
-    notifCount.textContent = notifications.length;
-      notifCount.style.display = 'inline-block';
-  } catch (e) {
-    console.error('Error al cargar notificaciones:', e);
-    notifList.innerHTML = '<li style="padding:0.5rem;color:red;">Error al cargar notificaciones</li>';
-    notifCount.style.display = 'none';
+    });
   }
-}
 
-// 👇👇👇 AGREGA ESTO para cerrar el `DOMContentLoaded`
-});  // <- Cierre de addEventListener
+  // 🔄 Cargar notificaciones del usuario
+  async function loadNotifications() {
+    try {
+      const res = await fetch(
+        'https://momento-backend-production.up.railway.app/api/notifications',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      if (!res.ok) throw new Error('Error al obtener notificaciones');
+
+      const notifications = await res.json();
+      notifList.innerHTML = '';
+
+      if (!notifications.length) {
+        notifList.innerHTML = '<li style="padding:0.5rem;">Sin notificaciones nuevas</li>';
+        notifCount.style.display = 'none';
+        return;
+      }
+
+      // Mostrar máximo 10 notificaciones
+      notifications.slice(0, 10).forEach(n => {
+        const li = document.createElement('li');
+        li.style.display = 'flex';
+        li.style.justifyContent = 'space-between';
+        li.style.alignItems = 'center';
+        li.style.padding = '0.5rem';
+        li.style.borderBottom = '1px solid #eee';
+
+        const msg = document.createElement('span');
+        msg.textContent = `🦋 ${n.message}`;
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '✖';
+        delBtn.style.border = 'none';
+        delBtn.style.background = 'transparent';
+        delBtn.style.color = '#999';
+        delBtn.style.cursor = 'pointer';
+        delBtn.title = 'Eliminar notificación';
+        delBtn.addEventListener('click', async () => {
+          try {
+            const res = await fetch(`https://momento-backend-production.up.railway.app/api/notifications/${n._id}`, {
+              method: 'DELETE',
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+            if (!res.ok) throw new Error('No se pudo eliminar');
+            li.remove();
+          } catch (e) {
+            console.error('Error eliminando notificación:', e);
+            alert('Error al eliminar notificación');
+          }
+        });
+
+        li.append(msg, delBtn);
+        notifList.appendChild(li);
+      });
+
+      // Actualizar contador
+      notifCount.textContent = notifications.length;
+      notifCount.style.display = 'inline-block';
+    } catch (e) {
+      console.error('Error al cargar notificaciones:', e);
+      notifList.innerHTML = '<li style="padding:0.5rem;color:red;">Error al cargar notificaciones</li>';
+      notifCount.style.display = 'none';
+    }
+  }
+
+  // 🖼 Cargar imágenes al iniciar
+  loadImages();
+}); // <--- cierre correcto de document.addEventListener
