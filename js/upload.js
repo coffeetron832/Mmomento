@@ -147,7 +147,6 @@ formData.set('description', descriptionInput?.value?.trim() || '(sin descripció
           {
             method: 'POST',
             headers: { Authorization: `Bearer ${token}` },
-            headers: { Authorization: Bearer ${token} },
             body: formData
           }
         );
