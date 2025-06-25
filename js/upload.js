@@ -206,7 +206,7 @@ if (logoutBtn) {
 
 
    // 💠 Crear tarjeta de imagen
-  function createImageCard(image) {More actions
+  function createImageCard(image) {
   const card = document.createElement('div');
   card.className = 'image-card-hover';
 
