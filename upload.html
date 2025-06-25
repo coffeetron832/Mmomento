@@ -559,40 +559,14 @@
   height: 1.6rem;
 }
 
-.image-card-hover {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  max-width: 500px;
-  margin: 1rem auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
 
-.image-preview-hover img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
-
-.image-description-hover {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0.75rem 1rem;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  opacity: 0;
+.image-preview-hover {
+  display: none;
+  margin-top: 0.5rem;
   transition: opacity 0.3s ease-in-out;
-  font-size: 0.9rem;
-  text-align: center;
-  pointer-events: none; /* evita clics */
-}
-
-.image-card-hover:hover .image-description-hover {
-  opacity: 1;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 
@@ -864,6 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const preview = document.createElement('div');
     preview.className = 'image-preview-hover';
+    preview.style.display = 'none';
 
     const img = document.createElement('img');
     img.src = image.imageUrl;
@@ -872,6 +847,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     card.appendChild(preview);
 
+    // Mostrar imagen al pasar el mouse por la descripción
+    desc.addEventListener('mouseenter', () => {
+      preview.style.display = 'block';
+    });
+    desc.addEventListener('mouseleave', () => {
+      preview.style.display = 'none';
+    });
+
+    // Si tiene usuario
     if (image.username) {
       const user = document.createElement('div');
       user.className = 'image-user';
@@ -879,6 +863,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.appendChild(user);
     }
 
+    // Botón mariposa
     const btn = document.createElement('button');
     btn.className = 'butterfly-btn';
     btn.innerHTML = '🦋';
@@ -909,7 +894,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 }
 
-  });
 </script>
   <script src="js/upload.js"></script>
 </body>
