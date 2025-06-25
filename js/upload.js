@@ -241,15 +241,20 @@ function createImageCard(image) {
   card.appendChild(userInfo);
 
   // Mariposa
-  const btn = document.createElement('button');
-  btn.className = 'butterfly-btn';
-  btn.innerHTML = '🦋';
-  btn.dataset.id = image._id;
+  // 🦋 Mostrar botón mariposa solo si NO es el dueño
+if (
+  currentUserId &&
+  ownerId &&
+  String(currentUserId) !== String(ownerId)
+) {
+  const butterflyBtn = document.createElement('button');
+  butterflyBtn.className = 'butterfly-btn';
+  butterflyBtn.innerHTML = '🦋';
 
   const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
-  if (hasLiked) btn.classList.add('active');
+  if (hasLiked) butterflyBtn.classList.add('active');
 
-  btn.addEventListener('click', async () => {
+  butterflyBtn.addEventListener('click', async () => {
     try {
       const res = await fetch(
         `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
@@ -263,16 +268,16 @@ function createImageCard(image) {
       );
       if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
       const result = await res.json();
-      btn.classList.toggle('active', result.liked);
+      butterflyBtn.classList.toggle('active', result.liked);
     } catch (err) {
       console.error('Error al dar mariposa:', err);
       alert('Error al dar/quitar mariposa');
     }
   });
 
-  card.appendChild(btn);
-  return card;
+  card.appendChild(butterflyBtn);
 }
+
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
