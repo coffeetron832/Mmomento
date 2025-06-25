@@ -274,9 +274,6 @@ if (logoutBtn) {
     return card;
   }
 
-  // ✅ Cargar imágenes iniciales
-  loadImages();
-});
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
