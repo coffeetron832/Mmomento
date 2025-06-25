@@ -200,6 +200,13 @@ if (successMsg) {
     } catch (e) {
       console.error('Error cargando imágenes:', e);
       imagesContainer.innerHTML = "<p style='color:red;'>Error al cargar imágenes.</p>";
+
+      fetch('https://momento-backend-production.up.railway.app/api/images/')
+  .then(res => res.json())
+  .then(data => {
+    renderImages(data.images);
+  });
+
     }
   }
 
