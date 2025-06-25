@@ -207,73 +207,80 @@ if (logoutBtn) {
 
 
    // 💠 Crear tarjeta de imagen
-  function createImageCard(image) {
-    const card = document.createElement("div");
-    card.className = "image-card-hover";
+  function createImageCard(image) {More actions
+  const card = document.createElement('div');
+  card.className = 'image-card-hover';
 
-    const preview = document.createElement("div");
-    preview.className = "image-preview-hover";
-    const img = document.createElement("img");
-    img.src = image.imageUrl || image.url || "";
-    img.alt = image.description || "Imagen subida";
-    preview.appendChild(img);
-    card.appendChild(preview);
+  // Imagen oculta hasta hover
+  const preview = document.createElement('div');
+  preview.className = 'image-preview-hover';
 
-    const desc = document.createElement("div");
-    desc.className = "image-description-hover";
-    desc.textContent = image.description || "(sin descripción)";
-    card.appendChild(desc);
+  const img = document.createElement('img');
+  img.src = image.imageUrl || image.url || '';
+  img.alt = image.description || 'Imagen subida';
+  preview.appendChild(img);
+  card.appendChild(preview);
 
-    const userInfo = document.createElement("div");
-    userInfo.className = "image-user";
+  // Descripción que aparece en hover
+  const desc = document.createElement('div');
+  desc.className = 'image-description-hover';
+  desc.textContent = image.description || '(sin descripción)';
+  card.appendChild(desc);
 
-    const ownerId = typeof image.userId === "object" && image.userId !== null
-      ? image.userId._id || image.userId.id
-      : image.userId;
+  // Usuario
+  const userInfo = document.createElement('div');
+  userInfo.className = 'image-user';
 
-    if (image.userId && typeof image.userId === "object") {
-      userInfo.textContent = `@${image.userId.username || "anónimo"}`;
-    } else {
-      userInfo.textContent = "Subido por: desconocido";
-    }
-    card.appendChild(userInfo);
+  const ownerId = typeof image.userId === 'object' && image.userId !== null
+    ? image.userId._id || image.userId.id
+    : image.userId;
 
-    // 🦋 Mariposa (solo si no es tuyo)
-    if (currentUserId && ownerId && String(currentUserId) !== String(ownerId)) {
-      const butterflyBtn = document.createElement("button");
-      butterflyBtn.className = "butterfly-btn";
-      butterflyBtn.innerHTML = "🦋";
+  if (image.userId && typeof image.userId === 'object') {
+    userInfo.textContent = `@${image.userId.username || 'anónimo'}`;
+  } else {
+    userInfo.textContent = 'Subido por: desconocido';
+  }
+  card.appendChild(userInfo);
 
-      const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
-      if (hasLiked) butterflyBtn.classList.add("active");
+  // 🦋 Botón mariposa si no es tuyo
+  if (
+    currentUserId &&
+    ownerId &&
+    String(currentUserId) !== String(ownerId)
+  ) {
+    const butterflyBtn = document.createElement('button');
+    butterflyBtn.className = 'butterfly-btn';
+    butterflyBtn.innerHTML = '🦋';
 
-      butterflyBtn.addEventListener("click", async () => {
-        try {
-          const res = await fetch(
-            `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
+    const hasLiked = Array.isArray(image.likes) && image.likes.includes(currentUserId);
+    if (hasLiked) butterflyBtn.classList.add('active');
+
+    butterflyBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(
+          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
             }
-          );
-          if (!res.ok) throw new Error("No se pudo dar/quitar mariposa");
-          const result = await res.json();
-          butterflyBtn.classList.toggle("active", result.liked);
-        } catch (err) {
-          console.error("Error al dar mariposa:", err);
-          alert("Error al dar/quitar mariposa");
-        }
-      });
+          }
+        );
+        if (!res.ok) throw new Error('No se pudo dar/quitar mariposa');
+        const result = await res.json();
+        butterflyBtn.classList.toggle('active', result.liked);
+      } catch (err) {
+        console.error('Error al dar mariposa:', err);
+        alert('Error al dar/quitar mariposa');
+      }
+    });
 
-      card.appendChild(butterflyBtn);
-    }
-
-    return card;
+    card.appendChild(butterflyBtn);
   }
 
+  return card;
+}
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
