@@ -559,7 +559,55 @@
   height: 1.6rem;
 }
 
+.image-card-hover {
+  position: relative;
+  display: inline-block;
+  max-width: 300px;
+  margin-bottom: 2rem;
+}
 
+.image-description-hover {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  color: var(--btn-text);
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.image-description-hover:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.image-preview-hover {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 0.5rem;
+  border-radius: 12px;
+  max-width: 260px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+.image-preview-hover img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.image-card-hover:hover .image-preview-hover {
+  display: block;
+}
+
+
+    
     
   </style>
 </head>
@@ -825,28 +873,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderImages(images) {
-      imagesContainer.innerHTML = '';
-      images.forEach(image => {
-        const card = document.createElement('div');
-        card.classList.add('image-card');
+  imagesContainer.innerHTML = '';
+  images.forEach(image => {
+    const card = document.createElement('div');
+    card.classList.add('image-card-hover');
 
-        const img = document.createElement('img');
-        img.src = image.imageUrl;
-        card.appendChild(img);
+    const desc = document.createElement('div');
+    desc.className = 'image-description-hover';
+    desc.textContent = image.description || '(sin descripción)';
+    card.appendChild(desc);
 
-        if (image.description) {
-          const desc = document.createElement('div');
-          desc.className = 'image-description';
-          desc.textContent = image.description;
-          card.appendChild(desc);
-        }
+    const preview = document.createElement('div');
+    preview.className = 'image-preview-hover';
 
-        if (image.username) {
-          const user = document.createElement('div');
-          user.className = 'image-user';
-          user.textContent = `@${image.username}`;
-          card.appendChild(user);
-        }
+    const img = document.createElement('img');
+    img.src = image.imageUrl;
+    img.alt = 'Momento';
+    preview.appendChild(img);
+
+    card.appendChild(preview);
+
+    if (image.username) {
+      const user = document.createElement('div');
+      user.className = 'image-user';
+      user.textContent = `@${image.username}`;
+      card.appendChild(user);
+    }
+
+    imagesContainer.appendChild(card);
+  });
+}
+
 
         const btn = document.createElement('button');
         btn.className = 'butterfly-btn';
