@@ -127,62 +127,54 @@ if (logoutBtn) {
   }
 
   // 📤 Subida de imagen
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-      const fileInput = document.getElementById("image");
-      if (!fileInput || !fileInput.files.length) {
-        alert("Selecciona una imagen");
-        return;
-      }
-
-      const formData = new FormData(form);
-      const descriptionInput = document.getElementById("description");
-      formData.set("description", descriptionInput?.value?.trim() || "(sin descripción)");
-
-      try {
-        const res = await fetch(
-          'https://momento-backend-production.up.railway.app/api/images/',
-          {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData
-          }
-        );
-        const result = await res.json();
-
-        if (!res.ok) {
-          console.error("Error servidor:", result);
-          alert(result.error || result.message || "Error al subir la imagen");
-          return;
-        }
-
-        // ✅ Mensaje suave de éxito
-        if (imageActionMessage) {
-          imageActionMessage.innerHTML = "🌟 ¡Tu momento ha sido compartido con el alma!";
-          imageActionMessage.style.display = "block";
-          imageActionMessage.style.opacity = "0";
-          imageActionMessage.style.transition = "opacity 0.8s ease";
-
-          setTimeout(() => (imageActionMessage.style.opacity = "1"), 100);
-          setTimeout(() => {
-            imageActionMessage.style.opacity = "0";
-            setTimeout(() => (imageActionMessage.style.display = "none"), 800);
-          }, 5000);
-        }
-
-        form.reset();
-        await loadImages();
-
-        const circleContainer = document.getElementById("circleSelectorContainer");
-        if (circleContainer) circleContainer.style.display = "none";
-      } catch (err) {
-        console.error("Error en subida de imagen:", err);
-        alert("Error en la subida de la imagen");
-      }
-    });
+  const fileInput = document.getElementById("image");
+  if (!fileInput || !fileInput.files.length) {
+    alert("Selecciona una imagen");
+    return;
   }
+
+  const formData = new FormData(form);            // <-- usar 'form'
+  const descriptionInput = document.getElementById("description");
+  formData.set("description", descriptionInput?.value.trim() || "(sin descripción)");
+
+  try {
+    const res = await fetch("https://momento-backend-production.up.railway.app/api/images/", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },  // <-- un solo headers
+      body: formData
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      console.error("Error servidor:", result);
+      alert(result.error || result.message || "Error al subir la imagen");
+      return;
+    }
+
+    // mostrar mensaje de éxito...
+    imageActionMessage.innerHTML = "🌟 ¡Tu momento ha sido compartido con el alma!";
+    imageActionMessage.style.display = "block";
+    imageActionMessage.style.opacity = "0";
+    imageActionMessage.style.transition = "opacity 0.8s ease";
+    setTimeout(() => (imageActionMessage.style.opacity = "1"), 100);
+    setTimeout(() => {
+      imageActionMessage.style.opacity = "0";
+      setTimeout(() => (imageActionMessage.style.display = "none"), 800);
+    }, 5000);
+
+    form.reset();
+    await loadImages();
+    circleContainer.style.display = "none";
+  } catch (err) {
+    console.error("Error en subida de imagen:", err);
+    alert("Error en la subida de la imagen");
+  }
+});
+
   
   // 🔄 Cargar imágenes
   async function loadImages() {
