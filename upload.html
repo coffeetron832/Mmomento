@@ -582,6 +582,12 @@
   transform: scale(1.1);
 }
     
+.close-menu-btn svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+
     
   </style>
 </head>
@@ -692,7 +698,10 @@
 
     <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
       <!-- Dentro de .menu-content -->
-     <button id="closeMenuBtn" class="close-menu-btn" aria-label="Cerrar menú">✖</button>
+     <button id="closeMenuBtn" class="close-menu-btn" aria-label="Cerrar menú">
+  <i data-lucide="x"></i>
+</button>
+
       
   <div class="menu-content">
     <button id="logoutMenuBtn" class="footer-link">🔒 Cerrar sesión</button>
@@ -749,6 +758,10 @@ closeMenuBtn.addEventListener('click', () => {
   });
 });
   </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
 </body>
 </html>
 
