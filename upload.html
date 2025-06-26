@@ -39,11 +39,11 @@
   display: flex;
   flex-direction: column;
   height: 100vh; /* cambia de min-height */
-  overflow-x: visible;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
     .container {
+  position: relative; /* ✅ necesario para posicionar hijos como .hidden-image */
   width: 100%;
   max-width: var(--max-width);
   padding: var(--gutter);
@@ -606,11 +606,11 @@
 .hidden-image {
   visibility: hidden;
   opacity: 0;
-  position: absolute;    /* relativo al .image-hover-wrapper */
+  position: absolute;
   top: 50%;
-  left: -420px;          /* ajusta aquí según el ancho de tu img */
-  transform: translateY(-50%) scale(0.9);
-  width: 400px;          /* Fija ancho para que left calcule bien */
+  left: 0; /* ✅ punto de partida dentro del contenedor */
+  transform: translateX(-105%) translateY(-50%) scale(0.9); /* ✅ se mueve a la izquierda dinámicamente */
+  width: 400px;
   height: auto;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
@@ -618,6 +618,7 @@
   z-index: 10;
   pointer-events: none;
 }
+
 
 /* Mostrar la imagen con animación desde la izquierda */
 .image-hover-wrapper:hover .hidden-image {
