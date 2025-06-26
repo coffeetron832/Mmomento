@@ -568,10 +568,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 320px;             /* más espacio horizontal */
-  gap: 0.75rem;             /* espacio entre elementos */
+  gap: 0.5rem;
   margin: 1rem;
-  padding: 1.25rem;         /* un poco más de relleno */
+  padding: 1rem;
   border-radius: 12px;
   background-color: var(--fondo-caja, #fafafa);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -604,7 +603,7 @@
   opacity: 0;
   position: absolute;
   top: 50%;
-  right: 185%; /* se posiciona a la izquierda */
+  right: 160%; /* se posiciona a la izquierda */
   transform: translateY(-50%) scale(0.9);
   max-width: 400px;
   max-height: 400px;
@@ -622,13 +621,8 @@
   transform: translateY(-50%) scale(1);
 }
 
-.image-user {
-  font-size: 0.85rem;
-  color: #555;
-  font-style: italic;
-  text-align: center;
-  width: 100%;
-}
+
+
 
     
   </style>
@@ -815,7 +809,7 @@ closeMenuBtn.addEventListener('click', () => {
 </html>
 
   <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {More actions
   const toggleBtn         = document.getElementById('toggleUploadBtn');
   const uploadForm        = document.getElementById('uploadFormContainer');
   const logoutBtn         = document.getElementById('logoutBtn');
