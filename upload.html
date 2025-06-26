@@ -578,20 +578,25 @@
 .hidden-image {
   display: none;
   position: absolute;
-  top: 120%; /* o bottom: 100% si prefieres que aparezca arriba */
+  bottom: 120%; /* 🔼 aparece arriba del texto */
   left: 50%;
-  transform: translateX(-50%);
-  max-width: 300px; /* controla el tamaño */
+  transform: translateX(-50%) scale(0.95);
+  max-width: 300px;
   max-height: 300px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
   z-index: 10;
 }
 
-/* Mostrar imagen al pasar el cursor por el texto */
+/* Mostrar imagen con animación */
 .image-hover-wrapper:hover .hidden-image {
   display: block;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
 }
+
 
 
 
