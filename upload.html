@@ -40,7 +40,7 @@
   flex-direction: column;
   height: 100vh;
   overflow-x: visible;
-  overflow-y: auto; /* ✅ ahora el body puede hacer scroll */
+  overflow: hidden; /* ❌ evita scroll en body */
 }
 
     .container {
@@ -50,11 +50,15 @@
   padding-bottom: 4.5rem;
   margin-top: calc(var(--header-height) + 1rem);
   text-align: center;
-  overflow: visible;         /* ✅ sin límites */
-  height: auto;              /* ✅ sin restricción de altura */
+
   margin-left: 80px;
   position: relative;
+
+  height: calc(100vh - var(--header-height) - 4.5rem); /* ✅ ocupa todo el alto disponible */
+  overflow-y: auto;     /* ✅ scroll vertical aquí */
+  overflow-x: visible;
 }
+
 
 
 
