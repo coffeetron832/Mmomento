@@ -6,7 +6,7 @@
   <title>Momentos 📸</title>
   <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
-  <style>
+  <style>More actions
     :root {
       --btn-bg: #f5f5f5;
       --btn-hover: #e0e0e0;
@@ -33,35 +33,25 @@
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #000;
-  color: #f5f5f5;
+  background-color: #000; /* fondo negro puro */
+  color: #f5f5f5; /* texto claro */
   transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden; /* 🚫 quitamos todo scroll del body */
+  min-height: 100vh; /* Clave para forzar el footer abajo */
 }
 
     .container {
   width: 100%;
   max-width: var(--max-width);
   padding: var(--gutter);
-  padding-bottom: 4.5rem; /* espacio para footer */
   margin-top: calc(var(--header-height) + 1rem);
-  margin-left: 80px;
-  position: relative;
+  text-align: center;
+  padding-bottom: 4.5rem; /* nuevo, espacio para el footer fijo */
 
-  /* 📏 altura exacta para restar header + footer */
-  height: calc(100vh - var(--header-height) - 4.5rem);
-
-  /* 🚀 scroll solo aquí */
-  overflow-y: auto;
-
-  /* 🔥 permitir que las imágenes salgan a los lados */
-  overflow-x: visible;
+/* 🆕 Agrega este desplazamiento visual */
+  transform: translateX(80px);
 }
-
-
 
 
 
@@ -573,33 +563,66 @@
 }
 
 
-.floating-preview {
-  position: fixed;
-  top: 50%;
-  left: -420px; /* O right: -420px si lo quieres a la derecha */
-  transform: translateY(-50%) scale(0.95);
-  width: 400px;
-  max-height: 90vh;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.3s ease;
-  z-index: 9999;
+.image-hover-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: var(--fondo-caja, #fafafa);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.floating-preview.visible {
+.image-description {
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: var(--accent, #f0f0f0);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.delete-btn {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  color: #999;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-bottom: -0.5rem;
+}
+
+/* 🖼 Imagen aparece a la IZQUIERDA del texto */
+.hidden-image {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  right: 120%; /* se posiciona a la izquierda */
+  right: 130%; /* se posiciona a la izquierda */
+  transform: translateY(-50%) scale(0.9);
+  max-width: 400px;
+  max-height: 400px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Mostrar la imagen con animación desde la izquierda */
+.image-hover-wrapper:hover .hidden-image {
+  visibility: visible;
   opacity: 1;
   transform: translateY(-50%) scale(1);
 }
 
-.floating-preview img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
 
-
-    
   </style>
 </head>
 <body class="upload-page">
@@ -607,11 +630,6 @@
 <!-- Botones ocultos para funcionalidad de Soulprint y Logout -->
 <a id="soulprintBtn" href="#" style="display:none;"></a>
 <button id="logoutBtn" style="display:none;"></button>
-
-<div id="floatingPreview" class="hidden-image" aria-hidden="true">
-  <img id="floatingPreviewImg" src="" alt="Vista previa" />
-</div>
-
   
   <!-- 🔵 Mensaje flotante para cerrar sesión y otros globales -->
   <div id="uploadSuccessMessage" style="
@@ -788,7 +806,7 @@ closeMenuBtn.addEventListener('click', () => {
 </body>
 </html>
 
-  <script>
+  <script>More actions
 document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn         = document.getElementById('toggleUploadBtn');
   const uploadForm        = document.getElementById('uploadFormContainer');
@@ -801,8 +819,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const darkToggle        = document.getElementById('darkModeToggle');
   const body              = document.body;
   const token = localStorage.getItem('token');
-  const floatingPreview = document.getElementById('floatingPreview');
-  const floatingPreviewImg = document.getElementById('floatingPreviewImg');
 
 
   // ✅ Cargar usuario desde localStorage
@@ -844,8 +860,8 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
   });
 
-  
-  
+
+
 
   // ✅ Cerrar sesión
   logoutBtn.addEventListener('click', () => {
@@ -871,16 +887,26 @@ document.addEventListener('DOMContentLoaded', () => {
     desc.textContent = image.description || '(sin descripción)';
     card.appendChild(desc);
 
+    // ✅ Imagen oculta
+    const preview = document.createElement('div');
+    preview.className = 'image-preview-hover';
+
+    const img = document.createElement('img');
+    img.src = image.imageUrl;
+    img.alt = 'Imagen flotante';
+    preview.appendChild(img);
+    card.appendChild(preview);
 
     // ✅ Mostrar imagen al pasar el cursor por la descripción
     desc.addEventListener('mouseenter', () => {
-  floatingPreviewImg.src = image.imageUrl;
-  floatingPreview.classList.add('visible');
-});
+      preview.style.display = 'block';
+      setTimeout(() => preview.style.opacity = '1', 10); // animación suave
+    });
 
-desc.addEventListener('mouseleave', () => {
-  floatingPreview.classList.remove('visible');
-});
+    desc.addEventListener('mouseleave', () => {
+      preview.style.opacity = '0';
+      setTimeout(() => preview.style.display = 'none', 300);
+    });
 
     // ✅ (Opcional) mostrar el usuario debajo
     if (image.username) {
