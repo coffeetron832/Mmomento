@@ -211,9 +211,9 @@ function renderImages(images) {
     delBtn.className = 'delete-btn';
     delBtn.addEventListener('click', () => deleteImage(img._id, wrapper));
 
+    wrapper.appendChild(delBtn);
     wrapper.appendChild(description);
     wrapper.appendChild(image);
-    wrapper.appendChild(delBtn);
     container.appendChild(wrapper);
   });
 }
