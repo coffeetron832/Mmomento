@@ -564,52 +564,33 @@
   position: relative;
   display: inline-block;
   margin: 1rem;
-  text-align: center;
 }
 
 .image-description {
   cursor: pointer;
   font-weight: bold;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 8px;
   background: var(--accent, #f0f0f0);
-  transition: background 0.3s ease;
-}
-
-.image-description:hover {
-  background: var(--accent-hover, #ddd);
 }
 
 .hidden-image {
   display: none;
   position: absolute;
-  top: 110%;
+  top: 120%; /* o bottom: 100% si prefieres que aparezca arriba */
   left: 50%;
   transform: translateX(-50%);
-  max-width: 300px;
+  max-width: 300px; /* controla el tamaño */
   max-height: 300px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  z-index: 999;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  z-index: 10;
 }
 
-/* Añadimos una franja superior de color del alma */
-.hidden-image::before {
-  content: '';
-  display: block;
-  height: 6px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  background-color: var(--alma-color, #7f5af0); /* Color del alma */
-}
-
-/* Mostrar imagen al hacer hover */
+/* Mostrar imagen al pasar el cursor por el texto */
 .image-hover-wrapper:hover .hidden-image {
   display: block;
-  opacity: 1;
-  transform: translateX(-50%) scale(1);
 }
 
 
