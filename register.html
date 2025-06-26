@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro | Momento</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <!-- Fuente Host Grotesk -->
-  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
   <style>
     /* Box sizing global */
     *, *::before, *::after {
@@ -27,7 +26,7 @@
     }
 
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
@@ -255,7 +254,7 @@ form#registerForm button[type="submit"]:hover::after {
     
     /* Más abajo, también reemplazado esto: */
     input, select, button, textarea {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
     }
 
     
@@ -279,14 +278,22 @@ form#registerForm button[type="submit"]:hover::after {
         flex: 1 1 100%;
       }
     }
+
+    .logo-word {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 500;
+}
+
   </style>
 </head>
 <body>
 
   <main>
     <div id="testimonial" class="testimonial visible">
-      “Momento cambió la forma en que comparto mis recuerdos. ¡Me encanta!”
-    </div>
+  “<span class="logo-word">Momento</span> cambió la forma en que comparto mis recuerdos. ¡Me encanta!”
+</div>
+
   </main>
 
   <footer>
