@@ -573,31 +573,31 @@
 }
 
 
-#floatingPreview {
+.floating-preview {
   position: fixed;
   top: 50%;
-  right: -420px; /* puedes cambiar a left: -420px si prefieres */
-  transform: translateY(-50%) scale(0.9);
+  left: -420px; /* O right: -420px si lo quieres a la derecha */
+  transform: translateY(-50%) scale(0.95);
   width: 400px;
   max-height: 90vh;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   opacity: 0;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 10000;
   pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.3s ease;
+  z-index: 9999;
 }
 
-#floatingPreview.visible {
+.floating-preview.visible {
   opacity: 1;
   transform: translateY(-50%) scale(1);
 }
 
-#floatingPreview img {
+.floating-preview img {
   width: 100%;
   height: auto;
   border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
+
 
     
   </style>
@@ -871,15 +871,6 @@ document.addEventListener('DOMContentLoaded', () => {
     desc.textContent = image.description || '(sin descripción)';
     card.appendChild(desc);
 
-    // ✅ Imagen oculta
-    const preview = document.createElement('div');
-    preview.className = 'image-preview-hover';
-
-    const img = document.createElement('img');
-    img.src = image.imageUrl;
-    img.alt = 'Imagen flotante';
-    preview.appendChild(img);
-    card.appendChild(preview);
 
     // ✅ Mostrar imagen al pasar el cursor por la descripción
     desc.addEventListener('mouseenter', () => {
