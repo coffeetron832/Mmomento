@@ -909,12 +909,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ✅ (Opcional) mostrar el usuario debajo
-    if (image.username) {
-      const user = document.createElement('div');
-      user.className = 'image-user';
-      user.textContent = `@${image.username}`;
-      card.appendChild(user);
-    }
+    if (image.userId && image.userId.username) {
+  const user = document.createElement('div');
+  user.className = 'image-user';
+  user.textContent = `@${image.userId.username}`;
+  card.appendChild(user);
+}
+
 
     // ✅ (Opcional) botón mariposa
     const btn = document.createElement('button');
