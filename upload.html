@@ -608,8 +608,9 @@
   opacity: 0;
   position: absolute;
   top: 50%;
-  left: 0; /* ✅ punto de partida dentro del contenedor */
-  transform: translateX(-105%) translateY(-50%) scale(0.9); /* ✅ se mueve a la izquierda dinámicamente */
+  right: 100%; /* 🟢 Colócala completamente a la izquierda del contenedor padre */
+  margin-right: 1rem; /* 🟢 Espacio entre imagen y texto */
+  transform: translateY(-50%) scale(0.9); /* 🟢 Entrada desde la izquierda */
   width: 400px;
   height: auto;
   border-radius: 12px;
@@ -627,13 +628,6 @@
   transform: translateY(-50%) scale(1);
 }
 
-
-
-
-
-
-
-    
     
   </style>
 </head>
