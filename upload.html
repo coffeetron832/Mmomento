@@ -578,6 +578,7 @@
   border-radius: 12px;
   background-color: var(--fondo-caja, #fafafa);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: visible;     /* ¡clave para no recortar! */
 }
 
 .image-description {
@@ -604,12 +605,12 @@
 .hidden-image {
   visibility: hidden;
   opacity: 0;
-  position: absolute;
+  position: absolute;    /* relativo al .image-hover-wrapper */
   top: 50%;
-  right: 110%; /* 🡐 se posiciona a la izquierda del bloque */
+  left: -420px;          /* ajusta aquí según el ancho de tu img */
   transform: translateY(-50%) scale(0.9);
-  max-width: 400px;
-  max-height: 400px;
+  width: 400px;          /* Fija ancho para que left calcule bien */
+  height: auto;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   transition: opacity 0.4s ease, transform 0.4s ease;
