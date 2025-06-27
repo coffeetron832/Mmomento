@@ -310,15 +310,6 @@ function renderFilteredImages(sectionKey) {
   renderImages(filtered);
 }
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-
-    const section = btn.dataset.filter;
-    renderFilteredImages(section);
-  });
-});
 
 // Cargar imágenes inicialmente
 loadImages();
