@@ -660,8 +660,10 @@
 .section-button.selected {
   background-color: #4f46e5;
   color: white;
-  font-weight: bold;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
 }
+
 
 
   </style>
@@ -820,6 +822,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       const menuToggleBtn = document.getElementById('menuToggleBtn');
       const menuOverlay   = document.getElementById('menuOverlay');
+      const sectionButtons = document.querySelectorAll('.section-button');
+      const sectionInput = document.getElementById('selected-section');
 
       menuToggleBtn.addEventListener('click', () => {
         // Solo toggle de 'show'
@@ -834,7 +838,28 @@ closeMenuBtn.addEventListener('click', () => {
   document.body.classList.remove('menu-open');
 });
 
-      
+    
+
+    sectionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // 🔁 Marcar visualmente el botón activo
+        sectionButtons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+
+        // 📝 Guardar la sección seleccionada en el input oculto
+        sectionInput.value = button.dataset.value;
+      });
+    });
+
+    // (opcional) Prevenir envío si no se ha seleccionado sección
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', (e) => {
+      if (!sectionInput.value) {
+        e.preventDefault();
+        alert('Por favor, selecciona una sección creativa antes de subir tu imagen.');
+      }
+    });
+  });
       
      /* ——— Lógica para “Mi Soulprint” ——— */
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
