@@ -647,36 +647,26 @@
 }
 
 .section-button {
-    display: inline-block;
-    padding: 10px 16px;
-    margin: 5px;
-    border: 2px solid transparent;
-    border-radius: 20px;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s ease-in-out;
-  }
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px;
+  border-radius: 20px;
+  background-color: #eee;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  font-weight: 500;
+}
 
-  .section-button.selected {
-    background-color: #4b0082;
-    color: white;
-    border-color: #4b0082;
-  }
+.section-button.selected {
+  background-color: #4f46e5;
+  color: white;
+  font-weight: bold;
+}
 
-  #selected-section {
-    display: none;
-  }
 
   </style>
 </head>
 
-<div id="section-buttons">
-  <span class="section-button" data-value="lo_que_ya_no_esta">🥀 Lo que ya no está</span>
-  <span class="section-button" data-value="rutas_sin_mapa">🛤️ Rutas sin mapa</span>
-  <span class="section-button" data-value="nunca_antes_visto">🧨 Nunca antes visto</span>
-  <span class="section-button" data-value="lo_que_no_se_dice">🤐 Lo que no se dice</span>
-</div>
 
 <!-- Este input invisible guarda el valor seleccionado para enviarlo en el formulario -->
 <input type="hidden" name="section" id="selected-section" required>
@@ -738,30 +728,49 @@
 
 
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
+  <form id="uploadForm" enctype="multipart/form-data" method="post">
 
-      <form id="uploadForm" enctype="multipart/form-data" method="post">
-        <input type="file" id="image" name="image" accept="image/*" required />
-        <input type="text" name="description" id="description" placeholder="Describe tu momento" required>
-        <label for="visibility">Visibilidad:</label>
-        <select name="visibility" id="visibility">
-          <option value="public">Público</option>
-          <option value="private">Privado</option>
-          <option value="circle">Solo círculo</option>
-        </select>
-        <label for="duration">Duración:</label>
-<select name="duration" id="duration" required>
-  <option value="">Selecciona duración</option>
-  <option value="30">30 minutos</option>   <!-- en minutos -->
-  <option value="60">1 hora</option>
-  <option value="180">3 horas</option>
-  <option value="360">6 horas</option>
-</select>
+    <!-- 🔹 Secciones creativas -->
+    <div id="section-buttons" style="margin-bottom: 1rem;">
+      <span class="section-button" data-value="lo_que_ya_no_esta">🥀 Lo que ya no está</span>
+      <span class="section-button" data-value="rutas_sin_mapa">🛤️ Rutas sin mapa</span>
+      <span class="section-button" data-value="nunca_antes_visto">🧨 Nunca antes visto</span>
+      <span class="section-button" data-value="lo_que_no_se_dice">🤐 Lo que no se dice</span>
+    </div>
 
-        
-        <div id="circleSelectorContainer" style="display: none;"></div>
-        <button type="submit">Subir</button>
-      </form>
-    </section>
+    <!-- Input oculto que guarda la sección seleccionada -->
+    <input type="hidden" name="section" id="selected-section" required>
+
+    <!-- 🔸 Archivo e info -->
+    <input type="file" id="image" name="image" accept="image/*" required />
+    <input type="text" name="description" id="description" placeholder="Describe tu momento" required>
+
+    <!-- 🔸 Visibilidad -->
+    <label for="visibility">Visibilidad:</label>
+    <select name="visibility" id="visibility">
+      <option value="public">Público</option>
+      <option value="private">Privado</option>
+      <option value="circle">Solo círculo</option>
+    </select>
+
+    <!-- 🔸 Duración -->
+    <label for="duration">Duración:</label>
+    <select name="duration" id="duration" required>
+      <option value="">Selecciona duración</option>
+      <option value="30">30 minutos</option>
+      <option value="60">1 hora</option>
+      <option value="180">3 horas</option>
+      <option value="360">6 horas</option>
+    </select>
+
+    <!-- Círculo (opcional) -->
+    <div id="circleSelectorContainer" style="display: none;"></div>
+
+    <!-- Botón de subir -->
+    <button type="submit">Subir</button>
+  </form>
+</section>
+
       <main id="timeline" role="main" tabindex="0">
         <div id="imagesContainer" class="images-grid" aria-live="polite"></div>
       </main>
