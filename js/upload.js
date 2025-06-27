@@ -1,5 +1,7 @@
 let token = localStorage.getItem("token"); // antes era const (duplicado)
 let currentUserId = null;
+let currentSectionFilter = 'all'; // ✅ Sección activa por defecto
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
