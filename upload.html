@@ -646,9 +646,44 @@
   background-color: #222;
 }
 
+.section-button {
+    display: inline-block;
+    padding: 10px 16px;
+    margin: 5px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .section-button.selected {
+    background-color: #4b0082;
+    color: white;
+    border-color: #4b0082;
+  }
+
+  #selected-section {
+    display: none;
+  }
 
   </style>
 </head>
+
+<div id="section-buttons">
+  <span class="section-button" data-value="suspiros_del_alma">🫧 Suspiros del alma</span>
+  <span class="section-button" data-value="universos_paralelos">🌌 Universos paralelos</span>
+  <span class="section-button" data-value="lo_que_ya_no_esta">🥀 Lo que ya no está</span>
+  <span class="section-button" data-value="rutas_sin_mapa">🛤️ Rutas sin mapa</span>
+  <span class="section-button" data-value="pensamientos_sueltos">💭 Pensamientos sueltos</span>
+  <span class="section-button" data-value="chispa_efimera">🔥 Chispa efímera</span>
+  <span class="section-button" data-value="lo_que_no_se_ve">🎭 Lo que no se ve</span>
+</div>
+
+<!-- Este input invisible guarda el valor seleccionado para enviarlo en el formulario -->
+<input type="hidden" name="section" id="selected-section" required>
+  
 <body class="upload-page">
 
 <!-- Botones ocultos para funcionalidad de Soulprint y Logout -->
@@ -805,6 +840,7 @@ closeMenuBtn.addEventListener('click', () => {
 });
 
       
+      
      /* ——— Lógica para “Mi Soulprint” ——— */
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
   let userObj = null;
@@ -854,7 +890,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const darkToggle        = document.getElementById('darkModeToggle');
   const body              = document.body;
   const token = localStorage.getItem('token');
+  const buttons = document.querySelectorAll('.section-button');
+  const hiddenInput = document.getElementById('selected-section');
 
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      hiddenInput.value = button.dataset.value;
+    });
+  });
 
   // ✅ Cargar usuario desde localStorage
   let username = null;
