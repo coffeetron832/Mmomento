@@ -824,7 +824,28 @@
       const menuOverlay   = document.getElementById('menuOverlay');
       const sectionButtons = document.querySelectorAll('.section-button');
       const sectionInput = document.getElementById('selected-section');
+      const buttons = document.querySelectorAll('.section-button');
+      const hiddenInput = document.getElementById('selected-section');
+      const form = document.getElementById('uploadForm');
 
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      hiddenInput.value = button.dataset.value;
+      console.log('✅ Sección seleccionada:', hiddenInput.value); // 👈 importante
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    if (!hiddenInput.value) {
+      e.preventDefault();
+      alert('Por favor selecciona una sección creativa.');
+    }
+  });
+});
+
+      
       menuToggleBtn.addEventListener('click', () => {
         // Solo toggle de 'show'
         const isVisible = menuOverlay.classList.toggle('show');
@@ -839,18 +860,6 @@ closeMenuBtn.addEventListener('click', () => {
 });
 
     
-
-    sectionButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        // 🔁 Marcar visualmente el botón activo
-        sectionButtons.forEach(btn => btn.classList.remove('selected'));
-        button.classList.add('selected');
-
-        // 📝 Guardar la sección seleccionada en el input oculto
-        sectionInput.value = button.dataset.value;
-      });
-    });
-
     // (opcional) Prevenir envío si no se ha seleccionado sección
     const form = document.getElementById('uploadForm');
     form.addEventListener('submit', (e) => {
@@ -912,14 +921,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
   const buttons = document.querySelectorAll('.section-button');
   const hiddenInput = document.getElementById('selected-section');
+  const form = document.getElementById('uploadForm');
 
   buttons.forEach(button => {
     button.addEventListener('click', () => {
       buttons.forEach(btn => btn.classList.remove('selected'));
       button.classList.add('selected');
       hiddenInput.value = button.dataset.value;
+      console.log('✅ Sección seleccionada:', hiddenInput.value); // 👈 importante
     });
   });
+
+  form.addEventListener('submit', (e) => {
+    if (!hiddenInput.value) {
+      e.preventDefault();
+      alert('Por favor selecciona una sección creativa.');
+    }
+  });
+});
 
   // ✅ Cargar usuario desde localStorage
   let username = null;
