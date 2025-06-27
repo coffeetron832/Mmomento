@@ -178,7 +178,7 @@ if (successMsg) {
         form.reset();
 
         // 🔄 Recarga completa de la galería tras subir
-        setTimeout(() => loadImages(), 1500); // Espera 1.5 segundos antes de recargar
+        setTimeout(() => renderFilteredImages(currentSectionFilter), 1500);
 
         if (circleContainer) circleContainer.style.display = 'none';
       } catch (err) {
@@ -285,20 +285,44 @@ filterBtns.forEach(btn => {
   });
 });
 
-  
-    // 🔄 Cargar imágenes
-  async function loadImages() {
-    try {
-      const res = await fetch('https://momento-backend-production.up.railway.app/api/images/', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error('Error al obtener imágenes');
-      const images = await res.json();
-      renderImages(images);
-    } catch (e) {
-      console.error('Error cargando imágenes:', e);
+
+let allImages = [];
+
+function loadImages() {
+  fetch('https://momento-backend-production.up.railway.app/api/images/', {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
-  }
+  })
+    .then(res => res.json())
+    .then(images => {
+      allImages = images;
+      renderFilteredImages('all'); // Mostrar todo al inicio
+    })
+    .catch(err => console.error('Error al cargar imágenes:', err));
+}
+
+function renderFilteredImages(sectionKey) {
+  const filtered = sectionKey === 'all'
+    ? allImages
+    : allImages.filter(img => (img.section || 'sin_seccion') === sectionKey);
+
+  renderImages(filtered);
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    const section = btn.dataset.filter;
+    renderFilteredImages(section);
+  });
+});
+
+// Cargar imágenes inicialmente
+loadImages();
+
 
   // 🗑 Eliminar imagen
   async function deleteImage(id, el) {
