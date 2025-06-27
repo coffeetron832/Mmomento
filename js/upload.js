@@ -193,30 +193,65 @@ function renderImages(images) {
 
   container.innerHTML = '';
 
+  // 1. Agrupar imágenes por sección
+  const grouped = {};
   images.forEach(img => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'image-hover-wrapper';
+    const section = img.section || 'sin_seccion';
+    if (!grouped[section]) grouped[section] = [];
+    grouped[section].push(img);
+  });
 
-    const description = document.createElement('div');
-    description.className = 'image-description';
-    description.textContent = img.description || 'Momento';
+  // 2. Mostrar secciones en orden personalizado (opcional)
+  const sectionTitles = {
+    lo_que_ya_no_esta: '🥀 Lo que ya no está',
+    rutas_sin_mapa: '🛤️ Rutas sin mapa',
+    nunca_antes_visto: '🧨 Nunca antes visto',
+    lo_que_no_se_dice: '🤐 Lo que no se dice',
+    sin_seccion: '📦 Sin sección'
+  };
 
-    const image = document.createElement('img');
-    image.src = img.imageUrl || img.url || '';
-    image.alt = img.description || 'Momento';
-    image.className = 'hidden-image';
+  Object.keys(sectionTitles).forEach(sectionKey => {
+    const imagesInSection = grouped[sectionKey];
+    if (!imagesInSection || !imagesInSection.length) return;
 
-    const delBtn = document.createElement('button');
-    delBtn.textContent = '🗑️';
-    delBtn.className = 'delete-btn';
-    delBtn.addEventListener('click', () => deleteImage(img._id, wrapper));
+    // Título de sección
+    const sectionHeader = document.createElement('h2');
+    sectionHeader.textContent = sectionTitles[sectionKey];
+    sectionHeader.className = 'section-title';
+    container.appendChild(sectionHeader);
 
-    wrapper.appendChild(delBtn);
-    wrapper.appendChild(description);
-    wrapper.appendChild(image);
-    container.appendChild(wrapper);
+    // Contenedor de imágenes
+    const sectionWrapper = document.createElement('div');
+    sectionWrapper.className = 'images-grid';
+
+    imagesInSection.forEach(img => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'image-hover-wrapper';
+
+      const description = document.createElement('div');
+      description.className = 'image-description';
+      description.textContent = img.description || 'Momento';
+
+      const image = document.createElement('img');
+      image.src = img.imageUrl || img.url || '';
+      image.alt = img.description || 'Momento';
+      image.className = 'hidden-image';
+
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '🗑️';
+      delBtn.className = 'delete-btn';
+      delBtn.addEventListener('click', () => deleteImage(img._id, wrapper));
+
+      wrapper.appendChild(delBtn);
+      wrapper.appendChild(description);
+      wrapper.appendChild(image);
+      sectionWrapper.appendChild(wrapper);
+    });
+
+    container.appendChild(sectionWrapper);
   });
 }
+
 
 
   
