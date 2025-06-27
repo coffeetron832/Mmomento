@@ -884,28 +884,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuOverlay       = document.getElementById('menuOverlay');
   const darkToggle        = document.getElementById('darkModeToggle');
   const body              = document.body;
-  const token = localStorage.getItem('token');
-  const buttons = document.querySelectorAll('.section-button');
-  const hiddenInput = document.getElementById('selected-section');
-  const form = document.getElementById('uploadForm');
+  const token             = localStorage.getItem('token');
+  const buttons           = document.querySelectorAll('.section-button');
+  const hiddenInput       = document.getElementById('selected-section');
+  const form              = document.getElementById('uploadForm');
 
+
+  // 🔹 Secciones
   buttons.forEach(button => {
     button.addEventListener('click', () => {
       buttons.forEach(btn => btn.classList.remove('selected'));
       button.classList.add('selected');
       hiddenInput.value = button.dataset.value;
-      console.log('✅ Sección seleccionada:', hiddenInput.value); // 👈 importante
+      console.log('✅ Sección seleccionada:', hiddenInput.value);
     });
   });
 
+  // 🔹 Validación al subir
   form.addEventListener('submit', (e) => {
     if (!hiddenInput.value) {
       e.preventDefault();
       alert('Por favor selecciona una sección creativa.');
     }
   });
-});
-
+  
   // ✅ Cargar usuario desde localStorage
   let username = null;
   try {
