@@ -825,26 +825,7 @@
       const sectionButtons = document.querySelectorAll('.section-button');
       const sectionInput = document.getElementById('selected-section');
       const buttons = document.querySelectorAll('.section-button');
-      const hiddenInput = document.getElementById('selected-section');
-      const form = document.getElementById('uploadForm');
-
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      buttons.forEach(btn => btn.classList.remove('selected'));
-      button.classList.add('selected');
-      hiddenInput.value = button.dataset.value;
-      console.log('✅ Sección seleccionada:', hiddenInput.value); // 👈 importante
-    });
-  });
-
-  form.addEventListener('submit', (e) => {
-    if (!hiddenInput.value) {
-      e.preventDefault();
-      alert('Por favor selecciona una sección creativa.');
-    }
-  });
-});
-
+    
       
       menuToggleBtn.addEventListener('click', () => {
         // Solo toggle de 'show'
@@ -858,18 +839,7 @@ closeMenuBtn.addEventListener('click', () => {
   menuOverlay.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('menu-open');
 });
-
     
-    // (opcional) Prevenir envío si no se ha seleccionado sección
-    const form = document.getElementById('uploadForm');
-    form.addEventListener('submit', (e) => {
-      if (!sectionInput.value) {
-        e.preventDefault();
-        alert('Por favor, selecciona una sección creativa antes de subir tu imagen.');
-      }
-    });
-  });
-      
      /* ——— Lógica para “Mi Soulprint” ——— */
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
   let userObj = null;
