@@ -187,6 +187,18 @@ if (successMsg) {
   }
 
 
+function applyFilter() {
+  const sections = document.querySelectorAll('.section-group');
+  sections.forEach(section => {
+    const sectionId = section.dataset.section;
+    section.style.display =
+      currentSectionFilter === 'all' || currentSectionFilter === sectionId
+        ? 'block'
+        : 'none';
+  });
+}
+
+  
 function renderImages(images) {
   const container = document.getElementById('imagesContainer');
   if (!container) return;
@@ -201,7 +213,7 @@ function renderImages(images) {
     grouped[section].push(img);
   });
 
-  // 2. Mostrar secciones en orden personalizado (opcional)
+  // 2. Mostrar secciones en orden personalizado
   const sectionTitles = {
     lo_que_ya_no_esta: '🥀 Lo que ya no está',
     rutas_sin_mapa: '🛤️ Rutas sin mapa',
@@ -214,13 +226,18 @@ function renderImages(images) {
     const imagesInSection = grouped[sectionKey];
     if (!imagesInSection || !imagesInSection.length) return;
 
-    // Título de sección
+    // 🔹 Contenedor general de la sección (para filtrado)
+    const sectionGroup = document.createElement('div');
+    sectionGroup.className = 'section-group';
+    sectionGroup.dataset.section = sectionKey;
+
+    // 🔹 Título de sección
     const sectionHeader = document.createElement('h2');
     sectionHeader.textContent = sectionTitles[sectionKey];
     sectionHeader.className = 'section-title';
-    container.appendChild(sectionHeader);
+    sectionGroup.appendChild(sectionHeader);
 
-    // Contenedor de imágenes
+    // 🔹 Contenedor de imágenes de la sección
     const sectionWrapper = document.createElement('div');
     sectionWrapper.className = 'images-grid';
 
@@ -248,11 +265,23 @@ function renderImages(images) {
       sectionWrapper.appendChild(wrapper);
     });
 
-    container.appendChild(sectionWrapper);
+    sectionGroup.appendChild(sectionWrapper);
+    container.appendChild(sectionGroup);
   });
+
+  applyFilter(); // 👈 Llama a la función de filtrado cada vez que se renderiza
 }
 
 
+const filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    currentSectionFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
 
   
     // 🔄 Cargar imágenes
