@@ -324,35 +324,48 @@ if (image.userId && image.userId.username) {
     }
 
     // 2) Listener de clic
-    btn.addEventListener('click', async () => {
-      try {
-        const res = await fetch(
-          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-          {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` }
-          }
-        );
-        if (!res.ok) throw new Error('No se pudo enviar');
+   btn.addEventListener('click', async () => {
+  try {
+    // 1. Saber si ya había dado mariposa antes del click
+    const wasGiven = btn.dataset.given === 'true';
 
-        // Toggle de estado
-        const nowLiked = !btn.classList.toggle('active');
-        // fijamos dato opuesto porque toggle devuelve false si antes estaba activo
-        btn.dataset.given = nowLiked ? 'true' : 'false';
+    // 2. Cambiar el atributo visual antes de esperar respuesta
+    const nowGiven = !wasGiven;
+    btn.dataset.given = nowGiven ? 'true' : 'false';
 
-        // 3) Pequeño destello al dar/quitar
-        btn.animate([
-          { transform: 'scale(1)', filter: 'brightness(1)' },
-          { transform: 'scale(1.4)', filter: 'brightness(1.5)' },
-          { transform: 'scale(1)', filter: 'brightness(1)' }
-        ], {
-          duration: 300,
-          easing: 'ease-out'
-        });
-      } catch (err) {
-        console.error('Error al enviar mariposa:', err);
-      }
+    // 3. Aplicar o quitar clase .active según nuevo estado
+    btn.classList.toggle('active', nowGiven);
+
+    // 4. Animación visual inmediata
+    btn.animate([
+      { transform: 'scale(1)', filter: 'brightness(1)' },
+      { transform: 'scale(1.4)', filter: 'brightness(1.5)' },
+      { transform: 'scale(1)', filter: 'brightness(1)' }
+    ], {
+      duration: 300,
+      easing: 'ease-out'
     });
+
+    // 5. Enviar la mariposa al backend
+    const res = await fetch(
+      `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+      {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      }
+    );
+    if (!res.ok) throw new Error('No se pudo enviar');
+    
+  } catch (err) {
+    console.error('Error al enviar mariposa:', err);
+
+    // 6. Revertimos el estado si falló
+    const wasGiven = btn.dataset.given === 'true';
+    btn.dataset.given = wasGiven ? 'false' : 'true';
+    btn.classList.toggle('active', !wasGiven);
+  }
+});
+
 
     userRow.appendChild(btn);
   }
