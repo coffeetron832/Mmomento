@@ -201,22 +201,6 @@ function applyFilter() {
 }
 
   
-function renderImages(images) {
-  const container = document.getElementById('imagesContainer');
-  if (!container) return;
- 
-
-if (!append) {
-    container.innerHTML = '';
-  }
-  
-  const grouped = {};
-  images.forEach(img => {
-    const section = img.section || 'sin_seccion';
-    if (!grouped[section]) grouped[section] = [];
-    grouped[section].push(img);
-  });
-
   function renderImages(images, append = false) {
   const container = document.getElementById('imagesContainer');
   if (!container) return;
