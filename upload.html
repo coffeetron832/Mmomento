@@ -664,6 +664,48 @@
   border-radius: 8px;
 }
 
+.image-card-hover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 1rem;
+}
+
+.image-description-hover {
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.4rem 0.6rem;
+  background: #eee;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  width: fit-content;
+  color: #111;
+}
+
+.image-preview-hover {
+  position: absolute;
+  top: 50%;
+  right: 110%;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  max-width: 200px;
+  max-height: 200px;
+  opacity: 0;
+  display: none;
+  transition: opacity 0.3s ease;
+  z-index: 20;
+}
+
+.image-preview-hover img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
 
 
   </style>
