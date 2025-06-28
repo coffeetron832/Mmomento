@@ -264,6 +264,7 @@ function renderImages(images) {
         preview.style.display = 'block';
         setTimeout(() => preview.style.opacity = '1', 10);
       });
+
       desc.addEventListener('mouseleave', () => {
         preview.style.opacity = '0';
         setTimeout(() => preview.style.display = 'none', 300);
@@ -276,34 +277,46 @@ function renderImages(images) {
         card.appendChild(user);
       }
 
-      const btn = document.createElement('button');
-      btn.className = 'butterfly-btn';
-      btn.innerHTML = '🦋';
-      btn.dataset.id = image._id;
+      // 🔹 Mostrar botón 🦋 solo si NO soy el autor
+      if (image.userId?.username !== currentUsername) {
+        const btn = document.createElement('button');
+        btn.className = 'butterfly-btn';
+        btn.innerHTML = '🦋';
+        btn.dataset.id = image._id;
 
-      if (image.likes && image.likes.includes(currentUsername)) {
-        btn.classList.add('active');
+        if (image.likes?.includes(currentUsername)) {
+          btn.classList.add('active');
+        }
+
+        btn.addEventListener('click', async () => {
+          try {
+            const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              }
+            });
+            if (response.ok) {
+              btn.classList.toggle('active');
+              // (opcional) actualizar contador
+            }
+          } catch (error) {
+            console.error('Error al enviar mariposa:', error);
+          }
+        });
+
+        card.appendChild(btn);
       }
 
-      btn.addEventListener('click', async () => {
-        try {
-          const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            }
-          });
-          if (response.ok) {
-            btn.classList.toggle('active');
-          }
-        } catch (error) {
-          console.error('Error al enviar mariposa:', error);
-        }
-      });
+      // 🔹 Contador de mariposas (si hay al menos una)
+      if (image.likes?.length > 0) {
+        const count = document.createElement('div');
+        count.className = 'like-count';
+        count.textContent = `🦋 x ${image.likes.length}`;
+        card.appendChild(count);
+      }
 
-      card.appendChild(btn);
-
-      // ✅ Solo mostrar botón de eliminar si es el autor
+      // 🔹 Botón 🗑️ solo si soy el autor
       if (image.userId?.username === currentUsername) {
         const delBtn = document.createElement('button');
         delBtn.className = 'delete-btn';
@@ -321,6 +334,7 @@ function renderImages(images) {
 
   applyFilter();
 }
+
 
 
 
