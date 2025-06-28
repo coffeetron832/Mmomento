@@ -289,41 +289,50 @@ function applyFilter() {
         setTimeout(() => preview.style.display = 'none', 300);
       });
 
-      if (image.userId && image.userId.username) {
-        const user = document.createElement('div');
-        user.className = 'image-user';
-        user.textContent = `@${image.userId.username}`;
-        card.appendChild(user);
-      }
+      const userRow = document.createElement('div');
+userRow.className = 'user-row'; // Puedes usar una clase o estilos inline
+userRow.style.display = 'flex';
+userRow.style.alignItems = 'center';
+userRow.style.gap = '0.4rem';
 
-      if (image.userId?.username !== currentUsername) {
-        const btn = document.createElement('button');
-        btn.className = 'butterfly-btn';
-        btn.innerHTML = '🦋';
-        btn.dataset.id = image._id;
+if (image.userId && image.userId.username) {
+  const user = document.createElement('div');
+  user.className = 'image-user';
+  user.textContent = `@${image.userId.username}`;
+  userRow.appendChild(user);
+}
 
-        if (image.likes?.includes(currentUsername)) {
-          btn.classList.add('active');
+if (image.userId?.username !== currentUsername) {
+  const btn = document.createElement('button');
+  btn.className = 'butterfly-btn';
+  btn.innerHTML = '🦋';
+  btn.dataset.id = image._id;
+
+  if (image.likes?.includes(currentUsername)) {
+    btn.classList.add('active');
+  }
+
+  btn.addEventListener('click', async () => {
+    try {
+      const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
         }
-
-        btn.addEventListener('click', async () => {
-          try {
-            const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-              }
-            });
-            if (response.ok) {
-              btn.classList.toggle('active');
-            }
-          } catch (error) {
-            console.error('Error al enviar mariposa:', error);
-          }
-        });
-
-        card.appendChild(btn);
+      });
+      if (response.ok) {
+        btn.classList.toggle('active');
       }
+    } catch (error) {
+      console.error('Error al enviar mariposa:', error);
+    }
+  });
+
+  userRow.appendChild(btn);
+}
+
+card.appendChild(userRow);
+
 
       if (image.likes?.length > 0) {
         const count = document.createElement('div');
