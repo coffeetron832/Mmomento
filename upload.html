@@ -900,13 +900,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-
-  if (!hiddenInput.value) {
-    alert('Por favor selecciona una sección creativa.');
-    return;
-  }
-
-  const formData = new FormData(form);
   const token = localStorage.getItem('token');
 
   try {
