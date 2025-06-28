@@ -296,11 +296,16 @@ userRow.style.alignItems = 'center';
 userRow.style.gap = '0.4rem';
 
 if (image.userId && image.userId.username) {
-  const user = document.createElement('div');
-  user.className = 'image-user';
-  user.textContent = `@${image.userId.username}`;
-  userRow.appendChild(user);
+  const userLink = document.createElement('a');
+  userLink.className = 'image-user';
+  userLink.textContent = `@${image.userId.username}`;
+  userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
+  userLink.style.textDecoration = 'none';
+  userLink.style.color = 'inherit'; // Mantener estilos actuales
+
+  userRow.appendChild(userLink);
 }
+
 
 if (image.userId?.username !== currentUsername) {
   const btn = document.createElement('button');
