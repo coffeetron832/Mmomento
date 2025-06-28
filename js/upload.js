@@ -314,7 +314,7 @@ if (image.userId && image.userId.username) {
     btn.innerHTML = '🦋';
     btn.dataset.id = image._id;
 
-    const yaDioMariposa = image.likes?.includes(currentUsername);
+    const yaDioMariposa = Array.isArray(image.likes) && image.likes.includes(currentUsername);
     if (yaDioMariposa) {
       btn.classList.add('active');
       btn.title = 'Ya diste una mariposa 💙';
@@ -337,7 +337,7 @@ if (image.userId && image.userId.username) {
         }
 
         const updatedImage = await res.json();
-        const yaTieneLike = updatedImage.likes.includes(currentUsername);
+        const yaTieneLike = Array.isArray(updatedImage.likes) && updatedImage.likes.includes(currentUsername);
         btn.classList.toggle('active', yaTieneLike);
         btn.title = yaTieneLike ? 'Ya diste una mariposa 💙' : 'Dar mariposa 🦋';
 
