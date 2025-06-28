@@ -133,6 +133,13 @@ if (logoutBtn) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
+    const hiddenInput = document.getElementById('selected-section');
+if (!hiddenInput.value) {
+  alert('Por favor selecciona una sección creativa.');
+  return;
+}
+
+  
     const fileInput = document.getElementById('image');
     if (!fileInput || !fileInput.files.length) {
       alert('Selecciona una imagen');
