@@ -217,7 +217,7 @@ if (!append) {
     grouped[section].push(img);
   });
 
-  const sectionfunction renderImages(images, append = false) {
+  function renderImages(images, append = false) {
   const container = document.getElementById('imagesContainer');
   if (!container) return;
 
