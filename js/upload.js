@@ -504,6 +504,4 @@ loadImages();
     }
   }
 
-  // 🖼 Cargar imágenes al iniciar
-  loadImages();
 }); // <--- cierre correcto de document.addEventListener
