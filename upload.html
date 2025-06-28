@@ -931,10 +931,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verifica si el filtro activo coincide con la nueva sección
     const activeFilter = document.querySelector('.filter-btn.selected')?.dataset.filter;
 
-    if (activeFilter === 'all' || activeFilter === newImage.section) {
-      // Recarga imágenes desde el backend (más preciso que insertar solo una)
-      cargarImagenesFiltradas(activeFilter);
+        if (activeFilter === 'all' || activeFilter === newImage.section) {
+      renderImages([newImage], true); // 👈 true indica que es append, no replace
     }
+
 
     // Limpieza visual
     form.reset();
@@ -1022,21 +1022,19 @@ async function cargarImagenesFiltradas(seccion = 'all') {
     window.location.href = 'index.html';
   });
 
-    function renderImages(images) {
+    function renderImages(images, append = false) {
   const imagesContainer = document.getElementById('imagesContainer');
-  imagesContainer.innerHTML = '';
+  if (!append) imagesContainer.innerHTML = ''; // Si no es append, limpia todo
 
   images.forEach(image => {
     const card = document.createElement('div');
     card.classList.add('image-card-hover');
 
-    // ✅ Descripción visible
     const desc = document.createElement('div');
     desc.className = 'image-description-hover';
     desc.textContent = image.description || '(sin descripción)';
     card.appendChild(desc);
 
-    // ✅ Imagen oculta
     const preview = document.createElement('div');
     preview.className = 'image-preview-hover';
 
@@ -1046,10 +1044,9 @@ async function cargarImagenesFiltradas(seccion = 'all') {
     preview.appendChild(img);
     card.appendChild(preview);
 
-    // ✅ Mostrar imagen al pasar el cursor por la descripción
     desc.addEventListener('mouseenter', () => {
       preview.style.display = 'block';
-      setTimeout(() => preview.style.opacity = '1', 10); // animación suave
+      setTimeout(() => preview.style.opacity = '1', 10);
     });
 
     desc.addEventListener('mouseleave', () => {
@@ -1057,16 +1054,14 @@ async function cargarImagenesFiltradas(seccion = 'all') {
       setTimeout(() => preview.style.display = 'none', 300);
     });
 
-    // ✅ (Opcional) mostrar el usuario debajo
+    // Mariposa y usuario
     if (image.userId && image.userId.username) {
-  const user = document.createElement('div');
-  user.className = 'image-user';
-  user.textContent = `@${image.userId.username}`;
-  card.appendChild(user);
-}
+      const user = document.createElement('div');
+      user.className = 'image-user';
+      user.textContent = `@${image.userId.username}`;
+      card.appendChild(user);
+    }
 
-
-    // ✅ (Opcional) botón mariposa
     const btn = document.createElement('button');
     btn.className = 'butterfly-btn';
     btn.innerHTML = '🦋';
@@ -1097,9 +1092,10 @@ async function cargarImagenesFiltradas(seccion = 'all') {
     });
 
     card.appendChild(btn);
-    imagesContainer.appendChild(card);
+    imagesContainer.prepend(card); // 👈 Añadir al principio
   });
 }
+
 
 const filtros = document.querySelectorAll('.filter-btn');
 filtros.forEach(btn => {
