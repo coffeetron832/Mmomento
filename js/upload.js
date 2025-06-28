@@ -308,86 +308,63 @@ if (image.userId && image.userId.username) {
 
 
  // 🦋 Botón mariposa (si no es tuya)
-  if (image.userId?.username !== currentUsername) {
-    const btn = document.createElement('button');
-    btn.className = 'butterfly-btn';
-    btn.innerHTML = '🦋';
-    btn.dataset.id = image._id;
+ if (image.userId?.username !== currentUsername) {
+  const btn = document.createElement('button');
+  btn.className = 'butterfly-btn';Add commentMore actions
+  btn.innerHTML = '🦋';
+  btn.dataset.id = image._id;
 
-    const yaDioMariposa = Array.isArray(image.likes) && image.likes.includes(currentUsername);
-    if (yaDioMariposa) {
-      btn.classList.add('active');
-      btn.title = 'Ya diste una mariposa 💙';
-    } else {
-      btn.title = 'Dar mariposa 🦋';
-    }
+  if (image.likes?.includes(currentUsername)) {
+    btn.classList.add('active');
+  }
 
-    btn.addEventListener('click', async () => {
-      try {
-        const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!res.ok) {
-          alert('No se pudo enviar la mariposa 🦋');
-          return;
+  btn.addEventListener('click', async () => {
+    try {
+      const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
         }
-
-        const updatedImage = await res.json();
-        const yaTieneLike = Array.isArray(updatedImage.likes) && updatedImage.likes.includes(currentUsername);
-        btn.classList.toggle('active', yaTieneLike);
-        btn.title = yaTieneLike ? 'Ya diste una mariposa 💙' : 'Dar mariposa 🦋';
-
-        const likeCountEl = card.querySelector('.like-count');
-        if (updatedImage.likes.length > 0) {
-          if (likeCountEl) {
-            likeCountEl.textContent = `🦋 x ${updatedImage.likes.length}`;
-          } else {
-            const newCount = document.createElement('div');
-            newCount.className = 'like-count';
-            newCount.textContent = `🦋 x ${updatedImage.likes.length}`;
-            card.appendChild(newCount);
-          }
-        } else if (likeCountEl) {
-          likeCountEl.remove();
-        }
-
-      } catch (e) {
-        console.error('Error al enviar mariposa:', e);
-        alert('Hubo un error al procesar tu mariposa');
+      });
+      if (response.ok) {
+        btn.classList.toggle('active');
       }
+    } catch (error) {
+      console.error('Error al enviar mariposa:', error);
+    }
+  });
+
+  userRow.appendChild(btn);
+}
+
+card.appendChild(userRow);
+
+
+      if (image.likes?.length > 0) {
+        const count = document.createElement('div');
+        count.className = 'like-count';
+        count.textContent = `🦋 x ${image.likes.length}`;
+        card.appendChild(count);
+      }
+
+      if (image.userId?.username === currentUsername) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-btn';
+        delBtn.textContent = '🗑️';
+        delBtn.addEventListener('click', () => deleteImage(image._id, card));
+        card.appendChild(delBtn);
+      }
+
+      sectionWrapper.appendChild(card);
     });
 
-    userRow.appendChild(btn);
-  }
+    sectionGroup.appendChild(sectionWrapper);
+    container.appendChild(sectionGroup);
+  });
 
-  card.appendChild(userRow);
-
-  // 🔢 Contador de mariposas
-  if (image.likes?.length > 0) {
-    const count = document.createElement('div');
-    count.className = 'like-count';
-    count.textContent = `🦋 x ${image.likes.length}`;
-    card.appendChild(count);
-  }
-
-  // 🗑️ Eliminar imagen (si es tuya)
-  if (image.userId?.username === currentUsername) {
-    const delBtn = document.createElement('button');
-    delBtn.className = 'delete-btn';
-    delBtn.textContent = '🗑️';
-    delBtn.addEventListener('click', () => deleteImage(image._id, card));
-    card.appendChild(delBtn);
-  }
-
-  sectionWrapper.appendChild(card);
-});
-    
   applyFilter();
 }
+
 
 // 👇 Esto va fuera de la función
 window.renderImages = renderImages;
