@@ -204,6 +204,8 @@ function applyFilter() {
 function renderImages(images) {
   const container = document.getElementById('imagesContainer');
   if (!container) return;
+  window.renderImages = renderImages;
+
 
   container.innerHTML = '';
 
