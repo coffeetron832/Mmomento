@@ -177,8 +177,10 @@ if (successMsg) {
 
         form.reset();
 
-        // 🔄 Recarga completa de la galería tras subir
-        setTimeout(() => renderFilteredImages(currentSectionFilter), 1500);
+        // Agregar la nueva imagen localmente y re-renderizar
+allImages.unshift(result);
+renderFilteredImages(currentSectionFilter);
+
 
         if (circleContainer) circleContainer.style.display = 'none';
       } catch (err) {
