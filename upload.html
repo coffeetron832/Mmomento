@@ -638,7 +638,7 @@
   background: transparent; /* quitar fondo blanco */
   padding: 0; /* quitar espacio interno */
   border-radius: 0; /* quitar esquinas redondeadas si querés */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -656,11 +656,12 @@
 }
 
     .image-preview-hover img {
-  max-width: 240px;
-  max-height: 240px;
+  max-width: 280px;
+  max-height: 280px;
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.2); /* ✅ borde semitransparente blanco */
 }
 
     .loader {
