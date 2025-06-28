@@ -206,8 +206,25 @@ function renderImages(images) {
   if (!container) return;
   window.renderImages = renderImages;
 
+if (!append) {
+    container.innerHTML = '';
+  }
+  
+  const grouped = {};
+  images.forEach(img => {
+    const section = img.section || 'sin_seccion';
+    if (!grouped[section]) grouped[section] = [];
+    grouped[section].push(img);
+  });
 
-  container.innerHTML = '';
+  const sectionfunction renderImages(images, append = false) {
+  const container = document.getElementById('imagesContainer');
+  if (!container) return;
+
+  // 🔹 Si no estamos haciendo "append", limpiamos el contenedor
+  if (!append) {
+    container.innerHTML = '';
+  }
 
   const grouped = {};
   images.forEach(img => {
@@ -279,7 +296,6 @@ function renderImages(images) {
         card.appendChild(user);
       }
 
-      // 🔹 Mostrar botón 🦋 solo si NO soy el autor
       if (image.userId?.username !== currentUsername) {
         const btn = document.createElement('button');
         btn.className = 'butterfly-btn';
@@ -300,7 +316,6 @@ function renderImages(images) {
             });
             if (response.ok) {
               btn.classList.toggle('active');
-              // (opcional) actualizar contador
             }
           } catch (error) {
             console.error('Error al enviar mariposa:', error);
@@ -310,7 +325,6 @@ function renderImages(images) {
         card.appendChild(btn);
       }
 
-      // 🔹 Contador de mariposas (si hay al menos una)
       if (image.likes?.length > 0) {
         const count = document.createElement('div');
         count.className = 'like-count';
@@ -318,7 +332,6 @@ function renderImages(images) {
         card.appendChild(count);
       }
 
-      // 🔹 Botón 🗑️ solo si soy el autor
       if (image.userId?.username === currentUsername) {
         const delBtn = document.createElement('button');
         delBtn.className = 'delete-btn';
@@ -336,6 +349,10 @@ function renderImages(images) {
 
   applyFilter();
 }
+
+// 👇 Esto va fuera de la función
+window.renderImages = renderImages;
+
 
 
 
