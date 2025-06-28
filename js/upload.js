@@ -207,7 +207,6 @@ function renderImages(images) {
 
   container.innerHTML = '';
 
-  // 1. Agrupar imágenes por sección
   const grouped = {};
   images.forEach(img => {
     const section = img.section || 'sin_seccion';
@@ -215,7 +214,6 @@ function renderImages(images) {
     grouped[section].push(img);
   });
 
-  // 2. Mostrar secciones en orden personalizado
   const sectionTitles = {
     lo_que_ya_no_esta: '🥀 Lo que ya no está',
     rutas_sin_mapa: '🛤️ Rutas sin mapa',
@@ -224,22 +222,23 @@ function renderImages(images) {
     sin_seccion: '📦 Sin sección'
   };
 
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const currentUsername = storedUser?.username || null;
+  const token = localStorage.getItem('token');
+
   Object.keys(sectionTitles).forEach(sectionKey => {
     const imagesInSection = grouped[sectionKey];
-    if (!imagesInSection || !imagesInSection.length) return;
+    if (!imagesInSection?.length) return;
 
-    // 🔹 Contenedor general de la sección (para filtrado)
     const sectionGroup = document.createElement('div');
     sectionGroup.className = 'section-group';
     sectionGroup.dataset.section = sectionKey;
 
-    // 🔹 Título de sección
     const sectionHeader = document.createElement('h2');
     sectionHeader.textContent = sectionTitles[sectionKey];
     sectionHeader.className = 'section-title';
     sectionGroup.appendChild(sectionHeader);
 
-    // 🔹 Contenedor de imágenes
     const sectionWrapper = document.createElement('div');
     sectionWrapper.className = 'images-grid';
 
@@ -270,7 +269,6 @@ function renderImages(images) {
         setTimeout(() => preview.style.display = 'none', 300);
       });
 
-      // Usuario
       if (image.userId && image.userId.username) {
         const user = document.createElement('div');
         user.className = 'image-user';
@@ -278,17 +276,12 @@ function renderImages(images) {
         card.appendChild(user);
       }
 
-      // Botón de mariposa
       const btn = document.createElement('button');
       btn.className = 'butterfly-btn';
       btn.innerHTML = '🦋';
       btn.dataset.id = image._id;
 
-      const token = localStorage.getItem('token');
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      const username = storedUser?.username;
-
-      if (image.likes && image.likes.includes(username)) {
+      if (image.likes && image.likes.includes(currentUsername)) {
         btn.classList.add('active');
       }
 
@@ -309,6 +302,16 @@ function renderImages(images) {
       });
 
       card.appendChild(btn);
+
+      // ✅ Solo mostrar botón de eliminar si es el autor
+      if (image.userId?.username === currentUsername) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-btn';
+        delBtn.textContent = '🗑️';
+        delBtn.addEventListener('click', () => deleteImage(image._id, card));
+        card.appendChild(delBtn);
+      }
+
       sectionWrapper.appendChild(card);
     });
 
@@ -316,8 +319,9 @@ function renderImages(images) {
     container.appendChild(sectionGroup);
   });
 
-  applyFilter(); // 👈 Para que los filtros funcionen
+  applyFilter();
 }
+
 
 
 const filterBtns = document.querySelectorAll('.filter-btn');
