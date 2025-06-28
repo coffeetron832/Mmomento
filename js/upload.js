@@ -239,39 +239,84 @@ function renderImages(images) {
     sectionHeader.className = 'section-title';
     sectionGroup.appendChild(sectionHeader);
 
-    // 🔹 Contenedor de imágenes de la sección
+    // 🔹 Contenedor de imágenes
     const sectionWrapper = document.createElement('div');
     sectionWrapper.className = 'images-grid';
 
-    imagesInSection.forEach(img => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'image-hover-wrapper';
+    imagesInSection.forEach(image => {
+      const card = document.createElement('div');
+      card.classList.add('image-card-hover');
 
-      const description = document.createElement('div');
-      description.className = 'image-description';
-      description.textContent = img.description || 'Momento';
+      const desc = document.createElement('div');
+      desc.className = 'image-description-hover';
+      desc.textContent = image.description || '(sin descripción)';
+      card.appendChild(desc);
 
-      const image = document.createElement('img');
-      image.src = img.imageUrl || img.url || '';
-      image.alt = img.description || 'Momento';
-      image.className = 'hidden-image';
+      const preview = document.createElement('div');
+      preview.className = 'image-preview-hover';
 
-      const delBtn = document.createElement('button');
-      delBtn.textContent = '🗑️';
-      delBtn.className = 'delete-btn';
-      delBtn.addEventListener('click', () => deleteImage(img._id, wrapper));
+      const img = document.createElement('img');
+      img.src = image.imageUrl || image.url || '';
+      img.alt = image.description || 'Momento';
+      preview.appendChild(img);
+      card.appendChild(preview);
 
-      wrapper.appendChild(delBtn);
-      wrapper.appendChild(description);
-      wrapper.appendChild(image);
-      sectionWrapper.appendChild(wrapper);
+      desc.addEventListener('mouseenter', () => {
+        preview.style.display = 'block';
+        setTimeout(() => preview.style.opacity = '1', 10);
+      });
+      desc.addEventListener('mouseleave', () => {
+        preview.style.opacity = '0';
+        setTimeout(() => preview.style.display = 'none', 300);
+      });
+
+      // Usuario
+      if (image.userId && image.userId.username) {
+        const user = document.createElement('div');
+        user.className = 'image-user';
+        user.textContent = `@${image.userId.username}`;
+        card.appendChild(user);
+      }
+
+      // Botón de mariposa
+      const btn = document.createElement('button');
+      btn.className = 'butterfly-btn';
+      btn.innerHTML = '🦋';
+      btn.dataset.id = image._id;
+
+      const token = localStorage.getItem('token');
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const username = storedUser?.username;
+
+      if (image.likes && image.likes.includes(username)) {
+        btn.classList.add('active');
+      }
+
+      btn.addEventListener('click', async () => {
+        try {
+          const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          if (response.ok) {
+            btn.classList.toggle('active');
+          }
+        } catch (error) {
+          console.error('Error al enviar mariposa:', error);
+        }
+      });
+
+      card.appendChild(btn);
+      sectionWrapper.appendChild(card);
     });
 
     sectionGroup.appendChild(sectionWrapper);
     container.appendChild(sectionGroup);
   });
 
-  applyFilter(); // 👈 Llama a la función de filtrado cada vez que se renderiza
+  applyFilter(); // 👈 Para que los filtros funcionen
 }
 
 
