@@ -177,9 +177,11 @@ if (successMsg) {
 
         form.reset();
 
-        // Agregar la nueva imagen localmente y re-renderizar
-allImages.unshift(result);
-renderFilteredImages(currentSectionFilter);
+        const alreadyExists = allImages.some(img => img._id === result._id);
+if (!alreadyExists) {
+  allImages.unshift(result);
+}
+
 
 
         if (circleContainer) circleContainer.style.display = 'none';
