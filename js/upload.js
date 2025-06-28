@@ -308,34 +308,54 @@ if (image.userId && image.userId.username) {
 
 
  // 🦋 Botón mariposa (si no es tuya)
- if (image.userId?.username !== currentUsername) {
-  const btn = document.createElement('button');
-  btn.className = 'butterfly-btn';
-  btn.innerHTML = '🦋';
-  btn.dataset.id = image._id;
+  if (image.userId?.username !== currentUsername) {
+    const btn = document.createElement('button');
+    btn.className = 'butterfly-btn';
+    btn.innerHTML = '🦋';
+    btn.dataset.id = image._id;
 
-  if (image.likes?.includes(currentUsername)) {
-    btn.classList.add('active');
-  }
-
-  btn.addEventListener('click', async () => {
-    try {
-      const response = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      });
-      if (response.ok) {
-        btn.classList.toggle('active');
-      }
-    } catch (error) {
-      console.error('Error al enviar mariposa:', error);
+    // 1) Estado inicial: ¿ya la diste?
+    const hasLiked = image.likes?.includes(currentUsername);
+    if (hasLiked) {
+      btn.classList.add('active');
+      btn.dataset.given = 'true';
+    } else {
+      btn.dataset.given = 'false';
     }
-  });
 
-  userRow.appendChild(btn);
-}
+    // 2) Listener de clic
+    btn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(
+          `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
+          {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          }
+        );
+        if (!res.ok) throw new Error('No se pudo enviar');
+
+        // Toggle de estado
+        const nowLiked = !btn.classList.toggle('active');
+        // fijamos dato opuesto porque toggle devuelve false si antes estaba activo
+        btn.dataset.given = nowLiked ? 'true' : 'false';
+
+        // 3) Pequeño destello al dar/quitar
+        btn.animate([
+          { transform: 'scale(1)', filter: 'brightness(1)' },
+          { transform: 'scale(1.4)', filter: 'brightness(1.5)' },
+          { transform: 'scale(1)', filter: 'brightness(1)' }
+        ], {
+          duration: 300,
+          easing: 'ease-out'
+        });
+      } catch (err) {
+        console.error('Error al enviar mariposa:', err);
+      }
+    });
+
+    userRow.appendChild(btn);
+  }
 
 card.appendChild(userRow);
 
