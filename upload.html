@@ -618,32 +618,29 @@
 
 .image-preview-hover {
   position: absolute;
-  top: 50%;
-  right: 110%;
-  transform: translateY(-50%);
+  left: -220px; /* o el valor que necesites */
+  top: 0;
+  width: 200px;
   background: white;
   padding: 0.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  max-width: 200px;
-  max-height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  z-index: 1000;
+  z-index: 999;
 }
 
-
-.image-preview-hover img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.image-card-hover {
+  position: relative;
+  display: inline-block;
 }
 
-.image-description-hover:hover + .image-preview-hover {
+.image-card-hover:hover .image-preview-hover {
   opacity: 1;
   pointer-events: auto;
 }
+
 
   </style>
 </head>  
@@ -1023,16 +1020,7 @@ async function cargarImagenesFiltradas(seccion = 'all') {
     preview.appendChild(img);
     card.appendChild(preview);
 
-    desc.addEventListener('mouseenter', () => {
-      preview.style.display = 'block';
-      setTimeout(() => preview.style.opacity = '1', 10);
-    });
-
-    desc.addEventListener('mouseleave', () => {
-      preview.style.opacity = '0';
-      setTimeout(() => preview.style.display = 'none', 300);
-    });
-
+    
     // Mariposa y usuario
     if (image.userId && image.userId.username) {
       const user = document.createElement('div');
