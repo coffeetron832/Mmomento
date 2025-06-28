@@ -310,7 +310,7 @@ if (image.userId && image.userId.username) {
  // 🦋 Botón mariposa (si no es tuya)
  if (image.userId?.username !== currentUsername) {
   const btn = document.createElement('button');
-  btn.className = 'butterfly-btn';Add commentMore actions
+  btn.className = 'butterfly-btn';
   btn.innerHTML = '🦋';
   btn.dataset.id = image._id;
 
