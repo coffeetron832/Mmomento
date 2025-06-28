@@ -900,43 +900,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const token = localStorage.getItem('token');
-
-  try {
-    const response = await fetch('https://momento-backend-production.up.railway.app/api/images', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      body: formData
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Error al subir imagen');
-    }
-
-    const newImage = await response.json();
-
-    // Verifica si el filtro activo coincide con la nueva sección
-    const activeFilter = document.querySelector('.filter-btn.selected')?.dataset.filter;
-
-        if (activeFilter === 'all' || activeFilter === newImage.section) {
-      renderImages([newImage], true); // 👈 true indica que es append, no replace
-    }
-
-
-    // Limpieza visual
-    form.reset();
-    hiddenInput.value = '';
-    document.querySelectorAll('.section-button').forEach(btn => btn.classList.remove('selected'));
-    document.getElementById('uploadFormContainer').classList.remove('visible');
-
-  } catch (err) {
-    alert(`❌ ${err.message}`);
-  }
-});
-
 async function cargarImagenesFiltradas(seccion = 'all') {
   const token = localStorage.getItem('token');
 
