@@ -130,67 +130,72 @@ if (logoutBtn) {
 
   // 📤 Subida de imagenMore actionsMore actions
   if (form) {
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      const fileInput = document.getElementById('image');
-      if (!fileInput || !fileInput.files.length) {
-        alert('Selecciona una imagen');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const fileInput = document.getElementById('image');
+    if (!fileInput || !fileInput.files.length) {
+      alert('Selecciona una imagen');
+      return;
+    }
+
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const imagesContainer = document.getElementById('imagesContainer');
+
+    // 🔄 Mostrar loader y desactivar botón
+    if (imagesContainer) imagesContainer.innerHTML = '<p class="loader">Cargando...</p>';
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      const res = await fetch(
+        'https://momento-backend-production.up.railway.app/api/images/',
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData
+        }
+      );
+      const result = await res.json();
+
+      if (!res.ok) {
+        console.error('Error servidor:', result);
+        alert(result.error || result.message || 'Error al subir la imagen');
         return;
       }
-      const formData = new FormData(form);
 
-      try {
-        const res = await fetch(
-          'https://momento-backend-production.up.railway.app/api/images/',
-          {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData
-          }
-        );
-        const result = await res.json();
+      // ✅ Mensaje de éxito
+      const successMsg = document.getElementById('imageActionMessage');
+      if (successMsg) {
+        successMsg.innerHTML = '🌟 ¡Tu momento ha sido compartido con el alma!';
+        successMsg.style.display = 'block';
+        successMsg.style.opacity = '0';
+        successMsg.style.transition = 'opacity 0.8s ease';
 
-        if (!res.ok) {
-          console.error('Error servidor:', result);
-          alert(result.error || result.message || 'Error al subir la imagen');
-          return;
-        }
-
-        const successMsg = document.getElementById('imageActionMessage');
-if (successMsg) {
-  successMsg.innerHTML = '🌟 ¡Tu momento ha sido compartido con el alma!';
-  successMsg.style.display = 'block';
-  successMsg.style.opacity = '0';
-  successMsg.style.transition = 'opacity 0.8s ease';
-
-  setTimeout(() => {
-    successMsg.style.opacity = '1';
-  }, 100);
-
-  setTimeout(() => {
-    successMsg.style.opacity = '0';
-    setTimeout(() => {
-      successMsg.style.display = 'none';
-    }, 800);
-  }, 5000);
-}
-
-        form.reset();
-
-        const alreadyExists = allImages.some(img => img._id === result._id);
-if (!alreadyExists) {
-  allImages.unshift(result);
-}
-
-
-
-        if (circleContainer) circleContainer.style.display = 'none';
-      } catch (err) {
-        console.error('Error en subida de imagen:', err);
-        alert('Error en la subida de la imagen');
+        setTimeout(() => (successMsg.style.opacity = '1'), 100);
+        setTimeout(() => {
+          successMsg.style.opacity = '0';
+          setTimeout(() => {
+            successMsg.style.display = 'none';
+          }, 800);
+        }, 5000);
       }
-    });
-  }
+
+      form.reset();
+      if (circleContainer) circleContainer.style.display = 'none';
+
+      // 🔁 Recargar desde backend (evita duplicados)
+      await loadImages();
+    } catch (err) {
+      console.error('Error en subida de imagen:', err);
+      alert('Error en la subida de la imagen');
+    } finally {
+      // ✅ Restaurar botón y quitar loader
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+}
+
 
 
 function applyFilter() {
