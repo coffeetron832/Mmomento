@@ -133,6 +133,11 @@
         <option value="">Selecciona uno</option>
       </select>
 
+      <label>
+  <input type="checkbox" id="isPublic" name="public" />
+  Hacer mi Soulprint público
+</label>
+      
       <button type="submit">Guardar cambios</button>
       <div id="responseMessage"></div>
     </form>
@@ -199,7 +204,8 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
       const soul = data.soulprint;
-
+      
+      document.getElementById('isPublic').checked = !!soul.public;
       document.getElementById('soulPhrase').value = soul.soulPhrase || '';
       document.getElementById('soulColor').value = soul.soulColor || '#88c0d0';
       document.getElementById('birthdate').value = soul.birthdate || '';
@@ -262,6 +268,7 @@
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const formData = new FormData(form);
+      formData.append('public', document.getElementById('isPublic').checked);
       formData.append('emojiURL', document.getElementById('emojiURL').value);
       const file = document.getElementById('profileImageInput').files[0];
       if (file) formData.append('profileImage', file);
