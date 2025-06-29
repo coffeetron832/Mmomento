@@ -389,6 +389,8 @@ function generatePDF() {
   const profileImg = document.getElementById('profileImage');
   const emojiImg = document.getElementById('emojiAlma');
   const soulColor = getComputedStyle(document.getElementById('soulcolorCircle')).backgroundColor;
+  pdfClone.style.setProperty('--soulcolor', soulColor); // APLICAR EL COLOR AL PDF
+
 
   // Actualizar contenido dinámico en el clon
   pdfClone.querySelector('#pdfProfileImage').src = profileImg?.src || '';
