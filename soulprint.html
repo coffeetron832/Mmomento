@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`, fetchOptions)
     .then(res => res.json().then(body => ({ status: res.status, body })))
     .then(({ status, body }) => {
-      if (status !== 200 || !body.soulprint || !body.soulprint.isPublic) {
+      if (status !== 200 || !body.soulprint || body.soulprint.public === false) {
         errorEl.textContent = body.message || 'Soulprint no encontrado o privado 😢';
         errorEl.style.display = 'block';
         return;
