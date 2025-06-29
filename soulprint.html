@@ -367,40 +367,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function generatePDF() {
   const intro = document.getElementById('soulprint-intro');
-  const originalCard = document.getElementById('soulprint');
+  const pdfClone = document.getElementById('soulprint-pdf-clone').cloneNode(true);
   const container = document.createElement('div');
 
   // Mostrar temporalmente la intro para clonarla
   intro.style.display = 'block';
-
-  // Clonar la introducción
   const introClone = intro.cloneNode(true);
+  intro.style.display = 'none'; // Ocultar de nuevo para la vista web
 
-  // Crear una versión reducida del Soulprint solo para el PDF
-  const cardClone = originalCard.cloneNode(true);
-  cardClone.style.width = '85%';
-  cardClone.style.maxWidth = '440px';
-  cardClone.style.margin = '2rem auto';
-  cardClone.style.border = '4px solid ' + getComputedStyle(originalCard).getPropertyValue('--soulcolor') || '#4f46e5';
-  cardClone.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.05)';
-  cardClone.style.borderRadius = '1.2rem';
+  // Asegurar que el clon para PDF esté visible
+  pdfClone.style.display = 'block';
+  pdfClone.style.margin = '2rem auto';
 
-  // Corregir imágenes dentro del clon
-  const profileImgClone = cardClone.querySelector('#profileImage');
-  if (profileImgClone) {
-    profileImgClone.src = document.getElementById('profileImage').src;
-  }
-  const emojiClone = cardClone.querySelector('#emojiAlma');
-  if (emojiClone) {
-    emojiClone.src = document.getElementById('emojiAlma').src;
-  }
+  // Sin borde en la tarjeta, solo borde en la foto
+  const profileImg = document.getElementById('profileImage');
+  const emojiImg = document.getElementById('emojiAlma');
+  const soulColor = getComputedStyle(document.getElementById('soulcolorCircle')).backgroundColor;
 
-  // Agregar ambos elementos al contenedor temporal
+  // Actualizar contenido dinámico en el clon
+  pdfClone.querySelector('#pdfProfileImage').src = profileImg?.src || '';
+  pdfClone.querySelector('#pdfEmojiAlma').src = emojiImg?.src || '';
+  pdfClone.querySelector('#pdfUsername').innerText = document.getElementById('usernameDisplay').innerText;
+  pdfClone.querySelector('#pdfPhrase').innerText = document.getElementById('soulPhraseDisplay').innerText;
+  pdfClone.querySelector('#pdfSoulRole').innerText = document.getElementById('soulRoleDisplay').innerText;
+  pdfClone.querySelector('#pdfButterflyCount').innerText = document.getElementById('butterflyCount').innerText;
+  pdfClone.querySelector('#pdfSoulColorName').innerText = document.getElementById('soulcolorName').innerText;
+  pdfClone.querySelector('#pdfSoulColorCircle').style.backgroundColor = soulColor;
+  pdfClone.querySelector('#pdfBirthdate').innerText = document.getElementById('birthdate').innerText;
+
+  // Agregar intro y Soulprint al contenedor
   container.appendChild(introClone);
-  container.appendChild(cardClone);
-
-  // Ocultar de nuevo la intro para la vista web
-  intro.style.display = 'none';
+  container.appendChild(pdfClone);
 
   // Generar el PDF
   html2pdf().from(container).set({
@@ -411,6 +408,7 @@ function generatePDF() {
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
   }).save();
 }
+
 
 
 
