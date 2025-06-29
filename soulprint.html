@@ -158,6 +158,26 @@
 
 <div id="qr-container" style="display: none; margin-bottom: 2rem;"></div>
 
+<div id="soulprint-intro" style="max-width:600px; margin:auto; font-size:0.95rem; line-height:1.6; color:#444; text-align:center; margin-bottom:2rem;">
+  <h2 style="font-family:'Playfair Display',serif; color:#4f46e5; font-style:italic;">Tu Soulprint</h2>
+  <p><strong>¿Qué estás viendo?</strong> Es más que una ficha, más que una red social, más que un resumen de ti.</p>
+  <p>Es un reflejo de lo que vibra en tu alma. Aquí no hay filtros de perfección, solo detalles reales que cuentan tu historia emocional.</p>
+  <p><strong>¿Para qué sirve?</strong></p>
+  <ul style="list-style: disc; padding-left: 1.2rem; text-align:left; display:inline-block;">
+    <li>Para presentarte como realmente eres.</li>
+    <li>Para compartir momentos que te definen.</li>
+    <li>Para dejar huella con tus colores, frases y emociones.</li>
+  </ul>
+  <p><strong>Úsalo para:</strong></p>
+  <ul style="list-style: disc; padding-left: 1.2rem; text-align:left; display:inline-block;">
+    <li>Conectar con gente que vibra como tú.</li>
+    <li>Dejar un QR en tus redes o tu cuarto.</li>
+    <li>Recordarte lo que eres capaz de sentir.</li>
+  </ul>
+  <p style="margin-top:1rem;"><em>Tu Soulprint cambia contigo. Hoy eres esto, mañana puedes ser más.</em></p>
+</div>
+
+  
   <div id="soulprint" class="soulprint-card" style="display:none;">
     <div class="card-header">
       <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
@@ -271,8 +291,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function generatePDF(target) {
-  html2pdf().from(target).set({
+function generatePDF() {
+  const intro = document.getElementById('soulprint-intro');
+  const card = document.getElementById('soulprint');
+
+  html2pdf().from([intro, card]).set({
     margin: 0.5,
     filename: 'mi-soulprint.pdf',
     image: { type: 'jpeg', quality: 0.98 },
@@ -280,6 +303,7 @@ function generatePDF(target) {
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
   }).save();
 }
+
 
 
   // Listener QR
