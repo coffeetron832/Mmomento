@@ -140,6 +140,23 @@
   color: #333;
 }
 
+
+.profile-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.profile-img-colored {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--soulcolor, #4f46e5);
+  background-color: #ccc;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
     
   </style>
 </head>
@@ -210,25 +227,24 @@
 
   
   <div id="soulprint" class="soulprint-card" style="display:none;">
-    <div class="card-header">
-      <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
-      <img id="profileImage" class="profile-img" src="https://via.placeholder.com/80" alt="Foto de perfil" />
-    </div>
-
-
-    <hr class="separator" />
-    <div class="details">
-      <div class="username" id="usernameDisplay">@usuario</div>
-      <div class="soulrole" id="soulRoleDisplay">Rol del alma</div>
-      <div class="soulcolor-info">
-        <div class="soulcolor-circle" id="soulcolorCircle"></div>
-        <span id="soulcolorName">Color del alma</span>
-      </div>
-      <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
-      <div class="phrase" id="soulPhraseDisplay">"Frase del alma..."</div>
-      <div class="butterflies">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
-    </div>
+  <div class="profile-wrapper">
+    <img id="profileImage" class="profile-img-colored" src="https://via.placeholder.com/80" alt="Foto de perfil" />
   </div>
+  <div class="phrase" id="soulPhraseDisplay" style="text-align:center;">"Frase del alma..."</div>
+
+  <hr class="separator" />
+  <div class="details">
+    <div class="username" id="usernameDisplay">@usuario</div>
+    <div class="soulrole" id="soulRoleDisplay">Rol del alma</div>
+    <div class="soulcolor-info" style="justify-content:center;">
+      <div class="soulcolor-circle" id="soulcolorCircle"></div>
+      <span id="soulcolorName">Color del alma</span>
+    </div>
+    <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
+    <div class="butterflies" style="text-align:center;">🦋 Mariposas recibidas: <span id="butterflyCount">0</span></div>
+  </div>
+</div>
+
 
   <div id="errorMessage" class="error" style="display:none;">
     Soulprint no encontrado 😢
