@@ -73,9 +73,11 @@
       background: #ccc;
     }
     .emoji-alma {
-      width: 56px;
-      height: 56px;
-    }
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
     .separator {
       border: none;
       border-top: 1px solid #e0e0e0;
@@ -229,7 +231,6 @@
   <div id="soulprint" class="soulprint-card" style="display:none;">
   <div class="profile-wrapper">
     <img id="profileImage" class="profile-img-colored" src="https://via.placeholder.com/80" alt="Foto de perfil" />
-    <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
   </div>
 
   <!-- Nuevo orden: usuario arriba de la frase -->
@@ -239,20 +240,25 @@
   <hr class="separator" />
 
   <div class="details" style="align-items: flex-start; text-align: left;">
-    <div class="soulrole" id="soulRoleDisplay">Rol del alma</div>
+  <div class="soulrole" id="soulRoleDisplay">Rol del alma</div>
 
-    <div class="soulcolor-info">
-      <div class="soulcolor-circle" id="soulcolorCircle"></div>
-      <span id="soulcolorName">Color del alma</span>
-    </div>
+  <div class="soulcolor-info">
+    <div class="soulcolor-circle" id="soulcolorCircle"></div>
+    <span id="soulcolorName">Color del alma</span>
+  </div>
 
-    <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
+  <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
 
-    <div class="butterflies" style="text-align:center; width: 100%;">
-      🦋 Mariposas recibidas: <span id="butterflyCount">0</span>
-    </div>
+  <div class="emoji-meaning" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+    <span style="font-weight: 500;">Me define</span>
+    <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
+  </div>
+
+  <div class="butterflies" style="text-align:center; width: 100%;">
+    🦋 Mariposas recibidas: <span id="butterflyCount">0</span>
   </div>
 </div>
+
 
 
 
