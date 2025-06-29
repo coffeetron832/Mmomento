@@ -385,7 +385,7 @@ function generatePDF() {
   pdfClone.style.display = 'block';
   pdfClone.style.margin = '2rem auto';
 
-  // Sin borde en la tarjeta, solo borde en la foto
+  // Obtener elementos originales
   const profileImg = document.getElementById('profileImage');
   const emojiImg = document.getElementById('emojiAlma');
   const soulColor = getComputedStyle(document.getElementById('soulcolorCircle')).backgroundColor;
@@ -394,7 +394,7 @@ function generatePDF() {
   pdfClone.querySelector('#pdfProfileImage').src = profileImg?.src || '';
   pdfClone.querySelector('#pdfEmojiAlma').src = emojiImg?.src || '';
   pdfClone.querySelector('#pdfUsername').innerText = document.getElementById('usernameDisplay').innerText;
-  pdfClone.querySelector('#pdfPhrase').innerText = document.getElementById('soulPhraseDisplay').innerText;
+  pdfClone.querySelector('#pdfSoulPhrase').innerText = document.getElementById('soulPhraseDisplay').innerText;
   pdfClone.querySelector('#pdfSoulRole').innerText = document.getElementById('soulRoleDisplay').innerText;
   pdfClone.querySelector('#pdfButterflyCount').innerText = document.getElementById('butterflyCount').innerText;
   pdfClone.querySelector('#pdfSoulColorName').innerText = document.getElementById('soulcolorName').innerText;
@@ -414,6 +414,7 @@ function generatePDF() {
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
   }).save();
 }
+
 
 
 
