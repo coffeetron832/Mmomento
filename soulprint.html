@@ -207,34 +207,40 @@
 
 <!-- Contenido oculto solo para el PDF -->
 <div id="soulprint-pdf-clone" style="display: none;">
-  <div style="width: 85%; max-width: 440px; margin: auto; border: 4px solid var(--soulcolor, #4f46e5); border-radius: 1.5rem; padding: 1.5rem; color: #333; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05); font-family: 'Inter', sans-serif;">
-    <!-- Foto centrada -->
-<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">
-  <img id="pdfProfileImage" src="https://via.placeholder.com/80" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--soulcolor, #4f46e5); background: #ccc; box-shadow: 0 0 8px rgba(0,0,0,0.2);" />
-</div>
+  <div class="soulprint-card" style="width: 85%; max-width: 440px; margin: 2rem auto;">
 
-<!-- Username + Emoji centrados -->
-<div style="display: flex; justify-content: center; align-items: center; gap: 0.4rem; margin-bottom: 0;">
-  <div style="font-size: 1.25rem; font-weight: 600;" id="pdfUsername">@usuario</div>
-  <img id="pdfEmojiAlma" src="/emoji-default.png" style="width: 32px; height: 32px;" />
-</div>
+    <!-- Foto centrada con borde de color -->
+    <div class="profile-wrapper">
+      <img id="pdfProfileImage" class="profile-img-colored" src="https://via.placeholder.com/80" alt="Foto de perfil PDF" />
+    </div>
 
-<!-- Frase del alma pegada debajo -->
-<div style="text-align:center; font-style: italic; font-size: 1rem; color: #666; margin-top: 0;" id="pdfPhrase">"Frase del alma..."</div>
+    <!-- Username + Emoji centrados -->
+    <div class="username-emoji" style="display: flex; justify-content: center; align-items: center; gap: 0.4rem; margin-bottom: 0;">
+      <div class="username" id="pdfUsername">@usuario</div>
+      <img id="pdfEmojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma PDF" />
+    </div>
 
-<hr style="border: none; border-top: 1px solid #e0e0e0; margin: 1rem 0;" />
+    <!-- Frase del alma -->
+    <div class="phrase" id="pdfSoulPhrase" style="text-align:center; margin-top: 0;">"Frase del alma..."</div>
 
-      <div style="font-size: 0.95rem; font-weight: 500; color: #444;" id="pdfSoulRole">Rol del alma</div>
-      <div style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem;">
-        <div style="width: 12px; height: 12px; border-radius: 50%; background-color: var(--soulcolor, #4f46e5);" id="pdfSoulColorCircle"></div>
+    <hr class="separator" />
+
+    <!-- Detalles -->
+    <div class="details" style="align-items: flex-start; text-align: left;">
+      <div class="soulrole" id="pdfSoulRole">Rol del alma</div>
+      <div class="soulcolor-info">
+        <div class="soulcolor-circle" id="pdfSoulColorCircle"></div>
         <span id="pdfSoulColorName">Color del alma</span>
       </div>
-      <div style="font-size: 0.9rem; color: #555;">Mi primer latido: <span id="pdfBirthdate">--</span></div>
-      <div style="font-style: italic; font-size: 1rem; color: #666;" id="pdfPhrase">"Frase del alma..."</div>
-      <div style="font-size: 0.9rem; font-weight: 500;">🦋 Mariposas recibidas: <span id="pdfButterflyCount">0</span></div>
+      <div class="birthdate">Mi primer latido: <span id="pdfBirthdate">--</span></div>
+      <div class="butterflies" style="text-align:center; width: 100%;">
+        🦋 Mariposas recibidas: <span id="pdfButterflyCount">0</span>
+      </div>
     </div>
+
   </div>
 </div>
+
 
   
   <div id="soulprint" class="soulprint-card" style="display:none;">
