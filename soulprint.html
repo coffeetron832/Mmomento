@@ -384,7 +384,11 @@ function generatePDF() {
 
   // Asegurar que el clon para PDF esté visible
   pdfClone.style.display = 'block';
-  pdfClone.style.margin = '2rem auto';
+pdfClone.style.margin = '2rem auto';
+pdfClone.style.maxWidth = '380px'; // o 360px si lo querés más angosto
+pdfClone.style.border = '1px solid #ccc'; // borde sutil
+pdfClone.style.borderRadius = '1rem'; // para suavizar las esquinas
+
 
   // Obtener elementos originales
   const profileImg = document.getElementById('profileImage');
