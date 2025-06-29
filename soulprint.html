@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
   colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
   soulEl.style.setProperty('--soulcolor', soulprint.soulColor || '#4f46e5');
   if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
-  emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
+  if (emojiEl) emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
 
   soulEl.style.display = 'flex';
 
