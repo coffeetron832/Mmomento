@@ -339,8 +339,8 @@ function generatePDF() {
   cardClone.style.maxWidth = '440px';
   cardClone.style.margin = '2rem auto';
   cardClone.style.border = '4px solid ' + getComputedStyle(originalCard).getPropertyValue('--soulcolor') || '#4f46e5';
-  cardClone.style.background = 'rgba(255,255,255,0.95)';
-  cardClone.style.borderRadius = '1.5rem';
+  cardClone.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.05)';
+  cardClone.style.borderRadius = '1.2rem';
 
   // Corregir imágenes dentro del clon
   const profileImgClone = cardClone.querySelector('#profileImage');
