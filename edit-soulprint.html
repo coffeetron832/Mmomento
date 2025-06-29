@@ -274,7 +274,7 @@
       const formData = new FormData(form);
       formData.set('public', document.getElementById('isPublic').checked ? 'true' : 'false');
       formData.append('emojiURL', document.getElementById('emojiURL').value);
-      formData.append('nationality', document.getElementById('nationality').value);
+      formData.set('nationality', document.getElementById('nationality').value);
       const file = document.getElementById('profileImageInput').files[0];
       if (file) formData.append('profileImage', file);
       try {
