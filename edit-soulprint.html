@@ -108,16 +108,17 @@
       <label for="birthdate">Mi primer latido (fecha de nacimiento):</label>
       <input type="date" id="birthdate" name="birthdate" required />
 
-      <label for="soulRole">¿Desde dónde te conectas?</label>
-      <select id="soulRole" name="soulRole" required>
-        <option value="">Selecciona uno</option>
-        <option value="🇨🇴Colombia">🇨🇴 Colombia</option>
-        <option value="🇵🇪Perú">🇵🇪 Perú</option>
-        <option value="🇲🇽México">🇲🇽 México</option>
-        <option value="vChile">🇨🇱 Chile</option>
-        <option value="🇦🇷Argentina">🇦🇷 Argentina</option>
-        <option value="🇪🇨Ecuador">🇪🇨 Ecuador</option>
-      </select>
+      <label for="nationality">¿Desde dónde te conectas?</label>
+<select id="nationality" name="nationality" required>
+  <option value="">Selecciona uno</option>
+  <option value="🇨🇴 Colombia">🇨🇴 Colombia</option>
+  <option value="🇵🇪 Perú">🇵🇪 Perú</option>
+  <option value="🇲🇽 México">🇲🇽 México</option>
+  <option value="🇨🇱 Chile">🇨🇱 Chile</option>
+  <option value="🇦🇷 Argentina">🇦🇷 Argentina</option>
+  <option value="🇪🇨 Ecuador">🇪🇨 Ecuador</option>
+</select>
+
 
       <label>Elige tu emoji del alma:</label>
       <div id="emoji-wrapper">
@@ -211,7 +212,7 @@
       document.getElementById('soulPhrase').value = soul.soulPhrase || '';
       document.getElementById('soulColor').value = soul.soulColor || '#88c0d0';
       document.getElementById('birthdate').value = soul.birthdate || '';
-      document.getElementById('soulRole').value = soul.soulRole || '';
+      document.getElementById('nationality').value = soul.nationality || '';
       initEmojiSelector(soul.emojiURL || '');
       document.getElementById('previewPhrase').innerText = soul.soulPhrase || '';
       document.getElementById('haloPreview').style.setProperty('--soul-color', soul.soulColor || '#88c0d0');
@@ -219,7 +220,7 @@
       if (soul.birthdate) {
         document.getElementById('previewBirthdate').innerText = new Date(soul.birthdate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
       }
-      document.getElementById('previewRole').innerText = soul.soulRole ? 'Rol del alma: ' + soul.soulRole : 'Rol del alma: --';
+      document.getElementById('previewRole').innerText = soul.nationality ? 'Desde: ' + soul.nationality : 'Desde: --';
 
       const mres = await fetch(`https://momento-backend-production.up.railway.app/api/users/${username}/moments`, {
         headers: { Authorization: 'Bearer ' + token }
@@ -245,7 +246,8 @@
     document.getElementById('soulPhrase').addEventListener('input', e => document.getElementById('previewPhrase').innerText = e.target.value);
     document.getElementById('soulColor').addEventListener('input', e => document.getElementById('haloPreview').style.setProperty('--soul-color', e.target.value));
     document.getElementById('birthdate').addEventListener('input', e => document.getElementById('previewBirthdate').innerText = new Date(e.target.value).toLocaleDateString('es-ES'));
-    document.getElementById('soulRole').addEventListener('change', e => document.getElementById('previewRole').innerText = 'Rol del alma: ' + e.target.value);
+    document.getElementById('nationality').addEventListener('change', e => { document.getElementById('previewRole').innerText = 'Desde: ' + e.target.value;});
+
 
     document.getElementById('profileImageInput').addEventListener('change', e => {
       const file = e.target.files[0];
