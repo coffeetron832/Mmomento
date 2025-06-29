@@ -250,17 +250,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Listener PDF
   document.getElementById('download-pdf').addEventListener('click', () => {
-    html2pdf().from(document.getElementById('soulprint')).set({
-      margin: 0.5,
-      filename: 'mi-soulprint.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    }).save();
-  });
+  const target = document.getElementById('soulprint');
+  const profileImg = document.getElementById('profileImage');
+
+  if (profileImg && !profileImg.complete) {
+    profileImg.onload = () => generatePDF(target);
+  } else {
+    generatePDF(target);
+  }
+});
+
+function generatePDF(target) {
+  html2pdf().from(target).set({
+    margin: 0.5,
+    filename: 'mi-soulprint.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  }).save();
+}
+
 
   // Listener QR
   document.getElementById('generate-qr').addEventListener('click', () => {
+  if (qrCont.style.display === 'block') {
+    qrCont.style.display = 'none';
+    qrCont.innerHTML = '';
+  } else {
     qrCont.innerHTML = '';
     new QRCode(qrCont, {
       text: `https://momentto.netlify.app/soulprint.html?user=${encodeURIComponent(user)}`,
@@ -271,7 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
       correctLevel: QRCode.CorrectLevel.H
     });
     qrCont.style.display = 'block';
-  });
+  }
+});
 });
 </script>
   <!-- Librerías externas -->
