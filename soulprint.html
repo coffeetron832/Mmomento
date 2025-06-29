@@ -186,6 +186,27 @@
   <p style="margin-top: 2rem; color: #999; font-size: 0.9rem;"><em>Hecho con 💜 en Momento</em></p>
 </div>
 
+<!-- Contenido oculto solo para el PDF -->
+<div id="soulprint-pdf-clone" style="display: none;">
+  <div style="width: 85%; max-width: 440px; margin: auto; border: 4px solid var(--soulcolor, #4f46e5); border-radius: 1.5rem; padding: 1.5rem; background-color: rgba(255, 255, 255, 0.95); color: #333; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05); font-family: 'Inter', sans-serif;">
+    <div class="card-header" style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem;">
+      <img id="pdfEmojiAlma" src="/emoji-default.png" style="width: 56px; height: 56px;" />
+      <img id="pdfProfileImage" src="https://via.placeholder.com/80" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+    </div>
+    <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 1rem 0;" />
+    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+      <div style="font-size: 1.25rem; font-weight: 600;" id="pdfUsername">@usuario</div>
+      <div style="font-size: 0.95rem; font-weight: 500; color: #444;" id="pdfSoulRole">Rol del alma</div>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem;">
+        <div style="width: 12px; height: 12px; border-radius: 50%; background-color: var(--soulcolor, #4f46e5);" id="pdfSoulColorCircle"></div>
+        <span id="pdfSoulColorName">Color del alma</span>
+      </div>
+      <div style="font-size: 0.9rem; color: #555;">Mi primer latido: <span id="pdfBirthdate">--</span></div>
+      <div style="font-style: italic; font-size: 1rem; color: #666;" id="pdfPhrase">"Frase del alma..."</div>
+      <div style="font-size: 0.9rem; font-weight: 500;">🦋 Mariposas recibidas: <span id="pdfButterflyCount">0</span></div>
+    </div>
+  </div>
+</div>
 
   
   <div id="soulprint" class="soulprint-card" style="display:none;">
@@ -303,19 +324,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function generatePDF() {
   const intro = document.getElementById('soulprint-intro');
-  const card = document.getElementById('soulprint');
+  const originalCard = document.getElementById('soulprint');
   const container = document.createElement('div');
 
-  // Mostrar temporalmente la introducción
+  // Mostrar temporalmente la intro para clonarla
   intro.style.display = 'block';
 
-  // Clonar el contenido
-  container.appendChild(intro.cloneNode(true));
-  container.appendChild(card.cloneNode(true));
+  // Clonar la introducción
+  const introClone = intro.cloneNode(true);
+
+  // Crear una versión reducida del Soulprint solo para el PDF
+  const cardClone = originalCard.cloneNode(true);
+  cardClone.style.width = '85%';
+  cardClone.style.maxWidth = '440px';
+  cardClone.style.margin = '2rem auto';
+  cardClone.style.border = '4px solid ' + getComputedStyle(originalCard).getPropertyValue('--soulcolor') || '#4f46e5';
+  cardClone.style.background = 'rgba(255,255,255,0.95)';
+  cardClone.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.05)';
+  cardClone.style.borderRadius = '1.5rem';
+
+  // Corregir imágenes dentro del clon
+  const profileImgClone = cardClone.querySelector('#profileImage');
+  if (profileImgClone) {
+    profileImgClone.src = document.getElementById('profileImage').src;
+  }
+  const emojiClone = cardClone.querySelector('#emojiAlma');
+  if (emojiClone) {
+    emojiClone.src = document.getElementById('emojiAlma').src;
+  }
+
+  // Agregar ambos elementos al contenedor temporal
+  container.appendChild(introClone);
+  container.appendChild(cardClone);
 
   // Ocultar de nuevo la intro para la vista web
   intro.style.display = 'none';
 
+  // Generar el PDF
   html2pdf().from(container).set({
     margin: 0.5,
     filename: 'mi-soulprint.pdf',
