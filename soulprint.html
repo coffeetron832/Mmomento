@@ -205,36 +205,43 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`, fetchOptions)
     .then(res => res.json().then(body => ({ status: res.status, body })))
     .then(({ status, body }) => {
-      if (status !== 200 || !body.soulprint || body.soulprint.public === false) {
-        errorEl.textContent = body.message || 'Soulprint no encontrado o privado 😢';
-        errorEl.style.display = 'block';
-        return;
-      }
+  const isOwner = logged === user;
 
-      const { username, soulprint } = body;
-      document.getElementById('usernameDisplay').innerText = '@' + username;
-      document.getElementById('soulRoleDisplay').innerText = soulprint.soulRole || '';
-      document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
-      document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
+  if (status !== 200 || !body.soulprint || (!body.soulprint.public && !isOwner)) {
+    errorEl.textContent = body.message || 'Soulprint no encontrado o privado 😢';
+    errorEl.style.display = 'block';
+    return;
+  }
 
-      if (soulprint.birthdate) {
-        const d = new Date(soulprint.birthdate);
-        document.getElementById('birthdate').innerText = d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-      }
+  const { username, soulprint } = body;
+  document.getElementById('usernameDisplay').innerText = '@' + username;
+  document.getElementById('soulRoleDisplay').innerText = soulprint.soulRole || '';
+  document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
+  document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
 
-      soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
-      colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
-      if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
-      emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
+  if (soulprint.birthdate) {
+    const d = new Date(soulprint.birthdate);
+    document.getElementById('birthdate').innerText = d.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
 
-      soulEl.style.display = 'flex';
+  soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
+  colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
+  if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
+  emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
 
-      if (logged === username) {
-        editBtn.style.display = 'inline-block';
-        editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
-        actions.style.display = 'flex'; // Solo si es el dueño
-      }
-    })
+  soulEl.style.display = 'flex';
+
+  if (isOwner) {
+    editBtn.style.display = 'inline-block';
+    editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
+    actions.style.display = 'flex';
+  }
+})
+
     .catch(err => {
       console.error(err);
       errorEl.textContent = 'Error al obtener Soulprint';
