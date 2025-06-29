@@ -233,19 +233,17 @@
     <img id="profileImage" class="profile-img-colored" src="https://via.placeholder.com/80" alt="Foto de perfil" />
   </div>
 
-  <!-- Nuevo orden: usuario arriba de la frase -->
-  <div class="username" id="usernameDisplay" style="text-align:center;">@usuario</div>
+  <!-- Contenedor nuevo que agrupa el nombre y el emoji -->
+<div class="username-emoji" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+  <div class="username" id="usernameDisplay">@usuario</div>
+  <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
+</div>
   <div class="phrase" id="soulPhraseDisplay" style="text-align:center;">"Frase del alma..."</div>
 
   <hr class="separator" />
 
   <div class="details" style="align-items: flex-start; text-align: left;">
 
-    <!-- 🔼 Movido arriba del rol -->
-    <div class="emoji-meaning" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
-      <span style="font-weight: 500;">Me define</span>
-      <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
-    </div>
 
     <div class="soulrole" id="soulRoleDisplay">Rol del alma</div>
 
