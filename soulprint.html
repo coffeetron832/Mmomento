@@ -228,7 +228,7 @@
 
     <!-- Detalles -->
     <div class="details" style="align-items: flex-start; text-align: left;">
-      <div class="soulrole" id="pdfSoulRole">Rol del alma</div>
+      <div class="soulrole" id="pdfNationality">Nacionalidad</div>
       <div class="soulcolor-info">
         <div class="soulcolor-circle" id="pdfSoulColorCircle"></div>
         <span id="pdfSoulColorName">Color del alma</span>
@@ -261,7 +261,8 @@
   <div class="details" style="align-items: flex-start; text-align: left;">
 
 
-    <div class="soulrole" id="soulRoleDisplay">Nacionalidad</div>
+    <div class="soulrole" id="nationalityDisplay">Nacionalidad</div>
+
 
     <div class="soulcolor-info">
       <div class="soulcolor-circle" id="soulcolorCircle"></div>
@@ -326,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const { username, soulprint } = body;
   document.getElementById('usernameDisplay').innerText = '@' + username;
-  document.getElementById('soulRoleDisplay').innerText = soulprint.soulRole || '';
+  document.getElementById('nationalityDisplay').innerText = soulprint.nationality ? 'Desde: ' + soulprint.nationality : 'Desde: --';
   document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
   document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
 
@@ -402,7 +403,7 @@ pdfClone.style.borderRadius = '1rem'; // para suavizar las esquinas
   pdfClone.querySelector('#pdfEmojiAlma').src = emojiImg?.src || '';
   pdfClone.querySelector('#pdfUsername').innerText = document.getElementById('usernameDisplay').innerText;
   pdfClone.querySelector('#pdfSoulPhrase').innerText = document.getElementById('soulPhraseDisplay').innerText;
-  pdfClone.querySelector('#pdfSoulRole').innerText = document.getElementById('soulRoleDisplay').innerText;
+  pdfClone.querySelector('#pdfNationality').innerText = document.getElementById('nationalityDisplay').innerText;
   pdfClone.querySelector('#pdfButterflyCount').innerText = document.getElementById('butterflyCount').innerText;
   pdfClone.querySelector('#pdfSoulColorName').innerText = document.getElementById('soulcolorName').innerText;
   pdfClone.querySelector('#pdfSoulColorCircle').style.backgroundColor = soulColor;
