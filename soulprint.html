@@ -403,9 +403,15 @@ function generatePDF() {
   pdfClone.querySelector('#pdfSoulColorCircle').style.backgroundColor = soulColor;
   pdfClone.querySelector('#pdfBirthdate').innerText = document.getElementById('birthdate').innerText;
 
-  // Agregar intro y Soulprint al contenedor
-  container.appendChild(introClone);
-  container.appendChild(pdfClone);
+  // Agregar intro y Soulprint al contenedor con salto de página
+container.appendChild(introClone);
+
+const pageBreak = document.createElement('div');
+pageBreak.style.pageBreakBefore = 'always';
+pageBreak.style.breakBefore = 'page'; // Compatibilidad con navegadores modernos
+container.appendChild(pageBreak);
+
+container.appendChild(pdfClone);
 
   // Generar el PDF
   html2pdf().from(container).set({
