@@ -190,6 +190,9 @@
       const soulcolorName = document.getElementById('soulcolorName');
       const profileImage = document.getElementById('profileImage');
       const emojiEl = document.getElementById('emojiAlma');
+      const actions  = document.getElementById('soulprint-actions');
+      const qrCont   = document.getElementById('qr-container');
+
 
       if (!token) {
         alert('Debes iniciar sesión');
@@ -208,35 +211,60 @@
       })
       .then(res => res.json().then(body => ({ status: res.status, body })))
       .then(({ status, body }) => {
-        if (status !== 200) {
-          errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
-          errorEl.style.display = 'block';
-          return;
-        }
+  if (status !== 200) {
+    errorEl.textContent = body.message || 'Soulprint no encontrado 😢';
+    errorEl.style.display = 'block';
+    return;
+  }
 
-        const { username, soulprint } = body;
-        document.getElementById('usernameDisplay').innerText = '@' + username;
-        document.getElementById('soulRoleDisplay').innerText = soulprint.soulRole || '';
-        document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
-        document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
+  const { username, soulprint } = body;
+  document.getElementById('usernameDisplay').innerText = '@' + username;
+  document.getElementById('soulRoleDisplay').innerText = soulprint.soulRole || '';
+  document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
+  document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
 
-        const birthEl = document.getElementById('birthdate');
-        if (soulprint.birthdate) {
-          const d = new Date(soulprint.birthdate);
-          birthEl.innerText = d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-        }
+  if (soulprint.birthdate) {
+    const d = new Date(soulprint.birthdate);
+    document.getElementById('birthdate').innerText = d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
 
-        soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
-        colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
+  soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
+  colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
+  if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
+  emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
 
-        if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
-        emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
+  soulEl.style.display = 'flex';
+  actions.style.display = 'flex';
+  if (logged === username) {
+    editBtn.style.display = 'inline-block';
+    editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
+  }
 
-        soulEl.style.display = 'flex';
-        if (logged === username) {
-          editBtn.style.display = 'inline-block';
-          editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
-        }
+  // LISTENER PDF
+  document.getElementById('download-pdf').addEventListener('click', () => {
+    html2pdf().from(soulEl).set({
+      margin: 0.5,
+      filename: 'mi-soulprint.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }).save();
+  });
+
+  // LISTENER QR
+  document.getElementById('generate-qr').addEventListener('click', () => {
+    qrCont.innerHTML = '';
+    new QRCode(qrCont, {
+      text: `https://momento.com/soulprint.html?user=${encodeURIComponent(user)}`,
+      width: 200,
+      height: 200,
+      colorDark: "#ffffff",
+      colorLight: "#000000",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    qrCont.style.display = 'block';
+  });
+});
       })
       .catch(err => {
         console.error(err);
@@ -244,38 +272,6 @@
         errorEl.style.display = 'block';
       });
     });
-    document.getElementById('soulprint-actions').style.display = 'flex';
-
-// BOTÓN PDF
-document.getElementById('download-pdf').addEventListener('click', () => {
-  const element = document.getElementById('soulprint');
-  const opt = {
-    margin: 0.5,
-    filename: 'mi-soulprint.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-  };
-  html2pdf().from(element).set(opt).save();
-});
-
-// BOTÓN QR
-document.getElementById('generate-qr').addEventListener('click', () => {
-  const qrContainer = document.getElementById('qr-container');
-  qrContainer.innerHTML = ''; // limpiar anterior
-  const url = `https://momento.com/soulprint.html?user=${encodeURIComponent(user)}`;
-
-  new QRCode(qrContainer, {
-    text: url,
-    width: 200,
-    height: 200,
-    colorDark : "#ffffff",
-    colorLight : "#000000",
-    correctLevel : QRCode.CorrectLevel.H
-  });
-
-  qrContainer.style.display = 'block';
-});
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
