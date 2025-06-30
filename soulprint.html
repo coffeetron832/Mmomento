@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const { username, soulprint } = body;
   document.getElementById('usernameDisplay').innerText = '@' + username;
-  document.getElementById('nationalityDisplay').innerText = soulprint.nationality ? 'Desde: ' + soulprint.nationality : 'Desde: --';
+  document.getElementById('nationalityDisplay').innerText = soulprint.nationality || '--';
   document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
   document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
 
