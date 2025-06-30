@@ -496,7 +496,7 @@ container.appendChild(pdfClone);
 
 
   // Listener QR
-  document.getElementById('generate-qr').addEventListener('mouseenter', () => {
+document.getElementById('generate-qr').addEventListener('mouseenter', () => {
   qrCont.innerHTML = '';
   new QRCode(qrCont, {
     text: `https://momentto.netlify.app/soulprint.html?user=${encodeURIComponent(user)}`,
@@ -507,6 +507,9 @@ container.appendChild(pdfClone);
     correctLevel: QRCode.CorrectLevel.H
   });
 });
+
+
+}); // Cierre del DOMContentLoaded
 </script>
   <!-- Librerías externas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
