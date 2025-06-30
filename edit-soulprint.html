@@ -146,80 +146,104 @@
   </div>
 
   <script>
-    const username = new URLSearchParams(window.location.search).get('user');
-    const token = localStorage.getItem('token');
+  const username = new URLSearchParams(window.location.search).get('user');
+  const token = localStorage.getItem('token');
 
-    const form = document.getElementById('soulprintForm');
-    const previewUsername = document.getElementById('previewUsername');
+  const form = document.getElementById('soulprintForm');
+  const previewUsername = document.getElementById('previewUsername');
 
-    previewUsername.innerText = '@' + username;
+  previewUsername.innerText = '@' + username;
 
-    
-  
-
-    async function loadSoulprint() {
+  async function loadSoulprint() {
+    try {
       const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
         headers: { Authorization: 'Bearer ' + token }
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
+
       const soul = data.soulprint;
-      
       document.getElementById('isPublic').checked = !!soul.public;
       document.getElementById('soulPhrase').value = soul.soulPhrase || '';
       document.getElementById('soulColor').value = soul.soulColor || '#88c0d0';
       document.getElementById('birthdate').value = soul.birthdate || '';
       document.getElementById('nationality').value = soul.nationality || '';
+
       document.getElementById('previewPhrase').innerText = soul.soulPhrase || '';
       document.getElementById('haloPreview').style.setProperty('--soul-color', soul.soulColor || '#88c0d0');
       document.getElementById('previewProfileImage').src = soul.profileImage || '/default-avatar.png';
+
       if (soul.birthdate) {
-        document.getElementById('previewBirthdate').innerText = new Date(soul.birthdate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('previewBirthdate').innerText = new Date(soul.birthdate).toLocaleDateString('es-ES', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
       }
+
       document.getElementById('previewRole').innerText = soul.nationality ? 'Desde: ' + soul.nationality : 'Desde: --';
 
-      
+    } catch (err) {
+      console.error('Error al cargar Soulprint:', err);
+    }
+  }
 
-    document.getElementById('soulPhrase').addEventListener('input', e => document.getElementById('previewPhrase').innerText = e.target.value);
-    document.getElementById('soulColor').addEventListener('input', e => document.getElementById('haloPreview').style.setProperty('--soul-color', e.target.value));
-    document.getElementById('birthdate').addEventListener('input', e => document.getElementById('previewBirthdate').innerText = new Date(e.target.value).toLocaleDateString('es-ES'));
-    document.getElementById('nationality').addEventListener('change', e => { document.getElementById('previewRole').innerText = 'Desde: ' + e.target.value;});
+  document.getElementById('soulPhrase').addEventListener('input', e => {
+    document.getElementById('previewPhrase').innerText = e.target.value;
+  });
 
+  document.getElementById('soulColor').addEventListener('input', e => {
+    document.getElementById('haloPreview').style.setProperty('--soul-color', e.target.value);
+  });
 
-    document.getElementById('profileImageInput').addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => document.getElementById('previewProfileImage').src = reader.result;
-        reader.readAsDataURL(file);
-      }
-    });
+  document.getElementById('birthdate').addEventListener('input', e => {
+    document.getElementById('previewBirthdate').innerText = new Date(e.target.value).toLocaleDateString('es-ES');
+  });
 
-    
+  document.getElementById('nationality').addEventListener('change', e => {
+    document.getElementById('previewRole').innerText = 'Desde: ' + e.target.value;
+  });
 
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      formData.set('public', document.getElementById('isPublic').checked ? 'true' : 'false');
-      formData.set('nationality', document.getElementById('nationality').value);
-      const file = document.getElementById('profileImageInput').files[0];
-      try {
-        const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
-          method: 'PUT', headers: { Authorization: 'Bearer ' + token }, body: formData
-        });
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message || 'Error actualizando');
-        document.getElementById('responseMessage').textContent = '✅ Soulprint actualizado con éxito';
-        document.getElementById('responseMessage').style.color = 'green';
-        loadSoulprint();
-      } catch (err) {
-        document.getElementById('responseMessage').textContent = '❌ ' + err.message;
-        document.getElementById('responseMessage').style.color = 'crimson';
-      }
-    });
+  document.getElementById('profileImageInput').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        document.getElementById('previewProfileImage').src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 
-    loadSoulprint();
-  </script>
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    formData.set('public', document.getElementById('isPublic').checked ? 'true' : 'false');
+    formData.set('nationality', document.getElementById('nationality').value);
+    const file = document.getElementById('profileImageInput').files[0];
+
+    try {
+      const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + token
+        },
+        body: formData
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message || 'Error actualizando');
+      document.getElementById('responseMessage').textContent = '✅ Soulprint actualizado con éxito';
+      document.getElementById('responseMessage').style.color = 'green';
+      loadSoulprint();
+    } catch (err) {
+      document.getElementById('responseMessage').textContent = '❌ ' + err.message;
+      document.getElementById('responseMessage').style.color = 'crimson';
+    }
+  });
+
+  loadSoulprint();
+</script>
 </body>
 </html>
 
