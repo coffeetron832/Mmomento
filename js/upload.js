@@ -234,7 +234,7 @@ function applyFilter() {
   });
 
   const sectionTitles = {
-    inedito: '🥀 Inédito',
+    caos_bonito: '❤️‍🔥 Caos bonito',
     zona_cero: '🛤️ Zona cer0',
     emocional_404: '🧨 404 Emocional',
     nunca_antes_visto: '🤐 Nunca antes visto',
