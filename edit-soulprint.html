@@ -276,7 +276,6 @@
       formData.set('emojiURL', document.getElementById('emojiURL').value);
       formData.set('nationality', document.getElementById('nationality').value);
       const file = document.getElementById('profileImageInput').files[0];
-      if (file) formData.append('profileImage', file);
       try {
         const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
           method: 'PUT', headers: { Authorization: 'Bearer ' + token }, body: formData
