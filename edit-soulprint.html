@@ -120,10 +120,7 @@
       <label for="profileImageInput">Foto de perfil:</label>
       <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
 
-      <label for="pinnedMoment">Momento anclado:</label>
-      <select id="pinnedMoment" name="pinnedMoment">
-        <option value="">Selecciona uno</option>
-      </select>
+      
 
       <label>
   <input type="checkbox" id="isPublic" name="public" />
@@ -145,7 +142,6 @@
       <div class="birthdate-display">Mi primer latido: <span id="previewBirthdate">--</span></div>
       <div class="phrase" id="previewPhrase">Tu frase aparecerá aquí...</div>
       <div id="previewRole" style="font-weight:bold;color:#444;margin-top:0.5rem;">Nacionalidad: --</div>
-      <img id="previewMoment" class="moment-img" style="display:none;" alt="Previsualización momento" />
     </div>
   </div>
 
@@ -182,26 +178,7 @@
       }
       document.getElementById('previewRole').innerText = soul.nationality ? 'Desde: ' + soul.nationality : 'Desde: --';
 
-      const mres = await fetch(`https://momento-backend-production.up.railway.app/api/users/${username}/moments`, {
-        headers: { Authorization: 'Bearer ' + token }
-      });
-      const moments = await mres.json();
-      const pinnedMoment = document.getElementById('pinnedMoment');
-      pinnedMoment.innerHTML = '<option value="">Selecciona uno</option>';
-      moments.forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = m._id;
-        opt.dataset.url = m.imageUrl;
-        opt.textContent = `Momento #${m._id.slice(-4)}`;
-        pinnedMoment.appendChild(opt);
-      });
-      if (soul.pinnedMoment) {
-        pinnedMoment.value = soul.pinnedMoment._id;
-        const img = document.getElementById('previewMoment');
-        img.src = soul.pinnedMoment.imageUrl;
-        img.style.display = 'block';
-      }
-    }
+      
 
     document.getElementById('soulPhrase').addEventListener('input', e => document.getElementById('previewPhrase').innerText = e.target.value);
     document.getElementById('soulColor').addEventListener('input', e => document.getElementById('haloPreview').style.setProperty('--soul-color', e.target.value));
@@ -218,16 +195,7 @@
       }
     });
 
-    document.getElementById('pinnedMoment').addEventListener('change', e => {
-      const sel = e.target.selectedOptions[0];
-      const img = document.getElementById('previewMoment');
-      if (sel && sel.dataset.url) {
-        img.src = sel.dataset.url;
-        img.style.display = 'block';
-      } else {
-        img.style.display = 'none';
-      }
-    });
+    
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
