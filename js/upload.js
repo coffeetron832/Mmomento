@@ -234,10 +234,10 @@ function applyFilter() {
   });
 
   const sectionTitles = {
-    lo_que_ya_no_esta: '🥀 Lo que ya no está',
-    rutas_sin_mapa: '🛤️ Rutas sin mapa',
-    nunca_antes_visto: '🧨 Nunca antes visto',
-    lo_que_no_se_dice: '🤐 Lo que no se dice',
+    inedito: '🥀 Inédito',
+    zona_cero: '🛤️ Zona cer0',
+    emocional_404: '🧨 404 Emocional',
+    nunca_antes_visto: '🤐 Nunca antes visto',
     sin_seccion: '📦 Sin sección'
   };
 
