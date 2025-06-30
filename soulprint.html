@@ -188,6 +188,35 @@
   background: #3730a3;
 }
 
+.edit-btn,
+#soulprint-actions button {
+  min-width: 180px; /* ajusta si deseas otro tamaño */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.qr-wrapper {
+  position: relative;
+}
+
+#qr-container {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #fff;
+  border: 2px solid #4f46e5;
+  border-radius: 0.5rem;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.qr-wrapper:hover #qr-container {
+  display: block;
+}
+
     
   </style>
 </head>
@@ -197,9 +226,13 @@
   <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
   <div id="soulprint-actions">
     <button id="download-pdf">Descargar PDF 🖨️</button>
-    <button id="generate-qr">Compartir por QR 📱</button>
+    <div class="qr-wrapper">
+      <button id="generate-qr">Compartir por QR 📱</button>
+      <div id="qr-container"></div>
+    </div>
   </div>
 </div>
+
 
 
 <div id="qr-container" style="display: none; margin-bottom: 2rem;"></div>
@@ -463,23 +496,16 @@ container.appendChild(pdfClone);
 
 
   // Listener QR
-  document.getElementById('generate-qr').addEventListener('click', () => {
-  if (qrCont.style.display === 'block') {
-    qrCont.style.display = 'none';
-    qrCont.innerHTML = '';
-  } else {
-    qrCont.innerHTML = '';
-    new QRCode(qrCont, {
-      text: `https://momentto.netlify.app/soulprint.html?user=${encodeURIComponent(user)}`,
-      width: 200,
-      height: 200,
-      colorDark: "#ffffff",
-      colorLight: "#000000",
-      correctLevel: QRCode.CorrectLevel.H
-    });
-    qrCont.style.display = 'block';
-  }
-});
+  document.getElementById('generate-qr').addEventListener('mouseenter', () => {
+  qrCont.innerHTML = '';
+  new QRCode(qrCont, {
+    text: `https://momentto.netlify.app/soulprint.html?user=${encodeURIComponent(user)}`,
+    width: 160,
+    height: 160,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
 });
 </script>
   <!-- Librerías externas -->
