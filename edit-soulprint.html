@@ -146,12 +146,7 @@
   </div>
 
   <script>
-    const username = localStorage.getItem('username');
-if (!username) {
-  alert('No se ha iniciado sesión. Redirigiendo...');
-  window.location.href = '/login.html';
-}
-
+    const username = new URLSearchParams(window.location.search).get('user');
     const token = localStorage.getItem('token');
 
     const form = document.getElementById('soulprintForm');
