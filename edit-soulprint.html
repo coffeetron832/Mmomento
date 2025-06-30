@@ -88,11 +88,6 @@
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
     }
     #responseMessage { margin-top: 1rem; font-weight: bold; }
-    #emoji-wrapper { display: flex; align-items: center; gap: 8px; }
-    #emoji-selector { overflow-x: auto; white-space: nowrap; scroll-behavior: smooth; max-width: 220px; padding: 5px 0; display: flex; gap: 8px; }
-    #emoji-selector img { width: 40px; opacity: 0.6; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: border-color 0.2s; }
-    #emoji-selector img.selected { border-color: #4f46e5; opacity: 1; }
-    #scrollLeft, #scrollRight { background: none; border: none; font-size: 1.2rem; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -120,13 +115,7 @@
 </select>
 
 
-      <label>Elige tu emoji del alma:</label>
-      <div id="emoji-wrapper">
-        <button type="button" id="scrollLeft">&larr;</button>
-        <div id="emoji-selector"></div>
-        <input type="hidden" id="emojiURL" name="emojiURL" />
-        <button type="button" id="scrollRight">&rarr;</button>
-      </div>
+      
 
       <label for="profileImageInput">Foto de perfil:</label>
       <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
@@ -151,7 +140,6 @@
       <div class="halo" id="haloPreview"></div>
       <div style="display:flex; align-items:center; justify-content:center; gap:12px;">
         <img id="previewProfileImage" class="profile-img" src="/default-avatar.png" alt="Previsualización foto" />
-        <img id="previewEmoji" class="emoji-choice" alt="Previsualización emoji" style="display:none; width: 40px; height: 40px;" />
       </div>
       <div class="username" id="previewUsername">@usuario</div>
       <div class="birthdate-display">Mi primer latido: <span id="previewBirthdate">--</span></div>
@@ -166,39 +154,12 @@
     const token = localStorage.getItem('token');
 
     const form = document.getElementById('soulprintForm');
-    const emojiSelector = document.getElementById('emoji-selector');
-    const emojiURLInput = document.getElementById('emojiURL');
-    const previewEmoji = document.getElementById('previewEmoji');
     const previewUsername = document.getElementById('previewUsername');
 
     previewUsername.innerText = '@' + username;
 
-    function initEmojiSelector(selectedUrl) {
-      emojiSelector.innerHTML = '';
-      for (let i = 1; i <= 15; i++) {
-        const url = `/emoji${i}.png`;
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = `emoji${i}`;
-        img.addEventListener('click', () => {
-          document.querySelectorAll('#emoji-selector img').forEach(el => el.classList.remove('selected'));
-          img.classList.add('selected');
-          emojiURLInput.value = url;
-          previewEmoji.src = url;
-          previewEmoji.style.display = 'inline-block';
-        });
-        if (url === selectedUrl) {
-          img.classList.add('selected');
-          emojiURLInput.value = url;
-          previewEmoji.src = url;
-          previewEmoji.style.display = 'inline-block';
-        }
-        emojiSelector.appendChild(img);
-      }
-    }
-
-    document.getElementById('scrollLeft').onclick = () => emojiSelector.scrollBy({ left: -80, behavior: 'smooth' });
-    document.getElementById('scrollRight').onclick = () => emojiSelector.scrollBy({ left: 80, behavior: 'smooth' });
+    
+  
 
     async function loadSoulprint() {
       const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
@@ -213,7 +174,6 @@
       document.getElementById('soulColor').value = soul.soulColor || '#88c0d0';
       document.getElementById('birthdate').value = soul.birthdate || '';
       document.getElementById('nationality').value = soul.nationality || '';
-      initEmojiSelector(soul.emojiURL || '');
       document.getElementById('previewPhrase').innerText = soul.soulPhrase || '';
       document.getElementById('haloPreview').style.setProperty('--soul-color', soul.soulColor || '#88c0d0');
       document.getElementById('previewProfileImage').src = soul.profileImage || '/default-avatar.png';
@@ -273,7 +233,6 @@
       e.preventDefault();
       const formData = new FormData(form);
       formData.set('public', document.getElementById('isPublic').checked ? 'true' : 'false');
-      formData.set('emojiURL', document.getElementById('emojiURL').value);
       formData.set('nationality', document.getElementById('nationality').value);
       const file = document.getElementById('profileImageInput').files[0];
       try {
