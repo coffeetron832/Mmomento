@@ -69,11 +69,7 @@
       object-fit: cover;
       background: #ccc;
     }
-    .emoji-alma {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
+    
 
     .separator {
       border: none;
@@ -280,7 +276,6 @@
     <!-- Username + Emoji centrados -->
     <div class="username-emoji" style="display: flex; justify-content: center; align-items: center; gap: 0.4rem; margin-bottom: 0;">
       <div class="username" id="pdfUsername">@usuario</div>
-      <img id="pdfEmojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma PDF" />
     </div>
 
     <!-- Frase del alma -->
@@ -314,8 +309,7 @@
   <!-- Contenedor nuevo que agrupa el nombre y el emoji -->
 <div class="username-emoji" style="display: flex; justify-content: center; align-items: center; gap: 0.4rem; margin-bottom: 0rem;">
   <div class="username" id="usernameDisplay" style="text-align:center; margin-bottom: 0.3rem;">@usuario</div>
-  <img id="emojiAlma" class="emoji-alma" src="/emoji-default.png" alt="Emoji del alma" />
-</div>
+  </div>
   <div class="phrase" id="soulPhraseDisplay" style="text-align:center; margin-top: 0;">"Frase del alma..."</div>
 
   <hr class="separator" />
@@ -406,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
   colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
   soulEl.style.setProperty('--soulcolor', soulprint.soulColor || '#4f46e5');
   if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
-  if (emojiEl) emojiEl.src = soulprint.emojiURL || '/emoji-default.png';
 
   soulEl.style.display = 'flex';
 
@@ -455,14 +448,12 @@ pdfClone.style.borderRadius = '1rem'; // para suavizar las esquinas
 
   // Obtener elementos originales
   const profileImg = document.getElementById('profileImage');
-  const emojiImg = document.getElementById('emojiAlma');
   const soulColor = getComputedStyle(document.getElementById('soulcolorCircle')).backgroundColor;
   pdfClone.style.setProperty('--soulcolor', soulColor); // APLICAR EL COLOR AL PDF
 
 
   // Actualizar contenido dinámico en el clon
   pdfClone.querySelector('#pdfProfileImage').src = profileImg?.src || '';
-  pdfClone.querySelector('#pdfEmojiAlma').src = emojiImg?.src || '';
   pdfClone.querySelector('#pdfUsername').innerText = document.getElementById('usernameDisplay').innerText;
   pdfClone.querySelector('#pdfSoulPhrase').innerText = document.getElementById('soulPhraseDisplay').innerText;
   pdfClone.querySelector('#pdfNationality').innerText = document.getElementById('nationalityDisplay').innerText;
