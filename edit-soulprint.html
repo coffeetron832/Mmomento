@@ -249,9 +249,15 @@
 
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || 'Error actualizando');
-      document.getElementById('responseMessage').textContent = '✅ Soulprint actualizado con éxito';
-      document.getElementById('responseMessage').style.color = 'green';
-      loadSoulprint();
+
+document.getElementById('responseMessage').textContent = '✅ Soulprint actualizado con éxito';
+document.getElementById('responseMessage').style.color = 'green';
+
+// Espera 1.2 segundos y redirige a upload.html
+setTimeout(() => {
+  window.location.href = 'upload.html';
+}, 1200);
+
     } catch (err) {
       document.getElementById('responseMessage').textContent = '❌ ' + err.message;
       document.getElementById('responseMessage').style.color = 'crimson';
