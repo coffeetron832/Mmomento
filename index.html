@@ -328,6 +328,10 @@
   will-change: transform, opacity;
 }
 
+#image-trail .trail-item {
+  position: fixed;
+  pointer-events: none;
+}
 
 </style>
 </head>
@@ -411,7 +415,7 @@
     }
 
     // 🎯 Efecto Image Trail FLUIDO, SUAVE Y DURADERO
-    const items = Array.from(document.querySelectorAll('.trail-item'));
+const items = Array.from(document.querySelectorAll('#image-trail .trail-item'));
     let mouseX = 0, mouseY = 0;
     let lastX = 0, lastY = 0;
     const smoothing = 0.2; // más fluido
@@ -428,7 +432,7 @@
       lastX += (mouseX - lastX) * smoothing;
       lastY += (mouseY - lastY) * smoothing;
 
-      const item = items[index];
+const item = items[Math.floor(Math.random() * items.length)];
       if (!item) return;
 
       item.style.left = `${lastX - 25}px`;
