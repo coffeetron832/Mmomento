@@ -258,94 +258,102 @@ function applyFilter() {
     column.className = 'image-column';
 
     imagesInSection.forEach(image => {
-      const card = document.createElement('div');
-      card.className = 'image-card-hover';
+  const card = document.createElement('div');
+  card.className = 'image-card'; // nuevo estilo
 
-      const description = document.createElement('div');
-      description.className = 'image-description-hover';
-      description.textContent = image.description || '(sin descripción)';
+  const img = document.createElement('img');
+  img.src = image.imageUrl || image.url || '';
+  img.alt = image.description || 'imagen subida';
+  img.loading = 'lazy';
 
-      const preview = document.createElement('div');
-      preview.className = 'image-preview-hover';
-      preview.innerHTML = `<img src="${image.imageUrl || image.url || ''}" alt="preview">`;
+  // Capa inferior con blur
+  const overlay = document.createElement('div');
+  overlay.className = 'card-overlay';
 
-      card.appendChild(description);
-      card.appendChild(preview);
+  // Descripción
+  const description = document.createElement('div');
+  description.className = 'card-title';
+  description.textContent = image.description || '(sin descripción)';
+  overlay.appendChild(description);
 
-      // Usuario dueño y botones
-      const userRow = document.createElement('div');
-      userRow.className = 'user-row';
+  // Fila con usuario y botones
+  const userRow = document.createElement('div');
+  userRow.className = 'card-user';
 
-      if (image.userId?.username) {
-        const userLink = document.createElement('a');
-        userLink.textContent = `@${image.userId.username}`;
-        userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
-        userLink.style.color = '#ccc';
-        userLink.style.textDecoration = 'none';
-        userRow.appendChild(userLink);
-      }
+  if (image.userId?.username) {
+    const userLink = document.createElement('a');
+    userLink.textContent = `@${image.userId.username}`;
+    userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
+    userLink.style.color = '#ccc';
+    userLink.style.textDecoration = 'none';
+    userRow.appendChild(userLink);
+  }
 
-      if (image.userId?.username !== currentUsername) {
-        const btn = document.createElement('button');
-        btn.className = 'butterfly-btn';
-        btn.innerHTML = '🦋';
-        btn.dataset.id = image._id;
+  // Botón eliminar si es dueño
+  if (image.userId?.username === currentUsername) {
+    const delBtn = document.createElement('button');
+    delBtn.className = 'delete-btn';
+    delBtn.textContent = '🗑️';
+    delBtn.addEventListener('click', () => deleteImage(image._id, card));
+    userRow.appendChild(delBtn);
+  }
 
-        const hasLiked = image.likes?.includes(currentUsername);
-        btn.dataset.given = hasLiked ? 'true' : 'false';
-        if (hasLiked) btn.classList.add('active');
+  overlay.appendChild(userRow);
 
-        btn.addEventListener('click', async () => {
-          try {
-            const wasGiven = btn.dataset.given === 'true';
-            const nowGiven = !wasGiven;
-            btn.dataset.given = nowGiven ? 'true' : 'false';
-            btn.classList.toggle('active', nowGiven);
+  // Fila de mariposas
+  const likeRow = document.createElement('div');
+  likeRow.className = 'card-likes';
 
-            btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], {
-              duration: 300,
-              easing: 'ease-in-out'
-            });
+  if (image.userId?.username !== currentUsername) {
+    const btn = document.createElement('button');
+    btn.className = 'butterfly-btn';
+    btn.innerHTML = '🦋';
+    btn.dataset.id = image._id;
 
-            const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-              method: 'POST',
-              headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
+    const hasLiked = image.likes?.includes(currentUsername);
+    btn.dataset.given = hasLiked ? 'true' : 'false';
+    if (hasLiked) btn.classList.add('active');
 
-            if (!res.ok) throw new Error('Error en mariposa');
-          } catch (err) {
-            console.error('Error:', err);
-          }
+    btn.addEventListener('click', async () => {
+      try {
+        const wasGiven = btn.dataset.given === 'true';
+        const nowGiven = !wasGiven;
+        btn.dataset.given = nowGiven ? 'true' : 'false';
+        btn.classList.toggle('active', nowGiven);
+
+        btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], {
+          duration: 300,
+          easing: 'ease-in-out'
         });
 
-        userRow.appendChild(btn);
-      }
+        const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
 
-      if (image.likes?.length > 0) {
-        const count = document.createElement('div');
-        count.className = 'card-likes';
-        count.textContent = `🦋 x ${image.likes.length}`;
-        userRow.appendChild(count);
+        if (!res.ok) throw new Error('Error en mariposa');
+      } catch (err) {
+        console.error('Error:', err);
       }
-
-      if (image.userId?.username === currentUsername) {
-        const delBtn = document.createElement('button');
-        delBtn.textContent = '🗑️';
-        delBtn.className = 'delete-btn';
-        delBtn.addEventListener('click', () => deleteImage(image._id, card));
-        userRow.appendChild(delBtn);
-      }
-
-      card.appendChild(userRow);
-      column.appendChild(card);
     });
 
-    sectionGroup.appendChild(column);
-    container.appendChild(sectionGroup);
-  });
+    likeRow.appendChild(btn);
+  }
 
-  applyFilter();
-}
+  if (image.likes?.length > 0) {
+    const likeCount = document.createElement('span');
+    likeCount.className = 'like-count';
+    likeCount.textContent = `x ${image.likes.length}`;
+    likeRow.appendChild(likeCount);
+  }
+
+  overlay.appendChild(likeRow);
+
+  card.appendChild(img);
+  card.appendChild(overlay);
+  column.appendChild(card);
+});
+
 
 
 
