@@ -47,11 +47,12 @@
   padding: var(--gutter);
   margin-top: calc(var(--header-height) + 1rem);
   text-align: center;
-  padding-bottom: 4.5rem; /* nuevo, espacio para el footer fijo */
-
-/* 🆕 Agrega este desplazamiento visual */
-  transform: translateX(140px);
+  padding-bottom: 4.5rem;
+  margin-left: auto;
+  margin-right: auto; /* ✅ centra horizontalmente */
+  /* transform: translateX(140px); ❌ Eliminar esto */
 }
+
 
 
 
@@ -830,7 +831,11 @@ h2.section-title {
   cursor: pointer;
 }
 
-    
+    .section-group {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
   </style>
 </head>  
 <body class="upload-page">
