@@ -307,6 +307,27 @@
   will-change: transform, opacity;
 }
 
+#trail-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.trail-dot {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  will-change: transform, opacity;
+}
+
 
 </style>
 </head>
@@ -366,11 +387,12 @@
   <img src="nube3.jpg" class="trail-item" />
 </div>
 
+<div id="trail-container"></div>
 
 
  <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Mostrar mensaje de logout
+    // ✅ Mostrar mensaje de logout
     const logoutMsg = localStorage.getItem('logoutMessage');
     const box = document.getElementById('logoutMessageBox');
     if (logoutMsg && box) {
@@ -388,53 +410,55 @@
       localStorage.removeItem('logoutMessage');
     }
 
-    // 🎯 Efecto Image Trail
-  const items = Array.from(document.querySelectorAll('.trail-item'));
-  let mouseX = 0, mouseY = 0;
-  let lastX = 0, lastY = 0;
-  const threshold = 60; // Distancia para siguiente efecto
+    // 🎯 Efecto Image Trail FLUIDO, SUAVE Y DURADERO
+    const items = Array.from(document.querySelectorAll('.trail-item'));
+    let mouseX = 0, mouseY = 0;
+    let lastX = 0, lastY = 0;
+    const smoothing = 0.2; // más fluido
+    let index = 0;
 
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
 
-    const dx = mouseX - lastX;
-    const dy = mouseY - lastY;
-    const distance = Math.hypot(dx, dy);
+    function animateTrail() {
+      requestAnimationFrame(animateTrail);
 
-    if (distance > threshold) {
-      lastX = mouseX;
-      lastY = mouseY;
+      lastX += (mouseX - lastX) * smoothing;
+      lastY += (mouseY - lastY) * smoothing;
 
-      const item = items.shift();
+      const item = items[index];
       if (!item) return;
 
-      item.style.left = `${mouseX - 25}px`; // centrado (50px / 2)
-      item.style.top = `${mouseY - 25}px`;
+      item.style.left = `${lastX - 25}px`;
+      item.style.top = `${lastY - 25}px`;
       item.style.display = 'block';
-      item.style.opacity = 0;
-      item.style.transform = 'scale(0.3)';
+      item.style.opacity = '0';
+      item.style.transform = 'scale(0.4)';
+      item.style.transition = 'none';
 
       requestAnimationFrame(() => {
-        item.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
-        item.style.opacity = 1;
-        item.style.transform = 'scale(1)';
+        item.style.transition = 'opacity 1.2s ease, transform 1.2s ease';
+        item.style.opacity = '1';
+        item.style.transform = 'scale(1.05)';
 
         setTimeout(() => {
-          item.style.opacity = 0;
-          item.style.transform = 'scale(0)';
+          item.style.opacity = '0';
+          item.style.transform = 'scale(0.6)';
           setTimeout(() => {
             item.style.display = 'none';
-            item.style.transition = '';
-            items.push(item);
-          }, 1000); // ⏱️ Tiempo extra para desaparecer
-        }, 1000); // ⏱️ Permanencia visible
+          }, 1000); // coincide con transición
+        }, 1500); // visible por 1.5 segundos
       });
-    }
-  });
-});
 
-  // Fade transitions entre páginas
+      index = (index + 1) % items.length;
+    }
+
+    animateTrail();
+  });
+
+  // 🌙 Fade transitions entre páginas
   function applyFadeIn() {
     document.documentElement.classList.add('fade-in');
   }
