@@ -255,29 +255,32 @@ function applyFilter() {
     sectionGroup.appendChild(sectionHeader);
 
     const column = document.createElement('div');
-    column.className = 'image-column'; // Usaremos esto para layout vertical
+    column.className = 'image-column';
 
-    imagesInSection.forEach((image) => {
+    imagesInSection.forEach(image => {
       const card = document.createElement('div');
-      card.className = 'image-card';
-      card.style.backgroundImage = `url('${image.imageUrl || image.url || ''}')`;
+      card.className = 'image-card-hover';
 
-      const overlay = document.createElement('div');
-      overlay.className = 'card-overlay';
+      const description = document.createElement('div');
+      description.className = 'image-description-hover';
+      description.textContent = image.description || '(sin descripción)';
 
-      const title = document.createElement('div');
-      title.className = 'card-title';
-      title.textContent = image.description || '(sin descripción)';
-      overlay.appendChild(title);
+      const preview = document.createElement('div');
+      preview.className = 'image-preview-hover';
+      preview.innerHTML = `<img src="${image.imageUrl || image.url || ''}" alt="preview">`;
 
+      card.appendChild(description);
+      card.appendChild(preview);
+
+      // Usuario dueño y botones
       const userRow = document.createElement('div');
-      userRow.className = 'card-user';
+      userRow.className = 'user-row';
 
       if (image.userId?.username) {
         const userLink = document.createElement('a');
         userLink.textContent = `@${image.userId.username}`;
         userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
-        userLink.style.color = '#fff';
+        userLink.style.color = '#ccc';
         userLink.style.textDecoration = 'none';
         userRow.appendChild(userLink);
       }
@@ -318,13 +321,11 @@ function applyFilter() {
         userRow.appendChild(btn);
       }
 
-      overlay.appendChild(userRow);
-
       if (image.likes?.length > 0) {
         const count = document.createElement('div');
         count.className = 'card-likes';
         count.textContent = `🦋 x ${image.likes.length}`;
-        overlay.appendChild(count);
+        userRow.appendChild(count);
       }
 
       if (image.userId?.username === currentUsername) {
@@ -332,33 +333,10 @@ function applyFilter() {
         delBtn.textContent = '🗑️';
         delBtn.className = 'delete-btn';
         delBtn.addEventListener('click', () => deleteImage(image._id, card));
-        overlay.appendChild(delBtn);
+        userRow.appendChild(delBtn);
       }
 
-      // 🔍 Botón lupa
-      const zoomBtn = document.createElement('button');
-      zoomBtn.className = 'zoom-btn';
-      zoomBtn.innerHTML = '🔍';
-      zoomBtn.title = 'Ver tamaño completo';
-      zoomBtn.style.position = 'absolute';
-      zoomBtn.style.top = '50%';
-      zoomBtn.style.left = '50%';
-      zoomBtn.style.transform = 'translate(-50%, -50%)';
-      zoomBtn.style.fontSize = '2rem';
-      zoomBtn.style.color = '#fff';
-      zoomBtn.style.background = 'rgba(0,0,0,0.3)';
-      zoomBtn.style.border = 'none';
-      zoomBtn.style.borderRadius = '50%';
-      zoomBtn.style.cursor = 'pointer';
-      zoomBtn.style.padding = '0.4rem 0.6rem';
-      zoomBtn.style.backdropFilter = 'blur(4px)';
-      zoomBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showFullImage(image.imageUrl || image.url || '');
-      });
-      card.appendChild(zoomBtn);
-
-      card.appendChild(overlay);
+      card.appendChild(userRow);
       column.appendChild(card);
     });
 
@@ -368,6 +346,7 @@ function applyFilter() {
 
   applyFilter();
 }
+
 
 
 
