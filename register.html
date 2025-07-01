@@ -309,7 +309,11 @@ form#registerForm button[type="submit"]:hover::after {
           msgBox.textContent = 'Registro exitoso 🎉';
           msgBox.className = 'success';
           msgBox.style.display = 'block';
-          setTimeout(() => window.location.href = 'edit-soulprint.html', 2100);
+          localStorage.setItem('token', data.token);
+localStorage.setItem('username', data.user.username); // o como venga del backend
+
+window.location.href = `edit-soulprint.html?user=${encodeURIComponent(data.user.username)}`;
+
         } else {
           msgBox.textContent = data.message || 'Error en el registro';
           msgBox.className = 'error';
