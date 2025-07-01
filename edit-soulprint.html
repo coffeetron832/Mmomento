@@ -145,14 +145,26 @@
     </div>
   </div>
 
+<!-- Modal de bienvenida -->
+<div id="welcomeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:white; padding:2rem; border-radius:1rem; max-width:400px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,0.2); font-family:Inter, sans-serif;">
+    <h2 style="margin-top:0;">¡Bienvenido a tu Soulprint 💫!</h2>
+    <p>Este es el corazón de tu perfil. Aquí puedes elegir una frase que te represente, un color que te identifique, y una imagen que hable por ti.</p>
+    <p>No te preocupes, todo esto lo puedes cambiar cuando quieras.</p>
+    <button id="closeModalBtn" style="margin-top:1.5rem; padding:0.6rem 1.2rem; border:none; border-radius:0.5rem; background-color:#4f46e5; color:white; font-weight:bold; cursor:pointer;">
+      ¡Entendido!
+    </button>
+  </div>
+</div>
+
+  
   <script>
   const token = localStorage.getItem('token');
-const username = new URLSearchParams(window.location.search).get('user') || localStorage.getItem('username');
+  const username = new URLSearchParams(window.location.search).get('user') || localStorage.getItem('username');
 
-if (!token || !username) {
-  window.location.href = 'login.html';
-}
-
+  if (!token || !username) {
+    window.location.href = 'login.html';
+  }
 
   const form = document.getElementById('soulprintForm');
   const previewUsername = document.getElementById('previewUsername');
@@ -225,7 +237,6 @@ if (!token || !username) {
     const formData = new FormData(form);
     formData.set('public', document.getElementById('isPublic').checked ? 'true' : 'false');
     formData.set('nationality', document.getElementById('nationality').value);
-    const file = document.getElementById('profileImageInput').files[0];
 
     try {
       const res = await fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(username)}`, {
@@ -246,6 +257,22 @@ if (!token || !username) {
       document.getElementById('responseMessage').style.color = 'crimson';
     }
   });
+
+  // Mostrar modal si viene desde el registro
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('bienvenida') === '1') {
+    const modal = document.getElementById('welcomeModal');
+    if (modal) {
+      modal.style.display = 'flex';
+
+      document.getElementById('closeModalBtn').addEventListener('click', () => {
+        modal.style.display = 'none';
+        // Limpia el parámetro de la URL
+        const cleanURL = window.location.origin + window.location.pathname + '?user=' + encodeURIComponent(username);
+        window.history.replaceState({}, document.title, cleanURL);
+      });
+    }
+  }
 
   loadSoulprint();
 </script>
