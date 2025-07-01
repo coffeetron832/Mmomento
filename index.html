@@ -414,19 +414,20 @@
       localStorage.removeItem('logoutMessage');
     }
 
-    // 🎯 Efecto Image Trail FLUIDO, SUAVE Y DURADERO
+    // 🎯 Efecto de estela con imágenes siguiendo al mouse, natural y moderado
     const items = Array.from(document.querySelectorAll('#image-trail .trail-item'));
     let mouseX = 0, mouseY = 0;
     let lastX = 0, lastY = 0;
-    const smoothing = 0.12;
+    const smoothing = 0.18; // velocidad media-suave
     let index = 0;
 
-    // Seguimiento fluido del cursor
+    // Seguimiento del mouse
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
     });
 
+    // Movimiento fluido del cursor
     function followMouse() {
       requestAnimationFrame(followMouse);
       lastX += (mouseX - lastX) * smoothing;
@@ -434,7 +435,7 @@
     }
     followMouse();
 
-    // Mostrar una imagen cada cierto tiempo (más espaciado y suave)
+    // Mostrar una imagen cada cierto tiempo, siguiendo el cursor
     setInterval(() => {
       const item = items[index];
       if (!item) return;
@@ -447,7 +448,7 @@
       item.style.transition = 'none';
 
       requestAnimationFrame(() => {
-        item.style.transition = 'opacity 1.6s ease, transform 1.6s ease';
+        item.style.transition = 'opacity 1.4s ease, transform 1.4s ease';
         item.style.opacity = '1';
         item.style.transform = 'scale(1.05)';
 
@@ -456,12 +457,12 @@
           item.style.transform = 'scale(0.7)';
           setTimeout(() => {
             item.style.display = 'none';
-          }, 1300);
-        }, 2000); // Tiempo visible en pantalla
+          }, 1000);
+        }, 1600); // cuánto tiempo permanece visible
       });
 
       index = (index + 1) % items.length;
-    }, 800); // ⏱ Controla la frecuencia (ajusta si quieres más lento o rápido)
+    }, 300); // intervalo entre imágenes (más rápido que antes)
   });
 
   // 🌙 Fade transitions entre páginas
