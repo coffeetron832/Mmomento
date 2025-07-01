@@ -415,24 +415,28 @@
     }
 
     // 🎯 Efecto Image Trail FLUIDO, SUAVE Y DURADERO
-const items = Array.from(document.querySelectorAll('#image-trail .trail-item'));
+    const items = Array.from(document.querySelectorAll('#image-trail .trail-item'));
     let mouseX = 0, mouseY = 0;
     let lastX = 0, lastY = 0;
-    const smoothing = 0.2; // más fluido
+    const smoothing = 0.12;
     let index = 0;
 
+    // Seguimiento fluido del cursor
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
     });
 
-    function animateTrail() {
-      requestAnimationFrame(animateTrail);
-
+    function followMouse() {
+      requestAnimationFrame(followMouse);
       lastX += (mouseX - lastX) * smoothing;
       lastY += (mouseY - lastY) * smoothing;
+    }
+    followMouse();
 
-const item = items[Math.floor(Math.random() * items.length)];
+    // Mostrar una imagen cada cierto tiempo (más espaciado y suave)
+    setInterval(() => {
+      const item = items[index];
       if (!item) return;
 
       item.style.left = `${lastX - 25}px`;
@@ -443,23 +447,21 @@ const item = items[Math.floor(Math.random() * items.length)];
       item.style.transition = 'none';
 
       requestAnimationFrame(() => {
-        item.style.transition = 'opacity 1.2s ease, transform 1.2s ease';
+        item.style.transition = 'opacity 1.6s ease, transform 1.6s ease';
         item.style.opacity = '1';
         item.style.transform = 'scale(1.05)';
 
         setTimeout(() => {
           item.style.opacity = '0';
-          item.style.transform = 'scale(0.6)';
+          item.style.transform = 'scale(0.7)';
           setTimeout(() => {
             item.style.display = 'none';
-          }, 1000); // coincide con transición
-        }, 1500); // visible por 1.5 segundos
+          }, 1300);
+        }, 2000); // Tiempo visible en pantalla
       });
 
       index = (index + 1) % items.length;
-    }
-
-    animateTrail();
+    }, 800); // ⏱ Controla la frecuencia (ajusta si quieres más lento o rápido)
   });
 
   // 🌙 Fade transitions entre páginas
