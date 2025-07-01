@@ -299,8 +299,8 @@
 .trail-item {
   position: absolute;
   display: none;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   opacity: 0;
   transform: scale(0);
   transition: transform 1.2s ease, opacity 1.2s ease;
@@ -415,55 +415,52 @@
       localStorage.removeItem('logoutMessage');
     }
 
-    // 🎯 Efecto trail más rápido y con imágenes más grandes
+    // ✨ Trail natural, grande, rápido, elegante
     const items = Array.from(document.querySelectorAll('#image-trail .trail-item'));
-    let mouseX = 0, mouseY = 0;
-    let lastX = 0, lastY = 0;
-    const smoothing = 0.22; // más reactivo
-    let index = 0;
+    let currentId = 0;
+    let lastMouse = { x: 0, y: 0 };
+    let cachedMouse = { x: 0, y: 0 };
+    const intensity = 0.4; // más veloz
+    const threshold = 40;
 
-    // Captura posición del mouse
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    // Movimiento fluido
-    function followMouse() {
-      requestAnimationFrame(followMouse);
-      lastX += (mouseX - lastX) * smoothing;
-      lastY += (mouseY - lastY) * smoothing;
+    function lerp(a, b, n) {
+      return (1 - n) * a + n * b;
     }
-    followMouse();
 
-    // Trail más rápido (cada 200ms)
-    setInterval(() => {
-      const item = items[index];
-      if (!item) return;
+    function distance(x1, y1, x2, y2) {
+      return Math.hypot(x2 - x1, y2 - y1);
+    }
 
-      item.style.left = `${lastX - 35}px`; // para centrar imagen de 70px
-      item.style.top = `${lastY - 35}px`;
-      item.style.display = 'block';
-      item.style.opacity = '0';
-      item.style.transform = 'scale(0.4)';
-      item.style.transition = 'none';
+    document.addEventListener('mousemove', (e) => {
+      const mouse = { x: e.clientX, y: e.clientY };
+      cachedMouse.x = lerp(cachedMouse.x, mouse.x, intensity);
+      cachedMouse.y = lerp(cachedMouse.y, mouse.y, intensity);
 
-      requestAnimationFrame(() => {
-        item.style.transition = 'opacity 1.2s ease, transform 1.2s ease';
+      const d = distance(mouse.x, mouse.y, lastMouse.x, lastMouse.y);
+      if (d > threshold && items.length > 0) {
+        const item = items[currentId];
+        if (!item) return;
+
+        item.style.display = 'block';
+        item.style.left = `${mouse.x - 40}px`;
+        item.style.top = `${mouse.y - 40}px`;
         item.style.opacity = '1';
         item.style.transform = 'scale(1.1)';
+        item.style.transition = 'transform 0.7s ease, opacity 0.7s ease';
+        item.style.zIndex = 999;
 
         setTimeout(() => {
           item.style.opacity = '0';
-          item.style.transform = 'scale(0.7)';
+          item.style.transform = 'scale(0.6)';
           setTimeout(() => {
             item.style.display = 'none';
-          }, 1000);
-        }, 1500); // visible por 1.5s
-      });
+          }, 700);
+        }, 900);
 
-      index = (index + 1) % items.length;
-    }, 200); // ahora cada 200ms
+        currentId = (currentId + 1) % items.length;
+        lastMouse = mouse;
+      }
+    });
   });
 
   // 🌙 Fade transitions entre páginas
