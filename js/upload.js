@@ -257,8 +257,6 @@ function applyFilter() {
     const wrapper = document.createElement('div');
     wrapper.className = 'carousel-wrapper';
 
-    let activeIndex = 0;
-
     imagesInSection.forEach((image, index) => {
       const card = document.createElement('div');
       card.className = 'carousel-card';
@@ -292,12 +290,8 @@ function applyFilter() {
         btn.dataset.id = image._id;
 
         const hasLiked = image.likes?.includes(currentUsername);
-        if (hasLiked) {
-          btn.classList.add('active');
-          btn.dataset.given = 'true';
-        } else {
-          btn.dataset.given = 'false';
-        }
+        btn.dataset.given = hasLiked ? 'true' : 'false';
+        if (hasLiked) btn.classList.add('active');
 
         btn.addEventListener('click', async () => {
           try {
@@ -342,6 +336,29 @@ function applyFilter() {
         overlay.appendChild(delBtn);
       }
 
+      // 🔍 Botón lupa
+      const zoomBtn = document.createElement('button');
+      zoomBtn.className = 'zoom-btn';
+      zoomBtn.innerHTML = '🔍';
+      zoomBtn.title = 'Ver tamaño completo';
+      zoomBtn.style.position = 'absolute';
+      zoomBtn.style.top = '50%';
+      zoomBtn.style.left = '50%';
+      zoomBtn.style.transform = 'translate(-50%, -50%)';
+      zoomBtn.style.fontSize = '2rem';
+      zoomBtn.style.color = '#fff';
+      zoomBtn.style.background = 'rgba(0,0,0,0.3)';
+      zoomBtn.style.border = 'none';
+      zoomBtn.style.borderRadius = '50%';
+      zoomBtn.style.cursor = 'pointer';
+      zoomBtn.style.padding = '0.4rem 0.6rem';
+      zoomBtn.style.backdropFilter = 'blur(4px)';
+      zoomBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evita conflicto con selección
+        showFullImage(image.imageUrl || image.url || '');
+      });
+      card.appendChild(zoomBtn);
+
       card.appendChild(overlay);
       wrapper.appendChild(card);
 
@@ -361,6 +378,7 @@ function applyFilter() {
 
   applyFilter();
 }
+
 
 
 
@@ -534,4 +552,50 @@ loadImages();
     }
   }
 
+function showFullImage(imageUrl) {
+  // Verifica si ya existe
+  let overlay = document.getElementById('fullImageOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'fullImageOverlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+
+    const img = document.createElement('img');
+    img.style.maxWidth = '90%';
+    img.style.maxHeight = '90%';
+    img.style.boxShadow = '0 0 20px rgba(255,255,255,0.2)';
+    img.id = 'overlayFullImage';
+    overlay.appendChild(img);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '✖';
+    closeBtn.style.position = 'absolute';
+    closeBtn.style.top = '20px';
+    closeBtn.style.right = '30px';
+    closeBtn.style.fontSize = '2rem';
+    closeBtn.style.color = '#fff';
+    closeBtn.style.background = 'transparent';
+    closeBtn.style.border = 'none';
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.addEventListener('click', () => overlay.remove());
+    overlay.appendChild(closeBtn);
+
+    document.body.appendChild(overlay);
+  }
+
+  document.getElementById('overlayFullImage').src = imageUrl;
+  overlay.style.display = 'flex';
+}
+
+
+  
 }); // <--- cierre correcto de document.addEventListener
