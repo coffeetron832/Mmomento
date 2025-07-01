@@ -291,6 +291,39 @@
       gap: 0.5rem;
     }
   }
+
+
+    .momento-bottom-left {
+  position: fixed;
+  bottom: 80px; /* ajusta según necesites */
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+.momento-bottom-left h1 {
+  font-size: 2.2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.momento-bottom-left .momento-title {
+  font-family: 'Mynerve', cursive;
+  font-size: 2.2rem;
+  color: #fff;
+}
+
+.momento-bottom-left .logo-butterfly-inline {
+  width: 32px;
+  margin-top: 0;
+  opacity: 0.85;
+}
+
 </style>
 </head>
 <body>
@@ -337,6 +370,16 @@
   </h1>
 </div>
 </div>
+
+  <div class="momento-bottom-left">
+  <h1>
+    <span class="momento-title">Momento</span>
+    <span class="tooltip-container mariposa-tooltip" data-tooltip="Momento es una red emocional donde tus recuerdos florecen por 6 horas. Cada mariposa que recibes es un alma que conectó contigo.">
+      <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
+    </span>
+  </h1>
+</div>
+
 
 <footer class="footer-compact">
   <a href="register.html" class="footer-link">Únete a nosotros</a>
