@@ -337,6 +337,21 @@
   pointer-events: none;
 }
 
+.fade-scale {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeScaleIn 1.8s ease-out forwards;
+}
+
+@keyframes fadeScaleIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+    
 </style>
 </head>
 <body>
@@ -370,7 +385,7 @@
   <div class="content-wrapper">
   <div class="main-text">
   <h1>
-  <span class="momento-title">Momento</span>
+  <span class="momento-title fade-scale">Momento</span>
 </h1>
 </div>
 </div>
