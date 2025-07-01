@@ -198,8 +198,8 @@
 .tooltip-container::after {
   content: attr(data-tooltip);
   position: absolute;
-  top: 120%; /* Ubica el tooltip abajo del icono */
-  left: 50%;
+  bottom: 120%;  /* ✅ Esto lo posiciona arriba */
+  top: auto;
   transform: translateX(-50%);
   width: 260px;
   background-color: rgba(0, 0, 0, 0.85);
@@ -288,13 +288,6 @@
 </style>
 </head>
 <body>
-  <!-- Encabezado mariposa -->
-<header class="header-compact-mariposa">
-  <span class="tooltip-container mariposa-tooltip" data-tooltip="Momento es una red emocional donde tus recuerdos florecen por 6 horas. Cada mariposa que recibes es un alma que conectó contigo.">
-    <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
-  </span>
-</header>
-
   
   <div id="logoutMessageBox" style="
   display: none;
@@ -336,7 +329,13 @@
   <a href="login.html" class="footer-link">Iniciar sesión</a>
   <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
   <a href="condiciones.html" class="footer-link">Términos y Condiciones</a>
+  
+  <!-- Mariposa con tooltip a la derecha -->
+  <span class="tooltip-container mariposa-tooltip" data-tooltip="Momento es una red emocional donde tus recuerdos florecen por 6 horas. Cada mariposa que recibes es un alma que conectó contigo.">
+    <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
+  </span>
 </footer>
+
 
 
   <script>
