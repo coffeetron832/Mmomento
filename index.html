@@ -217,7 +217,7 @@
 .tooltip-container::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: 125%;
+  top: 120%; /* Ubica el tooltip abajo del icono */
   left: 50%;
   transform: translateX(-50%);
   width: 260px;
@@ -237,6 +237,7 @@
   z-index: 10;
 }
 
+
 .tooltip-container:hover::after {
   opacity: 1;
 }
@@ -252,14 +253,17 @@
 .header-compact-mariposa {
   background: rgba(0, 0, 0, 0.7);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem 1rem;
+  padding: 0.25rem 0.5rem; /* 🔽 Reduce altura */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   position: relative;
   width: 100%;
+  overflow: visible; /* 🔧 Permite mostrar el tooltip */
+  min-height: 40px;   /* ✅ Ajuste mínimo para mostrar tooltip */
 }
+
 
     
   /* Ajustes móviles */
