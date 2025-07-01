@@ -299,15 +299,17 @@
 
 .trail-item {
   position: absolute;
+  width: 80px;
+  height: 80px;
   display: none;
-  width: 90px;       /* Aumenta tamaño */
-  height: 90px;
   opacity: 0;
   transform: scale(0);
-  transition: transform 0.7s ease, opacity 0.7s ease;
-  will-change: transform, opacity;
-  object-fit: contain;  /* 🔥 Evita que se deformen */
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  object-fit: cover; /* ✅ Para mantener proporciones normales */
+  border-radius: 12px; /* Opcional: más suave */
+  pointer-events: none;
 }
+
 
 
 
@@ -438,8 +440,8 @@
     let currentId = 0;
     let lastMouse = { x: 0, y: 0 };
     let cachedMouse = { x: 0, y: 0 };
-    const intensity = 0.4; // más veloz
-    const threshold = 40;
+    const intensity = 0.45; // más velocidad
+    const threshold = 30;
 
     function lerp(a, b, n) {
       return (1 - n) * a + n * b;
@@ -459,20 +461,23 @@
         const item = items[currentId];
         if (!item) return;
 
+        const size = 100; // Tamaño cuadrado base
         item.style.display = 'block';
-        item.style.left = `${mouse.x - 40}px`;
-        item.style.top = `${mouse.y - 40}px`;
+        item.style.left = `${mouse.x - size / 2}px`;
+        item.style.top = `${mouse.y - size / 2}px`;
+        item.style.width = `${size}px`;
+        item.style.height = `${size}px`;
         item.style.opacity = '1';
-        item.style.transform = 'scale(1.1)';
-        item.style.transition = 'transform 0.7s ease, opacity 0.7s ease';
+        item.style.transform = `scale(1.1) rotate(${(Math.random() - 0.5) * 30}deg)`;
+        item.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
         item.style.zIndex = 999;
 
         setTimeout(() => {
           item.style.opacity = '0';
-          item.style.transform = 'scale(0.6)';
+          item.style.transform = 'scale(0.7) rotate(0deg)';
           setTimeout(() => {
             item.style.display = 'none';
-          }, 700);
+          }, 600);
         }, 900);
 
         currentId = (currentId + 1) % items.length;
