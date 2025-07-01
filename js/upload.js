@@ -352,7 +352,13 @@ function applyFilter() {
   card.appendChild(img);
   card.appendChild(overlay);
   column.appendChild(card);
-});
+}); // ← cierre de imagesInSection.forEach
+
+sectionGroup.appendChild(column);
+container.appendChild(sectionGroup);
+}); // ← cierre de Object.keys(sectionTitles).forEach
+
+} // ← cierre de renderImages
 
 
 
