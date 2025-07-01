@@ -286,43 +286,48 @@ form#registerForm button[type="submit"]:hover::after {
 
     // Manejo del registro con emoji
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = document.getElementById('name').value.trim();
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+  e.preventDefault();
+  const username = document.getElementById('name').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
 
-      const userData = {
-        username,
-        email,
-        password,
-      };
+  const userData = { name: username, email, password };
 
-      try {
-        const res = await fetch('https://momento-backend-production.up.railway.app/api/users/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(userData)
-        });
-        const data = await res.json();
-        const msgBox = document.getElementById('messageBox');
-        if (res.ok) {
-          msgBox.textContent = 'Registro exitoso 🎉';
-          msgBox.className = 'success';
-          msgBox.style.display = 'block';
-          localStorage.setItem('token', data.token);
-localStorage.setItem('username', data.user.username); // o como venga del backend
-
-window.location.href = `edit-soulprint.html?user=${encodeURIComponent(data.user.username)}`;
-
-        } else {
-          msgBox.textContent = data.message || 'Error en el registro';
-          msgBox.className = 'error';
-          msgBox.style.display = 'block';
-        }
-      } catch (err) {
-        console.error(err);
-      }
+  try {
+    const res = await fetch('https://momento-backend-production.up.railway.app/api/users/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
     });
+
+    const data = await res.json();
+    const msgBox = document.getElementById('messageBox');
+
+    if (res.ok && data.user?.username) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.user.username);
+
+      msgBox.textContent = 'Registro exitoso 🎉';
+      msgBox.className = 'success';
+      msgBox.style.display = 'block';
+
+      // Redirigir después de 1.5 segundos
+      setTimeout(() => {
+        window.location.href = `edit-soulprint.html?user=${encodeURIComponent(data.user.username)}&bienvenida=1`;
+      }, 1500);
+    } else {
+      msgBox.textContent = data.error || 'Error en el registro';
+      msgBox.className = 'error';
+      msgBox.style.display = 'block';
+    }
+  } catch (err) {
+    console.error('Error al registrar:', err);
+    const msgBox = document.getElementById('messageBox');
+    msgBox.textContent = '❌ Error inesperado';
+    msgBox.className = 'error';
+    msgBox.style.display = 'block';
+  }
+});
   </script>
 </body>
 </html>
