@@ -254,14 +254,13 @@ function applyFilter() {
     sectionHeader.className = 'section-title';
     sectionGroup.appendChild(sectionHeader);
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'carousel-wrapper';
+    const column = document.createElement('div');
+    column.className = 'image-column'; // Usaremos esto para layout vertical
 
-    imagesInSection.forEach((image, index) => {
+    imagesInSection.forEach((image) => {
       const card = document.createElement('div');
-      card.className = 'carousel-card';
+      card.className = 'image-card';
       card.style.backgroundImage = `url('${image.imageUrl || image.url || ''}')`;
-      card.dataset.index = index;
 
       const overlay = document.createElement('div');
       overlay.className = 'card-overlay';
@@ -354,30 +353,22 @@ function applyFilter() {
       zoomBtn.style.padding = '0.4rem 0.6rem';
       zoomBtn.style.backdropFilter = 'blur(4px)';
       zoomBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Evita conflicto con selección
+        e.stopPropagation();
         showFullImage(image.imageUrl || image.url || '');
       });
       card.appendChild(zoomBtn);
 
       card.appendChild(overlay);
-      wrapper.appendChild(card);
-
-      card.addEventListener('click', () => {
-        const cards = wrapper.querySelectorAll('.carousel-card');
-        cards.forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-      });
+      column.appendChild(card);
     });
 
-    sectionGroup.appendChild(wrapper);
+    sectionGroup.appendChild(column);
     container.appendChild(sectionGroup);
-
-    // Marcar la primera como activa
-    if (wrapper.children.length) wrapper.children[0].classList.add('active');
   });
 
   applyFilter();
 }
+
 
 
 
