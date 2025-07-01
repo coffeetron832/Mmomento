@@ -291,7 +291,8 @@ form#registerForm button[type="submit"]:hover::after {
   const email    = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 
-  const userData = { name: username, email, password };
+  // 👇 CAMBIO AQUÍ (se usa "username" en vez de "name")
+  const userData = { username, email, password };
 
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/users/register', {
@@ -311,7 +312,6 @@ form#registerForm button[type="submit"]:hover::after {
       msgBox.className = 'success';
       msgBox.style.display = 'block';
 
-      // Redirigir después de 1.5 segundos
       setTimeout(() => {
         window.location.href = `edit-soulprint.html?user=${encodeURIComponent(data.user.username)}&bienvenida=1`;
       }, 1500);
