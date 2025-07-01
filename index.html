@@ -287,6 +287,40 @@
       gap: 0.5rem;
     }
   }
+
+  .efecto-3d {
+  display: flex;
+  gap: 0.1em;
+  perspective: 600px;
+  font-family: 'Mynerve', cursive;
+  font-size: 3.7rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+.efecto-3d span {
+  display: inline-block;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease, color 0.4s ease;
+  position: relative;
+  cursor: default;
+}
+
+.efecto-3d span::after {
+  content: attr(data-letter);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateX(90deg);
+  transform-origin: bottom;
+  opacity: 0.5;
+  color: #ff6f61;
+}
+
+.efecto-3d span:hover {
+  transform: rotateX(90deg);
+  color: #ff6f61;
+}
+
 </style>
 </head>
 <body>
@@ -319,9 +353,10 @@
   <!-- Contenido principal -->
   <div class="content-wrapper">
   <div class="main-text">
-  <h1>
-    <span class="momento-title">Momento</span>
-  </h1>
+  <h1 class="momento-title efecto-3d">
+  <span>M</span><span>o</span><span>m</span><span>e</span><span>n</span><span>t</span><span>o</span>
+</h1>
+
 </div>
 </div>
 
@@ -341,26 +376,41 @@
 
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-  const logoutMsg = localStorage.getItem('logoutMessage');
-  const box = document.getElementById('logoutMessageBox');
-  if (logoutMsg && box) {
-    box.textContent = logoutMsg;
-    box.style.display = 'block';
-    setTimeout(() => {
-      box.style.opacity = '1';
+  document.addEventListener('DOMContentLoaded', () => {
+    const logoutMsg = localStorage.getItem('logoutMessage');
+    const box = document.getElementById('logoutMessageBox');
+    if (logoutMsg && box) {
+      box.textContent = logoutMsg;
+      box.style.display = 'block';
       setTimeout(() => {
-        box.style.opacity = '0';
+        box.style.opacity = '1';
         setTimeout(() => {
-          box.style.display = 'none';
-        }, 500);
-      }, 3000);
-    }, 100);
-    localStorage.removeItem('logoutMessage');
-  }
-});
+          box.style.opacity = '0';
+          setTimeout(() => {
+            box.style.display = 'none';
+          }, 500);
+        }, 3000);
+      }, 100);
+      localStorage.removeItem('logoutMessage');
+    }
 
-    
+    // 🔠 Añadir data-letter a cada letra del efecto 3D
+    document.querySelectorAll('.efecto-3d span').forEach(el => {
+      el.setAttribute('data-letter', el.textContent);
+    });
+
+    // 🧠 Inicializa Typed si se usa
+    new Typed('#typewriter', {
+      strings: ['Momento'],
+      typeSpeed: 100,
+      backSpeed: 40,
+      startDelay: 500,
+      loop: false,
+      showCursor: true,
+      cursorChar: '|',
+    });
+  });
+
   // Fade transitions entre páginas
   function applyFadeIn() {
     document.documentElement.classList.add('fade-in');
@@ -382,23 +432,6 @@
       setTimeout(() => window.location.href = href, 300);
     }
   });
-
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    new Typed('#typewriter', {
-      strings: ['Momento'],
-      typeSpeed: 100,
-      backSpeed: 40,
-      startDelay: 500,
-      loop: false,
-      showCursor: true,
-      cursorChar: '|',
-    });
-  });
-
-
-    
- 
 </script>
 </body>
 </html>
