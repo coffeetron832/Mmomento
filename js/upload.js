@@ -221,10 +221,7 @@ function applyFilter() {
   const container = document.getElementById('imagesContainer');
   if (!container) return;
 
-  // 🔹 Si no estamos haciendo "append", limpiamos el contenedor
-  if (!append) {
-    container.innerHTML = '';
-  }
+  if (!append) container.innerHTML = '';
 
   const grouped = {};
   images.forEach(img => {
@@ -243,7 +240,6 @@ function applyFilter() {
 
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const currentUsername = storedUser?.username || null;
-  const token = localStorage.getItem('token');
 
   Object.keys(sectionTitles).forEach(sectionKey => {
     const imagesInSection = grouped[sectionKey];
@@ -258,145 +254,114 @@ function applyFilter() {
     sectionHeader.className = 'section-title';
     sectionGroup.appendChild(sectionHeader);
 
-    const sectionWrapper = document.createElement('div');
-    sectionWrapper.className = 'images-grid';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'carousel-wrapper';
 
-    imagesInSection.forEach(image => {
+    let activeIndex = 0;
+
+    imagesInSection.forEach((image, index) => {
       const card = document.createElement('div');
-      card.classList.add('image-card-hover');
+      card.className = 'carousel-card';
+      card.style.backgroundImage = `url('${image.imageUrl || image.url || ''}')`;
+      card.dataset.index = index;
 
-      const desc = document.createElement('div');
-      desc.className = 'image-description-hover';
-      desc.textContent = image.description || '(sin descripción)';
-      card.appendChild(desc);
+      const overlay = document.createElement('div');
+      overlay.className = 'card-overlay';
 
-      const preview = document.createElement('div');
-      preview.className = 'image-preview-hover';
-
-      const img = document.createElement('img');
-      img.src = image.imageUrl || image.url || '';
-      img.alt = image.description || 'Momento';
-      preview.appendChild(img);
-      card.appendChild(preview);
-
-      desc.addEventListener('mouseenter', () => {
-        preview.style.display = 'block';
-        setTimeout(() => preview.style.opacity = '1', 10);
-      });
-
-      desc.addEventListener('mouseleave', () => {
-        preview.style.opacity = '0';
-        setTimeout(() => preview.style.display = 'none', 300);
-      });
+      const title = document.createElement('div');
+      title.className = 'card-title';
+      title.textContent = image.description || '(sin descripción)';
+      overlay.appendChild(title);
 
       const userRow = document.createElement('div');
-userRow.className = 'user-row'; // Puedes usar una clase o estilos inline
-userRow.style.display = 'flex';
-userRow.style.alignItems = 'center';
-userRow.style.gap = '0.4rem';
+      userRow.className = 'card-user';
 
-if (image.userId && image.userId.username) {
-  const userLink = document.createElement('a');
-  userLink.className = 'image-user';
-  userLink.textContent = `@${image.userId.username}`;
-  userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
-  userLink.style.textDecoration = 'none';
-  userLink.style.color = 'inherit'; // Mantener estilos actuales
-
-  userRow.appendChild(userLink);
-}
-
-
- // 🦋 Botón mariposa (si no es tuya)
-  if (image.userId?.username !== currentUsername) {
-    const btn = document.createElement('button');
-    btn.className = 'butterfly-btn';
-    btn.innerHTML = '🦋';
-    btn.dataset.id = image._id;
-
-    // 1) Estado inicial: ¿ya la diste?
-    const hasLiked = image.likes?.includes(currentUsername);
-    if (hasLiked) {
-      btn.classList.add('active');
-      btn.dataset.given = 'true';
-    } else {
-      btn.dataset.given = 'false';
-    }
-
-    // 2) Listener de clic
-   btn.addEventListener('click', async () => {
-  try {
-    // 1. Saber si ya había dado mariposa antes del click
-    const wasGiven = btn.dataset.given === 'true';
-
-    // 2. Cambiar el atributo visual antes de esperar respuesta
-    const nowGiven = !wasGiven;
-    btn.dataset.given = nowGiven ? 'true' : 'false';
-
-    // 3. Aplicar o quitar clase .active según nuevo estado
-    btn.classList.toggle('active', nowGiven);
-
-    // 4. Animación visual inmediata
-    btn.animate([
-      { transform: 'scale(1)', filter: 'brightness(1)' },
-      { transform: 'scale(1.4)', filter: 'brightness(1.5)' },
-      { transform: 'scale(1)', filter: 'brightness(1)' }
-    ], {
-      duration: 300,
-      easing: 'ease-out'
-    });
-
-    // 5. Enviar la mariposa al backend
-    const res = await fetch(
-      `https://momento-backend-production.up.railway.app/api/images/${image._id}/like`,
-      {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
+      if (image.userId?.username) {
+        const userLink = document.createElement('a');
+        userLink.textContent = `@${image.userId.username}`;
+        userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
+        userLink.style.color = '#fff';
+        userLink.style.textDecoration = 'none';
+        userRow.appendChild(userLink);
       }
-    );
-    if (!res.ok) throw new Error('No se pudo enviar');
-    
-  } catch (err) {
-    console.error('Error al enviar mariposa:', err);
 
-    // 6. Revertimos el estado si falló
-    const wasGiven = btn.dataset.given === 'true';
-    btn.dataset.given = wasGiven ? 'false' : 'true';
-    btn.classList.toggle('active', !wasGiven);
-  }
-});
+      if (image.userId?.username !== currentUsername) {
+        const btn = document.createElement('button');
+        btn.className = 'butterfly-btn';
+        btn.innerHTML = '🦋';
+        btn.dataset.id = image._id;
 
+        const hasLiked = image.likes?.includes(currentUsername);
+        if (hasLiked) {
+          btn.classList.add('active');
+          btn.dataset.given = 'true';
+        } else {
+          btn.dataset.given = 'false';
+        }
 
-    userRow.appendChild(btn);
-  }
+        btn.addEventListener('click', async () => {
+          try {
+            const wasGiven = btn.dataset.given === 'true';
+            const nowGiven = !wasGiven;
+            btn.dataset.given = nowGiven ? 'true' : 'false';
+            btn.classList.toggle('active', nowGiven);
 
-card.appendChild(userRow);
+            btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], {
+              duration: 300,
+              easing: 'ease-in-out'
+            });
 
+            const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+
+            if (!res.ok) throw new Error('Error en mariposa');
+          } catch (err) {
+            console.error('Error:', err);
+          }
+        });
+
+        userRow.appendChild(btn);
+      }
+
+      overlay.appendChild(userRow);
 
       if (image.likes?.length > 0) {
         const count = document.createElement('div');
-        count.className = 'like-count';
+        count.className = 'card-likes';
         count.textContent = `🦋 x ${image.likes.length}`;
-        card.appendChild(count);
+        overlay.appendChild(count);
       }
 
       if (image.userId?.username === currentUsername) {
         const delBtn = document.createElement('button');
-        delBtn.className = 'delete-btn';
         delBtn.textContent = '🗑️';
+        delBtn.className = 'delete-btn';
         delBtn.addEventListener('click', () => deleteImage(image._id, card));
-        card.appendChild(delBtn);
+        overlay.appendChild(delBtn);
       }
 
-      sectionWrapper.appendChild(card);
+      card.appendChild(overlay);
+      wrapper.appendChild(card);
+
+      card.addEventListener('click', () => {
+        const cards = wrapper.querySelectorAll('.carousel-card');
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
     });
 
-    sectionGroup.appendChild(sectionWrapper);
+    sectionGroup.appendChild(wrapper);
     container.appendChild(sectionGroup);
+
+    // Marcar la primera como activa
+    if (wrapper.children.length) wrapper.children[0].classList.add('active');
   });
 
   applyFilter();
 }
+
 
 
 // 👇 Esto va fuera de la función
