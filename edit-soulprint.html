@@ -146,8 +146,13 @@
   </div>
 
   <script>
-  const username = new URLSearchParams(window.location.search).get('user');
   const token = localStorage.getItem('token');
+const username = new URLSearchParams(window.location.search).get('user') || localStorage.getItem('username');
+
+if (!token || !username) {
+  window.location.href = 'login.html';
+}
+
 
   const form = document.getElementById('soulprintForm');
   const previewUsername = document.getElementById('previewUsername');
