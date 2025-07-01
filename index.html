@@ -340,7 +340,7 @@
 
 
 
-  <script>
+ <script>
   document.addEventListener('DOMContentLoaded', () => {
     const logoutMsg = localStorage.getItem('logoutMessage');
     const box = document.getElementById('logoutMessageBox');
@@ -358,8 +358,8 @@
       }, 100);
       localStorage.removeItem('logoutMessage');
     }
+  }); // ✅ Esta era la llave que te faltaba cerrar
 
-    
   // Fade transitions entre páginas
   function applyFadeIn() {
     document.documentElement.classList.add('fade-in');
