@@ -287,6 +287,16 @@
       gap: 0.5rem;
     }
   }
+
+#image-trail .trail-item {
+  pointer-events: none;
+  position: absolute;
+  display: none;
+  will-change: transform, opacity;
+  z-index: 9999;
+}
+
+
 </style>
 </head>
 <body>
@@ -338,10 +348,16 @@
   </span>
 </footer>
 
+<div id="image-trail">
+  <img src="nube1.jpg" class="trail-item" style="position: absolute; display: none; width: 40px;" />
+  <img src="nube2.jpg" class="trail-item" style="position: absolute; display: none; width: 40px;" />
+  <img src="mube3.png" class="trail-item" style="position: absolute; display: none; width: 40px;" />
+</div>
 
 
  <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Mostrar mensaje de logout
     const logoutMsg = localStorage.getItem('logoutMessage');
     const box = document.getElementById('logoutMessageBox');
     if (logoutMsg && box) {
@@ -358,7 +374,49 @@
       }, 100);
       localStorage.removeItem('logoutMessage');
     }
-  }); // ✅ Esta era la llave que te faltaba cerrar
+
+    // 🎯 Efecto Image Trail
+    const items = Array.from(document.querySelectorAll('.trail-item'));
+    let mouseX = 0, mouseY = 0;
+    let lastTriggerX = 0, lastTriggerY = 0;
+    const threshold = 80;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      const dx = mouseX - lastTriggerX;
+      const dy = mouseY - lastTriggerY;
+
+      if (Math.hypot(dx, dy) > threshold) {
+        lastTriggerX = mouseX;
+        lastTriggerY = mouseY;
+
+        const item = items.shift();
+        if (!item) return;
+
+        item.style.display = 'block';
+        item.style.left = `${mouseX - item.width / 2}px`;
+        item.style.top = `${mouseY - item.height / 2}px`;
+        item.style.opacity = 0;
+        item.style.transform = 'scale(0.3)';
+
+        requestAnimationFrame(() => {
+          item.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
+          item.style.transform = 'scale(1)';
+          item.style.opacity = 1;
+          setTimeout(() => {
+            item.style.transform = 'scale(0)';
+            item.style.opacity = 0;
+            setTimeout(() => {
+              item.style.display = 'none';
+              items.push(item);
+              item.style.transition = '';
+            }, 600);
+          }, 200);
+        });
+      }
+    });
+  });
 
   // Fade transitions entre páginas
   function applyFadeIn() {
