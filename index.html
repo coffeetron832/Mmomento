@@ -299,13 +299,15 @@
 .trail-item {
   position: absolute;
   display: none;
-  width: 80px;
-  height: 80px;
+  width: 90px;       /* Aumenta tamaño */
+  height: 90px;
   opacity: 0;
   transform: scale(0);
-  transition: transform 1.2s ease, opacity 1.2s ease;
+  transition: transform 0.7s ease, opacity 0.7s ease;
   will-change: transform, opacity;
+  object-fit: contain;  /* 🔥 Evita que se deformen */
 }
+
 
 
 #trail-container {
