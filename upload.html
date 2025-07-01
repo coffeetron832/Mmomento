@@ -754,39 +754,13 @@ h2.section-title {
   animation: flutter 0.6s ease;
 }
 
-    .carousel-wrapper {
-  display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding: 1rem 0;
-  scroll-snap-type: x mandatory;
-}
-
-.carousel-card {
-  flex: 1 0 60px;
-  height: 300px;
-  background-size: cover;
-  background-position: center;
-  border: 2px solid #444;
-  border-radius: 12px;
-  position: relative;
-  cursor: pointer;
-  transition: flex 0.4s ease, box-shadow 0.4s ease;
-  scroll-snap-align: start;
-  min-width: 60px;
-}
-
-.carousel-card.active {
-  flex: 4 0 300px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  border-color: white;
-}
-
+    
 .card-overlay {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  backdrop-filter: blur(4px);
   padding: 0.8rem;
   color: white;
   font-size: 0.9rem;
@@ -836,6 +810,31 @@ h2.section-title {
   margin-bottom: 2rem;
 }
 
+.image-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.image-card {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* proporción 16:9 */
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.image-card:hover {
+  transform: scale(1.01);
+}
+
+    
   </style>
 </head>  
 <body class="upload-page">
