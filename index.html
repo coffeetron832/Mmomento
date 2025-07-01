@@ -288,12 +288,23 @@
     }
   }
 
-#image-trail .trail-item {
+#image-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
   pointer-events: none;
+  z-index: 999;
+}
+
+.trail-item {
   position: absolute;
   display: none;
+  width: 50px; /* ✅ Más grande */
+  height: 50px;
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 1s ease, opacity 1s ease;
   will-change: transform, opacity;
-  z-index: 9999;
 }
 
 
@@ -348,11 +359,13 @@
   </span>
 </footer>
 
+<!-- Contenedor del efecto -->
 <div id="image-trail">
-  <img src="nube1.jpg" class="trail-item" style="position: absolute; display: none; width: 40px;" />
-  <img src="nube2.jpg" class="trail-item" style="position: absolute; display: none; width: 40px;" />
-  <img src="nube3.jpg" class="trail-item" style="position: absolute; display: none; width: 40px;" />
+  <img src="nube1.jpg" class="trail-item" />
+  <img src="nube2.jpg" class="trail-item" />
+  <img src="nube3.jpg" class="trail-item" />
 </div>
+
 
 
  <script>
@@ -376,47 +389,51 @@
     }
 
     // 🎯 Efecto Image Trail
-    const items = Array.from(document.querySelectorAll('.trail-item'));
-    let mouseX = 0, mouseY = 0;
-    let lastTriggerX = 0, lastTriggerY = 0;
-    const threshold = 80;
+    document.addEventListener('DOMContentLoaded', () => {
+  const items = Array.from(document.querySelectorAll('.trail-item'));
+  let mouseX = 0, mouseY = 0;
+  let lastX = 0, lastY = 0;
+  const threshold = 60; // Distancia para siguiente efecto
 
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      const dx = mouseX - lastTriggerX;
-      const dy = mouseY - lastTriggerY;
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
 
-      if (Math.hypot(dx, dy) > threshold) {
-        lastTriggerX = mouseX;
-        lastTriggerY = mouseY;
+    const dx = mouseX - lastX;
+    const dy = mouseY - lastY;
+    const distance = Math.hypot(dx, dy);
 
-        const item = items.shift();
-        if (!item) return;
+    if (distance > threshold) {
+      lastX = mouseX;
+      lastY = mouseY;
 
-        item.style.display = 'block';
-        item.style.left = `${mouseX - item.width / 2}px`;
-        item.style.top = `${mouseY - item.height / 2}px`;
-        item.style.opacity = 0;
-        item.style.transform = 'scale(0.3)';
+      const item = items.shift();
+      if (!item) return;
 
-        requestAnimationFrame(() => {
-          item.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
-          item.style.transform = 'scale(1)';
-          item.style.opacity = 1;
+      item.style.left = `${mouseX - 25}px`; // centrado (50px / 2)
+      item.style.top = `${mouseY - 25}px`;
+      item.style.display = 'block';
+      item.style.opacity = 0;
+      item.style.transform = 'scale(0.3)';
+
+      requestAnimationFrame(() => {
+        item.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+        item.style.opacity = 1;
+        item.style.transform = 'scale(1)';
+
+        setTimeout(() => {
+          item.style.opacity = 0;
+          item.style.transform = 'scale(0)';
           setTimeout(() => {
-            item.style.transform = 'scale(0)';
-            item.style.opacity = 0;
-            setTimeout(() => {
-              item.style.display = 'none';
-              items.push(item);
-              item.style.transition = '';
-            }, 600);
-          }, 200);
-        });
-      }
-    });
+            item.style.display = 'none';
+            item.style.transition = '';
+            items.push(item);
+          }, 1000); // ⏱️ Tiempo extra para desaparecer
+        }, 1000); // ⏱️ Permanencia visible
+      });
+    }
   });
+});
 
   // Fade transitions entre páginas
   function applyFadeIn() {
