@@ -655,19 +655,20 @@ body.dark-mode .section-button.selected {
 
 .image-preview-hover {
   position: absolute;
-  left: -340px; /* o el valor que necesites */
-  top: 10%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
   width: 290px;
-  background: transparent; /* quitar fondo blanco */
-  padding: 0; /* quitar espacio interno */
-  border-radius: 0; /* quitar esquinas redondeadas si querés */
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
   box-shadow: none;
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.96);
   transition: opacity 0.25s ease, transform 0.25s ease;
   z-index: 999;
 }
+
 
 .image-card-hover {
   position: relative;
@@ -677,8 +678,10 @@ body.dark-mode .section-button.selected {
 .image-card-hover:hover .image-preview-hover {
   opacity: 1;
   pointer-events: auto;
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
+  animation: floatFadeIn 0.3s ease-out forwards;
 }
+
 
     .image-preview-hover img {
   max-width: 290px;
