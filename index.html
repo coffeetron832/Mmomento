@@ -249,6 +249,17 @@
   margin-right: 0.2rem;
 }
 
+.header-compact-mariposa {
+  background: rgba(0, 0, 0, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  position: relative;
+  width: 100%;
+}
 
     
   /* Ajustes móviles */
@@ -294,6 +305,14 @@
 </style>
 </head>
 <body>
+  <!-- Encabezado mariposa -->
+<header class="header-compact-mariposa">
+  <span class="tooltip-container mariposa-tooltip" data-tooltip="Momento es una red emocional donde tus recuerdos florecen por 6 horas. Cada mariposa que recibes es un alma que conectó contigo.">
+    <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
+  </span>
+</header>
+
+  
   <div id="logoutMessageBox" style="
   display: none;
   position: fixed;
@@ -329,11 +348,6 @@
   <div class="main-text">
   <h1>
     <span class="momento-title">Momento</span>
-<span class="tooltip-container mariposa-tooltip" data-tooltip="Momento es una red emocional donde tus recuerdos florecen por 6 horas. Cada mariposa que recibes es un alma que conectó contigo.">
-  <img src="mariposamomento.png" alt="Mariposa" class="logo-butterfly-inline" />
-</span>
-
-
   </h1>
 </div>
 </div>
