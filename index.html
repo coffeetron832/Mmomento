@@ -168,15 +168,15 @@
 
   
   .footer-compact {
-    background: rgba(0, 0, 0, 0.7);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.65rem 0.8rem;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-    font-size: 0.85rem;
-  }
+  background: rgba(0, 0, 0, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.4rem 0.6rem;       /* 🔽 Reduce padding vertical y lateral */
+  display: flex;
+  justify-content: center;
+  align-items: center;         /* ✅ Centra todo en el eje vertical */
+  gap: 0.4rem;                  /* 🔽 Menos separación entre elementos */
+  font-size: 0.85rem;
+}
 
   .footer-compact .footer-link {
     color: #bbb;
@@ -240,7 +240,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 32px;            /* 🔧 Altura segura mínima */
+  min-height: 30px;            /* 🔧 Altura segura mínima */
   width: 100%;
   z-index: 1000;
   position: relative;
