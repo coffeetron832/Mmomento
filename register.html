@@ -249,7 +249,7 @@ form#registerForm button[type="submit"]:hover::after {
   <footer>
     <div class="form-container">
       <form id="registerForm">
-        <input type="text" id="name" class="input-field" placeholder="Nombre" required autocomplete="name"/>
+        <input type="text" id="username" class="input-field" placeholder="Nombre" required autocomplete="username"/>
         <input type="email" id="email" class="input-field" placeholder="Correo" required autocomplete="email"/>
         <input type="password" id="password" class="input-field" placeholder="Contraseña" required autocomplete="new-password"/>
 
@@ -287,7 +287,7 @@ form#registerForm button[type="submit"]:hover::after {
     // Manejo del registro con emoji
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const username = document.getElementById('name').value.trim();
+  const username = document.getElementById('username').value.trim();
   const email    = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 
