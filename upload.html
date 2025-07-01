@@ -212,10 +212,10 @@
       position: relative;
     }
     .image-card img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+  display: block;
+  width: 100%;
+  height: auto;
+}
     
 
 .image-user {
@@ -779,9 +779,9 @@ h2.section-title {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-  backdrop-filter: blur(4px);
   padding: 0.8rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
+  backdrop-filter: blur(6px);
   color: white;
   font-size: 0.9rem;
   display: flex;
@@ -791,38 +791,41 @@ h2.section-title {
 
 .card-title {
   font-weight: bold;
+  font-size: 0.95rem;
+  word-break: break-word;
 }
 
-.card-user {
+.card-user,
+.card-likes {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
   justify-content: space-between;
+  align-items: center;
 }
-
+    
 .butterfly-btn {
   background: none;
   border: none;
-  color: white;
-  font-size: 1.2rem;
   cursor: pointer;
+  font-size: 1.2rem;
 }
 
 .butterfly-btn.active {
-  color: #ffb6d9;
+  color: #90ee90;
 }
 
-.card-likes {
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
+
 
 .delete-btn {
-  background: transparent;
+  background: none;
   border: none;
-  color: red;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  color: #f88;
   cursor: pointer;
+}
+
+    .like-count {
+  font-size: 0.9rem;
+  color: #eee;
 }
 
     .section-group {
@@ -841,15 +844,11 @@ h2.section-title {
 
 .image-card {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9; /* ✅ mantiene proporción sin usar padding-top */
-  background-size: cover;
-  background-position: center;
-  border-radius: 12px;
+  border-radius: 0.8rem;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-  cursor: pointer;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  background: #111;
 }
 
 .image-card:hover {
