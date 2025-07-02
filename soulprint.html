@@ -114,14 +114,72 @@
       padding: 2rem;
     }
     @media (max-width: 600px) {
-      .card-header { justify-content: flex-start; }
-      .profile-img { width: 70px; height: 70px; }
-      .emoji-alma { width: 48px; height: 48px; }
-      .edit-btn {
-        position: static;
-        margin: 0.5rem 0;
-      }
-    }
+  .soulprint-card {
+    width: 95%;
+    padding-top: 160px;
+  }
+
+  .profile-wrapper {
+    top: 60px;
+  }
+
+  .profile-img-colored {
+    width: 75px;
+    height: 75px;
+  }
+
+  .banner-container {
+    height: 100px;
+  }
+
+  .username-emoji {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .username {
+    font-size: 1rem;
+  }
+
+  .phrase {
+    font-size: 0.85rem;
+    padding: 0 1rem;
+    margin-top: 0.2rem;
+    text-align: center;
+  }
+
+  .details {
+    padding: 0 1rem;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .edit-btn,
+  #soulprint-actions button {
+    min-width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .edit-container {
+    top: 0.5rem;
+    right: 0.5rem;
+    gap: 0.3rem;
+  }
+
+  #soulprint-actions {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .butterflies {
+    text-align: center;
+    width: 100%;
+  }
+}
+
 
 .username,
 .soulcolor-info,
