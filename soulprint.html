@@ -47,7 +47,7 @@
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   position: relative;
-  padding-top: 120px; /* espacio para el banner */
+  padding-top: 180px; /* espacio para el banner */
   max-width: 500px;
   width: 90%;
   display: flex;
@@ -138,10 +138,13 @@
 
 
 .profile-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0.5rem;
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
 }
+
 
 .profile-img-colored {
   width: 90px;
