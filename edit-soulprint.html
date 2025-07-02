@@ -120,6 +120,9 @@
       <label for="profileImageInput">Foto de perfil:</label>
       <input type="file" id="profileImageInput" name="profileImage" accept="image/*" />
 
+
+      <label for="bannerImageInput">Imagen de banner:</label>
+<input type="file" id="bannerImageInput" name="bannerImage" accept="image/*" />
       
 
       <label>
@@ -134,6 +137,9 @@
 
   <div class="preview-container">
     <div class="preview-card">
+      <div id="previewBannerWrapper" style="position: relative; height: 120px; border-top-left-radius: 2rem; border-top-right-radius: 2rem; overflow: hidden;">
+  <img id="previewBannerImage" src="" alt="Banner" style="width:100%; height:100%; object-fit:cover;" />
+</div>
       <div class="halo" id="haloPreview"></div>
       <div style="display:flex; align-items:center; justify-content:center; gap:12px;">
         <img id="previewProfileImage" class="profile-img" src="/default-avatar.png" alt="Previsualización foto" />
@@ -189,6 +195,10 @@
       document.getElementById('previewPhrase').innerText = soul.soulPhrase || '';
       document.getElementById('haloPreview').style.setProperty('--soul-color', soul.soulColor || '#88c0d0');
       document.getElementById('previewProfileImage').src = soul.profileImage || '/default-avatar.png';
+      if (soul.bannerImage) {
+  document.getElementById('previewBannerImage').src = soul.bannerImage;
+}
+
 
       if (soul.birthdate) {
         document.getElementById('previewBirthdate').innerText = new Date(soul.birthdate).toLocaleDateString('es-ES', {
@@ -231,6 +241,18 @@
       reader.readAsDataURL(file);
     }
   });
+
+    document.getElementById('bannerImageInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      document.getElementById('previewBannerImage').src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
