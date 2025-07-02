@@ -258,117 +258,107 @@ function applyFilter() {
     column.className = 'image-column';
 
     imagesInSection.forEach(image => {
-  const card = document.createElement('div');
-  card.className = 'image-card tilt-card'; // nuevo estilo
-      
+      const card = document.createElement('div');
+      card.className = 'image-card tilt-card';
 
-  const img = document.createElement('img');
-  img.src = image.imageUrl || image.url || '';
-  img.alt = image.description || 'imagen subida';
-  img.loading = 'lazy';
+      const img = document.createElement('img');
+      img.src = image.imageUrl || image.url || '';
+      img.alt = image.description || 'imagen subida';
+      img.loading = 'lazy';
 
-  // Contenedor blanco debajo de la imagen
-const infoBox = document.createElement('div');
-infoBox.className = 'card-info';
+      // ✅ Crear fila de usuario
+      const userRow = document.createElement('div');
+      userRow.className = 'card-user';
 
-// Descripción
-const description = document.createElement('div');
-description.className = 'card-title';
-description.textContent = image.description || '(sin descripción)';
-infoBox.appendChild(description);
-
-// Fila con usuario y botones
-infoBox.appendChild(userRow);
-
-// Fila de mariposas
-infoBox.appendChild(likeRow);
-
-card.appendChild(infoBox);
-      
-  if (image.userId?.username) {
-    const userLink = document.createElement('a');
-    userLink.textContent = `@${image.userId.username}`;
-    userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
-    userLink.style.color = '#ccc';
-    userLink.style.textDecoration = 'none';
-    userRow.appendChild(userLink);
-  }
-
-  // Botón eliminar si es dueño
-  if (image.userId?.username === currentUsername) {
-    const delBtn = document.createElement('button');
-    delBtn.className = 'delete-btn';
-    delBtn.textContent = '🗑️';
-    delBtn.addEventListener('click', () => deleteImage(image._id, card));
-    userRow.appendChild(delBtn);
-  }
-
-  overlay.appendChild(userRow);
-
-  // Fila de mariposas
-  const likeRow = document.createElement('div');
-  likeRow.className = 'card-likes';
-
-  if (image.userId?.username !== currentUsername) {
-    const btn = document.createElement('button');
-    btn.className = 'butterfly-btn';
-    btn.innerHTML = '🦋';
-    btn.dataset.id = image._id;
-
-    const hasLiked = image.likes?.includes(currentUsername);
-    btn.dataset.given = hasLiked ? 'true' : 'false';
-    if (hasLiked) btn.classList.add('active');
-
-    btn.addEventListener('click', async () => {
-      try {
-        const wasGiven = btn.dataset.given === 'true';
-        const nowGiven = !wasGiven;
-        btn.dataset.given = nowGiven ? 'true' : 'false';
-        btn.classList.toggle('active', nowGiven);
-
-        btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], {
-          duration: 300,
-          easing: 'ease-in-out'
-        });
-
-        const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
-
-        if (!res.ok) throw new Error('Error en mariposa');
-      } catch (err) {
-        console.error('Error:', err);
+      if (image.userId?.username) {
+        const userLink = document.createElement('a');
+        userLink.textContent = `@${image.userId.username}`;
+        userLink.href = `soulprint.html?user=${encodeURIComponent(image.userId.username)}`;
+        userLink.style.color = '#ccc';
+        userLink.style.textDecoration = 'none';
+        userRow.appendChild(userLink);
       }
+
+      if (image.userId?.username === currentUsername) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-btn';
+        delBtn.textContent = '🗑️';
+        delBtn.addEventListener('click', () => deleteImage(image._id, card));
+        userRow.appendChild(delBtn);
+      }
+
+      // ✅ Crear fila de mariposas
+      const likeRow = document.createElement('div');
+      likeRow.className = 'card-likes';
+
+      if (image.userId?.username !== currentUsername) {
+        const btn = document.createElement('button');
+        btn.className = 'butterfly-btn';
+        btn.innerHTML = '🦋';
+        btn.dataset.id = image._id;
+
+        const hasLiked = image.likes?.includes(currentUsername);
+        btn.dataset.given = hasLiked ? 'true' : 'false';
+        if (hasLiked) btn.classList.add('active');
+
+        btn.addEventListener('click', async () => {
+          try {
+            const wasGiven = btn.dataset.given === 'true';
+            const nowGiven = !wasGiven;
+            btn.dataset.given = nowGiven ? 'true' : 'false';
+            btn.classList.toggle('active', nowGiven);
+
+            btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], {
+              duration: 300,
+              easing: 'ease-in-out'
+            });
+
+            const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+
+            if (!res.ok) throw new Error('Error en mariposa');
+          } catch (err) {
+            console.error('Error:', err);
+          }
+        });
+
+        likeRow.appendChild(btn);
+      }
+
+      if (image.likes?.length > 0) {
+        const likeCount = document.createElement('span');
+        likeCount.className = 'like-count';
+        likeCount.textContent = `x ${image.likes.length}`;
+        likeRow.appendChild(likeCount);
+      }
+
+      // ✅ Contenedor blanco con descripción, usuario y mariposas
+      const infoBox = document.createElement('div');
+      infoBox.className = 'card-info';
+
+      const description = document.createElement('div');
+      description.className = 'card-title';
+      description.textContent = image.description || '(sin descripción)';
+
+      infoBox.appendChild(description);
+      infoBox.appendChild(userRow);
+      infoBox.appendChild(likeRow);
+
+      const spotlight = document.createElement('div');
+      spotlight.className = 'spotlight';
+
+      card.appendChild(img);
+      card.appendChild(infoBox);
+      card.appendChild(spotlight);
+      column.appendChild(card);
     });
 
-    likeRow.appendChild(btn);
-  }
-
-  if (image.likes?.length > 0) {
-    const likeCount = document.createElement('span');
-    likeCount.className = 'like-count';
-    likeCount.textContent = `x ${image.likes.length}`;
-    likeRow.appendChild(likeCount);
-  }
-
-  overlay.appendChild(likeRow);
-
-  const spotlight = document.createElement('div');
-spotlight.className = 'spotlight';
-card.appendChild(spotlight);
-
-
-  card.appendChild(img);
-  card.appendChild(overlay);
-  column.appendChild(card);
-}); // ← cierre de imagesInSection.forEach
-
-sectionGroup.appendChild(column);
-container.appendChild(sectionGroup);
-}); // ← cierre de Object.keys(sectionTitles).forEach
-
-} // ← cierre de renderImages
+    sectionGroup.appendChild(column);
+    container.appendChild(sectionGroup);
+  });
+}
 
 
 
