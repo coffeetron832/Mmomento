@@ -218,6 +218,9 @@
 
     .image-card {
       position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08); /* borde sutil blanco */
+      border-radius: 12px;
+      overflow: hidden;
     }
     .image-card img {
   display: block;
@@ -226,6 +229,7 @@
   object-fit: cover;
   border: none; /* <-- Elimina cualquier borde negro */
   border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06); /* línea entre imagen y texto */
 }
 
     /* Nueva parte blanca donde va la info */
@@ -239,6 +243,8 @@
   border-radius: 0 0 12px 12px;
   border-top: none;
   box-shadow: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.06); /* sutil división si deseas */
+
 }
 
 
