@@ -230,32 +230,32 @@
 
     /* Nueva parte blanca donde va la info */
 .card-info {
-  background-color: white;
+  background-color: #111; /* fondo oscuro */
+  color: #fff; /* texto blanco */
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   border-radius: 0 0 12px 12px;
-
-  /* 🔽 Borde sutil */
-  border-top: 1px solid rgba(0, 0, 0, 0.12); /* más notorio */
-  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.08);
+  border-top: none;
+  box-shadow: none;
 }
+
 
 
 .card-title {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #fff;
 }
 
 .card-user,
 .card-likes {
+  font-size: 12px;
+  color: #ccc; /* un blanco suave o gris claro */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  color: #777;
 }
 
 /* Elimina sombras o bordes generales si hay algo como esto */
