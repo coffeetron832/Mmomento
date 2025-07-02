@@ -215,8 +215,42 @@
   display: block;
   width: 100%;
   height: auto;
+  object-fit: cover;
+  border: none; /* <-- Elimina cualquier borde negro */
+  border-radius: 12px 12px 0 0;
 }
-    
+
+    /* Nueva parte blanca donde va la info */
+.card-info {
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 0 0 12px 12px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.card-user,
+.card-likes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #777;
+}
+
+/* Elimina sombras o bordes generales si hay algo como esto */
+.image-card {
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
 
 .image-user {
   padding: 0.2rem 0;
