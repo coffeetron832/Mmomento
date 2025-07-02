@@ -267,20 +267,24 @@ function applyFilter() {
   img.alt = image.description || 'imagen subida';
   img.loading = 'lazy';
 
-  // Capa inferior con blur
-  const overlay = document.createElement('div');
-  overlay.className = 'card-overlay';
+  // Contenedor blanco debajo de la imagen
+const infoBox = document.createElement('div');
+infoBox.className = 'card-info';
 
-  // Descripción
-  const description = document.createElement('div');
-  description.className = 'card-title';
-  description.textContent = image.description || '(sin descripción)';
-  overlay.appendChild(description);
+// Descripción
+const description = document.createElement('div');
+description.className = 'card-title';
+description.textContent = image.description || '(sin descripción)';
+infoBox.appendChild(description);
 
-  // Fila con usuario y botones
-  const userRow = document.createElement('div');
-  userRow.className = 'card-user';
+// Fila con usuario y botones
+infoBox.appendChild(userRow);
 
+// Fila de mariposas
+infoBox.appendChild(likeRow);
+
+card.appendChild(infoBox);
+      
   if (image.userId?.username) {
     const userLink = document.createElement('a');
     userLink.textContent = `@${image.userId.username}`;
