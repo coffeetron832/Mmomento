@@ -270,6 +270,21 @@
   height: 100%;
 }
 
+    @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* leve deslizamiento hacia arriba */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
 
   </style>
 </head>
@@ -422,6 +437,11 @@ document.addEventListener('DOMContentLoaded', () => {
     try { logged = JSON.parse(stored).username; } catch {}
   }
 
+  const soulprint = document.getElementById('soulprint');
+soulprint.style.display = 'block';
+soulprint.classList.add('fade-in');
+
+  
   const soulEl = document.getElementById('soulprint');
   const errorEl = document.getElementById('errorMessage');
   const editBtn = document.getElementById('editBtn');
