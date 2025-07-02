@@ -259,7 +259,8 @@ function applyFilter() {
 
     imagesInSection.forEach(image => {
   const card = document.createElement('div');
-  card.className = 'image-card'; // nuevo estilo
+  card.className = 'image-card tilt-card'; // nuevo estilo
+      
 
   const img = document.createElement('img');
   img.src = image.imageUrl || image.url || '';
@@ -349,6 +350,11 @@ function applyFilter() {
 
   overlay.appendChild(likeRow);
 
+  const spotlight = document.createElement('div');
+spotlight.className = 'spotlight';
+card.appendChild(spotlight);
+
+
   card.appendChild(img);
   card.appendChild(overlay);
   column.appendChild(card);
@@ -411,6 +417,36 @@ function renderFilteredImages(sectionKey) {
 
 // Cargar imágenes inicialmente
 loadImages();
+
+
+  document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.tilt-card').forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const deltaX = (x - centerX) / centerX;
+    const deltaY = (y - centerY) / centerY;
+
+    if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
+      card.style.transform = `rotateY(${deltaX * 10}deg) rotateX(${-deltaY * 10}deg)`;
+
+      const spotlight = card.querySelector('.spotlight');
+      if (spotlight) {
+        spotlight.style.left = `${x}px`;
+        spotlight.style.top = `${y}px`;
+        spotlight.style.opacity = 1;
+      }
+    } else {
+      card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+      const spotlight = card.querySelector('.spotlight');
+      if (spotlight) spotlight.style.opacity = 0;
+    }
+  });
+});
 
 
   // 🗑 Eliminar imagen
