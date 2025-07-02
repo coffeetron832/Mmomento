@@ -227,25 +227,23 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  border: none; /* <-- Elimina cualquier borde negro */
   border-radius: 12px 12px 0 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06); /* línea entre imagen y texto */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06); /* Línea divisora */
 }
+
 
     /* Nueva parte blanca donde va la info */
 .card-info {
-  background-color: #111; /* fondo oscuro */
-  color: #fff; /* texto blanco */
+  background-color: #111;
+  color: #fff;
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   border-radius: 0 0 12px 12px;
-  border-top: none;
-  box-shadow: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.06); /* sutil división si deseas */
-
+  border-top: none; /* No se necesita si ya lo tiene la imagen */
 }
+
 
 
 
