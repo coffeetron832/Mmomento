@@ -217,11 +217,13 @@
     }
 
     .image-card {
-      position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.08); /* borde sutil blanco */
-      border-radius: 12px;
-      overflow: hidden;
-    }
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #111; /* O incluso 'transparent' si la imagen ocupa todo */
+}
+
     .image-card img {
   display: block;
   width: 100%;
@@ -232,17 +234,19 @@
 }
 
 
-    /* Nueva parte blanca donde va la info */
-.card-info {
-  background-color: #111;
+    .card-info {
+  background-color: rgba(17, 17, 17, 0.4); /* Negro translúcido */
+  backdrop-filter: blur(12px); /* 🔹 Difumina lo que está detrás */
+  -webkit-backdrop-filter: blur(12px); /* Para Safari */
   color: #fff;
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   border-radius: 0 0 12px 12px;
-  border-top: none; /* No se necesita si ya lo tiene la imagen */
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
+
 
 
 
