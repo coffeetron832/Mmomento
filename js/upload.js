@@ -346,12 +346,9 @@ function applyFilter() {
       infoBox.appendChild(userRow);
       infoBox.appendChild(likeRow);
 
-      const spotlight = document.createElement('div');
-      spotlight.className = 'spotlight';
 
       card.appendChild(img);
       card.appendChild(infoBox);
-      card.appendChild(spotlight);
       column.appendChild(card);
     });
 
