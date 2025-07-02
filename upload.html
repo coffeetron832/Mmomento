@@ -235,17 +235,23 @@
 
 
     .card-info {
-  background-color: rgba(17, 17, 17, 0.4); /* Negro translúcido */
-  backdrop-filter: blur(12px); /* 🔹 Difumina lo que está detrás */
-  -webkit-backdrop-filter: blur(12px); /* Para Safari */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(17, 17, 17, 0.2); /* negro translúcido */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #fff;
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  border-radius: 0 0 12px 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0 0 12px 12px;
+  z-index: 2;
 }
+
 
 
 
