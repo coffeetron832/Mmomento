@@ -296,7 +296,9 @@
   <div class="soulprint-card" style="width: 85%; max-width: 440px; margin: 2rem auto;">
 
 
-    
+     <div class="banner-container">
+  <img id="pdfBannerImage" class="banner-img" src="" alt="Banner del Soulprint PDF" />
+</div>
 
 
     <!-- Foto centrada con borde de color -->
@@ -436,9 +438,10 @@ document.addEventListener('DOMContentLoaded', () => {
   soulEl.style.setProperty('--soulcolor', soulprint.soulColor || '#4f46e5');
   if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
       if (soulprint.bannerImage) {
-  const banner = document.getElementById('bannerImage');
+  const banner = document.querySelector('#soulprint .banner-img');
   banner.src = soulprint.bannerImage;
 }
+
 
 
   soulEl.style.display = 'flex';
