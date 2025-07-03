@@ -47,35 +47,7 @@ body.dark-mode .modal-content {
   color: #f1f1f1 !important;
 }
 
-/* --- Botones y elementos frosted glass --- */
-.btn-frosted,
-button,
-.upload-section button,
-.modal-content button,
-.main-nav a.button-style {
-  background: rgba(173, 216, 230, 0.25);
-  border: 1px solid rgba(173, 216, 230, 0.5);
-  color: #1e3a8a;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 4px 15px rgba(173, 216, 230, 0.3);
-  text-shadow: 0 0 2px rgba(255,255,255,0.8);
-}
 
-.btn-frosted:hover,
-button:hover,
-.upload-section button:hover,
-.modal-content button:hover,
-.main-nav a.button-style:hover {
-  background: rgba(173, 216, 230, 0.4);
-  color: #12306b;
-  box-shadow: 0 6px 20px rgba(173, 216, 230, 0.5);
-}
 
 /* --- Tipografía y logo --- */
 .logo {
