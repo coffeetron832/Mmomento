@@ -204,17 +204,12 @@
 
     .images-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* 👈 aquí */
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 👈 aquí */
   gap: 1.5rem;
   margin-bottom: var(--gutter);
   justify-items: center;
 }
 
-    @media (min-width: 500px) {
-      .images-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      }
-    }
 
     .image-card {
   position: relative;
