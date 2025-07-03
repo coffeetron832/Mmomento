@@ -928,6 +928,10 @@ h2.section-title {
 
 
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
+      <h2 class="section-title" style="margin-bottom: 0.5rem;">🌟 Comparte un Momento</h2>
+<p style="font-size: 0.9rem; color: #ccc; margin-bottom: 1.5rem;">
+  Elige una imagen que represente tu sentir. Este será un susurro al mundo, por un instante.
+</p>
   <form id="uploadForm" enctype="multipart/form-data" method="post">
 
     <!-- 🔹 Secciones creativas -->
@@ -942,23 +946,32 @@ h2.section-title {
     <input type="hidden" name="section" id="selected-section" required>
 
     <input type="file" id="image" name="image" accept="image/*" required />
+    <div id="imagePreviewContainer" style="margin-top: 1rem; display:none;">
+  <img id="imagePreview" src="" alt="Vista previa" style="max-width: 100%; border-radius: 8px;" />
+</div>
+
     <input type="text" name="description" id="description" placeholder="Describe tu momento" required>
 
-    <label for="visibility">Visibilidad:</label>
-    <select name="visibility" id="visibility">
-      <option value="public">Público</option>
-      <option value="private">Privado</option>
-      <option value="circle">Solo círculo</option>
-    </select>
+    <div style="margin-top: 1rem;">
+  <label for="visibility" style="display:block; margin-bottom: 0.25rem;">Visibilidad:</label>
+  <select name="visibility" id="visibility">
+    <option value="public">Público</option>
+    <option value="private">Privado</option>
+    <option value="circle">Solo círculo</option>
+  </select>
+</div>
 
-    <label for="duration">Duración:</label>
-    <select name="duration" id="duration" required>
-      <option value="">Selecciona duración</option>
-      <option value="30">30 minutos</option>
-      <option value="60">1 hora</option>
-      <option value="180">3 horas</option>
-      <option value="360">6 horas</option>
-    </select>
+<div style="margin-top: 1rem;">
+  <label for="duration" style="display:block; margin-bottom: 0.25rem;">Duración:</label>
+  <select name="duration" id="duration" required>
+    <option value="">Selecciona duración</option>
+    <option value="30">30 minutos</option>
+    <option value="60">1 hora</option>
+    <option value="180">3 horas</option>
+    <option value="360">6 horas</option>
+  </select>
+</div>
+
 
     <div id="circleSelectorContainer" style="display: none;"></div>
 
