@@ -622,6 +622,14 @@ function generatePDF() {
   // Clonar el Soulprint visible
   const soulprintClone = originalSoulprint.cloneNode(true);
 
+  const bannerImg = soulprintClone.querySelector('.banner-img');
+if (bannerImg) {
+  bannerImg.style.objectFit = 'cover';
+  bannerImg.style.width = '100%';
+  bannerImg.style.height = '120px'; // misma altura que .banner-container
+}
+
+
   // Eliminar acciones o botones si existen
   soulprintClone.querySelector('.edit-container')?.remove();
   soulprintClone.querySelector('#soulprint-actions')?.remove();
