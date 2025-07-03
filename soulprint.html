@@ -665,15 +665,20 @@ function generatePDF() {
 
   const soulprintClone = originalSoulprint.cloneNode(true);
 
+  // 🔴 Eliminar o esconder elementos no deseados del PDF:
+  soulprintClone.querySelector('.edit-container')?.remove();
+  soulprintClone.querySelector('#soulprint-actions')?.remove();
+
+  // 🟢 Ocultar barra de carga en el clon si llegara a existir
+  const loadingBar = soulprintClone.querySelector('#loading-bar');
+  if (loadingBar) loadingBar.remove(); // o loadingBar.style.display = 'none';
+
   const bannerImg = soulprintClone.querySelector('.banner-img');
   if (bannerImg) {
     bannerImg.style.objectFit = 'cover';
     bannerImg.style.width = '100%';
     bannerImg.style.height = '120px';
   }
-
-  soulprintClone.querySelector('.edit-container')?.remove();
-  soulprintClone.querySelector('#soulprint-actions')?.remove();
 
   soulprintClone.style.margin = '2rem auto';
   soulprintClone.style.border = '1px solid #ccc';
@@ -697,9 +702,10 @@ function generatePDF() {
     html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
   }).save().then(() => {
-    loading.style.display = 'none'; // Ocultar al terminar
+    loading.style.display = 'none'; // Ocultar barra al terminar
   });
 }
+
 
 
 
