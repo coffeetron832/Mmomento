@@ -585,65 +585,39 @@ soulprint.classList.add('fade-in');
 
 function generatePDF() {
   const intro = document.getElementById('soulprint-intro');
-  const pdfClone = document.getElementById('soulprint-pdf-clone').cloneNode(true);
-  const container = document.createElement('div');
+  const originalSoulprint = document.getElementById('soulprint');
 
   // Mostrar temporalmente la intro para clonarla
   intro.style.display = 'block';
   const introClone = intro.cloneNode(true);
   intro.style.display = 'none';
 
-  // Asegurar visibilidad del clon
-  pdfClone.style.display = 'block';
-  pdfClone.style.margin = '2rem auto';
-  pdfClone.style.maxWidth = '380px';
-  pdfClone.style.border = '1px solid #ccc';
-  pdfClone.style.borderRadius = '1rem';
+  // Clonar el Soulprint visible
+  const soulprintClone = originalSoulprint.cloneNode(true);
 
-  // Obtener datos
-  const profileImg = document.getElementById('profileImage');
-  const bannerImg = document.getElementById('bannerImage');
-  const soulColor = getComputedStyle(document.getElementById('soulcolorCircle')).backgroundColor;
+  // Eliminar acciones o botones si existen
+  soulprintClone.querySelector('.edit-container')?.remove();
+  soulprintClone.querySelector('#soulprint-actions')?.remove();
 
-  // Aplicar color al borde de la imagen y a la variable CSS
-  pdfClone.style.setProperty('--soulcolor', soulColor);
-  pdfClone.querySelector('#pdfProfileImage').style.borderColor = soulColor;
-  pdfClone.querySelector('#pdfSoulColorCircle').style.backgroundColor = soulColor;
+  // Aplicar estilos base para PDF
+  soulprintClone.style.margin = '2rem auto';
+  soulprintClone.style.border = '1px solid #ccc';
+  soulprintClone.style.borderRadius = '1rem';
+  soulprintClone.style.boxShadow = 'none';
 
-  // Actualizar contenido del clon
-  pdfClone.querySelector('#pdfProfileImage').src = profileImg?.src || '';
-  pdfClone.querySelector('#pdfBannerImage').src = bannerImg?.src || '';
-  pdfClone.querySelector('#pdfUsername').innerText = document.getElementById('usernameDisplay').innerText;
-  pdfClone.querySelector('#pdfSoulPhrase').innerText = document.getElementById('soulPhraseDisplay').innerText;
-  pdfClone.querySelector('#pdfNationality').innerText = document.getElementById('nationalityDisplay').innerText;
-  pdfClone.querySelector('#pdfButterflyCount').innerText = document.getElementById('butterflyCount').innerText;
-  pdfClone.querySelector('#pdfSoulColorName').innerText = document.getElementById('soulcolorName').innerText;
-  pdfClone.querySelector('#pdfBirthdate').innerText = document.getElementById('birthdate').innerText;
-
-  // Ajustes visuales: centrado y márgenes
-  const usernameEmoji = pdfClone.querySelector('.username-emoji');
-  if (usernameEmoji) {
-    usernameEmoji.style.marginTop = '30px';
-    usernameEmoji.style.justifyContent = 'center';
-    usernameEmoji.style.textAlign = 'center';
-    usernameEmoji.style.gap = '0.4rem';
-  }
-
-  const phrase = pdfClone.querySelector('.phrase');
-  if (phrase) {
-    phrase.style.marginTop = '0.2rem';
-    phrase.style.textAlign = 'center';
-  }
-
-  // Agregar introducción y Soulprint al contenedor
+  // Contenedor del contenido final
+  const container = document.createElement('div');
   container.appendChild(introClone);
+
+  // Saltar a página nueva
   const pageBreak = document.createElement('div');
   pageBreak.style.pageBreakBefore = 'always';
   pageBreak.style.breakBefore = 'page';
   container.appendChild(pageBreak);
-  container.appendChild(pdfClone);
 
-  // Generar PDF
+  container.appendChild(soulprintClone);
+
+  // Generar el PDF
   html2pdf().from(container).set({
     margin: 0.5,
     filename: 'mi-soulprint.pdf',
