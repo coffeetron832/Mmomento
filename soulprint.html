@@ -369,6 +369,44 @@
   }
 }
 
+#loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+  background-color: rgba(79, 70, 229, 0.95); /* color morado */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  color: white;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.loading-text {
+  margin-bottom: 0.3rem;
+}
+
+.loading-progress {
+  width: 80%;
+  height: 6px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, white 0%, #c7d2fe 50%, white 100%);
+  background-size: 200% 100%;
+  animation: loadingMove 1.5s infinite;
+}
+
+@keyframes loadingMove {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
 
 
   </style>
@@ -505,6 +543,10 @@
   </div>
 </div>
 
+<div id="loading-bar" style="display: none;">
+  <div class="loading-text">Generando tu Soulprint...</div>
+  <div class="loading-progress"></div>
+</div>
 
 
 
@@ -611,40 +653,36 @@ soulprint.classList.add('fade-in');
 });
 
 function generatePDF() {
+  const loading = document.getElementById('loading-bar');
+  loading.style.display = 'flex'; // Mostrar barra
+
   const intro = document.getElementById('soulprint-intro');
   const originalSoulprint = document.getElementById('soulprint');
 
-  // Mostrar temporalmente la intro para clonarla
   intro.style.display = 'block';
   const introClone = intro.cloneNode(true);
   intro.style.display = 'none';
 
-  // Clonar el Soulprint visible
   const soulprintClone = originalSoulprint.cloneNode(true);
 
   const bannerImg = soulprintClone.querySelector('.banner-img');
-if (bannerImg) {
-  bannerImg.style.objectFit = 'cover';
-  bannerImg.style.width = '100%';
-  bannerImg.style.height = '120px'; // misma altura que .banner-container
-}
+  if (bannerImg) {
+    bannerImg.style.objectFit = 'cover';
+    bannerImg.style.width = '100%';
+    bannerImg.style.height = '120px';
+  }
 
-
-  // Eliminar acciones o botones si existen
   soulprintClone.querySelector('.edit-container')?.remove();
   soulprintClone.querySelector('#soulprint-actions')?.remove();
 
-  // Aplicar estilos base para PDF
   soulprintClone.style.margin = '2rem auto';
   soulprintClone.style.border = '1px solid #ccc';
   soulprintClone.style.borderRadius = '1rem';
   soulprintClone.style.boxShadow = 'none';
 
-  // Contenedor del contenido final
   const container = document.createElement('div');
   container.appendChild(introClone);
 
-  // Saltar a página nueva
   const pageBreak = document.createElement('div');
   pageBreak.style.pageBreakBefore = 'always';
   pageBreak.style.breakBefore = 'page';
@@ -652,15 +690,17 @@ if (bannerImg) {
 
   container.appendChild(soulprintClone);
 
-  // Generar el PDF
   html2pdf().from(container).set({
     margin: 0.5,
     filename: 'mi-soulprint.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-  }).save();
+  }).save().then(() => {
+    loading.style.display = 'none'; // Ocultar al terminar
+  });
 }
+
 
 
 
