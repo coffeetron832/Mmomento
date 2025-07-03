@@ -665,32 +665,30 @@
   margin: 4px;
   border-radius: 20px;
   background-color: #eee;
-  color: #111; /* ✅ texto visible por defecto */
+  color: #111;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
+  transition: all 0.3s ease;
   font-size: 0.78rem;
   font-weight: 500;
+  border: 1px solid transparent;
 }
 
-/* ✅ Botón seleccionado */
 .section-button.selected {
   background-color: #4f46e5;
   color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 8px;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4);
 }
 
-/* ✅ En modo oscuro: fondo y texto claros por defecto */
 body.dark-mode .section-button {
   background-color: #222;
   color: #f5f5f5;
 }
-
-/* ✅ En modo oscuro cuando está seleccionado */
 body.dark-mode .section-button.selected {
   background-color: #4f46e5;
   color: white;
 }
+
     .loader {
   text-align: center;
   font-size: 1.2rem;
@@ -925,59 +923,65 @@ h2.section-title {
       </div>
 
       <!-- El contenido sigue aquí 👇 -->
-
-
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
-      <h2 class="section-title" style="margin-bottom: 0.5rem;">🌟 Comparte un Momento</h2>
-<p style="font-size: 0.9rem; color: #ccc; margin-bottom: 1.5rem;">
-  Elige una imagen que represente tu sentir. Este será un susurro al mundo, por un instante.
-</p>
+  <h2 class="section-title" style="margin-bottom: 0.5rem;">📸 Deja que tu emoción hable</h2>
+  <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 1.5rem;">
+    Comparte lo que vibra dentro de ti. Solo un instante, solo una imagen.
+  </p>
+
   <form id="uploadForm" enctype="multipart/form-data" method="post">
 
-    <!-- 🔹 Secciones creativas -->
-    <div id="section-buttons" style="margin-bottom: 1rem;">
+    <!-- 🌅 Imagen emocional primero -->
+    <input type="file" id="image" name="image" accept="image/*" required />
+
+    <div id="imagePreviewContainer" style="margin-top: 1rem; display:none;">
+      <img id="imagePreview" src="" alt="Vista previa" style="max-width: 100%; border-radius: 8px;" />
+    </div>
+
+    <!-- 📝 Descripción emocional -->
+    <input type="text" name="description" id="description"
+           placeholder="¿Qué sentiste? ¿Qué significa este instante?" required />
+
+    <!-- 🔮 Sección o categoría emocional -->
+    <div id="section-buttons" style="margin-top: 1rem; margin-bottom: 1rem;">
       <span class="section-button" data-value="caos_bonito">❤️‍🔥 Caos bonito</span>
       <span class="section-button" data-value="zona_cero">👾 Zona cer0</span>
       <span class="section-button" data-value="404_emocional">😶‍🌫️ 404 Emocional</span>
       <span class="section-button" data-value="nunca_antes_visto">👻 Nunca antes visto</span>
     </div>
 
-    <!-- Input oculto que guarda la sección seleccionada -->
     <input type="hidden" name="section" id="selected-section" required>
 
-    <input type="file" id="image" name="image" accept="image/*" required />
-    <div id="imagePreviewContainer" style="margin-top: 1rem; display:none;">
-  <img id="imagePreview" src="" alt="Vista previa" style="max-width: 100%; border-radius: 8px;" />
-</div>
-
-    <input type="text" name="description" id="description" placeholder="Describe tu momento" required>
-
+    <!-- 🔐 Visibilidad -->
     <div style="margin-top: 1rem;">
-  <label for="visibility" style="display:block; margin-bottom: 0.25rem;">Visibilidad:</label>
-  <select name="visibility" id="visibility">
-    <option value="public">Público</option>
-    <option value="private">Privado</option>
-    <option value="circle">Solo círculo</option>
-  </select>
-</div>
+      <label for="visibility" style="display:block; margin-bottom: 0.25rem;">Visibilidad:</label>
+      <select name="visibility" id="visibility">
+        <option value="public">🌐 Público</option>
+        <option value="private">🔒 Privado</option>
+        <option value="circle">👥 Solo mi círculo</option>
+      </select>
+    </div>
 
-<div style="margin-top: 1rem;">
-  <label for="duration" style="display:block; margin-bottom: 0.25rem;">Duración:</label>
-  <select name="duration" id="duration" required>
-    <option value="">Selecciona duración</option>
-    <option value="30">30 minutos</option>
-    <option value="60">1 hora</option>
-    <option value="180">3 horas</option>
-    <option value="360">6 horas</option>
-  </select>
-</div>
+    <!-- ⏳ Duración emocional -->
+    <div style="margin-top: 1rem;">
+      <label for="duration" style="display:block; margin-bottom: 0.25rem;">Duración:</label>
+      <select name="duration" id="duration" required>
+        <option value="">Selecciona duración</option>
+        <option value="30">30 minutos</option>
+        <option value="60">1 hora</option>
+        <option value="180">3 horas</option>
+        <option value="360">6 horas</option>
+      </select>
+    </div>
 
-
+    <!-- Círculo de usuarios (si aplica) -->
     <div id="circleSelectorContainer" style="display: none;"></div>
 
-    <button type="submit">Subir</button>
+    <!-- ✨ Botón emocional -->
+    <button type="submit" style="margin-top: 1.5rem;">✨ Compartir mi Momento</button>
   </form>
 </section>
+
 
       
 
