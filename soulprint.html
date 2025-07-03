@@ -343,6 +343,22 @@
   animation: fadeIn 0.8s ease-out forwards;
 }
 
+    @media print {
+  .soulprint-card {
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  .profile-wrapper {
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .banner-container img {
+    object-fit: cover !important;
+  }
+}
+
+
 
   </style>
 </head>
