@@ -857,19 +857,104 @@ h2.section-title {
   border-radius: 12px;
 }
 
+
+    .floating-emotion-btn {
+  position: fixed;
+  bottom: 6rem;
+  right: 1rem;
+  background-color: #4f46e5;
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  font-size: 0.9rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+.floating-emotion-btn:hover {
+  background-color: #3730a3;
+}
+
+.emotion-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.94);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 2rem;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.emotion-panel h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.emotion-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.emotion-filter {
+  background-color: #333;
+  color: #f5f5f5;
+  border: none;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.emotion-filter:hover {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.close-panel-btn {
+  margin-top: 2rem;
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
   </style>
 </head>  
 <body class="upload-page">
 
-<header id="sectionHeader" class="site-header">
-  <div class="header-buttons">
-    <button data-filter="all" class="btn filter-btn selected">🌍 Explora sin brujula</button>
-    <button data-filter="caos_bonito" class="btn filter-btn">Caos bonito</button>
-    <button data-filter="zona_cero" class="btn filter-btn">Zona cer0</button>
-    <button data-filter="emocional_404" class="btn filter-btn">404 Emocional</button>
-    <button data-filter="lo_que_no_se_dice" class="btn filter-btn">Nunca antes visto</button>
+<!-- Botón flotante para explorar emociones -->
+<button id="exploreBtn" class="floating-emotion-btn" aria-label="Explorar emociones">
+  ✨ Explorar emociones
+</button>
+
+  <!-- Panel de exploración emocional -->
+<div id="emotionPanel" class="emotion-panel" aria-hidden="true">
+  <h2>Explora por emociones</h2>
+  <div class="emotion-options">
+    <button class="emotion-filter" data-filter="all">🌍 Explora sin brújula</button>
+    <button class="emotion-filter" data-filter="caos_bonito">❤️‍🔥 Caos bonito</button>
+    <button class="emotion-filter" data-filter="zona_cero">👾 Zona cer0</button>
+    <button class="emotion-filter" data-filter="emocional_404">😶‍🌫️ 404 Emocional</button>
+    <button class="emotion-filter" data-filter="lo_que_no_se_dice">👻 Nunca antes visto</button>
   </div>
-</header>
+  <button id="closeEmotionPanel" class="close-panel-btn">Cerrar</button>
+</div>
+
   
 <!-- Botones ocultos para funcionalidad de Soulprint y Logout -->
 <a id="soulprintBtn" href="#" style="display:none;"></a>
@@ -1198,6 +1283,32 @@ filtros.forEach(btn => {
     btn.classList.add('selected');
     const filtro = btn.dataset.filter || 'all';
     cargarImagenesFiltradas(filtro);
+  });
+});
+
+  // ✨ Explorar emociones - Botón flotante y panel
+const exploreBtn = document.getElementById('exploreBtn');
+const emotionPanel = document.getElementById('emotionPanel');
+const closeEmotionPanel = document.getElementById('closeEmotionPanel');
+
+// Mostrar el panel
+exploreBtn?.addEventListener('click', () => {
+  emotionPanel.style.display = 'flex';
+  emotionPanel.setAttribute('aria-hidden', 'false');
+});
+
+// Cerrar el panel
+closeEmotionPanel?.addEventListener('click', () => {
+  emotionPanel.style.display = 'none';
+  emotionPanel.setAttribute('aria-hidden', 'true');
+});
+
+// Manejar clics en los filtros emocionales
+document.querySelectorAll('.emotion-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const filtro = btn.getAttribute('data-filter') || 'all';
+    cargarImagenesFiltradas(filtro);
+    emotionPanel.style.display = 'none';
   });
 });
 
