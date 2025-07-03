@@ -222,7 +222,7 @@
     .image-card img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -803,6 +803,8 @@ h2.section-title {
 .image-card {
   position: relative;
   border-radius: 0.8rem;
+  aspect-ratio: 1 / 1;
+  max-width: 350px;  /* o lo que desees */
   overflow: hidden;
   margin-bottom: 1.5rem;
   box-shadow: none; /* ✅ SIN sombra */
