@@ -204,7 +204,7 @@
 
     .images-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 👈 aquí */
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); /* 👈 aquí */
   gap: 1.5rem;
   margin-bottom: var(--gutter);
   justify-items: center;
@@ -804,7 +804,7 @@ h2.section-title {
   position: relative;
   border-radius: 0.8rem;
   aspect-ratio: 1 / 1;
-  max-width: 350px;  /* o lo que desees */
+  max-width: 500px;  /* o lo que desees */
   overflow: hidden;
   margin-bottom: 1.5rem;
   box-shadow: none; /* ✅ SIN sombra */
@@ -813,8 +813,11 @@ h2.section-title {
 
 
 .image-card:hover {
-  box-shadow: none;
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
+  z-index: 5;
 }
+
 
 
 
