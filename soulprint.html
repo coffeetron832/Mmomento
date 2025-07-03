@@ -622,23 +622,12 @@ function generatePDF() {
   // Clonar el Soulprint visible
   const soulprintClone = originalSoulprint.cloneNode(true);
 
-  const bannerContainer = soulprintClone.querySelector('.banner-container');
-if (bannerContainer) {
-  bannerContainer.style.position = 'relative';
-  bannerContainer.style.overflow = 'hidden';
-  bannerContainer.style.height = '120px';
-  bannerContainer.style.borderTopLeftRadius = '1rem';
-  bannerContainer.style.borderTopRightRadius = '1rem';
-}
-
-const bannerImg = soulprintClone.querySelector('.banner-img');
+  const bannerImg = soulprintClone.querySelector('.banner-img');
 if (bannerImg) {
-  bannerImg.style.width = '100%';
-  bannerImg.style.height = '100%';
   bannerImg.style.objectFit = 'cover';
-  bannerImg.style.display = 'block';
+  bannerImg.style.width = '100%';
+  bannerImg.style.height = '120px'; // misma altura que .banner-container
 }
-
 
 
   // Eliminar acciones o botones si existen
