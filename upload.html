@@ -1289,17 +1289,17 @@ toggleBtn.addEventListener("click", (e) => {
   uploadOverlay.classList.toggle("visible");
 });
 
-// Cerrar formulario si se hace clic fuera de él o del botón
-document.addEventListener("click", (e) => {
-  const clickedInsideForm = uploadForm.contains(e.target);
-  const clickedToggleBtn = toggleBtn.contains(e.target);
-  const clickedOverlay = uploadOverlay.contains(e.target);
-
-  if (!clickedInsideForm && !clickedToggleBtn && !clickedOverlay) {
-    uploadForm.classList.remove("visible");
-    uploadOverlay.classList.remove("visible");
-  }
+// Cerrar formulario si se hace clic en el overlay
+uploadOverlay.addEventListener("click", () => {
+  uploadForm.classList.remove("visible");
+  uploadOverlay.classList.remove("visible");
 });
+
+// Evitar que el clic dentro del formulario cierre el modal
+uploadForm.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
 
 
 
