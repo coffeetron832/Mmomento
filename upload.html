@@ -147,10 +147,10 @@
     }
 
     .upload-form-container {
-  position: relative;
-  top: 50%;
+  position: fixed;
+  top: 5rem; /* deja espacio debajo del header */
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   background-color: var(--btn-bg);
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
@@ -159,10 +159,13 @@
   gap: 1rem;
   max-width: 380px;
   width: 90%;
-  padding: 2rem;
+  padding: 2rem 1.5rem;
   z-index: 9999;
+  max-height: calc(100vh - 6rem); /* no sobrepasa la pantalla */
+  overflow-y: auto; /* scroll interno si es largo */
   animation: fadeInUp 0.3s ease;
 }
+
 
 .upload-form-container.visible {
   display: flex;
