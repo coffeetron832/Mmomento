@@ -1255,6 +1255,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const patchManager = document.getElementById('patchManager');
   const openPatchManagerBtn = document.getElementById('openPatchManagerBtn');
   const closePatchManagerBtn = document.getElementById('closePatchManagerBtn');
+  const visibilitySelect = document.getElementById('visibility');
+const circleSelectorContainer = document.getElementById('circleSelectorContainer');
+
+visibilitySelect.addEventListener('change', async () => {
+  if (visibilitySelect.value === 'circle') {
+    // Mostrar y cargar parches
+    circleSelectorContainer.style.display = 'block';
+    circleSelectorContainer.innerHTML = '<p style="margin-bottom: 0.5rem;">Selecciona los parches con los que quieres compartir:</p>';
+
+    try {
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/patches', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const patches = await res.json();
+      if (!Array.isArray(patches)) throw new Error('No se recibieron parches válidos');
+
+      patches.forEach(patch => {
+        const label = document.createElement('label');
+        label.style.display = 'block';
+        label.style.marginBottom = '0.25rem';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'patches';
+        checkbox.value = patch._id;
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(' ' + patch.name));
+
+        circleSelectorContainer.appendChild(label);
+      });
+    } catch (err) {
+      console.error('Error al cargar parches:', err);
+      circleSelectorContainer.innerHTML = '<p>Error al cargar parches.</p>';
+    }
+  } else {
+    // Ocultar si elige otra visibilidad
+    circleSelectorContainer.style.display = 'none';
+    circleSelectorContainer.innerHTML = '';
+  }
+});
+
 
 openPatchManagerBtn.addEventListener('click', () => {
   patchManager.classList.add('visible');
