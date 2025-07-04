@@ -1203,29 +1203,7 @@ h2.section-title {
         const isVisible = menuOverlay.classList.toggle('show');
         menuOverlay.setAttribute('aria-hidden', (!isVisible).toString());
       });
-
-
-     // 📷 Subida de imágenes
-const toggleBtn      = document.getElementById('toggleUploadBtn');
-const uploadForm     = document.getElementById('uploadFormContainer');
-
-if (toggleBtn && uploadForm) {
-  toggleBtn.addEventListener('click', () => {
-    const isVisible = uploadForm.classList.contains('visible');
-    uploadForm.classList.toggle('visible', !isVisible);
-    uploadForm.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
-  });
-
-  // Cierra con ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      uploadForm.classList.remove('visible');
-      uploadForm.setAttribute('aria-hidden', 'true');
-    }
-  });
-}
-
-
+      
       const closeMenuBtn = document.getElementById('closeMenuBtn');
 closeMenuBtn.addEventListener('click', () => {
   menuOverlay.classList.remove('show');
