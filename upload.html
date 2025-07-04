@@ -1124,6 +1124,33 @@ h2.section-title {
   </div>
 </div>
 
+<!-- Modal para gestión de parches -->
+<section id="patchManager" class="upload-form-container" aria-hidden="true" style="max-width: 400px;">
+  <h2 style="color: var(--btn-text); margin-bottom: 1rem;">Crear nuevo parche</h2>
+  
+  <form id="createPatchForm">
+    <input type="text" id="patchName" placeholder="Nombre del parche" required style="margin-bottom:1rem;"/>
+    <button type="submit">Crear parche</button>
+  </form>
+
+  <div id="patchMessage" style="margin-top: 1rem; min-height: 1.4rem;"></div>
+
+  <hr style="margin: 1.5rem 0; border-color: var(--notif-border);" />
+
+  <h3 style="color: var(--btn-text); margin-bottom: 0.5rem;">Buscar usuarios para invitar</h3>
+  <input type="text" id="userSearch" placeholder="Busca usuarios por nombre o email" style="margin-bottom: 0.75rem;"/>
+
+  <ul id="searchResults" style="list-style:none; padding-left:0; color: var(--btn-text); max-height: 180px; overflow-y: auto;"></ul>
+
+  <button id="closePatchManagerBtn" style="margin-top: 1rem; background-color: var(--btn-hover); color: var(--btn-text); border: none; border-radius: 6px; padding: 0.6rem 1rem; cursor: pointer;">
+    Cerrar
+  </button>
+</section>
+
+<!-- Botón flotante para abrir modal de parches -->
+<button id="openPatchManagerBtn" class="floating-emotion-btn" style="bottom: 12rem; right: 1rem;" aria-label="Gestionar parches">
+  🫂
+</button>
 
 
 
@@ -1225,7 +1252,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttons           = document.querySelectorAll('.section-button');
   const hiddenInput       = document.getElementById('selected-section');
   const form              = document.getElementById('uploadForm');
+  const patchManager = document.getElementById('patchManager');
+  const openPatchManagerBtn = document.getElementById('openPatchManagerBtn');
+  const closePatchManagerBtn = document.getElementById('closePatchManagerBtn');
 
+openPatchManagerBtn.addEventListener('click', () => {
+  patchManager.classList.add('visible');
+  patchManager.setAttribute('aria-hidden', 'false');
+});
+
+closePatchManagerBtn.addEventListener('click', () => {
+  patchManager.classList.remove('visible');
+  patchManager.setAttribute('aria-hidden', 'true');
+});
+
+
+  
   // 🔹 Secciones
   buttons.forEach(button => {
     button.addEventListener('click', () => {
