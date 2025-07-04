@@ -7,6 +7,8 @@ const patchMessageDiv = document.getElementById('patchMessage');
 const userSearchInput = document.getElementById('userSearch');
 const searchResults = document.getElementById('searchResults');
 
+let currentPatchId = null;
+
 createPatchForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -20,7 +22,7 @@ createPatchForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    const res = await fetch(`${API_URL}/circles`, {  // La API sigue usando /circles, ok?
+    const res = await fetch(`${API_URL}/patches`, {  // ← ACTUALIZADO
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,8 +35,9 @@ createPatchForm.addEventListener('submit', async (e) => {
 
     if (res.ok) {
       patchMessageDiv.style.color = 'green';
-      patchMessageDiv.textContent = `Parche "${data.name}" creado con éxito. ID: ${data._id}`;
+      patchMessageDiv.textContent = `✅ Parche "${data.name}" creado con éxito`;
       createPatchForm.reset();
+      currentPatchId = data._id;  // Guardamos ID del parche para invitar usuarios
     } else {
       patchMessageDiv.style.color = 'red';
       patchMessageDiv.textContent = data.error || 'Error creando parche';
@@ -65,15 +68,15 @@ userSearchInput.addEventListener('input', async () => {
       }
     });
 
-    if (!res.ok) {
-      searchResults.textContent = 'Error al buscar usuarios';
+    const users = await res.json();
+
+    if (!res.ok || !Array.isArray(users)) {
+      searchResults.textContent = '❌ Error al buscar usuarios';
       return;
     }
 
-    const users = await res.json();
-
     if (users.length === 0) {
-      searchResults.textContent = 'No se encontraron usuarios';
+      searchResults.textContent = '🔍 No se encontraron usuarios';
       return;
     }
 
@@ -84,8 +87,12 @@ userSearchInput.addEventListener('input', async () => {
       li.style.cursor = 'pointer';
 
       li.addEventListener('click', () => {
-        alert(`Invitar usuario: ${user.name} (ID: ${user._id})`);
-        // Aquí puedes agregar la función para enviar invitación al parche
+        if (!currentPatchId) {
+          alert('Crea un parche primero antes de invitar usuarios.');
+          return;
+        }
+
+        inviteUserToPatch(user._id, user.name);
       });
 
       searchResults.appendChild(li);
@@ -96,3 +103,29 @@ userSearchInput.addEventListener('input', async () => {
     searchResults.textContent = 'Error de conexión';
   }
 });
+
+// ✉️ Invitar usuario al parche
+async function inviteUserToPatch(userId, userName) {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await fetch(`${API_URL}/patches/${currentPatchId}/request`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ userId })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert(`✅ Invitación enviada a ${userName}`);
+    } else {
+      alert(`❌ ${data.error || 'No se pudo invitar a este usuario'}`);
+    }
+  } catch (err) {
+    console.error(err);
+    alert('❌ Error de conexión al invitar');
+  }
+}
