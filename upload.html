@@ -1227,30 +1227,34 @@ closeMenuBtn.addEventListener('click', () => {
   document.body.classList.remove('menu-open');
 });
 
-      const uploadOverlay = document.getElementById("uploadOverlay");
       const toggleBtn = document.getElementById('toggleUploadBtn');
-      const uploadForm = document.getElementById('uploadFormContainer'); // Este también te faltaba
+const uploadOverlay = document.getElementById('uploadOverlay');
+const uploadForm = document.getElementById('uploadFormContainer');
 
+if (toggleBtn && uploadOverlay && uploadForm) {
+  toggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    uploadOverlay.classList.add("visible");
+    uploadForm.classList.add("visible");
+  });
 
-// Abrir modal
-toggleBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  uploadOverlay.classList.add("visible");
-  uploadForm.classList.add("visible"); // ✅ Aquí estaba el problema
-});
+  uploadOverlay.addEventListener("click", (e) => {
+    if (e.target === uploadOverlay) {
+      uploadOverlay.classList.remove("visible");
+      uploadForm.classList.remove("visible");
+    }
+  });
 
-// Cerrar al hacer clic fuera (en el overlay)
-uploadOverlay.addEventListener("click", (e) => {
-  if (e.target === uploadOverlay) {
-    uploadOverlay.classList.remove("visible");
-    uploadForm.classList.remove("visible");
-  }
-});
-
-// Evitar cierre al hacer clic dentro del formulario
-uploadForm.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
+  uploadForm.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+} else {
+  console.warn("❌ Algunos elementos no se encontraron en el DOM:", {
+    toggleBtn,
+    uploadOverlay,
+    uploadForm
+  });
+}
 
 
 
