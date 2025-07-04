@@ -297,7 +297,7 @@ function applyFilter() {
         btn.innerHTML = '🦋';
         btn.dataset.id = image._id;
 
-        const hasLiked = image.likes?.includes(currentUsername);
+        const hasLiked = image.likes?.includes(currentUserId);
         btn.dataset.given = hasLiked ? 'true' : 'false';
         if (hasLiked) btn.classList.add('active');
 
