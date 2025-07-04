@@ -929,7 +929,38 @@ h2.section-title {
   padding-top: 5px;
 }
 
-    
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 240px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-style: italic;
+  position: absolute;
+  top: 50%;
+  left: 110%;
+  transform: translateY(-50%);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  line-height: 1.4;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  white-space: normal;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
   </style>
 </head>  
 <body class="upload-page">
@@ -1066,7 +1097,14 @@ h2.section-title {
       
 <div class="sidebar-buttons">
   <button id="exploreBtn" class="sidebar-btn" aria-label="Explorar emociones">✨</button>
-  <button id="toggleUploadBtn" class="sidebar-btn" aria-label="Subir imagen"><i data-lucide="image-up"></i></button>
+  <div class="tooltip-container">
+  <button id="toggleUploadBtn" class="sidebar-btn" aria-label="Subir imagen">
+    <i data-lucide="image-up"></i>
+  </button>
+  <div class="tooltip-text">
+    📸 Sube algo que solo tú entiendas.<br>No tiene que tener sentido.<br>Solo que diga algo.<br>Aunque sea sin decirlo.
+  </div>
+</div>
   <button id="menuToggleBtn" class="sidebar-btn" aria-label="Abrir menú"><i data-lucide="menu"></i></button>
   
   <!-- Contenedor relativo para el botón y su dropdown -->
