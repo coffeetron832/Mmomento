@@ -108,7 +108,7 @@ userSearchInput.addEventListener('input', async () => {
 async function inviteUserToPatch(userId, userName) {
   const token = localStorage.getItem('token');
   try {
-    const res = await fetch(`${API_URL}/patches/${currentPatchId}/request`, {
+    const res = await fetch(`${API_URL}/patches/${currentPatchId}/invite`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
