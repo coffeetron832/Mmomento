@@ -1285,24 +1285,24 @@ document.addEventListener('DOMContentLoaded', () => {
 const uploadOverlay = document.getElementById("uploadOverlay");
 
 // Abrir modal
-  toggleBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    uploadOverlay.classList.add("visible");
-    uploadFormContainer.classList.add("visible");
-  });
+toggleBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  uploadOverlay.classList.add("visible");
+  uploadForm.classList.add("visible"); // ✅ Aquí estaba el problema
+});
 
-  // Cerrar al hacer clic fuera (en el overlay)
-  uploadOverlay.addEventListener("click", (e) => {
-    if (e.target === uploadOverlay) {
-      uploadOverlay.classList.remove("visible");
-      uploadFormContainer.classList.remove("visible");
-    }
-  });
+// Cerrar al hacer clic fuera (en el overlay)
+uploadOverlay.addEventListener("click", (e) => {
+  if (e.target === uploadOverlay) {
+    uploadOverlay.classList.remove("visible");
+    uploadForm.classList.remove("visible"); // ✅ Igual acá
+  }
+});
 
-  // Evitar cierre al hacer clic dentro del formulario
-  uploadFormContainer.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
+// Evitar cierre al hacer clic dentro del formulario
+uploadForm.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
 
 
 
