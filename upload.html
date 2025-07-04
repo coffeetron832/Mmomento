@@ -1009,17 +1009,19 @@ h2.section-title {
 }
 
     .upload-form-container {
+  display: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
   transform: translate(-50%, -60%);
 }
-
 .upload-form-container.visible {
+  display: flex;
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -50%);
 }
+
 
 
 
