@@ -1024,13 +1024,15 @@ h2.section-title {
 
     #uploadOverlay,
 .upload-form-container {
-  display: none;
-  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 #uploadOverlay.visible,
 .upload-form-container.visible {
-  display: flex; /* flex mejor que block en formularios modales */
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .close-upload-btn {
@@ -1245,33 +1247,47 @@ h2.section-title {
       });
 
 
-      // 📷 Subida de imágenes
-    const toggleBtn      = document.getElementById('toggleUploadBtn');
-    const uploadOverlay  = document.getElementById('uploadOverlay');
-    const uploadForm     = document.getElementById('uploadFormContainer');
-    const closeUploadBtn = document.getElementById('closeUploadFormBtn');
+     // 📷 Subida de imágenes
+const toggleBtn      = document.getElementById('toggleUploadBtn');
+const uploadOverlay  = document.getElementById('uploadOverlay');
+const uploadForm     = document.getElementById('uploadFormContainer');
+const closeUploadBtn = document.getElementById('closeUploadFormBtn');
 
-    if (toggleBtn && uploadOverlay && uploadForm) {
-      // Abrir modal
-      toggleBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        uploadOverlay.classList.add('visible');
-        uploadForm.classList.add('visible');
-      });
+if (toggleBtn && uploadOverlay && uploadForm) {
+  // Mostrar/Ocultar modal
+  const toggleModal = (show) => {
+    uploadOverlay.classList.toggle('visible', show);
+    uploadForm.classList.toggle('visible', show);
+  };
 
-      // Cerrar modal SOLO con la X
-      closeUploadBtn?.addEventListener('click', () => {
-        uploadOverlay.classList.remove('visible');
-        uploadForm.classList.remove('visible');
-      });
+  // Abrir modal con botón principal
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isVisible = uploadForm.classList.contains('visible');
+    toggleModal(!isVisible);
+  });
 
-      // Evitamos que clicks dentro del formulario burbujeen
-      uploadForm.addEventListener('click', e => e.stopPropagation());
-    } else {
-      console.warn('❌ Elementos de modal no encontrados:', {
-        toggleBtn, uploadOverlay, uploadForm, closeUploadBtn
-      });
+  // Cerrar con la X
+  closeUploadBtn?.addEventListener('click', () => toggleModal(false));
+
+  // Cerrar con clic fuera del formulario (clic en overlay)
+  uploadOverlay.addEventListener('click', () => toggleModal(false));
+
+  // Prevenir cierre al hacer clic dentro del formulario
+  uploadForm.addEventListener('click', (e) => e.stopPropagation());
+
+  // Cerrar con tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && uploadForm.classList.contains('visible')) {
+      toggleModal(false);
     }
+  });
+} else {
+  console.warn('❌ Elementos de modal no encontrados:', {
+    toggleBtn, uploadOverlay, uploadForm, closeUploadBtn
+  });
+}
+
 
       const closeMenuBtn = document.getElementById('closeMenuBtn');
 closeMenuBtn.addEventListener('click', () => {
