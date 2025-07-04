@@ -1022,18 +1022,19 @@ h2.section-title {
   }
 }
 
-    #uploadOverlay,
-.upload-form-container {
+    .upload-form-container {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translate(-50%, -60%);
 }
 
-#uploadOverlay.visible,
 .upload-form-container.visible {
   opacity: 1;
   pointer-events: auto;
+  transform: translate(-50%, -50%);
 }
+
 
 .close-upload-btn {
   position: absolute;
