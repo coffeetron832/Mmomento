@@ -1072,8 +1072,21 @@ h2.section-title {
   <button id="exploreBtn" class="sidebar-btn" aria-label="Explorar emociones">✨</button>
   <button id="toggleUploadBtn" class="sidebar-btn" aria-label="Subir imagen"><i data-lucide="image-up"></i></button>
   <button id="menuToggleBtn" class="sidebar-btn" aria-label="Abrir menú"><i data-lucide="menu"></i></button>
-  <button id="notifBtn" class="sidebar-btn" aria-label="Ver notificaciones"><i data-lucide="bell"></i><span id="notifCount">0</span></button>
+  
+  <!-- Contenedor relativo para el botón y su dropdown -->
+  <div id="notificationsContainer" style="position: relative;">
+    <button id="notifBtn" class="sidebar-btn" aria-label="Ver notificaciones">
+      <i data-lucide="bell"></i>
+      <span id="notifCount">0</span>
+    </button>
+
+    <!-- 🔽 Dropdown va aquí mismo -->
+    <div id="notifDropdown">
+      <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
+    </div>
+  </div>
 </div>
+
 
 
 
@@ -1084,11 +1097,7 @@ h2.section-title {
   </div>
 
 
-  
 
-      <div id="notifDropdown">
-        <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
-      </div>
     </div>
   </div>
 </footer>
