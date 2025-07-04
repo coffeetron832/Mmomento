@@ -147,7 +147,7 @@
     }
 
     .upload-form-container {
-  position: fixed;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -1030,6 +1030,22 @@ h2.section-title {
   display: flex; /* flex mejor que block en formularios modales */
 }
 
+.close-upload-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 1.25rem;
+  z-index: 10;
+  transition: color 0.2s ease;
+}
+
+.close-upload-btn:hover {
+  color: #fff;
+}
 
 
   </style>
@@ -1104,6 +1120,11 @@ h2.section-title {
 
       <!-- El contenido sigue aquí 👇 -->
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
+      <!-- Botón para cerrar el formulario -->
+<button id="closeUploadFormBtn" class="close-upload-btn" aria-label="Cerrar formulario">
+  <i data-lucide="x"></i>
+</button>
+
   <h2 class="section-title" style="margin-bottom: 0.5rem;">📸 Sube algo que solo tú entiendas</h2>
 <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 1.5rem;">
   No tiene que tener sentido. Solo que diga algo. Aunque sea sin decirlo.
@@ -1220,43 +1241,52 @@ h2.section-title {
         menuOverlay.setAttribute('aria-hidden', (!isVisible).toString());
       });
 
+
+      // 📷 Subida de imágenes
+    const toggleBtn = document.getElementById('toggleUploadBtn');
+    const uploadOverlay = document.getElementById('uploadOverlay');
+    const uploadForm = document.getElementById('uploadFormContainer');
+    const closeUploadBtn = document.getElementById('closeUploadFormBtn');
+
+    if (toggleBtn && uploadOverlay && uploadForm) {
+      toggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        uploadOverlay.classList.add("visible");
+        uploadForm.classList.add("visible");
+      });
+
+      uploadOverlay.addEventListener("click", (e) => {
+        if (e.target === uploadOverlay) {
+          uploadOverlay.classList.remove("visible");
+          uploadForm.classList.remove("visible");
+        }
+      });
+
+      uploadForm.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+
+      if (closeUploadBtn) {
+        closeUploadBtn.addEventListener("click", () => {
+          uploadOverlay.classList.remove("visible");
+          uploadForm.classList.remove("visible");
+        });
+      }
+    } else {
+      console.warn("❌ Algunos elementos no se encontraron en el DOM:", {
+        toggleBtn,
+        uploadOverlay,
+        uploadForm,
+        closeUploadBtn
+      });
+    }
+
       const closeMenuBtn = document.getElementById('closeMenuBtn');
 closeMenuBtn.addEventListener('click', () => {
   menuOverlay.classList.remove('show');
   menuOverlay.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('menu-open');
 });
-
-      const toggleBtn = document.getElementById('toggleUploadBtn');
-const uploadOverlay = document.getElementById('uploadOverlay');
-const uploadForm = document.getElementById('uploadFormContainer');
-
-if (toggleBtn && uploadOverlay && uploadForm) {
-  toggleBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    uploadOverlay.classList.add("visible");
-    uploadForm.classList.add("visible");
-  });
-
-  uploadOverlay.addEventListener("click", (e) => {
-    if (e.target === uploadOverlay) {
-      uploadOverlay.classList.remove("visible");
-      uploadForm.classList.remove("visible");
-    }
-  });
-
-  uploadForm.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
-} else {
-  console.warn("❌ Algunos elementos no se encontraron en el DOM:", {
-    toggleBtn,
-    uploadOverlay,
-    uploadForm
-  });
-}
-
-
 
      /* ——— Lógica para “Mi Soulprint” ——— */
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
