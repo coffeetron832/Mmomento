@@ -289,66 +289,42 @@
     }
   }
 
-#image-trail {
+#floating-images-container {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  z-index: 999;
+  z-index: 50;
+  overflow: hidden;
 }
 
-.trail-item {
+.floating-img {
   position: absolute;
   width: 80px;
-  height: 80px;
-  display: none;
   opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  object-fit: cover; /* ✅ Para mantener proporciones normales */
-  border-radius: 12px; /* Opcional: más suave */
-  pointer-events: none;
-}
-
-
-
-
-#trail-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-.trail-dot {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 1.2s ease, transform 1.2s ease;
+  animation: floatUp 6s ease-out forwards;
   will-change: transform, opacity;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  transition: opacity 1s ease;
+  user-select: none;
 }
 
-#image-trail .trail-item {
-  position: fixed;
-  pointer-events: none;
-}
-
-.fade-scale {
-  opacity: 0;
-  transform: scale(0.8);
-  animation: fadeScaleIn 1.8s ease-out forwards;
-}
-
-@keyframes fadeScaleIn {
-  to {
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.9);
+  }
+  10% {
     opacity: 1;
-    transform: scale(1);
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px) scale(1.1);
   }
 }
 
@@ -405,16 +381,8 @@
   </span>
 </footer>
 
-<!-- Contenedor del efecto -->
-<div id="image-trail">
-  <img src="nube1.jpg" class="trail-item" />
-  <img src="nube2.jpg" class="trail-item" />
-  <img src="nube3.jpg" class="trail-item" />
-  <img src="nube4.jpg" class="trail-item" />
-  <img src="nube5.jpg" class="trail-item" />
-</div>
+<div id="floating-images-container"></div>
 
-<div id="trail-container"></div>
 
 
  <script>
@@ -437,56 +405,33 @@
       localStorage.removeItem('logoutMessage');
     }
 
-    // ✨ Trail natural, grande, rápido, elegante
-    const items = Array.from(document.querySelectorAll('#image-trail .trail-item'));
-    let currentId = 0;
-    let lastMouse = { x: 0, y: 0 };
-    let cachedMouse = { x: 0, y: 0 };
-    const intensity = 0.45; // más velocidad
-    const threshold = 30;
+  const container = document.getElementById('floating-images-container');
+  const imageSources = ['nube1.jpg', 'nube2.jpg', 'nube3.jpg', 'nube4.jpg', 'nube5.jpg'];
 
-    function lerp(a, b, n) {
-      return (1 - n) * a + n * b;
-    }
+  function launchFloatingImage() {
+    const img = document.createElement('img');
+    img.src = imageSources[Math.floor(Math.random() * imageSources.length)];
+    img.className = 'floating-img';
 
-    function distance(x1, y1, x2, y2) {
-      return Math.hypot(x2 - x1, y2 - y1);
-    }
+    // Posición aleatoria en X
+    const posX = Math.random() * (window.innerWidth - 100);
+    const delay = Math.random() * 2;
 
-    document.addEventListener('mousemove', (e) => {
-      const mouse = { x: e.clientX, y: e.clientY };
-      cachedMouse.x = lerp(cachedMouse.x, mouse.x, intensity);
-      cachedMouse.y = lerp(cachedMouse.y, mouse.y, intensity);
+    img.style.left = `${posX}px`;
+    img.style.bottom = '-100px';
+    img.style.animationDelay = `${delay}s`;
 
-      const d = distance(mouse.x, mouse.y, lastMouse.x, lastMouse.y);
-      if (d > threshold && items.length > 0) {
-        const item = items[currentId];
-        if (!item) return;
+    container.appendChild(img);
 
-        const size = 100; // Tamaño cuadrado base
-        item.style.display = 'block';
-        item.style.left = `${mouse.x - size / 2}px`;
-        item.style.top = `${mouse.y - size / 2}px`;
-        item.style.width = `${size}px`;
-        item.style.height = `${size}px`;
-        item.style.opacity = '1';
-        item.style.transform = `scale(1.1) rotate(${(Math.random() - 0.5) * 30}deg)`;
-        item.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
-        item.style.zIndex = 999;
+    // Remover después de la animación
+    setTimeout(() => {
+      img.remove();
+    }, 7000);
+  }
 
-        setTimeout(() => {
-          item.style.opacity = '0';
-          item.style.transform = 'scale(0.7) rotate(0deg)';
-          setTimeout(() => {
-            item.style.display = 'none';
-          }, 600);
-        }, 900);
-
-        currentId = (currentId + 1) % items.length;
-        lastMouse = mouse;
-      }
-    });
-  });
+  // Lanzar uno cada 1.5 segundos
+  setInterval(launchFloatingImage, 1500);
+});
 
   // 🌙 Fade transitions entre páginas
   function applyFadeIn() {
