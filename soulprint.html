@@ -609,7 +609,9 @@ soulprint.classList.add('fade-in');
   document.getElementById('usernameDisplay').innerText = '@' + username;
   document.getElementById('nationalityDisplay').innerText = soulprint.nationality || '--';
   document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
-  document.querySelector('.butterflies span').innerText = soulprint.butterflies || 0;
+  document.querySelector('.butterflies span').innerText = 
+  typeof soulprint.butterflies === 'number' ? soulprint.butterflies : 0;
+
 
   if (soulprint.birthdate) {
     const d = new Date(soulprint.birthdate);
