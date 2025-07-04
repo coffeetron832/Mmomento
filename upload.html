@@ -1018,6 +1018,16 @@ h2.section-title {
   }
 }
 
+    #uploadOverlay,
+#uploadFormContainer {
+  display: none;
+}
+
+#uploadOverlay.visible,
+#uploadFormContainer.visible {
+  display: block; /* o flex/grid, según tu diseño */
+}
+
 
   </style>
 </head>  
@@ -1273,14 +1283,18 @@ const uploadOverlay = document.getElementById("uploadOverlay");
 
 // Mostrar u ocultar formulario y fondo oscuro al dar clic en el botón
 toggleBtn.addEventListener("click", (e) => {
-  e.stopPropagation(); // Evita que el clic burbujee y cierre inmediatamente
+  e.stopPropagation(); // Evita que el clic burbujee
   uploadForm.classList.toggle("visible");
   uploadOverlay.classList.toggle("visible");
 });
 
-// Cerrar el formulario si se hace clic fuera de él (sobre el overlay)
-uploadOverlay.addEventListener("click", (e) => {
-  if (!uploadForm.contains(e.target)) {
+// Cerrar formulario si se hace clic fuera de él o del botón
+document.addEventListener("click", (e) => {
+  const clickedInsideForm = uploadForm.contains(e.target);
+  const clickedToggleBtn = toggleBtn.contains(e.target);
+  const clickedOverlay = uploadOverlay.contains(e.target);
+
+  if (!clickedInsideForm && !clickedToggleBtn && !clickedOverlay) {
     uploadForm.classList.remove("visible");
     uploadOverlay.classList.remove("visible");
   }
