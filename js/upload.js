@@ -398,11 +398,10 @@ function loadImages() {
     }
   })
     .then(res => res.json())
-    .then(data => {
-  const images = Array.isArray(data) ? data : data.images || [];
-  allImages = images;
-  renderFilteredImages('all');
-})
+    .then(images => {
+      allImages = images;
+      renderFilteredImages('all'); // Mostrar todo al inicio
+    })
 
     .catch(err => console.error('Error al cargar imágenes:', err));
 }
