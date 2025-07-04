@@ -415,33 +415,34 @@
   const imageSources = ['nube1.jpg', 'nube2.jpg', 'nube3.jpg', 'nube4.jpg', 'nube5.jpg'];
 
   function launchFloatingImage() {
-    const img = document.createElement('img');
-    img.src = imageSources[Math.floor(Math.random() * imageSources.length)];
-    img.className = 'floating-img';
+  // Limita a máximo 4 imágenes visibles al mismo tiempo
+  const currentImages = document.querySelectorAll('.floating-img');
+  if (currentImages.length >= 4) return;
+  
+  const img = document.createElement('img');
+  img.src = imageSources[Math.floor(Math.random() * imageSources.length)];
+  img.className = 'floating-img';
 
-    // Posición horizontal aleatoria
-    const posX = Math.random() * (window.innerWidth - 100);
-    img.style.left = `${posX}px`;
-    img.style.bottom = '-100px';
+  const posX = Math.random() * (window.innerWidth - 100);
+  img.style.left = `${posX}px`;
+  img.style.bottom = '-100px';
 
-    // Duración aleatoria entre 9 y 13 segundos
-    const duration = 9 + Math.random() * 4;
-    img.style.animationDuration = `${duration}s`;
+  const duration = 9 + Math.random() * 4;
+  img.style.animationDuration = `${duration}s`;
 
-    // Delay aleatorio
-    const delay = Math.random() * 2;
-    img.style.animationDelay = `${delay}s`;
+  const delay = Math.random() * 1.5;
+  img.style.animationDelay = `${delay}s`;
 
-    container.appendChild(img);
+  container.appendChild(img);
 
-    // Eliminar después de terminar
-    setTimeout(() => {
-      img.remove();
-    }, (duration + delay + 1) * 1000);
-  }
+  setTimeout(() => {
+    img.remove();
+  }, (duration + delay + 1) * 1000);
+}
+
 
   // Crear uno cada 1.4 segundos
-  setInterval(launchFloatingImage, 1400);
+  setInterval(launchFloatingImage, 4000); // cada 4 segundos
 });
 
   // 🌙 Fade transitions entre páginas
