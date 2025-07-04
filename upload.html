@@ -1122,14 +1122,10 @@ h2.section-title {
       ">
         🌟 ¡Tu momento ha sido compartido con el alma!
       </div>
-<div id="uploadOverlay"></div>
 
       <!-- El contenido sigue aquí 👇 -->
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
-      <!-- Botón para cerrar el formulario -->
-<button id="closeUploadFormBtn" class="close-upload-btn" aria-label="Cerrar formulario">
-  <i data-lucide="x"></i>
-</button>
+      
 
   <h2 class="section-title" style="margin-bottom: 0.5rem;">📸 Sube algo que solo tú entiendas</h2>
 <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 1.5rem;">
@@ -1250,42 +1246,21 @@ h2.section-title {
 
      // 📷 Subida de imágenes
 const toggleBtn      = document.getElementById('toggleUploadBtn');
-const uploadOverlay  = document.getElementById('uploadOverlay');
 const uploadForm     = document.getElementById('uploadFormContainer');
-const closeUploadBtn = document.getElementById('closeUploadFormBtn');
 
-if (toggleBtn && uploadOverlay && uploadForm) {
-  // Mostrar/Ocultar modal
-  const toggleModal = (show) => {
-    uploadOverlay.classList.toggle('visible', show);
-    uploadForm.classList.toggle('visible', show);
-  };
-
-  // Abrir modal con botón principal
-  toggleBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
+if (toggleBtn && uploadForm) {
+  toggleBtn.addEventListener('click', () => {
     const isVisible = uploadForm.classList.contains('visible');
-    toggleModal(!isVisible);
+    uploadForm.classList.toggle('visible', !isVisible);
+    uploadForm.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
   });
 
-  // Cerrar con la X
-  closeUploadBtn?.addEventListener('click', () => toggleModal(false));
-
-  // Cerrar con clic fuera del formulario (clic en overlay)
-  uploadOverlay.addEventListener('click', () => toggleModal(false));
-
-  // Prevenir cierre al hacer clic dentro del formulario
-  uploadForm.addEventListener('click', (e) => e.stopPropagation());
-
-  // Cerrar con tecla ESC
+  // Cierra con ESC
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && uploadForm.classList.contains('visible')) {
-      toggleModal(false);
+    if (e.key === 'Escape') {
+      uploadForm.classList.remove('visible');
+      uploadForm.setAttribute('aria-hidden', 'true');
     }
-  });
-} else {
-  console.warn('❌ Elementos de modal no encontrados:', {
-    toggleBtn, uploadOverlay, uploadForm, closeUploadBtn
   });
 }
 
