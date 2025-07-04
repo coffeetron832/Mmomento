@@ -320,13 +320,14 @@ function applyFilter() {
 
     if (!res.ok) throw new Error('Error en mariposa');
 
-    // ✅ Notificar que se dio mariposa para que Soulprint se recargue
+    // ✅ Asegúrate de tener este cierre aquí
     window.postMessage('butterfly-given', '*');
-    
+
   } catch (err) {
     console.error('Error:', err);
   }
 });
+
 
 
       if (image.likes?.length > 0) {
