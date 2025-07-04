@@ -147,22 +147,56 @@
     }
 
     .upload-form-container {
-  padding: 2rem;
-  margin: var(--gutter) auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: var(--btn-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
   display: none;
   flex-direction: column;
   gap: 1rem;
-  max-width: 480px; /* 👈 más reducido */
-  width: 100%;
-  align-items: stretch;
+  max-width: 480px;
+  width: 90%;
+  padding: 2rem;
+  z-index: 9999;
+  animation: fadeInUp 0.3s ease;
 }
 
-    .upload-form-container.visible {
-      display: flex;
-    }
+.upload-form-container.visible {
+  display: flex;
+}
+
+/* Fondo oscuro detrás del modal */
+#uploadOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(5px);
+  z-index: 9998;
+  display: none;
+}
+
+#uploadOverlay.visible {
+  display: block;
+}
+
+/* Animación suave de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 
     #toggleHeaderBtn {
       position: fixed;
@@ -1053,6 +1087,7 @@ h2.section-title {
       ">
         🌟 ¡Tu momento ha sido compartido con el alma!
       </div>
+<div id="uploadOverlay"></div>
 
       <!-- El contenido sigue aquí 👇 -->
     <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
@@ -1178,7 +1213,8 @@ closeMenuBtn.addEventListener('click', () => {
   menuOverlay.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('menu-open');
 });
-    
+
+
      /* ——— Lógica para “Mi Soulprint” ——— */
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
   let userObj = null;
@@ -1232,7 +1268,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const hiddenInput       = document.getElementById('selected-section');
   const form              = document.getElementById('uploadForm');
 
-  
+  const toggleUploadBtn = document.getElementById("toggleUploadBtn");
+const uploadForm = document.getElementById("uploadFormContainer");
+const uploadOverlay = document.getElementById("uploadOverlay");
+
+// Mostrar u ocultar formulario y fondo oscuro
+toggleUploadBtn.addEventListener("click", () => {
+  uploadForm.classList.toggle("visible");
+  uploadOverlay.classList.toggle("visible");
+});
+
+// Ocultar al hacer clic en el fondo oscuro
+uploadOverlay.addEventListener("click", () => {
+  uploadForm.classList.remove("visible");
+  uploadOverlay.classList.remove("visible");
+});
+
 
   // 🔹 Secciones
   buttons.forEach(button => {
