@@ -1019,14 +1019,15 @@ h2.section-title {
 }
 
     #uploadOverlay,
-#uploadFormContainer {
+.upload-form-container {
   display: none;
 }
 
 #uploadOverlay.visible,
-#uploadFormContainer.visible {
-  display: block; /* o flex/grid, según tu diseño */
+.upload-form-container.visible {
+  display: flex; /* flex mejor que block en formularios modales */
 }
+
 
 
   </style>
