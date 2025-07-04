@@ -1278,22 +1278,19 @@ toggleBtn.addEventListener("click", (e) => {
   uploadOverlay.classList.toggle("visible");
 });
 
-// Ocultar al hacer clic en el fondo oscuro
-uploadOverlay.addEventListener("click", () => {
-  uploadForm.classList.remove("visible");
-  uploadOverlay.classList.remove("visible");
-});
 
-// Ocultar al hacer clic en cualquier parte fuera del formulario o del botón
 document.addEventListener("click", (e) => {
   const clickedInsideForm = uploadForm.contains(e.target);
+  const clickedOverlay = uploadOverlay.contains(e.target);
   const clickedToggleBtn = toggleBtn.contains(e.target);
-  
-  if (!clickedInsideForm && !clickedToggleBtn) {
+
+  // Si se hace clic afuera del formulario, del botón o del overlay => cerrar
+  if (!clickedInsideForm && !clickedToggleBtn && !clickedOverlay) {
     uploadForm.classList.remove("visible");
     uploadOverlay.classList.remove("visible");
   }
 });
+
 
 
 
