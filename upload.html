@@ -1282,23 +1282,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const uploadOverlay = document.getElementById("uploadOverlay");
 
-// Mostrar u ocultar formulario y fondo oscuro al dar clic en el botón
-toggleBtn.addEventListener("click", (e) => {
-  e.stopPropagation(); // Evita que el clic burbujee
-  uploadForm.classList.toggle("visible");
-  uploadOverlay.classList.toggle("visible");
-});
+// Abrir modal
+  toggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    uploadOverlay.classList.add("visible");
+    uploadFormContainer.classList.add("visible");
+  });
 
-// Cerrar formulario si se hace clic en el overlay
-uploadOverlay.addEventListener("click", () => {
-  uploadForm.classList.remove("visible");
-  uploadOverlay.classList.remove("visible");
-});
+  // Cerrar al hacer clic fuera (en el overlay)
+  uploadOverlay.addEventListener("click", (e) => {
+    if (e.target === uploadOverlay) {
+      uploadOverlay.classList.remove("visible");
+      uploadFormContainer.classList.remove("visible");
+    }
+  });
 
-// Evitar que el clic dentro del formulario cierre el modal
-uploadForm.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
+  // Evitar cierre al hacer clic dentro del formulario
+  uploadFormContainer.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 
 
 
