@@ -586,7 +586,13 @@ soulprint.classList.add('fade-in');
   }
 
   // Si hay token, lo usamos; si no, usamos fetch sin headers
-  const fetchOptions = token ? { headers: { 'Authorization': `Bearer ${token}` } } : {};
+  const fetchOptions = token
+  ? {
+      headers: { 'Authorization': `Bearer ${token}` },
+      cache: 'no-store' // 👈 evita usar datos cacheados
+    }
+  : { cache: 'no-store' }; // 👈 importante incluso sin token
+
 
   fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`, fetchOptions)
     .then(res => res.json().then(body => ({ status: res.status, body })))
