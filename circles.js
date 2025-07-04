@@ -1,16 +1,16 @@
 const API_URL = "https://momento-backend-production.up.railway.app/api";
 
-const createCircleForm = document.getElementById('createCircleForm');
-const circleNameInput = document.getElementById('circleName');
-const messageDiv = document.getElementById('message');
+const createPatchForm = document.getElementById('createPatchForm');
+const patchNameInput = document.getElementById('patchName');
+const patchMessageDiv = document.getElementById('patchMessage');
 
 const userSearchInput = document.getElementById('userSearch');
 const searchResults = document.getElementById('searchResults');
 
-createCircleForm.addEventListener('submit', async (e) => {
+createPatchForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const name = circleNameInput.value.trim();
+  const name = patchNameInput.value.trim();
   if (!name) return alert('El nombre es obligatorio');
 
   const token = localStorage.getItem('token');
@@ -20,7 +20,7 @@ createCircleForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    const res = await fetch(`${API_URL}/circles`, {
+    const res = await fetch(`${API_URL}/circles`, {  // La API sigue usando /circles, ok?
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,17 +32,17 @@ createCircleForm.addEventListener('submit', async (e) => {
     const data = await res.json();
 
     if (res.ok) {
-      messageDiv.style.color = 'green';
-      messageDiv.textContent = `Círculo "${data.name}" creado con éxito. ID: ${data._id}`;
-      createCircleForm.reset();
+      patchMessageDiv.style.color = 'green';
+      patchMessageDiv.textContent = `Parche "${data.name}" creado con éxito. ID: ${data._id}`;
+      createPatchForm.reset();
     } else {
-      messageDiv.style.color = 'red';
-      messageDiv.textContent = data.error || 'Error creando círculo';
+      patchMessageDiv.style.color = 'red';
+      patchMessageDiv.textContent = data.error || 'Error creando parche';
     }
   } catch (err) {
     console.error('Error:', err);
-    messageDiv.style.color = 'red';
-    messageDiv.textContent = 'Error de conexión';
+    patchMessageDiv.style.color = 'red';
+    patchMessageDiv.textContent = 'Error de conexión';
   }
 });
 
@@ -85,7 +85,7 @@ userSearchInput.addEventListener('input', async () => {
 
       li.addEventListener('click', () => {
         alert(`Invitar usuario: ${user.name} (ID: ${user._id})`);
-        // Aquí luego agregas la función para enviar la invitación al círculo
+        // Aquí puedes agregar la función para enviar invitación al parche
       });
 
       searchResults.appendChild(li);
