@@ -1246,43 +1246,34 @@ h2.section-title {
 
 
       // 📷 Subida de imágenes
-    const toggleBtn = document.getElementById('toggleUploadBtn');
-    const uploadOverlay = document.getElementById('uploadOverlay');
-    const uploadForm = document.getElementById('uploadFormContainer');
-    const closeUploadBtn = document.getElementById('closeUploadFormBtn');
+const toggleBtn = document.getElementById('toggleUploadBtn');
+const uploadOverlay = document.getElementById('uploadOverlay');
+const uploadForm = document.getElementById('uploadFormContainer');
+const closeUploadBtn = document.getElementById('closeUploadFormBtn');
 
-    if (toggleBtn && uploadOverlay && uploadForm) {
-      toggleBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        uploadOverlay.classList.add("visible");
-        uploadForm.classList.add("visible");
-      });
+if (toggleBtn && uploadOverlay && uploadForm) {
+  toggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    uploadOverlay.classList.add("visible");
+    uploadForm.classList.add("visible");
+  });
 
-      uploadOverlay.addEventListener("click", (e) => {
-        if (e.target === uploadOverlay) {
-          uploadOverlay.classList.remove("visible");
-          uploadForm.classList.remove("visible");
-        }
-      });
+  // ⛔️ Eliminado: no se cierra al hacer clic fuera
 
-      uploadForm.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
-
-      if (closeUploadBtn) {
-        closeUploadBtn.addEventListener("click", () => {
-          uploadOverlay.classList.remove("visible");
-          uploadForm.classList.remove("visible");
-        });
-      }
-    } else {
-      console.warn("❌ Algunos elementos no se encontraron en el DOM:", {
-        toggleBtn,
-        uploadOverlay,
-        uploadForm,
-        closeUploadBtn
-      });
-    }
+  if (closeUploadBtn) {
+    closeUploadBtn.addEventListener("click", () => {
+      uploadOverlay.classList.remove("visible");
+      uploadForm.classList.remove("visible");
+    });
+  }
+} else {
+  console.warn("❌ Algunos elementos no se encontraron en el DOM:", {
+    toggleBtn,
+    uploadOverlay,
+    uploadForm,
+    closeUploadBtn
+  });
+}
 
       const closeMenuBtn = document.getElementById('closeMenuBtn');
 closeMenuBtn.addEventListener('click', () => {
