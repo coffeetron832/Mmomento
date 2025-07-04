@@ -1270,6 +1270,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 const uploadOverlay = document.getElementById("uploadOverlay");
+const uploadForm = document.getElementById("uploadForm");
+const toggleBtn = document.getElementById("toggleBtn");
 
 // Mostrar u ocultar formulario y fondo oscuro al dar clic en el botón
 toggleBtn.addEventListener("click", (e) => {
@@ -1278,14 +1280,9 @@ toggleBtn.addEventListener("click", (e) => {
   uploadOverlay.classList.toggle("visible");
 });
 
-
-document.addEventListener("click", (e) => {
-  const clickedInsideForm = uploadForm.contains(e.target);
-  const clickedOverlay = uploadOverlay.contains(e.target);
-  const clickedToggleBtn = toggleBtn.contains(e.target);
-
-  // Si se hace clic afuera del formulario, del botón o del overlay => cerrar
-  if (!clickedInsideForm && !clickedToggleBtn && !clickedOverlay) {
+// Cerrar el formulario si se hace clic fuera de él (sobre el overlay)
+uploadOverlay.addEventListener("click", (e) => {
+  if (!uploadForm.contains(e.target)) {
     uploadForm.classList.remove("visible");
     uploadOverlay.classList.remove("visible");
   }
