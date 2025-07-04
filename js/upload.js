@@ -301,31 +301,33 @@ function applyFilter() {
         btn.dataset.given = hasLiked ? 'true' : 'false';
         if (hasLiked) btn.classList.add('active');
 
-        btn.addEventListener('click', async () => {
-          try {
-            const wasGiven = btn.dataset.given === 'true';
-            const nowGiven = !wasGiven;
-            btn.dataset.given = nowGiven ? 'true' : 'false';
-            btn.classList.toggle('active', nowGiven);
+       btn.addEventListener('click', async () => {
+  try {
+    const wasGiven = btn.dataset.given === 'true';
+    const nowGiven = !wasGiven;
+    btn.dataset.given = nowGiven ? 'true' : 'false';
+    btn.classList.toggle('active', nowGiven);
 
-            btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], {
-              duration: 300,
-              easing: 'ease-in-out'
-            });
+    btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], {
+      duration: 300,
+      easing: 'ease-in-out'
+    });
 
-            const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
-              method: 'POST',
-              headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
+    const res = await fetch(`https://momento-backend-production.up.railway.app/api/images/${image._id}/like`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
 
-            if (!res.ok) throw new Error('Error en mariposa');
-          } catch (err) {
-            console.error('Error:', err);
-          }
-        });
+    if (!res.ok) throw new Error('Error en mariposa');
 
-        likeRow.appendChild(btn);
-      }
+    // ✅ Notificar que se dio mariposa para que Soulprint se recargue
+    window.postMessage('butterfly-given', '*');
+    
+  } catch (err) {
+    console.error('Error:', err);
+  }
+});
+
 
       if (image.likes?.length > 0) {
         const likeCount = document.createElement('span');
