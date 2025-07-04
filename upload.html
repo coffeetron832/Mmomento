@@ -148,9 +148,9 @@
 
     .upload-form-container {
   position: fixed;
-  top: 5rem;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -60%);
+  transform: translate(-50%, -50%); /* centrado vertical y horizontal */
   background-color: var(--btn-bg);
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
@@ -168,6 +168,7 @@
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
 
 .upload-form-container.visible {
   opacity: 1;
