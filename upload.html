@@ -1246,37 +1246,30 @@ h2.section-title {
 
 
       // 📷 Subida de imágenes
-const toggleBtn = document.getElementById('toggleUploadBtn');
-    const uploadOverlay = document.getElementById('uploadOverlay');
-    const uploadForm = document.getElementById('uploadFormContainer');
+    const toggleBtn      = document.getElementById('toggleUploadBtn');
+    const uploadOverlay  = document.getElementById('uploadOverlay');
+    const uploadForm     = document.getElementById('uploadFormContainer');
     const closeUploadBtn = document.getElementById('closeUploadFormBtn');
 
     if (toggleBtn && uploadOverlay && uploadForm) {
-      toggleBtn.addEventListener("click", (e) => {
+      // Abrir modal
+      toggleBtn.addEventListener('click', e => {
         e.stopPropagation();
-        uploadOverlay.classList.add("visible");
-        uploadForm.classList.add("visible");
+        uploadOverlay.classList.add('visible');
+        uploadForm.classList.add('visible');
       });
 
-      uploadOverlay.addEventListener("click", (e) => {
-        if (e.target === uploadOverlay) {
-          uploadOverlay.classList.remove("visible");
-          uploadForm.classList.remove("visible");
-        }
+      // Cerrar modal SOLO con la X
+      closeUploadBtn?.addEventListener('click', () => {
+        uploadOverlay.classList.remove('visible');
+        uploadForm.classList.remove('visible');
       });
 
-      if (closeUploadBtn) {
-        closeUploadBtn.addEventListener("click", () => {
-          uploadOverlay.classList.remove("visible");
-          uploadForm.classList.remove("visible");
-        });
-      }
+      // Evitamos que clicks dentro del formulario burbujeen
+      uploadForm.addEventListener('click', e => e.stopPropagation());
     } else {
-      console.warn("❌ Algunos elementos no se encontraron en el DOM:", {
-        toggleBtn,
-        uploadOverlay,
-        uploadForm,
-        closeUploadBtn
+      console.warn('❌ Elementos de modal no encontrados:', {
+        toggleBtn, uploadOverlay, uploadForm, closeUploadBtn
       });
     }
 
