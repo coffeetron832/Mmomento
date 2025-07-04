@@ -328,14 +328,17 @@ function applyFilter() {
   }
 });
 
+// 👇 SOLO SI se muestra el botón, agregamos también el botón al DOM
+  likeRow.appendChild(btn);
+} // ✅ <- AQUÍ ESTABA FALTANDO CIERRE
 
-
-      if (image.likes?.length > 0) {
-        const likeCount = document.createElement('span');
-        likeCount.className = 'like-count';
-        likeCount.textContent = `x ${image.likes.length}`;
-        likeRow.appendChild(likeCount);
-      }
+// 👍 Mostrar conteo de likes (independiente de si el usuario puede dar mariposa o no)
+if (image.likes?.length > 0) {
+  const likeCount = document.createElement('span');
+  likeCount.className = 'like-count';
+  likeCount.textContent = `x ${image.likes.length}`;
+  likeRow.appendChild(likeCount);
+}
 
       // ✅ Contenedor blanco con descripción, usuario y mariposas
       const infoBox = document.createElement('div');
