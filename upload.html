@@ -1227,6 +1227,29 @@ closeMenuBtn.addEventListener('click', () => {
   document.body.classList.remove('menu-open');
 });
 
+      const uploadOverlay = document.getElementById("uploadOverlay");
+
+// Abrir modal
+toggleBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  uploadOverlay.classList.add("visible");
+  uploadForm.classList.add("visible"); // ✅ Aquí estaba el problema
+});
+
+// Cerrar al hacer clic fuera (en el overlay)
+uploadOverlay.addEventListener("click", (e) => {
+  if (e.target === uploadOverlay) {
+    uploadOverlay.classList.remove("visible");
+    uploadForm.classList.remove("visible"); // ✅ Igual acá
+  }
+});
+
+// Evitar cierre al hacer clic dentro del formulario
+uploadForm.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+
 
      /* ——— Lógica para “Mi Soulprint” ——— */
   const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
@@ -1280,33 +1303,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttons           = document.querySelectorAll('.section-button');
   const hiddenInput       = document.getElementById('selected-section');
   const form              = document.getElementById('uploadForm');
-
-
-const uploadOverlay = document.getElementById("uploadOverlay");
-
-// Abrir modal
-toggleBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  uploadOverlay.classList.add("visible");
-  uploadForm.classList.add("visible"); // ✅ Aquí estaba el problema
-});
-
-// Cerrar al hacer clic fuera (en el overlay)
-uploadOverlay.addEventListener("click", (e) => {
-  if (e.target === uploadOverlay) {
-    uploadOverlay.classList.remove("visible");
-    uploadForm.classList.remove("visible"); // ✅ Igual acá
-  }
-});
-
-// Evitar cierre al hacer clic dentro del formulario
-uploadForm.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-
-
-
 
   // 🔹 Secciones
   buttons.forEach(button => {
