@@ -103,10 +103,7 @@
       font-size: 1rem;
       color: #666;
     }
-    .butterflies {
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
+    
     .error {
       text-align: center;
       color: crimson;
@@ -174,10 +171,7 @@
     gap: 0.3rem;
   }
 
-  .butterflies {
-    text-align: center;
-    width: 100%;
-  }
+  
 }
 
 
@@ -490,10 +484,7 @@
         <span id="pdfSoulColorName">Color del alma</span>
       </div>
       <div class="birthdate">Mi primer latido: <span id="pdfBirthdate">--</span></div>
-      <div class="butterflies" style="text-align:center; width: 100%;">
-        🦋 Mariposas recibidas: <span id="pdfButterflyCount">0</span>
-      </div>
-    </div>
+      
 
   </div>
 </div>
@@ -536,9 +527,7 @@
 
     <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
 
-    <div class="butterflies" style="text-align:center; width: 100%;">
-      🦋 Mariposas recibidas: <span id="butterflyCount">0</span>
-    </div>
+    
 
   </div>
 </div>
@@ -609,8 +598,7 @@ soulprint.classList.add('fade-in');
         document.getElementById('usernameDisplay').innerText = '@' + username;
         document.getElementById('nationalityDisplay').innerText = soulprint.nationality || '--';
         document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
-        document.querySelector('.butterflies span').innerText = 
-          typeof soulprint.butterflies === 'number' ? soulprint.butterflies : 0;
+        
 
         if (soulprint.birthdate) {
           const d = new Date(soulprint.birthdate);
