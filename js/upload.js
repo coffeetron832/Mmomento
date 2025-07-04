@@ -319,6 +319,8 @@ function applyFilter() {
     });
 
     if (!res.ok) throw new Error('Error en mariposa');
+    // ⚡️ Envío mensaje a otras pestañas:
+localStorage.setItem('butterfly-given', Date.now());
 
     // ✅ Asegúrate de tener este cierre aquí
     window.postMessage('butterfly-given', '*');
