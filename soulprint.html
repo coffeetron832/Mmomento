@@ -650,12 +650,14 @@ soulprint.classList.add('fade-in');
   loadSoulprint();
 
   // 🦋 Si se da una mariposa desde otra parte del sitio:
-  window.addEventListener('message', e => {
-    if (e.data === 'butterfly-given') {
-      console.log('🦋 Soulprint recargado tras dar mariposa');
-      loadSoulprint();
-    }
-  });
+  // Justo después de definir loadSoulprint():
+window.addEventListener('storage', e => {
+  if (e.key === 'butterfly-given') {
+    console.log('🦋 Soulprint recargado tras storage event');
+    loadSoulprint();
+  }
+});
+
 
 
   // Listener PDF
