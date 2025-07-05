@@ -103,7 +103,7 @@ userSearchForm.addEventListener('submit', async (e) => {
 });
 
 async function loadUserPatches() {
-  const token = localStorage.getItem('token'); // Asegúrate de tenerlo guardado
+  const token = localStorage.getItem('token');
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/patches', {
       headers: {
@@ -124,7 +124,27 @@ async function loadUserPatches() {
 
     patches.forEach(patch => {
       const li = document.createElement('li');
-      li.textContent = `🌱 ${patch.name}`;
+      li.style.marginBottom = '15px';
+
+      const title = document.createElement('strong');
+      title.textContent = `🌱 ${patch.name}`;
+      title.style.cursor = 'pointer';
+      title.addEventListener('click', () => {
+        const miembros = patch.members.map(m => m.username || 'Usuario').join(', ');
+        alert(`👥 Miembros del parche:\n\n${miembros}`);
+      });
+
+      li.appendChild(title);
+
+      // Si el usuario NO es el dueño, mostrar botón para salir
+      if (patch.owner !== getCurrentUserId()) {
+        const leaveBtn = document.createElement('button');
+        leaveBtn.textContent = 'Salir';
+        leaveBtn.style.marginLeft = '10px';
+        leaveBtn.onclick = () => leavePatch(patch._id);
+        li.appendChild(leaveBtn);
+      }
+
       ul.appendChild(li);
     });
 
@@ -132,6 +152,7 @@ async function loadUserPatches() {
     console.error('Error al cargar tus parches:', error);
   }
 }
+
 
 
   // ✉️ Invitar usuario al parche
