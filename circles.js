@@ -62,7 +62,7 @@ userSearchInput.addEventListener('input', async () => {
   }
 
   try {
-    const res = await fetch(`${API_URL}/users/search?query=${encodeURIComponent(query)}`, {
+    const res = await fetch(`${API_URL}/patches/search/users?q=${encodeURIComponent(query)}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
