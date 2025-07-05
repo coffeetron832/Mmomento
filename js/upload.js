@@ -684,6 +684,43 @@ async function respondToInvite(notificationId, action, notifElement) {
   }
 }
 
+async function loadUserCircles() {
+  const selector = document.getElementById('circleSelector');
+  if (!selector) return;
+
+  try {
+    const res = await fetch(`${API_URL}/api/patches/my-patches`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error('Error al obtener parches');
+    const patches = await res.json();
+
+    selector.innerHTML = ''; // Limpia el select
+
+    if (!patches.length) {
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = 'No perteneces a ningún parche';
+      selector.appendChild(opt);
+      return;
+    }
+
+    patches.forEach(patch => {
+      const opt = document.createElement('option');
+      opt.value = patch._id;
+      opt.textContent = patch.name;
+      selector.appendChild(opt);
+    });
+
+  } catch (err) {
+    console.error('Error al cargar los parches:', err);
+    const selector = document.getElementById('circleSelector');
+    selector.innerHTML = `<option value="">Error al cargar tus parches</option>`;
+  }
+}
 
 
   
