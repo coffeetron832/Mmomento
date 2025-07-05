@@ -141,16 +141,20 @@ async function loadUserPatches() {
 
       li.appendChild(title);
 
-      if ((patch.owner._id || patch.owner).toString() !== userId) {
-        const leaveBtn = document.createElement('button');
-        leaveBtn.textContent = 'Salir';
-        leaveBtn.style.marginLeft = '10px';
-        leaveBtn.onclick = () => leavePatch(patch._id);
-        li.appendChild(leaveBtn);
-        memberUl.appendChild(li);
-      } else {
-        ownedUl.appendChild(li);
-      }
+      const isOwner = (patch.owner._id || patch.owner).toString() === userId;
+const isMember = patch.members.some(m => (m._id || m).toString() === userId);
+
+if (isOwner) {
+  ownedUl.appendChild(li);
+} else if (isMember) {
+  const leaveBtn = document.createElement('button');
+  leaveBtn.textContent = 'Salir';
+  leaveBtn.style.marginLeft = '10px';
+  leaveBtn.onclick = () => leavePatch(patch._id);
+  li.appendChild(leaveBtn);
+  memberUl.appendChild(li);
+}
+
     });
 
   } catch (error) {
