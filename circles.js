@@ -58,10 +58,7 @@ userSearchForm.addEventListener('submit', async (e) => {
   const query = userSearchInput.value.trim();
   searchResults.innerHTML = '';
 
-  if (query.length < 3) {
-    searchResults.textContent = 'Escribe al menos 3 caracteres';
-    return;
-  }
+  if (query.length < 3) return alert('Escribe al menos 3 caracteres');
 
   const token = localStorage.getItem('token');
   if (!token) {
@@ -111,6 +108,7 @@ userSearchForm.addEventListener('submit', async (e) => {
     searchResults.textContent = 'Error de conexión';
   }
 });
+
 
 
   // ✉️ Invitar usuario al parche
