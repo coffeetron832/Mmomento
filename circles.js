@@ -215,9 +215,6 @@ async function leavePatch(patchId) {
     console.error('Error al salir del parche:', err);
   }
 }
-
-
-
   
 function getCurrentUserId() {
   const token = localStorage.getItem('token');
@@ -225,11 +222,13 @@ function getCurrentUserId() {
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.id || payload._id;
+    return (payload.id || payload._id)?.toString() || null;
   } catch (err) {
+    console.error('Token inválido:', err);
     return null;
   }
 }
+
 
 loadUserPatches(); // ✅ Cargar parches apenas cargue la página
 });
