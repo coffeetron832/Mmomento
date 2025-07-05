@@ -106,10 +106,11 @@ async function loadUserPatches() {
   const token = localStorage.getItem('token');
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/patches', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
+
 
     if (!res.ok) throw new Error('No se pudieron cargar los parches');
     const patches = await res.json();
