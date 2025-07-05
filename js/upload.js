@@ -562,7 +562,7 @@ loadImages();
   delBtn.className = 'btn-delete';
   delBtn.title = 'Eliminar notificación';
   delBtn.addEventListener('click', async () => {
-    await fetch(`${API_URL}/notifications/${n._id}`, {
+    await fetch(`${API_URL}/api/notifications/${n._id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     });
