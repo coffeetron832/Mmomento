@@ -105,30 +105,34 @@ userSearchForm.addEventListener('submit', async (e) => {
 async function loadUserPatches() {
   const token = localStorage.getItem('token');
   try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/patches', {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
+    const res = await fetch(`${API_URL}/patches`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
     if (!res.ok) throw new Error('No se pudieron cargar los parches');
     const patches = await res.json();
 
-    const ul = document.getElementById('userPatchesList');
-    ul.innerHTML = '';
+    const ownedUl = document.getElementById('ownedPatchesList');
+    const memberUl = document.getElementById('memberPatchesList');
+    ownedUl.innerHTML = '';
+    memberUl.innerHTML = '';
 
     if (patches.length === 0) {
-      ul.innerHTML = '<li>No perteneces a ningún parche todavía 🫠</li>';
+      ownedUl.innerHTML = '<li>No has creado ningún parche</li>';
+      memberUl.innerHTML = '<li>No perteneces a ningún parche aún 🫠</li>';
       return;
     }
+
+    const userId = getCurrentUserId();
 
     patches.forEach(patch => {
       const li = document.createElement('li');
       li.style.marginBottom = '15px';
 
       const title = document.createElement('strong');
-      title.textContent = `🌱 ${patch.name}`;
+      title.textContent = patch.name;
       title.style.cursor = 'pointer';
       title.addEventListener('click', () => {
         const miembros = patch.members.map(m => m.username || 'Usuario').join(', ');
@@ -137,24 +141,22 @@ async function loadUserPatches() {
 
       li.appendChild(title);
 
-      // Si el usuario NO es el dueño, mostrar botón para salir
-      if (patch.owner !== getCurrentUserId()) {
+      if (patch.owner !== userId) {
         const leaveBtn = document.createElement('button');
         leaveBtn.textContent = 'Salir';
         leaveBtn.style.marginLeft = '10px';
         leaveBtn.onclick = () => leavePatch(patch._id);
         li.appendChild(leaveBtn);
+        memberUl.appendChild(li);
+      } else {
+        ownedUl.appendChild(li);
       }
-
-      ul.appendChild(li);
     });
 
   } catch (error) {
     console.error('Error al cargar tus parches:', error);
   }
 }
-
-
 
   // ✉️ Invitar usuario al parche
   async function inviteUserToPatch(userId, userName) {
@@ -181,10 +183,6 @@ async function loadUserPatches() {
       alert('❌ Error de conexión al invitar');
     }
   }
-
-  document.addEventListener('DOMContentLoaded', () => {
-  loadUserPatches();
-});
 
 async function leavePatch(patchId) {
   const token = localStorage.getItem('token');
