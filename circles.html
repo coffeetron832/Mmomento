@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Crear Parche :) | Momento</title>
+  <title>Crear Círculo - Momento</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,7 +29,7 @@
       font-size: 1rem;
       cursor: pointer;
     }
-    #message {
+    #patchMessage {
       margin-bottom: 20px;
       font-weight: bold;
       color: green;
@@ -52,35 +52,30 @@
   </style>
 </head>
 <body>
-  <button onclick="window.location.href='upload.html'" style="margin-top:2rem;">⬅️ Volver</button>
-
   <h1>Crear Círculo</h1>
-  <form id="createCircleForm">
+
+  <!-- ✅ ID corregido: createPatchForm -->
+  <form id="createPatchForm">
     <input
       type="text"
-      id="circleName"
-      placeholder="Nombre del círculo"
+      id="patchName"
+      placeholder="Nombre del parche"
       required
       maxlength="50"
       autocomplete="off"
     />
-    <button type="submit">Crear Círculo</button>
+    <button type="submit">Crear Parche</button>
   </form>
 
-  <div id="message"></div>
+  <div id="patchMessage"></div>
 
   <h2>Invitar Usuarios</h2>
-  <!-- ✅ Este es el nuevo formulario para buscar usuarios -->
-  <form id="userSearchForm">
-    <input
-      type="text"
-      id="userSearch"
-      placeholder="Buscar usuario (mínimo 3 caracteres)"
-      autocomplete="off"
-    />
-    <button type="submit">Buscar</button>
-  </form>
-
+  <input
+    type="text"
+    id="userSearch"
+    placeholder="Buscar usuario (mínimo 3 caracteres)"
+    autocomplete="off"
+  />
   <ul id="searchResults"></ul>
 
   <script src="circles.js"></script>
