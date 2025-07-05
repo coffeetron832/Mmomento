@@ -631,27 +631,28 @@ function showFullImage(imageUrl) {
 
 async function respondToInvite(notificationId, status) {
   try {
-    const res = await fetch(`${API_URL}/patches/respond-invite`, {
+    const res = await fetch('https://momento-backend-production.up.railway.app/api/patches/respond-invite', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ notificationId, status }) // accepted o rejected
+      body: JSON.stringify({ notificationId, status })
     });
 
     const data = await res.json();
-    if (res.ok) {
-      alert(`✅ Invitación ${status === 'accepted' ? 'aceptada' : 'rechazada'}`);
-      await loadNotifications(); // recargar notificaciones
-    } else {
-      alert(`❌ ${data.error || 'No se pudo procesar la invitación'}`);
-    }
-  } catch (err) {
-    console.error('Error al responder invitación:', err);
-    alert('❌ Error al enviar respuesta');
+
+    if (!res.ok) throw new Error(data.error || 'Error al responder');
+
+    console.log('Respuesta enviada:', data);
+    await loadNotifications(); // 🔁 recargar lista después de aceptar o rechazar
+
+  } catch (e) {
+    console.error('Error al responder invitación:', e);
+    alert('Error al responder invitación');
   }
 }
+
 
   
 }); // <--- cierre correcto de document.addEventListener
