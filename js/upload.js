@@ -1,6 +1,8 @@
+const API_URL = 'https://momento-backend-production.up.railway.app';
 let token = localStorage.getItem("token"); // antes era const (duplicado)
 let currentUserId = null;
 let currentSectionFilter = 'all'; // ✅ Sección activa por defecto
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
