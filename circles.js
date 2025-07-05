@@ -104,14 +104,15 @@ userSearchForm.addEventListener('submit', async (e) => {
 
 async function loadUserPatches() {
   const token = localStorage.getItem('token');
+  const userId = getCurrentUserId(); // 💡 ID actual desde el token
+
   try {
     const res = await fetch(`${API_URL}/patches`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     if (!res.ok) throw new Error('No se pudieron cargar los parches');
+
     const patches = await res.json();
 
     const ownedUl = document.getElementById('ownedPatchesList');
@@ -125,9 +126,15 @@ async function loadUserPatches() {
       return;
     }
 
-    const userId = getCurrentUserId();
-
     patches.forEach(patch => {
+      const ownerId = (patch.owner?._id || patch.owner).toString();
+      const memberIds = patch.members.map(m => (m._id || m).toString());
+      const isOwner = ownerId === userId;
+      const isMember = memberIds.includes(userId);
+
+      // 🔐 Asegurarse de no mostrar parches si ya no eres ni owner ni miembro
+      if (!isOwner && !isMember) return;
+
       const li = document.createElement('li');
       li.style.marginBottom = '15px';
 
@@ -141,26 +148,23 @@ async function loadUserPatches() {
 
       li.appendChild(title);
 
-      const isOwner = (patch.owner._id || patch.owner).toString() === userId;
-const isMember = patch.members.some(m => (m._id || m).toString() === userId);
-
-if (isOwner) {
-  ownedUl.appendChild(li);
-} else if (isMember) {
-  const leaveBtn = document.createElement('button');
-  leaveBtn.textContent = 'Salir';
-  leaveBtn.style.marginLeft = '10px';
-  leaveBtn.onclick = () => leavePatch(patch._id);
-  li.appendChild(leaveBtn);
-  memberUl.appendChild(li);
-}
-
+      if (isOwner) {
+        ownedUl.appendChild(li);
+      } else if (isMember) {
+        const leaveBtn = document.createElement('button');
+        leaveBtn.textContent = 'Salir';
+        leaveBtn.style.marginLeft = '10px';
+        leaveBtn.onclick = () => leavePatch(patch._id);
+        li.appendChild(leaveBtn);
+        memberUl.appendChild(li);
+      }
     });
 
   } catch (error) {
     console.error('Error al cargar tus parches:', error);
   }
 }
+
 
   // ✉️ Invitar usuario al parche
   async function inviteUserToPatch(userId, userName) {
