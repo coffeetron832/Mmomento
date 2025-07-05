@@ -710,7 +710,15 @@ async function loadUserCircles() {
     if (!res.ok) throw new Error('Error al obtener parches');
     const patches = await res.json();
 
-    selector.innerHTML = ''; // Limpia el select
+    selector.innerHTML = ''; // Limpia lo anterior
+
+const placeholder = document.createElement('option');
+placeholder.value = '';
+placeholder.disabled = true;
+placeholder.selected = true;
+placeholder.textContent = '-- Elige tu parche --';
+selector.appendChild(placeholder);
+
 
     if (!patches.length) {
       const opt = document.createElement('option');
