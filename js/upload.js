@@ -149,6 +149,18 @@ if (!hiddenInput.value) {
     }
 
     const formData = new FormData(form);
+
+    // ✅ Agregar manualmente el patchId si visibilidad es "circle"
+  const visibilityValue = formData.get('visibility');
+  if (visibilityValue === 'circle') {
+    const selectedPatch = document.getElementById('circleSelector')?.value;
+    if (!selectedPatch) {
+      alert('Selecciona un parche para compartir en tu círculo');
+      return;
+    }
+    formData.append('patchId', selectedPatch);
+  }
+    
     const submitBtn = form.querySelector('button[type="submit"]');
     const imagesContainer = document.getElementById('imagesContainer');
 
