@@ -525,42 +525,53 @@ loadImages();
 
       // Mostrar máximo 10 notificaciones
       notifications.slice(0, 10).forEach(n => {
-        const li = document.createElement('li');
-        li.style.display = 'flex';
-        li.style.justifyContent = 'space-between';
-        li.style.alignItems = 'center';
-        li.style.padding = '0.5rem';
-        li.style.borderBottom = '1px solid #eee';
+  const li = document.createElement('li');
+  li.style.display = 'flex';
+  li.style.flexDirection = 'column';
+  li.style.padding = '0.5rem';
+  li.style.borderBottom = '1px solid #eee';
 
-        const msg = document.createElement('span');
-        msg.textContent = `🦋 ${n.message}`;
+  const msg = document.createElement('span');
+  msg.textContent = `🦋 ${n.message}`;
 
-        const delBtn = document.createElement('button');
-        delBtn.textContent = '✖';
-        delBtn.style.border = 'none';
-        delBtn.style.background = 'transparent';
-        delBtn.style.color = '#999';
-        delBtn.style.cursor = 'pointer';
-        delBtn.title = 'Eliminar notificación';
-        delBtn.addEventListener('click', async () => {
-          try {
-            const res = await fetch(`https://momento-backend-production.up.railway.app/api/notifications/${n._id}`, {
-              method: 'DELETE',
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            });
-            if (!res.ok) throw new Error('No se pudo eliminar');
-            li.remove();
-          } catch (e) {
-            console.error('Error eliminando notificación:', e);
-            alert('Error al eliminar notificación');
-          }
-        });
+  const actions = document.createElement('div');
+  actions.style.marginTop = '5px';
+  actions.style.display = 'flex';
+  actions.style.gap = '10px';
 
-        li.append(msg, delBtn);
-        notifList.appendChild(li);
-      });
+  // 🔘 Solo si es invitación a parche
+  if (n.type === 'invitacion_parche' && n.patchId) {
+    const acceptBtn = document.createElement('button');
+    acceptBtn.textContent = 'Aceptar';
+    acceptBtn.className = 'btn-accept';
+    acceptBtn.addEventListener('click', () => respondToInvite(n._id, 'accepted'));
+
+    const rejectBtn = document.createElement('button');
+    rejectBtn.textContent = 'Rechazar';
+    rejectBtn.className = 'btn-reject';
+    rejectBtn.addEventListener('click', () => respondToInvite(n._id, 'rejected'));
+
+    actions.appendChild(acceptBtn);
+    actions.appendChild(rejectBtn);
+  }
+
+  const delBtn = document.createElement('button');
+  delBtn.textContent = '✖';
+  delBtn.className = 'btn-delete';
+  delBtn.title = 'Eliminar notificación';
+  delBtn.addEventListener('click', async () => {
+    await fetch(`${API_URL}/notifications/${n._id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    li.remove();
+  });
+
+  actions.appendChild(delBtn);
+  li.append(msg, actions);
+  notifList.appendChild(li);
+});
+
 
       // Actualizar contador
       notifCount.textContent = notifications.length;
@@ -616,6 +627,29 @@ function showFullImage(imageUrl) {
   overlay.style.display = 'flex';
 }
 
+async function respondToInvite(notificationId, status) {
+  try {
+    const res = await fetch(`${API_URL}/patches/respond-invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ notificationId, status }) // accepted o rejected
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert(`✅ Invitación ${status === 'accepted' ? 'aceptada' : 'rechazada'}`);
+      await loadNotifications(); // recargar notificaciones
+    } else {
+      alert(`❌ ${data.error || 'No se pudo procesar la invitación'}`);
+    }
+  } catch (err) {
+    console.error('Error al responder invitación:', err);
+    alert('❌ Error al enviar respuesta');
+  }
+}
 
   
 }); // <--- cierre correcto de document.addEventListener
