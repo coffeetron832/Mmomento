@@ -50,60 +50,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  userSearchInput.addEventListener('input', async () => {
-    const query = userSearchInput.value.trim();
-    searchResults.innerHTML = '';
+  const userSearchForm = document.getElementById('userSearchForm');
 
-    if (query.length < 3) return;
+userSearchForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Debes iniciar sesión');
-      return window.location.href = 'login.html';
+  const query = userSearchInput.value.trim();
+  searchResults.innerHTML = '';
+
+  if (query.length < 3) {
+    searchResults.textContent = 'Escribe al menos 3 caracteres';
+    return;
+  }
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Debes iniciar sesión');
+    return window.location.href = 'login.html';
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/patches/search/users?q=${encodeURIComponent(query)}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const users = await res.json();
+
+    if (!res.ok || !Array.isArray(users)) {
+      searchResults.textContent = '❌ Error al buscar usuarios';
+      return;
     }
 
-    try {
-      const res = await fetch(`${API_URL}/patches/search/users?q=${encodeURIComponent(query)}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+    if (users.length === 0) {
+      searchResults.textContent = '🔍 No se encontraron usuarios';
+      return;
+    }
+
+    users.forEach(user => {
+      const li = document.createElement('li');
+      li.textContent = `${user.name} (${user.email})`;
+      li.dataset.userId = user._id;
+      li.style.cursor = 'pointer';
+
+      li.addEventListener('click', () => {
+        if (!currentPatchId) {
+          alert('Crea un parche primero antes de invitar usuarios.');
+          return;
         }
+
+        inviteUserToPatch(user._id, user.name);
       });
 
-      const users = await res.json();
+      searchResults.appendChild(li);
+    });
 
-      if (!res.ok || !Array.isArray(users)) {
-        searchResults.textContent = '❌ Error al buscar usuarios';
-        return;
-      }
+  } catch (err) {
+    console.error(err);
+    searchResults.textContent = 'Error de conexión';
+  }
+});
 
-      if (users.length === 0) {
-        searchResults.textContent = '🔍 No se encontraron usuarios';
-        return;
-      }
-
-      users.forEach(user => {
-        const li = document.createElement('li');
-        li.textContent = `${user.name} (${user.email})`;
-        li.dataset.userId = user._id;
-        li.style.cursor = 'pointer';
-
-        li.addEventListener('click', () => {
-          if (!currentPatchId) {
-            alert('Crea un parche primero antes de invitar usuarios.');
-            return;
-          }
-
-          inviteUserToPatch(user._id, user.name);
-        });
-
-        searchResults.appendChild(li);
-      });
-
-    } catch (err) {
-      console.error(err);
-      searchResults.textContent = 'Error de conexión';
-    }
-  });
 
   // ✉️ Invitar usuario al parche
   async function inviteUserToPatch(userId, userName) {
