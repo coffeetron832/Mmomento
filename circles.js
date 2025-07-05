@@ -201,7 +201,7 @@ async function leavePatch(patchId) {
 
   try {
     const res = await fetch(`https://momento-backend-production.up.railway.app/api/patches/${patchId}/leave`, {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`
       }
