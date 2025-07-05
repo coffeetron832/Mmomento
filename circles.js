@@ -154,7 +154,10 @@ async function loadUserPatches() {
         const leaveBtn = document.createElement('button');
         leaveBtn.textContent = 'Salir';
         leaveBtn.style.marginLeft = '10px';
-        leaveBtn.onclick = () => leavePatch(patch._id);
+        leaveBtn.onclick = async () => {
+  await leavePatch(patch._id);
+};
+
         li.appendChild(leaveBtn);
         memberUl.appendChild(li);
       }
