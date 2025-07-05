@@ -393,20 +393,31 @@ filterBtns.forEach(btn => {
 
 let allImages = [];
 
-function loadImages() {
-  fetch('https://momento-backend-production.up.railway.app/api/images/', {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-    .then(res => res.json())
-    .then(images => {
-      allImages = images;
-      renderFilteredImages('all'); // Mostrar todo al inicio
-    })
+async function loadImages() {
+  try {
+    const res = await fetch(`${API_URL}/api/images/`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
 
-    .catch(err => console.error('Error al cargar imágenes:', err));
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error('Error al obtener imágenes:', data.error || data.message);
+      return;
+    }
+
+    if (!Array.isArray(data)) {
+      console.error('Respuesta inesperada al obtener imágenes:', data);
+      return;
+    }
+
+    allImages = data;
+    renderFilteredImages('all');
+  } catch (err) {
+    console.error('Error al cargar imágenes:', err);
+  }
 }
+
 
 function renderFilteredImages(sectionKey) {
   const filtered = sectionKey === 'all'
