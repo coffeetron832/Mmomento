@@ -200,12 +200,14 @@ async function leavePatch(patchId) {
   if (!confirm('¿Estás seguro de que quieres salir de este parche?')) return;
 
   try {
-    const res = await fetch(`https://momento-backend-production.up.railway.app/api/patches/${patchId}/leave`, {
-  method: 'PATCH', // ✅ Usa POST, no PATCH
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    // ✅ Usa PATCH (coherente con el backend)
+const res = await fetch(`${API_URL}/patches/${patchId}/leave`, {
+  method: 'PATCH',
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
+
 
     const data = await res.json();
     if (res.ok) {
