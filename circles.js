@@ -79,7 +79,14 @@ userSearchForm.addEventListener('submit', async (e) => {
 
     users.forEach(user => {
       const li = document.createElement('li');
-      li.textContent = `${user.name} (${user.email})`;
+      li.innerHTML = `
+  <strong>@${user.username}</strong><br>
+  <span style="color: ${user.soulprint?.soulColor || '#888'}">
+    ${user.soulprint?.soulColorName || 'Color desconocido'}
+  </span><br>
+  <em>${user.soulprint?.soulPhrase || 'Sin frase aún'}</em>
+`;
+
       li.style.cursor = 'pointer';
 
       li.addEventListener('click', () => {
