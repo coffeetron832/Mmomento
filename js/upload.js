@@ -150,6 +150,9 @@ if (!hiddenInput.value) {
 
     const formData = new FormData(form);
 
+    // 3) Definimos visibilityValue _antes_ de usarlo
+  const visibilityValue = formData.get('visibility');
+
     if (visibilityValue === 'circle') {
   const selectedPatch = document.getElementById('circleSelector')?.value;
   if (!selectedPatch) {
