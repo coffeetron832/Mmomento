@@ -542,20 +542,20 @@ loadImages();
   actions.style.gap = '10px';
 
   // 🔘 Solo si es invitación a parche
-  if (n.type === 'invitacion_parche' && n.patchId) {
-    const acceptBtn = document.createElement('button');
-    acceptBtn.textContent = 'Aceptar';
-    acceptBtn.className = 'btn-accept';
-    acceptBtn.addEventListener('click', () => respondToInvite(n._id, 'accepted'));
+  if (n.type === 'invitacion_parche' && n.status === 'pending') {
+  const acceptBtn = document.createElement('button');
+  acceptBtn.textContent = 'Aceptar';
+  acceptBtn.className = 'notif-action-btn';
+  acceptBtn.addEventListener('click', () => respondToInvite(n._id, 'accepted', li));
 
-    const rejectBtn = document.createElement('button');
-    rejectBtn.textContent = 'Rechazar';
-    rejectBtn.className = 'btn-reject';
-    rejectBtn.addEventListener('click', () => respondToInvite(n._id, 'rejected'));
+  const rejectBtn = document.createElement('button');
+  rejectBtn.textContent = 'Rechazar';
+  rejectBtn.className = 'notif-action-btn';
+  rejectBtn.addEventListener('click', () => respondToInvite(n._id, 'rejected', li));
 
-    actions.appendChild(acceptBtn);
-    actions.appendChild(rejectBtn);
-  }
+  li.append(acceptBtn, rejectBtn);
+}
+
 
   const delBtn = document.createElement('button');
   delBtn.textContent = '✖';
@@ -629,29 +629,43 @@ function showFullImage(imageUrl) {
   overlay.style.display = 'flex';
 }
 
-async function respondToInvite(notificationId, status) {
+async function respondToInvite(notificationId, action, notifElement) {
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/patches/respond-invite', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ notificationId, status })
+      body: JSON.stringify({ notificationId, status: action })
     });
 
     const data = await res.json();
-
-    if (!res.ok) throw new Error(data.error || 'Error al responder');
-
     console.log('Respuesta enviada:', data);
-    await loadNotifications(); // 🔁 recargar lista después de aceptar o rechazar
 
-  } catch (e) {
-    console.error('Error al responder invitación:', e);
-    alert('Error al responder invitación');
+    if (res.ok && notifElement) {
+      // ✅ Quitar notificación del DOM
+      notifElement.remove();
+
+      // ✅ Mostrar mensaje temporal (si quieres)
+      const msgBox = document.getElementById('imageActionMessage');
+      if (msgBox) {
+        msgBox.innerText = action === 'accepted' 
+          ? '🎉 ¡Te uniste al parche!' 
+          : '👌 Invitación rechazada';
+        msgBox.style.display = 'block';
+        msgBox.style.opacity = '1';
+        setTimeout(() => {
+          msgBox.style.opacity = '0';
+          setTimeout(() => (msgBox.style.display = 'none'), 1000);
+        }, 3000);
+      }
+    }
+  } catch (err) {
+    console.error('Error al responder invitación:', err);
   }
 }
+
 
 
   
