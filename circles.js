@@ -141,7 +141,7 @@ async function loadUserPatches() {
 
       li.appendChild(title);
 
-      if (patch.owner !== userId) {
+      if (patch.owner._id !== userId) {
         const leaveBtn = document.createElement('button');
         leaveBtn.textContent = 'Salir';
         leaveBtn.style.marginLeft = '10px';
