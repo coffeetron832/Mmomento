@@ -102,6 +102,36 @@ userSearchForm.addEventListener('submit', async (e) => {
   }
 });
 
+async function loadUserPatches() {
+  const token = localStorage.getItem('token'); // Asegúrate de tenerlo guardado
+  try {
+    const res = await fetch('https://momento-backend-production.up.railway.app/api/patches', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error('No se pudieron cargar los parches');
+    const patches = await res.json();
+
+    const ul = document.getElementById('userPatchesList');
+    ul.innerHTML = '';
+
+    if (patches.length === 0) {
+      ul.innerHTML = '<li>No perteneces a ningún parche todavía 🫠</li>';
+      return;
+    }
+
+    patches.forEach(patch => {
+      const li = document.createElement('li');
+      li.textContent = `🌱 ${patch.name}`;
+      ul.appendChild(li);
+    });
+
+  } catch (error) {
+    console.error('Error al cargar tus parches:', error);
+  }
+}
 
 
   // ✉️ Invitar usuario al parche
@@ -129,4 +159,9 @@ userSearchForm.addEventListener('submit', async (e) => {
       alert('❌ Error de conexión al invitar');
     }
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+  loadUserPatches();
+});
+
 });
