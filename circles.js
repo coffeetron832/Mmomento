@@ -51,58 +51,44 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const userSearchForm = document.getElementById('userSearchForm');
-
 userSearchForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-
   const query = userSearchInput.value.trim();
-  searchResults.innerHTML = '';
-
   if (query.length < 3) return alert('Escribe al menos 3 caracteres');
 
   const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Debes iniciar sesión');
-    return window.location.href = 'login.html';
-  }
+  if (!token) return window.location.href = 'login.html';
 
   try {
     const res = await fetch(`${API_URL}/patches/search/users?q=${encodeURIComponent(query)}`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     });
 
     const users = await res.json();
+    searchResults.innerHTML = '';
 
     if (!res.ok || !Array.isArray(users)) {
-      searchResults.textContent = '❌ Error al buscar usuarios';
-      return;
+      return (searchResults.textContent = '❌ Error al buscar usuarios');
     }
 
     if (users.length === 0) {
-      searchResults.textContent = '🔍 No se encontraron usuarios';
-      return;
+      return (searchResults.textContent = '🔍 No se encontraron usuarios');
     }
 
     users.forEach(user => {
       const li = document.createElement('li');
       li.textContent = `${user.name} (${user.email})`;
-      li.dataset.userId = user._id;
       li.style.cursor = 'pointer';
 
       li.addEventListener('click', () => {
-        if (!currentPatchId) {
-          alert('Crea un parche primero antes de invitar usuarios.');
-          return;
-        }
-
+        if (!currentPatchId) return alert('Crea un parche primero');
         inviteUserToPatch(user._id, user.name);
       });
 
       searchResults.appendChild(li);
     });
-
   } catch (err) {
     console.error(err);
     searchResults.textContent = 'Error de conexión';
