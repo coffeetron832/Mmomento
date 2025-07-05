@@ -401,10 +401,17 @@ async function loadImages() {
 
     const data = await res.json();
 
-    if (!res.ok) {
-      console.error('Error al obtener imágenes:', data.error || data.message);
-      return;
-    }
+if (!res.ok) {
+  if (res.status === 401) {
+    alert('Tu sesión ha expirado. Por favor inicia sesión nuevamente.');
+    localStorage.clear();
+    window.location.href = 'login.html';
+    return;
+  }
+  console.error('Error al obtener imágenes:', data.error || data.message);
+  return;
+}
+
 
     if (!Array.isArray(data)) {
       console.error('Respuesta inesperada al obtener imágenes:', data);
