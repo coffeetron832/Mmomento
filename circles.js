@@ -185,4 +185,17 @@ async function loadUserPatches() {
   loadUserPatches();
 });
 
+function getCurrentUserId() {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.id || payload._id; // según cómo esté codificado
+  } catch (err) {
+    return null;
+  }
+}
+
+  
 });
