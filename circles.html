@@ -55,7 +55,7 @@
   <button onclick="window.location.href='upload.html'" style="margin-top:2rem;">⬅️ Volver</button>
 
   <h1>Crear Círculo</h1>
-  <form id="createPatchForm">
+  <form id="createCircleForm">
     <input
       type="text"
       id="circleName"
@@ -70,12 +70,17 @@
   <div id="message"></div>
 
   <h2>Invitar Usuarios</h2>
-  <input
-    type="text"
-    id="userSearch"
-    placeholder="Buscar usuario (mínimo 3 caracteres)"
-    autocomplete="off"
-  />
+  <!-- ✅ Este es el nuevo formulario para buscar usuarios -->
+  <form id="userSearchForm">
+    <input
+      type="text"
+      id="userSearch"
+      placeholder="Buscar usuario (mínimo 3 caracteres)"
+      autocomplete="off"
+    />
+    <button type="submit">Buscar</button>
+  </form>
+
   <ul id="searchResults"></ul>
 
   <script src="circles.js"></script>
