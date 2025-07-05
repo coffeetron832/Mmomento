@@ -217,11 +217,12 @@ function getCurrentUserId() {
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.id || payload._id; // según cómo esté codificado
+    return payload.id || payload._id;
   } catch (err) {
     return null;
   }
 }
 
-  
+loadUserPatches(); // ✅ Cargar parches apenas cargue la página
 });
+
