@@ -185,6 +185,33 @@ async function loadUserPatches() {
   loadUserPatches();
 });
 
+async function leavePatch(patchId) {
+  const token = localStorage.getItem('token');
+  if (!confirm('¿Estás seguro de que quieres salir de este parche?')) return;
+
+  try {
+    const res = await fetch(`https://momento-backend-production.up.railway.app/api/patches/${patchId}/leave`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert(data.message || 'Saliste del parche');
+      loadUserPatches(); // Recargar la lista
+    } else {
+      alert(data.error || 'No se pudo salir');
+    }
+  } catch (err) {
+    console.error('Error al salir del parche:', err);
+  }
+}
+
+
+
+  
 function getCurrentUserId() {
   const token = localStorage.getItem('token');
   if (!token) return null;
