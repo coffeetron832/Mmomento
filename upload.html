@@ -1089,7 +1089,14 @@ h2.section-title {
 
 
     <!-- Círculo de usuarios (si aplica) -->
-    <div id="circleSelectorContainer" style="display: none;"></div>
+<div id="circleSelectorContainer" style="display: none;">
+  <label for="circleSelector">Selecciona tu parche:</label>
+  <select name="circleId" id="circleSelector" required>
+    <option value="">-- Elige tu parche --</option>
+    <!-- Aquí se llenará dinámicamente -->
+  </select>
+</div>
+
 
     <!-- ✨ Botón emocional -->
     <button type="submit" style="margin-top: 1.5rem;">Que vuele</button>
