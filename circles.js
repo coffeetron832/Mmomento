@@ -82,7 +82,7 @@ userSearchForm.addEventListener('submit', async (e) => {
       li.innerHTML = `
   <strong>@${user.username}</strong><br>
   <span style="color: ${user.soulprint?.soulColor || '#888'}">
-    ${user.soulprint?.soulColorName || 'Color desconocido'}
+    ${user.soulprint?.soulColorName || 'Color del alma'}
   </span><br>
   <em>${user.soulprint?.soulPhrase || 'Sin frase aún'}</em>
 `;
