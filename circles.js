@@ -200,8 +200,8 @@ async function leavePatch(patchId) {
   if (!confirm('¿Estás seguro de que quieres salir de este parche?')) return;
 
   try {
-    const res = await fetch(`https://momento-backend-production.up.railway.app/api/patches/${patchId}/leave`, {
-      method: 'POST',
+    const res = await fetch(`https://momento-backend-production.up.railway.app/api/patches/leave/${patchId}`, {
+      method: 'POST', // ✅ Usa POST, no PATCH
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -210,14 +210,15 @@ async function leavePatch(patchId) {
     const data = await res.json();
     if (res.ok) {
       alert(data.message || 'Saliste del parche');
-      loadUserPatches(); // Recargar la lista
+      loadUserPatches(); // ✅ Recargar parches actualizados
     } else {
-      alert(data.error || 'No se pudo salir');
+      alert(data.error || 'No se pudo salir del parche');
     }
   } catch (err) {
     console.error('Error al salir del parche:', err);
   }
 }
+
   
 function getCurrentUserId() {
   const token = localStorage.getItem('token');
