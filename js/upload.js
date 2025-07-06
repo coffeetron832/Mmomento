@@ -83,7 +83,7 @@ if (welcomeBackMessage) {
   const circleContainer = document.getElementById('circleSelectorContainer');
   if (visibilitySelect && circleContainer) {
     visibilitySelect.addEventListener('change', () => {
-      if (visibilitySelect.value === 'circle') {
+      if (visibilitySelect.value === 'patch') {
         circleContainer.style.display = 'block';
         loadUserCircles();
       } else {
