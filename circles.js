@@ -106,6 +106,8 @@ async function loadUserPatches() {
   const token = localStorage.getItem('token');
   const userId = getCurrentUserId(); // 💡 ID actual desde el token
 
+  if (!userId) return console.error('❌ No se pudo obtener el ID del usuario');
+
   try {
     const res = await fetch(`${API_URL}/patches`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -128,8 +130,8 @@ async function loadUserPatches() {
 
     patches.forEach(patch => {
       const ownerId = (typeof patch.owner === 'object' && patch.owner._id)
-  ? patch.owner._id.toString()
-  : patch.owner.toString();
+        ? patch.owner._id.toString()
+        : patch.owner.toString();
 
       const memberIds = patch.members.map(m => (m._id || m).toString());
       const isOwner = ownerId === userId;
@@ -150,7 +152,6 @@ async function loadUserPatches() {
 
       li.appendChild(title);
 
-      // ✅ Si soy dueño, muestro botón de eliminar
       if (isOwner) {
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Eliminar';
@@ -159,7 +160,8 @@ async function loadUserPatches() {
         deleteBtn.style.color = 'white';
 
         deleteBtn.onclick = async () => {
-          if (!confirm(`¿Estás seguro de eliminar el parche "${patch.name}"? Esta acción no se puede deshacer.`)) return;
+          const confirmDelete = confirm(`¿Estás seguro de eliminar el parche "${patch.name}"? Esta acción no se puede deshacer.`);
+          if (!confirmDelete) return;
 
           try {
             const delRes = await fetch(`${API_URL}/patches/${patch._id}`, {
@@ -183,10 +185,8 @@ async function loadUserPatches() {
 
         li.appendChild(deleteBtn);
         ownedUl.appendChild(li);
-      }
 
-      // ✅ Si solo soy miembro (no owner)
-      else if (isMember) {
+      } else if (isMember) {
         const leaveBtn = document.createElement('button');
         leaveBtn.textContent = 'Salir';
         leaveBtn.style.marginLeft = '10px';
@@ -203,6 +203,7 @@ async function loadUserPatches() {
     console.error('Error al cargar tus parches:', error);
   }
 }
+
 
 
 async function deletePatch(patchId, patchName) {
