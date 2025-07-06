@@ -331,6 +331,15 @@ function applyFilter() {
       img.alt = image.description || 'imagen subida';
       img.loading = 'lazy';
 
+      // ✅ Mostrar distintivo de parche si aplica
+if (image.visibility === 'patch' && image.patch?.name) {
+  const badge = document.createElement('div');
+  badge.className = 'patch-badge';
+  badge.textContent = `🔰 ${image.patch.name}`;
+  card.appendChild(badge);
+}
+
+
       // ✅ Crear fila de usuario
       const userRow = document.createElement('div');
       userRow.className = 'card-user';
