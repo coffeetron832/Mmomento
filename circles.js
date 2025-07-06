@@ -132,7 +132,6 @@ async function loadUserPatches() {
       const isOwner = ownerId === userId;
       const isMember = memberIds.includes(userId);
 
-      // 🔐 Asegurarse de no mostrar parches si ya no eres ni owner ni miembro
       if (!isOwner && !isMember) return;
 
       const li = document.createElement('li');
@@ -148,25 +147,43 @@ async function loadUserPatches() {
 
       li.appendChild(title);
 
+      // ✅ Si soy dueño, muestro botón de eliminar
       if (isOwner) {
-        // ✅ Agregar botón de eliminar
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Eliminar';
         deleteBtn.style.marginLeft = '10px';
+        deleteBtn.style.backgroundColor = 'red';
         deleteBtn.style.color = 'white';
-        deleteBtn.style.backgroundColor = '#d9534f';
-        deleteBtn.style.border = 'none';
-        deleteBtn.style.padding = '5px 10px';
-        deleteBtn.style.borderRadius = '4px';
-        deleteBtn.style.cursor = 'pointer';
 
-        deleteBtn.addEventListener('click', () => {
-          deletePatch(patch._id, patch.name);
-        });
+        deleteBtn.onclick = async () => {
+          if (!confirm(`¿Estás seguro de eliminar el parche "${patch.name}"? Esta acción no se puede deshacer.`)) return;
+
+          try {
+            const delRes = await fetch(`${API_URL}/patches/${patch._id}`, {
+              method: 'DELETE',
+              headers: { Authorization: `Bearer ${token}` }
+            });
+
+            const data = await delRes.json();
+
+            if (delRes.ok) {
+              alert(data.message || 'Parche eliminado');
+              loadUserPatches();
+            } else {
+              alert(`❌ No se pudo eliminar: ${data.error}`);
+            }
+          } catch (err) {
+            console.error('Error al eliminar parche:', err);
+            alert('❌ Error de conexión al eliminar el parche');
+          }
+        };
 
         li.appendChild(deleteBtn);
         ownedUl.appendChild(li);
-      } else if (isMember) {
+      }
+
+      // ✅ Si solo soy miembro (no owner)
+      else if (isMember) {
         const leaveBtn = document.createElement('button');
         leaveBtn.textContent = 'Salir';
         leaveBtn.style.marginLeft = '10px';
@@ -183,6 +200,7 @@ async function loadUserPatches() {
     console.error('Error al cargar tus parches:', error);
   }
 }
+
 
 async function deletePatch(patchId, patchName) {
   const token = localStorage.getItem('token');
