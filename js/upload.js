@@ -81,30 +81,33 @@ if (welcomeBackMessage) {
   // 👁 Mostrar selector de parches
 const visibilitySelect = document.getElementById('visibility');
 const patchSelectorContainer = document.getElementById('patchSelectorContainer');
+const sectionButtons = document.getElementById('section-buttons');
+const selectedSectionInput = document.getElementById('selected-section');
 
 if (visibilitySelect && patchSelectorContainer) {
   visibilitySelect.addEventListener('change', () => {
-    if (visibilitySelect.value === 'patch') {
+    const vis = visibilitySelect.value;
+
+    if (vis === 'patch') {
       patchSelectorContainer.style.display = 'block';
-      console.log('🧪 Cambiaste a visibilidad PATCH. Mostrando selector de parche...');
+      sectionButtons.style.display = 'none';
+      selectedSectionInput.value = ''; // ⚠️ limpiar valor sección
       loadUserPatches();
     } else {
       patchSelectorContainer.style.display = 'none';
+      sectionButtons.style.display = 'block';
     }
   });
 
-  const sectionButtons = document.getElementById('section-buttons');
-if (sectionButtons) {
-  sectionButtons.style.display = visibilitySelect.value === 'patch' ? 'none' : 'block';
-}
-
-
-  // ✅ Mostrar el selector si ya está seleccionado PATCH al cargar
+  // ✅ Si al cargar ya está seleccionado "patch"
   if (visibilitySelect.value === 'patch') {
     patchSelectorContainer.style.display = 'block';
+    sectionButtons.style.display = 'none';
+    selectedSectionInput.value = '';
     loadUserPatches();
   }
 }
+
 
 
   // 🪄 Botón subir imagen
