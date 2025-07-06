@@ -159,28 +159,34 @@ if (!hiddenInput.value) {
 
     // Creamos el FormData
   const formData = new FormData(form);
+const visibilityValue = formData.get('visibility');
 
-  // Definimos visibilityValue antes de usarla
-  const visibilityValue = formData.get('visibility');
+if (visibilityValue === 'patch') {
+  // 1️⃣ Apunta al contenedor correcto
+  const patchContainer = document.getElementById('patchSelectorContainer');
+  if (!patchContainer) {
+    alert('No se encontró el contenedor de parches');
+    return;
+  }
 
-  if (visibilityValue === 'patch') {
-  const selector = document.getElementById('circleSelector');
-
+  // 2️⃣ Busca el SELECT dentro de ese contenedor
+  const selector = patchContainer.querySelector('select[name="patchId"]');
   if (!selector) {
     alert('No se encontró el selector de parches');
     return;
   }
 
+  // 3️⃣ Valida que tenga un valor
   const selectedPatch = selector.value;
-
   if (!selectedPatch) {
-    alert('Selecciona un parche para compartir en tu círculo');
+    alert('Selecciona un parche para compartir');
     return;
   }
 
-  formData.delete('patchId');
-  formData.append('patchId', selectedPatch);
+  // 4️⃣ Ajusta el FormData
+  formData.set('patchId', selectedPatch);
 }
+
 
     
     const submitBtn = form.querySelector('button[type="submit"]');
