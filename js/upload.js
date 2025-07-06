@@ -184,29 +184,18 @@ const visibilityValue = formData.get('visibility');
 
 if (visibilityValue === 'patch') {
   // 1️⃣ El selector ya existe en el DOM
-  const patchContainer = document.getElementById('patchSelectorContainer');
-  if (!patchContainer || patchContainer.style.display === 'none') {
-    alert('No se encontró el selector de parches');
+    const selectedCheckboxes = document.querySelectorAll('input[name="patches"]:checked');
+  if (!selectedCheckboxes.length) {
+    alert('Selecciona al menos un parche para compartir');
     return;
   }
 
-  // 2️⃣ Buscar el <select id="circleSelector">
-  const selector = document.getElementById('circleSelector');
-  if (!selector) {
-    alert('No se encontró el selector de parches');
-    return;
-  }
+  // Añadir cada parche seleccionado como patchIds[]
+  selectedCheckboxes.forEach(checkbox => {
+    formData.append('patchIds[]', checkbox.value);
+  });
 
-  // 3️⃣ Valida que tenga valor (no solo placeholder)
-  const selectedPatch = selector.value;
-  if (!selectedPatch) {
-    alert('Selecciona un parche para compartir');
-    return;
-  }
-
-  // 4️⃣ Ajusta FormData
-  formData.set('patchId', selectedPatch);
-  formData.set('section', `patch:${selectedPatch}`);
+  formData.set('section', 'patch'); // Esto se puede usar para clasificar como sección 'patch'
 
 } else {
   // validación normal de sección creativa
