@@ -149,14 +149,30 @@ async function loadUserPatches() {
       li.appendChild(title);
 
       if (isOwner) {
+        // ✅ Agregar botón de eliminar
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Eliminar';
+        deleteBtn.style.marginLeft = '10px';
+        deleteBtn.style.color = 'white';
+        deleteBtn.style.backgroundColor = '#d9534f';
+        deleteBtn.style.border = 'none';
+        deleteBtn.style.padding = '5px 10px';
+        deleteBtn.style.borderRadius = '4px';
+        deleteBtn.style.cursor = 'pointer';
+
+        deleteBtn.addEventListener('click', () => {
+          deletePatch(patch._id, patch.name);
+        });
+
+        li.appendChild(deleteBtn);
         ownedUl.appendChild(li);
       } else if (isMember) {
         const leaveBtn = document.createElement('button');
         leaveBtn.textContent = 'Salir';
         leaveBtn.style.marginLeft = '10px';
         leaveBtn.onclick = async () => {
-  await leavePatch(patch._id);
-};
+          await leavePatch(patch._id);
+        };
 
         li.appendChild(leaveBtn);
         memberUl.appendChild(li);
@@ -165,6 +181,34 @@ async function loadUserPatches() {
 
   } catch (error) {
     console.error('Error al cargar tus parches:', error);
+  }
+}
+
+async function deletePatch(patchId, patchName) {
+  const token = localStorage.getItem('token');
+  if (!token) return alert('Debes iniciar sesión');
+
+  const confirmDelete = confirm(`¿Estás seguro de eliminar el parche "${patchName}"?\nEsta acción no se puede deshacer.`);
+  if (!confirmDelete) return;
+
+  try {
+    const res = await fetch(`${API_URL}/patches/${patchId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert('✅ Parche eliminado correctamente');
+      loadUserPatches(); // Recargar la lista
+    } else {
+      alert(`❌ No se pudo eliminar: ${data.error || 'Error desconocido'}`);
+    }
+  } catch (err) {
+    console.error('Error eliminando parche:', err);
+    alert('❌ Error al eliminar el parche');
   }
 }
 
