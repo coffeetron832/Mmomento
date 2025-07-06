@@ -202,7 +202,114 @@ async function loadUserPatches() {
   } catch (error) {
     console.error('Error al cargar tus parches:', error);
   }
+}async function loadUserPatches() {
+  const token = localStorage.getItem('token');
+  const userId = getCurrentUserId(); // 💡 ID actual desde el token
+
+  try {
+    const res = await fetch(`${API_URL}/patches`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error('No se pudieron cargar los parches');
+
+    const patches = await res.json();
+
+    const ownedUl = document.getElementById('ownedPatchesList');
+    const memberUl = document.getElementById('memberPatchesList');
+    ownedUl.innerHTML = '';
+    memberUl.innerHTML = '';
+
+    if (patches.length === 0) {
+      ownedUl.innerHTML = '<li>No has creado ningún parche</li>';
+      memberUl.innerHTML = '<li>No perteneces a ningún parche aún 🫠</li>';
+      return;
+    }
+
+    patches.forEach(patch => {
+      // 🔍 Extraer correctamente el ID del dueño
+      const ownerId =
+        patch.owner && typeof patch.owner === 'object' && patch.owner._id
+          ? patch.owner._id.toString()
+          : (typeof patch.owner === 'string' ? patch.owner : null);
+
+      // ⚠️ Si no hay owner definido, no procesamos este parche
+      if (!ownerId) {
+        console.warn('Parche con owner inválido:', patch);
+        return;
+      }
+
+      const memberIds = patch.members.map(m => (m._id || m).toString());
+      const isOwner = ownerId === userId;
+      const isMember = memberIds.includes(userId);
+
+      if (!isOwner && !isMember) return;
+
+      const li = document.createElement('li');
+      li.style.marginBottom = '15px';
+
+      const title = document.createElement('strong');
+      title.textContent = patch.name;
+      title.style.cursor = 'pointer';
+      title.addEventListener('click', () => {
+        const miembros = patch.members.map(m => m.username || 'Usuario').join(', ');
+        alert(`👥 Miembros del parche:\n\n${miembros}`);
+      });
+
+      li.appendChild(title);
+
+      if (isOwner) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Eliminar';
+        deleteBtn.style.marginLeft = '10px';
+        deleteBtn.style.backgroundColor = 'red';
+        deleteBtn.style.color = 'white';
+
+        deleteBtn.onclick = async () => {
+          if (!confirm(`¿Estás seguro de eliminar el parche "${patch.name}"? Esta acción no se puede deshacer.`)) return;
+
+          try {
+            const delRes = await fetch(`${API_URL}/patches/${patch._id}`, {
+              method: 'DELETE',
+              headers: { Authorization: `Bearer ${token}` }
+            });
+
+            const data = await delRes.json();
+
+            if (delRes.ok) {
+              alert(data.message || 'Parche eliminado');
+              loadUserPatches();
+            } else {
+              alert(`❌ No se pudo eliminar: ${data.error}`);
+            }
+          } catch (err) {
+            console.error('Error al eliminar parche:', err);
+            alert('❌ Error de conexión al eliminar el parche');
+          }
+        };
+
+        li.appendChild(deleteBtn);
+        ownedUl.appendChild(li);
+      }
+
+      else if (isMember) {
+        const leaveBtn = document.createElement('button');
+        leaveBtn.textContent = 'Salir';
+        leaveBtn.style.marginLeft = '10px';
+        leaveBtn.onclick = async () => {
+          await leavePatch(patch._id);
+        };
+
+        li.appendChild(leaveBtn);
+        memberUl.appendChild(li);
+      }
+    });
+
+  } catch (error) {
+    console.error('Error al cargar tus parches:', error);
+  }
 }
+
 
 
 
