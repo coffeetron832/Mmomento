@@ -80,7 +80,7 @@ if (welcomeBackMessage) {
 
   // 👁 Mostrar selector de parches
 const visibilitySelect = document.getElementById('visibility');
-const patchSelectorContainer = document.getElementById('circleSelectorContainer');
+const patchSelectorContainer = document.getElementById('patchSelectorContainer');
 
 if (visibilitySelect && patchSelectorContainer) {
   visibilitySelect.addEventListener('change', () => {
