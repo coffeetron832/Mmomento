@@ -85,6 +85,7 @@ if (welcomeBackMessage) {
     visibilitySelect.addEventListener('change', () => {
       if (visibilitySelect.value === 'patch') {
         circleContainer.style.display = 'block';
+        console.log('🧪 Cambiaste a visibilidad PATCH. Mostrando selector de parche...');
         loadUserCircles();
       } else {
         circleContainer.style.display = 'none';
