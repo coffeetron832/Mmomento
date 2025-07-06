@@ -154,16 +154,24 @@ if (!hiddenInput.value) {
   // Definimos visibilityValue antes de usarla
   const visibilityValue = formData.get('visibility');
 
-  // Si es visibilidad en parche, borramos el campo vacío y añadimos el correcto
   if (visibilityValue === 'circle') {
-    const selectedPatch = document.getElementById('circleSelector').value;
-    if (!selectedPatch) {
-      alert('Selecciona un parche para compartir en tu círculo');
-      return;
-    }
-    formData.delete('patchId');           // elimina el campo vacío
-    formData.append('patchId', selectedPatch);
+  const selector = document.getElementById('circleSelector');
+
+  if (!selector) {
+    alert('No se encontró el selector de parches');
+    return;
   }
+
+  const selectedPatch = selector.value;
+
+  if (!selectedPatch) {
+    alert('Selecciona un parche para compartir en tu círculo');
+    return;
+  }
+
+  formData.delete('patchId');
+  formData.append('patchId', selectedPatch);
+}
 
     
     const submitBtn = form.querySelector('button[type="submit"]');
