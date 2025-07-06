@@ -93,6 +93,12 @@ if (visibilitySelect && patchSelectorContainer) {
     }
   });
 
+  const sectionButtons = document.getElementById('section-buttons');
+if (sectionButtons) {
+  sectionButtons.style.display = visibilitySelect.value === 'patch' ? 'none' : 'block';
+}
+
+
   // ✅ Mostrar el selector si ya está seleccionado PATCH al cargar
   if (visibilitySelect.value === 'patch') {
     patchSelectorContainer.style.display = 'block';
@@ -152,40 +158,43 @@ if (!hiddenInput.value) {
 
   
     const fileInput = document.getElementById('image');
-    if (!fileInput || !fileInput.files.length) {
-      alert('Selecciona una imagen');
-      return;
-    }
+if (!fileInput || !fileInput.files.length) {
+  alert('Selecciona una imagen');
+  return;
+}
 
-    // Creamos el FormData
-  const formData = new FormData(form);
+// Creamos el FormData
+const formData = new FormData(form);
 const visibilityValue = formData.get('visibility');
 
 if (visibilityValue === 'patch') {
-  // 1️⃣ Apunta al contenedor correcto
   const patchContainer = document.getElementById('patchSelectorContainer');
-  if (!patchContainer) {
-    alert('No se encontró el contenedor de parches');
-    return;
-  }
+  const selector = patchContainer?.querySelector('select[name="patchId"]');
 
-  // 2️⃣ Busca el SELECT dentro de ese contenedor
-  const selector = patchContainer.querySelector('select[name="patchId"]');
   if (!selector) {
     alert('No se encontró el selector de parches');
     return;
   }
 
-  // 3️⃣ Valida que tenga un valor
   const selectedPatch = selector.value;
   if (!selectedPatch) {
     alert('Selecciona un parche para compartir');
     return;
   }
 
-  // 4️⃣ Ajusta el FormData
+  // 👇 Reemplazamos sección por parche dinámico
+  formData.set('section', `patch:${selectedPatch}`);
   formData.set('patchId', selectedPatch);
+} else {
+  const sectionInput = document.getElementById('selected-section');
+  if (!sectionInput.value) {
+    alert('Por favor selecciona una categoría emocional');
+    return;
+  }
+
+  formData.set('section', sectionInput.value);
 }
+
 
 
     
