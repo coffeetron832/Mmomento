@@ -127,7 +127,10 @@ async function loadUserPatches() {
     }
 
     patches.forEach(patch => {
-      const ownerId = (patch.owner?._id || patch.owner).toString();
+      const ownerId = (typeof patch.owner === 'object' && patch.owner._id)
+  ? patch.owner._id.toString()
+  : patch.owner.toString();
+
       const memberIds = patch.members.map(m => (m._id || m).toString());
       const isOwner = ownerId === userId;
       const isMember = memberIds.includes(userId);
