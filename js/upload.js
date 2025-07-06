@@ -154,10 +154,13 @@ if (logoutBtn) {
     e.preventDefault();
 
     const hiddenInput = document.getElementById('selected-section');
-if (!hiddenInput.value) {
+const visibility = document.getElementById('visibility')?.value;
+
+if (visibility !== 'patch' && !hiddenInput.value) {
   alert('Por favor selecciona una sección creativa.');
   return;
 }
+
 
   
     const fileInput = document.getElementById('image');
