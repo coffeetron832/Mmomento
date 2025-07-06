@@ -718,7 +718,7 @@ async function respondToInvite(notificationId, action, notifElement) {
   }
 }
 
-async function loadUserCircles() {
+async function loadUserPatches() {
   const selector = document.getElementById('circleSelector');
   if (!selector) return;
 
