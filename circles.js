@@ -293,12 +293,14 @@ function getCurrentUserId() {
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    return (payload.id || payload._id)?.toString() || null;
+    const id = payload._id || payload.id;
+    return id ? id.toString() : null;
   } catch (err) {
     console.error('Token inválido:', err);
     return null;
   }
 }
+
 
 
 loadUserPatches(); // ✅ Cargar parches apenas cargue la página
