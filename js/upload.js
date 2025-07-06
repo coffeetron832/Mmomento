@@ -81,32 +81,40 @@ if (welcomeBackMessage) {
   // 👁 Mostrar selector de parches
 const visibilitySelect = document.getElementById('visibility');
 const patchSelectorContainer = document.getElementById('patchSelectorContainer');
+const selector = document.getElementById('circleSelector');
 const sectionButtons = document.getElementById('section-buttons');
 const selectedSectionInput = document.getElementById('selected-section');
 
-if (visibilitySelect && patchSelectorContainer) {
+if (visibilitySelect && patchSelectorContainer && selector) {
   visibilitySelect.addEventListener('change', () => {
     const vis = visibilitySelect.value;
 
     if (vis === 'patch') {
+      // 1️⃣ Mostrar parche, ocultar secciones
       patchSelectorContainer.style.display = 'block';
       sectionButtons.style.display = 'none';
-      selectedSectionInput.value = ''; // ⚠️ limpiar valor sección
+      selectedSectionInput.value = '';
+
+      // 2️⃣ Quitar required para que no interfiera
+      selector.removeAttribute('required');
+
       loadUserPatches();
     } else {
+      // 1️⃣ Ocultar parche, mostrar secciones
       patchSelectorContainer.style.display = 'none';
       sectionButtons.style.display = 'block';
+
+      // 2️⃣ Restaurar required
+      selector.setAttribute('required', 'true');
     }
   });
 
-  // ✅ Si al cargar ya está seleccionado "patch"
+  // Estado inicial si ya venía seleccionado
   if (visibilitySelect.value === 'patch') {
-    patchSelectorContainer.style.display = 'block';
-    sectionButtons.style.display = 'none';
-    selectedSectionInput.value = '';
-    loadUserPatches();
+    visibilitySelect.dispatchEvent(new Event('change'));
   }
 }
+
 
 
 
@@ -171,35 +179,45 @@ if (!fileInput || !fileInput.files.length) {
 
 // Creamos el FormData
 const formData = new FormData(form);
+// after: const formData = new FormData(form);
 const visibilityValue = formData.get('visibility');
 
 if (visibilityValue === 'patch') {
+  // 1️⃣ El selector ya existe en el DOM
   const patchContainer = document.getElementById('patchSelectorContainer');
-  const selector = patchContainer?.querySelector('select[name="patchId"]');
+  if (!patchContainer || patchContainer.style.display === 'none') {
+    alert('No se encontró el selector de parches');
+    return;
+  }
 
+  // 2️⃣ Buscar el <select id="circleSelector">
+  const selector = document.getElementById('circleSelector');
   if (!selector) {
     alert('No se encontró el selector de parches');
     return;
   }
 
+  // 3️⃣ Valida que tenga valor (no solo placeholder)
   const selectedPatch = selector.value;
   if (!selectedPatch) {
     alert('Selecciona un parche para compartir');
     return;
   }
 
-  // 👇 Reemplazamos sección por parche dinámico
-  formData.set('section', `patch:${selectedPatch}`);
+  // 4️⃣ Ajusta FormData
   formData.set('patchId', selectedPatch);
+  formData.set('section', `patch:${selectedPatch}`);
+
 } else {
-  const sectionInput = document.getElementById('selected-section');
-  if (!sectionInput.value) {
+  // validación normal de sección creativa
+  const sectionValue = selectedSectionInput.value;
+  if (!sectionValue) {
     alert('Por favor selecciona una categoría emocional');
     return;
   }
-
-  formData.set('section', sectionInput.value);
+  formData.set('section', sectionValue);
 }
+
 
 
 
