@@ -7,6 +7,7 @@ let currentSectionFilter = 'all'; // ✅ Sección activa por defecto
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
+  const circleContainer = document.getElementById('patchSelectorContainer');
   const imagesContainer = document.getElementById("imagesContainer");
   const imageActionMessage = document.getElementById("imageActionMessage");
   
