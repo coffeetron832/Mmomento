@@ -78,20 +78,28 @@ if (welcomeBackMessage) {
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
 
-  // 👁 Mostrar selector de círculos
-  const visibilitySelect = document.getElementById('visibility');
-  const circleContainer = document.getElementById('circleSelectorContainer');
-  if (visibilitySelect && circleContainer) {
-    visibilitySelect.addEventListener('change', () => {
-      if (visibilitySelect.value === 'patch') {
-        circleContainer.style.display = 'block';
-        console.log('🧪 Cambiaste a visibilidad PATCH. Mostrando selector de parche...');
-        loadUserCircles();
-      } else {
-        circleContainer.style.display = 'none';
-      }
-    });
+  // 👁 Mostrar selector de parches
+const visibilitySelect = document.getElementById('visibility');
+const patchSelectorContainer = document.getElementById('circleSelectorContainer');
+
+if (visibilitySelect && patchSelectorContainer) {
+  visibilitySelect.addEventListener('change', () => {
+    if (visibilitySelect.value === 'patch') {
+      patchSelectorContainer.style.display = 'block';
+      console.log('🧪 Cambiaste a visibilidad PATCH. Mostrando selector de parche...');
+      loadUserPatches();
+    } else {
+      patchSelectorContainer.style.display = 'none';
+    }
+  });
+
+  // ✅ Mostrar el selector si ya está seleccionado PATCH al cargar
+  if (visibilitySelect.value === 'patch') {
+    patchSelectorContainer.style.display = 'block';
+    loadUserPatches();
   }
+}
+
 
   // 🪄 Botón subir imagen
   const toggleUploadBtn = document.getElementById('toggleUploadBtn');
