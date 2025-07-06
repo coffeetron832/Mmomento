@@ -714,7 +714,7 @@ async function loadUserCircles() {
   if (!selector) return;
 
   try {
-    const res = await fetch(`${API_URL}/api/patches/my-patches`, {
+    const res = await fetch(`${API_URL}/api/patches/`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
