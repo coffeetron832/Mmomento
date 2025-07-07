@@ -102,7 +102,7 @@
 
   .logo-butterfly-inline {
   width: 64px;                  /* 🔽 Icono más compacto */
-  margin: 0 0 0 4px;            /* Ajusta margen izquierdo */
+  margin: 0 0 0 6px;            /* Ajusta margen izquierdo */
   vertical-align: middle;       /* Alinea con el texto */
 }
 
@@ -290,54 +290,6 @@
       gap: 0.5rem;
     }
   }
-
-#floating-images-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 20;
-  overflow: hidden;
-}
-
-.floating-img {
-  position: absolute;
-  width: 80px;
-  opacity: 0;
-  transform: translateY(0) scale(1);
-  will-change: transform, opacity;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  border-radius: 16px;
-  user-select: none;
-  transition: opacity 0.8s ease;
-  animation-name: floatUpProfessional;
-  animation-fill-mode: forwards;
-}
-
-@keyframes floatUpProfessional {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0.95);
-  }
-  10% {
-    opacity: 1;
-  }
-  40% {
-    transform: translate(10px, -30vh) scale(1);
-  }
-  70% {
-    transform: translate(-10px, -70vh) scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(0px, -120vh) scale(1.1);
-  }
-}
-
 </style>
 </head>
 <body>
@@ -364,9 +316,6 @@
 
   <!-- Header -->
   <header class="global-header"></header>
-
-  
-
   <!-- Contenido principal -->
   <div class="content-wrapper">
   <div class="main-text">
@@ -385,14 +334,8 @@
   <a href="login.html" class="footer-link">Iniciar sesión</a>
   <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
   <a href="condiciones.html" class="footer-link">Términos y Condiciones</a>
-  
-  
 </footer>
-
-<div id="floating-images-container"></div>
-
-
-
+  
  <script>
   document.addEventListener('DOMContentLoaded', () => {
     // ✅ Mostrar mensaje de logout
@@ -412,41 +355,7 @@
       }, 100);
       localStorage.removeItem('logoutMessage');
     }
-
-  const container = document.getElementById('floating-images-container');
-  const imageSources = ['nube1.jpg', 'nube2.jpg', 'nube3.jpg', 'nube4.jpg', 'nube5.jpg'];
-
-  function launchFloatingImage() {
-  // Limita a máximo 4 imágenes visibles al mismo tiempo
-  const currentImages = document.querySelectorAll('.floating-img');
-  if (currentImages.length >= 4) return;
-  
-  const img = document.createElement('img');
-  img.src = imageSources[Math.floor(Math.random() * imageSources.length)];
-  img.className = 'floating-img';
-
-  const posX = Math.random() * (window.innerWidth - 100);
-  img.style.left = `${posX}px`;
-  img.style.bottom = '-100px';
-
-  const duration = 9 + Math.random() * 4;
-  img.style.animationDuration = `${duration}s`;
-
-  const delay = Math.random() * 1.5;
-  img.style.animationDelay = `${delay}s`;
-
-  container.appendChild(img);
-
-  setTimeout(() => {
-    img.remove();
-  }, (duration + delay + 1) * 1000);
-}
-
-
-  // Crear uno cada 1.4 segundos
-  setInterval(launchFloatingImage, 4000); // cada 4 segundos
-});
-
+    
   // 🌙 Fade transitions entre páginas
   function applyFadeIn() {
     document.documentElement.classList.add('fade-in');
