@@ -48,40 +48,55 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.getElementById("registerForm");
 
   if (loginForm) {
-    const emailInput = loginForm.querySelector("input[type='email']");
-    const passwordInput = loginForm.querySelector("input[type='password']");
+  const emailInput = loginForm.querySelector("input[type='email']");
+  const passwordInput = loginForm.querySelector("input[type='password']");
+  const progressBar = document.getElementById("progressBar");
 
-    if (!emailInput || !passwordInput) {
-      console.warn("⛔ Campos de login no encontrados.");
-      return;
+  if (!emailInput || !passwordInput) {
+    console.warn("⛔ Campos de login no encontrados.");
+    return;
+  }
+
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // 🔵 Mostrar barra de carga inicial
+    if (progressBar) {
+      progressBar.style.width = "0";
+      setTimeout(() => { progressBar.style.width = "35%"; }, 50);
     }
 
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+    try {
+      const result = await apiRequest(`${API_BASE_URL}/api/auth/login`, "POST", { email, password });
 
-      try {
-        const result = await apiRequest(`${API_BASE_URL}/api/auth/login`, "POST", { email, password });
+      if (progressBar) progressBar.style.width = "100%";
 
-        if (result.token) {
-          localStorage.clear();
-          localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user));
+      if (result.token) {
+        localStorage.clear();
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("user", JSON.stringify(result.user));
 
-          const userName = result.user.username || result.user.name || 'viajero';
-          localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${userName}! Nos alegra verte de nuevo 💫`);
+        const userName = result.user.username || result.user.name || 'viajero';
+        localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${userName}! Nos alegra verte de nuevo 💫`);
 
+        // Esperar para mostrar la barra completa
+        setTimeout(() => {
           window.location.href = "upload.html";
-        } else {
-          showMessage(result.error || result.message || "Error al iniciar sesión", 'error');
-        }
-      } catch (err) {
-        showMessage("No se pudo iniciar sesión. Intenta más tarde.", 'error');
+        }, 300);
+      } else {
+        showMessage(result.error || result.message || "Error al iniciar sesión", 'error');
+        if (progressBar) setTimeout(() => { progressBar.style.width = "0"; }, 400);
       }
-    });
-  }
+    } catch (err) {
+      showMessage("No se pudo iniciar sesión. Intenta más tarde.", 'error');
+      if (progressBar) setTimeout(() => { progressBar.style.width = "0"; }, 400);
+    }
+  });
+}
+
 
   if (registerForm) {
     const nameInput = document.getElementById("name");
