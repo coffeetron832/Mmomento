@@ -23,7 +23,7 @@
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #000; /* fondo negro puro */
+  background-color: #282373; /* fondo negro puro */
   color: #f5f5f5; /* texto claro */
   transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
