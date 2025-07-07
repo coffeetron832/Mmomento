@@ -6,111 +6,158 @@
   <title>Crear Parche | Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary-color: #ff6f61;
-      --primary-hover: #e55a4f;
-      --input-bg: #1a1a1a;
-      --input-border: #444;
-      --text-light: #f5f5f5;
-      --text-muted: #aaa;
-      --bg-dark: #000;
-    }
+  :root {
+    --primary-color: #ff6f61;
+    --primary-hover: #e55a4f;
+    --bg-dark: #000;
+    --input-bg: #111;
+    --border-color: #2a2a2a;
+    --text-light: #f5f5f5;
+    --text-muted: #aaa;
+    --card-bg: #151515;
+    --radius: 10px;
+  }
 
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    margin: 0;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h1, h2, h3 {
+    margin: 1.5rem 0 1rem;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: var(--text-muted);
+  }
+
+  form {
+    margin-bottom: 1.8rem;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    background-color: var(--input-bg);
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+
+  input[type="text"]::placeholder {
+    color: var(--text-muted);
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  button {
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: var(--primary-hover);
+  }
+
+  #patchMessage {
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+    color: #4ade80; /* verde éxito */
+  }
+
+  #searchResults {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: var(--card-bg);
+  }
+
+  #searchResults li {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #222;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  #searchResults li:hover {
+    background-color: #222;
+  }
+
+  ul {
+    padding-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  li {
+    margin-bottom: 0.6rem;
+    padding: 0.5rem 0.8rem;
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+  }
+
+  /* Mobile improvements */
+  @media (max-width: 480px) {
     body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 2rem 1rem;
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      transition: background-color 0.3s ease, color 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      padding: 1.5rem 1rem;
     }
 
-    h1, h2, h3 {
-      color: var(--text-light);
-      margin-top: 2rem;
+    h1 {
+      font-size: 1.6rem;
     }
 
-    form {
-      margin-bottom: 2rem;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      background-color: var(--input-bg);
-      color: var(--text-light);
-      border: 1px solid var(--input-border);
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      box-sizing: border-box;
-    }
-
-    input[type="text"]::placeholder {
-      color: var(--text-muted);
+    h2 {
+      font-size: 1.2rem;
     }
 
     button {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      width: 100%;
     }
-
-    button:hover {
-      background-color: var(--primary-hover);
-    }
-
-    #patchMessage {
-      margin-bottom: 1.5rem;
-      font-weight: bold;
-      color: #36d399; /* Verde éxito */
-    }
-
-    #searchResults {
-      list-style: none;
-      padding: 0;
-      border: 1px solid var(--input-border);
-      border-radius: 8px;
-      max-height: 200px;
-      overflow-y: auto;
-      background-color: var(--input-bg);
-      margin-top: 1rem;
-    }
-
-    #searchResults li {
-      padding: 0.75rem;
-      border-bottom: 1px solid #333;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    #searchResults li:hover {
-      background-color: #222;
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-    }
-
-    li {
-      margin-bottom: 0.5rem;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <h1>Crear Círculo</h1>
+  <h1>Arma tu parche</h1>
 
   <form id="createPatchForm">
     <input
