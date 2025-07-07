@@ -296,12 +296,14 @@ function applyFilter() {
   });
 
   const sectionTitles = {
-    caos_bonito: '❤️‍🔥 Caos bonito',
-    zona_cero: '🛤️ Zona cer0',
-    emocional_404: '🧨 404 Emocional',
-    nunca_antes_visto: '🤐 Nunca antes visto',
-    sin_seccion: '📦 Sin sección'
-  };
+  caos_bonito: '❤️‍🔥 Caos bonito',
+  zona_cero: '🛤️ Zona cer0',
+  emocional_404: '🧨 404 Emocional',
+  nunca_antes_visto: '🤐 Nunca antes visto',
+  sin_seccion: '📦 Sin sección',
+  patch: '🔰 Parches compartidos' // 👈 AÑADE ESTA LÍNEA
+};
+
 
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const currentUsername = storedUser?.username || null;
