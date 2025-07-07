@@ -25,21 +25,38 @@
     --btn-secondary-text: #fff;
   }
 
-  body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-image: url('fondo-soulprint.png');
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('fondo-soulprint.png'); /* Podés usar WebP si lo optimizás */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* evita repintados innecesarios */
-  will-change: transform;       /* mejora rendimiento en movimiento */
+  background-attachment: fixed;
+  z-index: -1; /* ✅ Se queda en el fondo */
+  pointer-events: none;
+  will-change: transform;
+  opacity: 1;
+}
+
+    
+  body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: none; /* ✅ Quitamos imagen directa */
   color: #fff;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative; /* ✅ Necesario para que el pseudo-elemento funcione */
+  z-index: 0;
 }
+
 
 .join-btn,
 .login-btn {
