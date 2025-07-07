@@ -1331,19 +1331,6 @@ if (visibilitySelect.value === 'patch') {
 const sectionButtons = document.getElementById('section-buttons');
 const sectionInput = document.getElementById('selected-section');
 
-visibilitySelect.addEventListener('change', async () => {
-  if (visibilitySelect.value === 'patch') {
-    // Ocultar secciones y limpiar input
-    sectionButtons.style.display = 'none';
-    sectionInput.value = '';
-
-    // Mostrar parches
-    patchSelectorContainer.style.display = 'block';
-    patchSelectorContainer.innerHTML = `
-      <p style="margin-bottom: 0.5rem;">
-        Selecciona los parches con los que quieres compartir:
-      </p>
-    `;
 
     // (Sigue tu lógica de cargar parches...)
     try {
