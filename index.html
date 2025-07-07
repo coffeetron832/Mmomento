@@ -32,6 +32,8 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed; /* evita repintados innecesarios */
+  will-change: transform;       /* mejora rendimiento en movimiento */
   color: #fff;
   overflow-x: hidden;
   display: flex;
