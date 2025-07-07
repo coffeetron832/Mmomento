@@ -327,7 +327,7 @@ function applyFilter() {
       card.className = 'image-card tilt-card';
 
       const img = document.createElement('img');
-      img.src = image.imageUrl || image.url || '';
+      img.src = image.imageUrl?.trim() || '';
       img.alt = image.description || 'imagen subida';
       img.loading = 'lazy';
 
