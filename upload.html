@@ -1048,6 +1048,13 @@ h2.section-title {
   }
 }
 
+.sidebar-btn img,
+.close-menu-btn img {
+  width: 24px;
+  height: 24px;
+  filter: invert(100%); /* para íconos oscuros en fondo oscuro */
+}
+
 
   </style>
 </head>  
@@ -1186,20 +1193,24 @@ h2.section-title {
   <button id="exploreBtn" class="sidebar-btn" aria-label="Explorar emociones">✨</button>
   <div class="tooltip-container">
   <button id="toggleUploadBtn" class="sidebar-btn" aria-label="Subir imagen">
-    <i data-lucide="image-up"></i>
-  </button>
+  <img src="assets/icons/image-up.png" alt="Subir imagen" width="24" height="24">
+</button>
   <div class="tooltip-text">
     📸 Sube algo que solo tú entiendas.<br>No tiene que tener sentido.<br>Solo que diga algo.<br>Aunque sea sin decirlo.
   </div>
 </div>
-  <button id="menuToggleBtn" class="sidebar-btn" aria-label="Abrir menú"><i data-lucide="menu"></i></button>
+  <button id="menuToggleBtn" class="sidebar-btn" aria-label="Abrir menú">
+  <img src="assets/icons/menu.png" alt="Menú" width="24" height="24">
+</button>
+
   
   <!-- Contenedor relativo para el botón y su dropdown -->
   <div id="notificationsContainer" style="position: relative;">
     <button id="notifBtn" class="sidebar-btn" aria-label="Ver notificaciones">
-      <i data-lucide="bell"></i>
-      <span id="notifCount">0</span>
-    </button>
+  <img src="assets/icons/bell.png" alt="Notificaciones" width="24" height="24">
+  <span id="notifCount">0</span>
+</button>
+
 
     <!-- 🔽 Dropdown va aquí mismo -->
     <div id="notifDropdown">
@@ -1254,8 +1265,9 @@ h2.section-title {
     <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
       <!-- Dentro de .menu-content -->
      <button id="closeMenuBtn" class="close-menu-btn" aria-label="Cerrar menú">
-  <i data-lucide="x"></i>
+  <img src="assets/icons/x.png" alt="Cerrar" width="24" height="24">
 </button>
+
 
       
   <div class="menu-content">
