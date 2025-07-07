@@ -918,12 +918,33 @@ h2.section-title {
   transform: scale(1.1);
 }
 
-/* Oculta barra lateral en móviles */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .sidebar-buttons {
-    display: none;
+    flex-direction: row;
+    bottom: 1rem;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    position: fixed;
+    z-index: 10000;
+  }
+
+  .sidebar-btn {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.3rem;
+  }
+
+  .tooltip-text {
+    display: none; /* Oculta tooltips en móviles para no saturar */
   }
 }
+
 
     body.upload-page {
   padding-top: 5px;
