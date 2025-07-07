@@ -1,26 +1,18 @@
 const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
 
-// Función auxiliar para hacer peticiones al backend con fetch
+// Función para peticiones con fetch
 async function apiRequest(endpoint, method = 'GET', body = null) {
   const token = localStorage.getItem('token');
   const headers = {
     'Content-Type': 'application/json',
   };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
+  if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const options = {
-    method,
-    headers,
-  };
-  if (body) {
-    options.body = JSON.stringify(body);
-  }
+  const options = { method, headers };
+  if (body) options.body = JSON.stringify(body);
 
   try {
     const response = await fetch(endpoint, options);
-
     const contentType = response.headers.get("content-type");
     const isJson = contentType && contentType.includes("application/json");
 
@@ -36,19 +28,18 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
   }
 }
 
-// Función para mostrar mensajes en el contenedor con estilos
+// Función para mostrar mensajes
 function showMessage(message, type = 'success') {
-  const messageBox = document.getElementById('messageBox');
-  if (!messageBox) return;
+  const box = document.getElementById('messageBox');
+  if (!box) return;
 
-  messageBox.textContent = message;
-  messageBox.className = ''; // limpia clases
-  messageBox.classList.add(type);
-  messageBox.style.display = 'block';
+  box.textContent = message;
+  box.className = ''; // Reset
+  box.classList.add(type);
+  box.style.display = 'block';
 
-  // Opcional: que el mensaje desaparezca después de 5 segundos
   setTimeout(() => {
-    messageBox.style.display = 'none';
+    box.style.display = 'none';
   }, 5000);
 }
 
@@ -57,10 +48,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.getElementById("registerForm");
 
   if (loginForm) {
+    const emailInput = loginForm.querySelector("input[type='email']");
+    const passwordInput = loginForm.querySelector("input[type='password']");
+
+    if (!emailInput || !passwordInput) {
+      console.warn("⛔ Campos de login no encontrados.");
+      return;
+    }
+
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
       try {
         const result = await apiRequest(`${API_BASE_URL}/api/auth/login`, "POST", { email, password });
@@ -69,37 +69,36 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
-          
-          // ✅ Guarda mensaje en localStorage para mostrar en upload.html
-  const userName = result.user.username || result.user.name || 'viajero';
-  localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${userName}! Nos alegra verte de nuevo 💫`);
 
-  // ✅ Redirige a la página donde se mostrará el mensaje
-  window.location.href = "upload.html";
-          
-          // Redirigir después de mostrar mensaje (puedes cambiar el tiempo aquí)
-          setTimeout(() => {
-            window.location.href = "upload.html";
-          }, 1800);
+          const userName = result.user.username || result.user.name || 'viajero';
+          localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${userName}! Nos alegra verte de nuevo 💫`);
+
+          window.location.href = "upload.html";
         } else {
-          alert(result.error || result.message || "Error al iniciar sesión");
           showMessage(result.error || result.message || "Error al iniciar sesión", 'error');
-          console.error("⚠️ Error en login:", result);
         }
       } catch (err) {
-        alert("No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.");
-        showMessage("No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.", 'error');
-        console.error("❌ Error en fetch (login):", err);
+        showMessage("No se pudo iniciar sesión. Intenta más tarde.", 'error');
       }
     });
   }
 
   if (registerForm) {
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
+    if (!nameInput || !emailInput || !passwordInput) {
+      console.warn("⛔ Campos de registro no encontrados.");
+      return;
+    }
+
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
       try {
         const result = await apiRequest(`${API_BASE_URL}/api/users/register`, "POST", { name, email, password });
@@ -108,21 +107,15 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.clear();
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
-          alert(`¡Bienvenido, ${result.user.username}! Tu aventura empieza aquí ✨`);
-          window.location.href = "upload.html";
           showMessage("Registro exitoso", 'success');
           setTimeout(() => {
             window.location.href = "upload.html";
           }, 1800);
         } else {
-          alert(result.error || result.message || "Error al registrarse");
           showMessage(result.error || result.message || "Error al registrarse", 'error');
-          console.error("⚠️ Error en registro:", result);
         }
       } catch (err) {
-        alert("No se pudo registrar. Intenta más tarde.");
         showMessage("No se pudo registrar. Intenta más tarde.", 'error');
-        console.error("❌ Error en fetch (registro):", err);
       }
     });
   }
