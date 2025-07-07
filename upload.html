@@ -1275,65 +1275,61 @@ document.addEventListener('DOMContentLoaded', () => {
 const visibilitySelect = document.getElementById('visibility');
 const patchSelectorContainer = document.getElementById('patchSelectorContainer');
 
-// 2️⃣ Listener para cambio de visibilidad
 visibilitySelect.addEventListener('change', async () => {
-  if (visibilitySelect.value === 'patch') {
-    // Mostrar y limpiar el contenedor
-    patchSelectorContainer.style.display = 'block';
-    patchSelectorContainer.innerHTML = `
-      <p style="margin-bottom: 0.5rem;">
-        Selecciona los parches con los que quieres compartir:
-      </p>
-    `;
+  const isPatch = visibilitySelect.value === 'patch';
 
-    // 3️⃣ Carga los parches del backend
-    try {
-      const res = await fetch(
-        `${API_URL}/api/patches`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const patches = await res.json();
-      if (!Array.isArray(patches)) throw new Error('No se recibieron parches válidos');
+  // Mostrar u ocultar secciones
+  const sectionButtons = document.getElementById('section-buttons');
+  const sectionInput = document.getElementById('selected-section');
 
-      // 4️⃣ Renderiza un checkbox por parche
-      patches.forEach(patch => {
-        const label = document.createElement('label');
-        label.style.display = 'block';
-        label.style.marginBottom = '0.25rem';
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.name = 'patches';
-        checkbox.value = patch._id;
-        
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(' ' + patch.name));
-        patchSelectorContainer.appendChild(label);
-      });
-
-    } catch (err) {
-      console.error('Error al cargar parches:', err);
-      patchSelectorContainer.innerHTML = '<p style="color:red;">Error al cargar parches.</p>';
-    }
-
+  if (isPatch) {
+    sectionButtons.style.display = 'none';
+    sectionInput.value = ''; // Limpiar valor seleccionado
   } else {
-    // Ocultar y limpiar si no es 'patch'
-    patchSelectorContainer.style.display = 'none';
-    patchSelectorContainer.innerHTML = '';
+    sectionButtons.style.display = 'block';
+  }
+
+  // Mostrar u ocultar selector de parches
+  patchSelectorContainer.style.display = isPatch ? 'block' : 'none';
+  patchSelectorContainer.innerHTML = isPatch
+    ? `<p style="margin-bottom: 0.5rem;">Selecciona los parches con los que quieres compartir:</p>`
+    : '';
+
+  if (!isPatch) return;
+
+  try {
+    const res = await fetch(`${API_URL}/api/patches`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const patches = await res.json();
+
+    if (!Array.isArray(patches)) throw new Error('No se recibieron parches válidos');
+
+    patches.forEach(patch => {
+      const label = document.createElement('label');
+      label.style.display = 'block';
+      label.style.marginBottom = '0.25rem';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.name = 'patches';
+      checkbox.value = patch._id;
+
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode(' ' + patch.name));
+      patchSelectorContainer.appendChild(label);
+    });
+
+  } catch (err) {
+    console.error('Error al cargar parches:', err);
+    patchSelectorContainer.innerHTML = '<p style="color:red;">Error al cargar parches.</p>';
   }
 });
 
-// 5️⃣ (Opcional) Si quieres que el selector aparezca si 'patch' ya estaba seleccionado al cargar:
-if (visibilitySelect.value === 'patch') {
-  visibilitySelect.dispatchEvent(new Event('change'));
-}
 
 const sectionButtons = document.getElementById('section-buttons');
 const sectionInput = document.getElementById('selected-section');
 
-
-   
-  
   // 🔹 Secciones
   buttons.forEach(button => {
     button.addEventListener('click', () => {
