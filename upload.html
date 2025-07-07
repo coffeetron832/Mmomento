@@ -224,57 +224,49 @@
 
   <!-- Aquí, antes de cerrar body -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const menuToggleBtn = document.getElementById('menuToggleBtn');
-      const menuOverlay   = document.getElementById('menuOverlay');
-      
-      menuToggleBtn.addEventListener('click', () => {
-        // Solo toggle de 'show'
-        const isVisible = menuOverlay.classList.toggle('show');
-        menuOverlay.setAttribute('aria-hidden', (!isVisible).toString());
-      });
-      
-      const closeMenuBtn = document.getElementById('closeMenuBtn');
-closeMenuBtn.addEventListener('click', () => {
-  menuOverlay.classList.remove('show');
-  menuOverlay.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('menu-open');
-});
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const menuOverlay   = document.getElementById('menuOverlay');
+    
+    menuToggleBtn.addEventListener('click', () => {
+      const isVisible = menuOverlay.classList.toggle('show');
+      menuOverlay.setAttribute('aria-hidden', (!isVisible).toString());
+    });
 
-     /* ——— Lógica para “Mi Soulprint” ——— */
-  const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
-  let userObj = null;
-  try {
-    userObj = JSON.parse(localStorage.getItem('user'));
-  } catch {}
-  if (userObj && userObj.username) {
-    // Si estás logueado, apuntamos al soulprint de tu usuario
-    soulprintMenuBtn.setAttribute(
-      'href',
-      `soulprint.html?user=${encodeURIComponent(userObj.username)}`
-    );
-  } else {
-    // Si NO, mostramos alerta y vamos al login al click
-    soulprintMenuBtn.addEventListener('click', e => {
-      e.preventDefault();
-      alert('Debes iniciar sesión para ver tu Soulprint');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    closeMenuBtn.addEventListener('click', () => {
+      menuOverlay.classList.remove('show');
+      menuOverlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('menu-open');
+    });
+
+    // ——— Lógica para “Mi Soulprint” ———
+    const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
+    let userObj = null;
+    try {
+      userObj = JSON.parse(localStorage.getItem('user'));
+    } catch {}
+
+    if (userObj && userObj.username) {
+      soulprintMenuBtn.setAttribute(
+        'href',
+        `soulprint.html?user=${encodeURIComponent(userObj.username)}`
+      );
+    } else {
+      soulprintMenuBtn.addEventListener('click', e => {
+        e.preventDefault();
+        alert('Debes iniciar sesión para ver tu Soulprint');
+        window.location.href = 'index.html';
+      });
+    }
+
+    // Cerrar sesión
+    const logoutMenuBtn = document.getElementById('logoutMenuBtn');
+    logoutMenuBtn.addEventListener('click', () => {
+      localStorage.clear();
       window.location.href = 'index.html';
     });
-  }
-
-  /* ——— (opcional) listener de Cerrar sesión ——— */
-  const logoutMenuBtn = document.getElementById('logoutMenuBtn');
-  logoutMenuBtn.addEventListener('click', () => {
-    localStorage.clear();
-    window.location.href = 'index.html';
   });
-// ✅ Lucide icons
-    lucide.createIcons();
-  });
-  </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  lucide.createIcons();
 </script>
 </body>
 </html>
