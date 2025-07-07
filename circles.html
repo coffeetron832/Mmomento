@@ -5,49 +5,107 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Crear Parche | Momento</title>
   <style>
+    <style>
+    :root {
+      --primary-color: #ff6f61;
+      --primary-hover: #e55a4f;
+      --input-bg: #1a1a1a;
+      --input-border: #444;
+      --text-light: #f5f5f5;
+      --text-muted: #aaa;
+      --bg-dark: #000;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 2rem 1rem;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       max-width: 600px;
-      margin: 20px auto;
-      padding: 0 15px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    h1, h2 {
-      color: #333;
+
+    h1, h2, h3 {
+      color: var(--text-light);
+      margin-top: 2rem;
     }
+
     form {
-      margin-bottom: 30px;
+      margin-bottom: 2rem;
     }
+
     input[type="text"] {
       width: 100%;
-      padding: 8px;
+      padding: 0.75rem;
       font-size: 1rem;
-      margin-bottom: 10px;
+      background-color: var(--input-bg);
+      color: var(--text-light);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      margin-bottom: 1rem;
       box-sizing: border-box;
     }
+
+    input[type="text"]::placeholder {
+      color: var(--text-muted);
+    }
+
     button {
-      padding: 10px 20px;
+      padding: 0.75rem 1.5rem;
       font-size: 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
     #patchMessage {
-      margin-bottom: 20px;
+      margin-bottom: 1.5rem;
       font-weight: bold;
-      color: green;
+      color: #36d399; /* Verde éxito */
     }
+
     #searchResults {
       list-style: none;
-      padding-left: 0;
-      border: 1px solid #ccc;
+      padding: 0;
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
       max-height: 200px;
       overflow-y: auto;
+      background-color: var(--input-bg);
+      margin-top: 1rem;
     }
+
     #searchResults li {
-      padding: 8px;
-      border-bottom: 1px solid #eee;
+      padding: 0.75rem;
+      border-bottom: 1px solid #333;
       cursor: pointer;
+      transition: background-color 0.2s;
     }
+
     #searchResults li:hover {
-      background-color: #f0f0f0;
+      background-color: #222;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
     }
   </style>
 </head>
