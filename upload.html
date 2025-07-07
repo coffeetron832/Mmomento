@@ -1332,43 +1332,7 @@ const sectionButtons = document.getElementById('section-buttons');
 const sectionInput = document.getElementById('selected-section');
 
 
-    // (Sigue tu lógica de cargar parches...)
-    try {
-      const res = await fetch(
-        `${API_URL}/api/patches`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const patches = await res.json();
-      if (!Array.isArray(patches)) throw new Error('No se recibieron parches válidos');
-
-      patches.forEach(patch => {
-        const label = document.createElement('label');
-        label.style.display = 'block';
-        label.style.marginBottom = '0.25rem';
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.name = 'patches';
-        checkbox.value = patch._id;
-        
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(' ' + patch.name));
-        patchSelectorContainer.appendChild(label);
-      });
-
-    } catch (err) {
-      console.error('Error al cargar parches:', err);
-      patchSelectorContainer.innerHTML = '<p style="color:red;">Error al cargar parches.</p>';
-    }
-
-  } else {
-    // Mostrar secciones
-    sectionButtons.style.display = 'block';
-    patchSelectorContainer.style.display = 'none';
-    patchSelectorContainer.innerHTML = '';
-  }
-});
-
+   
   
   // 🔹 Secciones
   buttons.forEach(button => {
