@@ -185,29 +185,47 @@ body::before {
   }
 
   
-  .footer-compact {
-  background: rgba(0, 0, 0, 0.7);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.4rem 0.6rem;       /* 🔽 Reduce padding vertical y lateral */
+ .footer-curved {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 32px 32px 0 0;
+  padding: 1rem 1.2rem;
   display: flex;
   justify-content: center;
-  align-items: center;         /* ✅ Centra todo en el eje vertical */
-  gap: 0.4rem;                  /* 🔽 Menos separación entre elementos */
-  font-size: 0.85rem;
+  gap: 1.2rem;
+  z-index: 2000;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+  text-align: center;
 }
 
-  .footer-compact .footer-link {
-    color: #bbb;
-    text-decoration: none;
-    margin: 0 4px;
-    transition: color 0.3s ease;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-  }
+.footer-curved .footer-link {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
 
-  .footer-compact .footer-link:hover {
-    color: #fff;
-    text-decoration: underline;
+.footer-curved .footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .footer-curved {
+    flex-direction: column;
+    padding: 0.8rem;
+    gap: 0.4rem;
+    max-width: 90%;
   }
+}
+
 
     .tooltip-container {
   position: relative;
@@ -404,7 +422,7 @@ body::before {
 
 
 
-<footer class="footer-compact">
+<footer class="footer-curved">
   <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
   <a href="condiciones.html" class="footer-link">Términos y Condiciones</a>
 </footer>
