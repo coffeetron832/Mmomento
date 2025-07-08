@@ -311,6 +311,26 @@ body::before {
 </style>
 </head>
 <body>
+
+  <!-- Barra de progreso al inicio de sesión -->
+<div id="progressBarContainer" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 4px;
+  background: transparent;
+  z-index: 2000;
+  overflow: hidden;
+  pointer-events: none;
+">
+  <div id="progressBar" style="
+    width: 0;
+    height: 100%;
+    background: #4f46e5;
+    transition: width 0.3s ease;
+  "></div>
+</div>
+
   
   <div id="logoutMessageBox" style="
   display: none;
