@@ -60,6 +60,13 @@
       cursor: pointer;
     }
 
+    .formulario .doodle-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
     .preview {
       display: none;
       text-align: center;
@@ -148,6 +155,11 @@
 
     <input type="text" id="contenido" placeholder="Escribe algo..." />
     <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
+    <div class="doodle-controls" id="doodleControls" style="display:none;">
+      <label>Color:</label>
+      <input type="color" id="colorPicker" value="#222222">
+      <button type="button" onclick="limpiarCanvas()">🧼 Borrar doodle</button>
+    </div>
     <canvas id="canvasDoodle" width="300" height="300"></canvas>
 
     <div class="preview" id="preview">
@@ -161,6 +173,18 @@
   <section class="mural" id="mural"></section>
 
   <script>
+    // 🔐 Obtener usuario desde localStorage
+    const usuario = localStorage.getItem('usuarioMomento') || null;
+    if (!usuario) alert('Debes iniciar sesión para usar el mural.');
+
+    // 🕛 Borrar mural si es un nuevo día
+    const hoy = new Date().toDateString();
+    const ultimaVisita = localStorage.getItem('muralFecha');
+    if (ultimaVisita !== hoy) {
+      localStorage.setItem('muralFecha', hoy);
+      document.getElementById('mural').innerHTML = '';
+    }
+
     const tipo = document.getElementById('tipo');
     const contenido = document.getElementById('contenido');
     const imagenInput = document.getElementById('imagenInput');
@@ -169,6 +193,8 @@
     const previewImg = document.getElementById('previewImg');
     const canvas = document.getElementById('canvasDoodle');
     const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+    const doodleControls = document.getElementById('doodleControls');
 
     let drawing = false;
 
@@ -177,6 +203,7 @@
       contenido.style.display = tipoVal === 'imagen' || tipoVal === 'doodle' ? 'none' : 'block';
       imagenInput.style.display = tipoVal === 'imagen' ? 'block' : 'none';
       canvas.style.display = tipoVal === 'doodle' ? 'block' : 'none';
+      doodleControls.style.display = tipoVal === 'doodle' ? 'flex' : 'none';
       preview.style.display = tipoVal === 'imagen' ? 'block' : 'none';
     });
 
@@ -208,16 +235,23 @@
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      ctx.fillStyle = '#222';
+      ctx.fillStyle = colorPicker.value;
       ctx.beginPath();
       ctx.arc(x, y, 2, 0, Math.PI * 2);
       ctx.fill();
     });
 
+    function limpiarCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
     function agregarAlMural() {
+      if (!usuario) return alert('Debes iniciar sesión para aportar.');
+
       const tipoSeleccionado = tipo.value;
       const nuevo = document.createElement('div');
       nuevo.classList.add('mural-item');
+      nuevo.title = `Aporte de: ${usuario}`;
       const { offsetWidth: w, offsetHeight: h } = mural;
       const x = Math.floor(Math.random() * (w - 200));
       const y = Math.floor(Math.random() * (h - 200));
@@ -269,7 +303,7 @@
         img.src = dataURL;
         nuevo.appendChild(img);
         mural.appendChild(nuevo);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        limpiarCanvas();
         return;
       }
 
