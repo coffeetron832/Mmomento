@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Mural del Momento</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fdf6f0;
+      color: #333;
+    }
+
+    header {
+      padding: 2rem 1rem 1rem;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    header p {
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .formulario {
+      padding: 1rem;
+      background-color: #fff3e6;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 500px;
+      margin: 2rem auto;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .formulario input,
+    .formulario textarea,
+    .formulario select,
+    .formulario button {
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .formulario button {
+      background-color: #ff9a9e;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .mural {
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      background: #fff;
+      min-height: 60vh;
+    }
+
+    .mural-item {
+      background: #fffbe0;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      max-width: 200px;
+      text-align: center;
+      font-size: 1.5rem;
+      word-break: break-word;
+    }
+
+    .mural-item img {
+      max-width: 100%;
+      border-radius: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .formulario {
+        margin: 1rem;
+      }
+      .mural {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧱 El Mural del Momento</h1>
+    <p>
+      Un lienzo efímero donde puedes dejar tu huella emocional del día:
+      imágenes, emojis, frases o dibujos. Lo que compartas aquí desaparece a medianoche.
+    </p>
+  </header>
+
+  <section class="formulario">
+    <label>¿Qué quieres dejar hoy?</label>
+    <select id="tipo">
+      <option value="frase">✍️ Frase corta</option>
+      <option value="emoji">😄 Emoji gigante</option>
+      <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
+    </select>
+
+    <input type="text" id="contenido" placeholder="Escribe algo..." />
+    <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
+
+    <button onclick="agregarAlMural()">Compartir en el Mural</button>
+  </section>
+
+  <section class="mural" id="mural">
+    <!-- Aquí se irán agregando los aportes -->
+  </section>
+
+  <script>
+    const tipo = document.getElementById('tipo');
+    const contenido = document.getElementById('contenido');
+    const imagenInput = document.getElementById('imagenInput');
+    const mural = document.getElementById('mural');
+
+    tipo.addEventListener('change', () => {
+      if (tipo.value === 'imagen') {
+        contenido.style.display = 'none';
+        imagenInput.style.display = 'block';
+      } else {
+        contenido.style.display = 'block';
+        imagenInput.style.display = 'none';
+      }
+    });
+
+    function agregarAlMural() {
+      const tipoSeleccionado = tipo.value;
+      const nuevo = document.createElement('div');
+      nuevo.classList.add('mural-item');
+
+      if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
+        if (!contenido.value.trim()) return alert('Escribe algo primero.');
+        nuevo.textContent = contenido.value;
+      } else if (tipoSeleccionado === 'imagen') {
+        const archivo = imagenInput.files[0];
+        if (!archivo) return alert('Selecciona una imagen.');
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = document.createElement('img');
+          img.src = reader.result;
+          nuevo.appendChild(img);
+        };
+        reader.readAsDataURL(archivo);
+      }
+
+      mural.appendChild(nuevo);
+      contenido.value = '';
+      imagenInput.value = '';
+    }
+  </script>
+</body>
+</html>
