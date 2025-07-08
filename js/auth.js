@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (loginForm) {
   const emailInput = loginForm.querySelector("input[type='email']");
   const passwordInput = loginForm.querySelector("input[type='password']");
-  const progressBar = document.getElementById("progressBar");
+  const spinner = document.getElementById("emotionalSpinner");
 
   if (!emailInput || !passwordInput) {
     console.warn("⛔ Campos de login no encontrados.");
@@ -60,19 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // 🔵 Mostrar barra de carga inicial
-    if (progressBar) {
-      progressBar.style.width = "0";
-      setTimeout(() => { progressBar.style.width = "35%"; }, 50);
-    }
+    if (spinner) spinner.style.display = "flex";
 
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
     try {
       const result = await apiRequest(`${API_BASE_URL}/api/auth/login`, "POST", { email, password });
-
-      if (progressBar) progressBar.style.width = "100%";
 
       if (result.token) {
         localStorage.clear();
@@ -82,20 +76,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const userName = result.user.username || result.user.name || 'viajero';
         localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${userName}! Nos alegra verte de nuevo 💫`);
 
-        // Esperar para mostrar la barra completa
+        // ✨ Pequeña pausa para mostrar el spinner
         setTimeout(() => {
           window.location.href = "upload.html";
-        }, 300);
+        }, 700);
       } else {
         showMessage(result.error || result.message || "Error al iniciar sesión", 'error');
-        if (progressBar) setTimeout(() => { progressBar.style.width = "0"; }, 400);
+        if (spinner) spinner.style.display = "none";
       }
     } catch (err) {
       showMessage("No se pudo iniciar sesión. Intenta más tarde.", 'error');
-      if (progressBar) setTimeout(() => { progressBar.style.width = "0"; }, 400);
+      if (spinner) spinner.style.display = "none";
     }
   });
 }
+
 
 
   if (registerForm) {
