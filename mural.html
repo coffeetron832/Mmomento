@@ -72,6 +72,14 @@
       border-radius: 0.5rem;
     }
 
+    #canvasDoodle {
+      display: none;
+      border: 2px dashed #ff9a9e;
+      border-radius: 0.5rem;
+      background-color: white;
+      touch-action: none;
+    }
+
     .mural {
       position: relative;
       padding: 2rem;
@@ -135,10 +143,12 @@
       <option value="frase">✍️ Frase corta</option>
       <option value="emoji">😄 Emoji gigante</option>
       <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
+      <option value="doodle">🎨 Doodle rápido</option>
     </select>
 
     <input type="text" id="contenido" placeholder="Escribe algo..." />
     <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
+    <canvas id="canvasDoodle" width="300" height="300"></canvas>
 
     <div class="preview" id="preview">
       <strong>Vista previa:</strong>
@@ -148,9 +158,7 @@
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
-  <section class="mural" id="mural">
-    <!-- Aquí se irán agregando los aportes -->
-  </section>
+  <section class="mural" id="mural"></section>
 
   <script>
     const tipo = document.getElementById('tipo');
@@ -159,27 +167,24 @@
     const mural = document.getElementById('mural');
     const preview = document.getElementById('preview');
     const previewImg = document.getElementById('previewImg');
+    const canvas = document.getElementById('canvasDoodle');
+    const ctx = canvas.getContext('2d');
+
+    let drawing = false;
 
     tipo.addEventListener('change', () => {
-      if (tipo.value === 'imagen') {
-        contenido.style.display = 'none';
-        imagenInput.style.display = 'block';
-        preview.style.display = 'block';
-      } else {
-        contenido.style.display = 'block';
-        imagenInput.style.display = 'none';
-        preview.style.display = 'none';
-        previewImg.src = '';
-      }
+      const tipoVal = tipo.value;
+      contenido.style.display = tipoVal === 'imagen' || tipoVal === 'doodle' ? 'none' : 'block';
+      imagenInput.style.display = tipoVal === 'imagen' ? 'block' : 'none';
+      canvas.style.display = tipoVal === 'doodle' ? 'block' : 'none';
+      preview.style.display = tipoVal === 'imagen' ? 'block' : 'none';
     });
 
     imagenInput.addEventListener('change', () => {
       const archivo = imagenInput.files[0];
       if (!archivo) return;
-
       const img = new Image();
       const reader = new FileReader();
-
       reader.onload = function(e) {
         img.onload = function() {
           if (img.width > 400 || img.height > 400) {
@@ -192,21 +197,32 @@
         };
         img.src = e.target.result;
       };
-
       reader.readAsDataURL(archivo);
+    });
+
+    canvas.addEventListener('mousedown', () => drawing = true);
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseleave', () => drawing = false);
+    canvas.addEventListener('mousemove', e => {
+      if (!drawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ctx.fillStyle = '#222';
+      ctx.beginPath();
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.fill();
     });
 
     function agregarAlMural() {
       const tipoSeleccionado = tipo.value;
       const nuevo = document.createElement('div');
       nuevo.classList.add('mural-item');
-
       const { offsetWidth: w, offsetHeight: h } = mural;
       const x = Math.floor(Math.random() * (w - 200));
       const y = Math.floor(Math.random() * (h - 200));
       const rot = `${Math.floor(Math.random() * 10 - 5)}deg`;
       const scale = `${0.95 + Math.random() * 0.1}`;
-
       nuevo.style.left = `${x}px`;
       nuevo.style.top = `${y}px`;
       nuevo.style.setProperty('--rot', rot);
@@ -227,7 +243,6 @@
       } else if (tipoSeleccionado === 'imagen') {
         const archivo = imagenInput.files[0];
         if (!archivo) return alert('Selecciona una imagen.');
-
         const reader = new FileReader();
         reader.onload = () => {
           const img = new Image();
@@ -246,6 +261,15 @@
           img.src = reader.result;
         };
         reader.readAsDataURL(archivo);
+        return;
+
+      } else if (tipoSeleccionado === 'doodle') {
+        const dataURL = canvas.toDataURL();
+        const img = new Image();
+        img.src = dataURL;
+        nuevo.appendChild(img);
+        mural.appendChild(nuevo);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         return;
       }
 
