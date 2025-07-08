@@ -60,6 +60,18 @@
       cursor: pointer;
     }
 
+    .preview {
+      display: none;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 100%;
+      max-height: 400px;
+      margin-top: 1rem;
+      border-radius: 0.5rem;
+    }
+
     .mural {
       padding: 2rem;
       display: flex;
@@ -116,6 +128,11 @@
     <input type="text" id="contenido" placeholder="Escribe algo..." />
     <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
 
+    <div class="preview" id="preview">
+      <strong>Vista previa:</strong>
+      <img id="previewImg" src="" alt="Previsualización" />
+    </div>
+
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
@@ -128,15 +145,43 @@
     const contenido = document.getElementById('contenido');
     const imagenInput = document.getElementById('imagenInput');
     const mural = document.getElementById('mural');
+    const preview = document.getElementById('preview');
+    const previewImg = document.getElementById('previewImg');
 
     tipo.addEventListener('change', () => {
       if (tipo.value === 'imagen') {
         contenido.style.display = 'none';
         imagenInput.style.display = 'block';
+        preview.style.display = 'block';
       } else {
         contenido.style.display = 'block';
         imagenInput.style.display = 'none';
+        preview.style.display = 'none';
+        previewImg.src = '';
       }
+    });
+
+    imagenInput.addEventListener('change', () => {
+      const archivo = imagenInput.files[0];
+      if (!archivo) return;
+
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        img.onload = function() {
+          if (img.width > 400 || img.height > 400) {
+            alert('La imagen supera los 400x400px. Por favor, súbela más pequeña.');
+            imagenInput.value = '';
+            previewImg.src = '';
+            return;
+          }
+          previewImg.src = e.target.result;
+        };
+        img.src = e.target.result;
+      };
+
+      reader.readAsDataURL(archivo);
     });
 
     function agregarAlMural() {
@@ -147,22 +192,33 @@
       if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
         if (!contenido.value.trim()) return alert('Escribe algo primero.');
         nuevo.textContent = contenido.value;
+        contenido.value = '';
       } else if (tipoSeleccionado === 'imagen') {
         const archivo = imagenInput.files[0];
         if (!archivo) return alert('Selecciona una imagen.');
 
         const reader = new FileReader();
         reader.onload = () => {
-          const img = document.createElement('img');
+          const img = new Image();
+          img.onload = () => {
+            if (img.width > 400 || img.height > 400) {
+              alert('La imagen supera los 400x400px.');
+              return;
+            }
+            img.src = reader.result;
+            nuevo.appendChild(img);
+            mural.appendChild(nuevo);
+            imagenInput.value = '';
+            previewImg.src = '';
+            preview.style.display = 'none';
+          };
           img.src = reader.result;
-          nuevo.appendChild(img);
         };
         reader.readAsDataURL(archivo);
+        return;
       }
 
       mural.appendChild(nuevo);
-      contenido.value = '';
-      imagenInput.value = '';
     }
   </script>
 </body>
