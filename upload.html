@@ -6,6 +6,21 @@
   <title>¿Qué vas a dejar ir hoy? | Momento</title>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos-upload.css" />
+  <!-- Guardar nombre para el Mural -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      // Asumiendo que en localStorage ya tienes un objeto 'user' con la info del login
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user?.username) {
+        // Guardamos el username para mural.html
+        localStorage.setItem('usuarioMomento', user.username);
+      }
+    } catch (e) {
+      console.warn('No se pudo guardar usuarioMomento:', e);
+    }
+  });
+</script>
 </head>  
 <body class="upload-page">
   <!-- Panel de exploración emocional -->
@@ -158,6 +173,15 @@
   <div class="tooltip-text">👥 Gestiona tus parches y alianzas.</div>
 </div>
 
+<!-- Nuevo botón para ir al Mural -->
+<div class="tooltip-container">
+  <a href="mural.html" class="sidebar-btn" aria-label="Mural del Momento">
+    <img src="assets/icons/mural-icon.png" alt="Mural" width="24" height="24">
+  </a>
+  <div class="tooltip-text">
+    🎨 El Mural del Momento
+  </div>
+</div>
 
   
   <!-- Contenedor relativo para el botón y su dropdown -->
