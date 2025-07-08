@@ -89,8 +89,19 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       max-width: 200px;
       text-align: center;
-      font-size: 1.5rem;
       word-break: break-word;
+    }
+
+    .mural-item.frase {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #5a3e36;
+    }
+
+    .mural-item.emoji {
+      font-size: 2.5rem;
+      background: none;
+      box-shadow: none;
     }
 
     .mural-item img {
@@ -189,10 +200,18 @@
       const nuevo = document.createElement('div');
       nuevo.classList.add('mural-item');
 
-      if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
+      if (tipoSeleccionado === 'frase') {
         if (!contenido.value.trim()) return alert('Escribe algo primero.');
+        nuevo.classList.add('frase');
         nuevo.textContent = contenido.value;
         contenido.value = '';
+
+      } else if (tipoSeleccionado === 'emoji') {
+        if (!contenido.value.trim()) return alert('Escribe un emoji.');
+        nuevo.classList.add('emoji');
+        nuevo.textContent = contenido.value;
+        contenido.value = '';
+
       } else if (tipoSeleccionado === 'imagen') {
         const archivo = imagenInput.files[0];
         if (!archivo) return alert('Selecciona una imagen.');
