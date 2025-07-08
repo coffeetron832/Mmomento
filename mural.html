@@ -264,27 +264,38 @@
   }
 
   else if (tipoSeleccionado === 'imagen') {
-    const archivo = imagenInput.files[0];
-    if (!archivo) return alert('Selecciona una imagen.');
+  const archivo = imagenInput.files[0];
+  if (!archivo) return alert('Selecciona una imagen.');
 
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const img = new Image();
-      img.onload = async () => {
-        if (img.width > 400 || img.height > 400) {
-          return alert('La imagen supera los 400x400px.');
-        }
-        contenidoFinal = reader.result;
-        await enviarAlBackend(usuario, tipoSeleccionado, contenidoFinal);
-        imagenInput.value = '';
-        previewImg.src = '';
-        preview.style.display = 'none';
-      };
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(archivo);
-    return;
+  const formData = new FormData();
+  formData.append('imagen', archivo);
+  formData.append('usuario', usuario);
+
+  try {
+    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Error subiendo imagen.');
+    }
+
+    mostrarAporte(data.data);
+    imagenInput.value = '';
+    previewImg.src = '';
+    preview.style.display = 'none';
+
+  } catch (err) {
+    console.error('Error al subir imagen:', err);
+    alert('La imagen fue rechazada o hubo un error.');
   }
+
+  return;
+}
+
 
   else if (tipoSeleccionado === 'doodle') {
     contenidoFinal = canvas.toDataURL();
