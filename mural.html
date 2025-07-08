@@ -245,70 +245,116 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    function agregarAlMural() {
-      if (!usuario) return alert('Debes iniciar sesión para aportar.');
+    async function agregarAlMural() {
+  const tipoSeleccionado = tipo.value;
+  const usuario = localStorage.getItem('usuarioMomento');
+  let contenidoFinal = '';
 
-      const tipoSeleccionado = tipo.value;
-      const nuevo = document.createElement('div');
-      nuevo.classList.add('mural-item');
-      nuevo.title = `Aporte de: ${usuario}`;
-      const { offsetWidth: w, offsetHeight: h } = mural;
-      const x = Math.floor(Math.random() * (w - 200));
-      const y = Math.floor(Math.random() * (h - 200));
-      const rot = `${Math.floor(Math.random() * 10 - 5)}deg`;
-      const scale = `${0.95 + Math.random() * 0.1}`;
-      nuevo.style.left = `${x}px`;
-      nuevo.style.top = `${y}px`;
-      nuevo.style.setProperty('--rot', rot);
-      nuevo.style.setProperty('--scale', scale);
+  if (!usuario) {
+    alert('Debes iniciar sesión para aportar al Mural');
+    return;
+  }
 
-      if (tipoSeleccionado === 'frase') {
-        if (!contenido.value.trim()) return alert('Escribe algo primero.');
-        nuevo.classList.add('frase');
-        nuevo.textContent = contenido.value;
-        contenido.value = '';
-
-      } else if (tipoSeleccionado === 'emoji') {
-        if (!contenido.value.trim()) return alert('Escribe un emoji.');
-        nuevo.classList.add('emoji');
-        nuevo.textContent = contenido.value;
-        contenido.value = '';
-
-      } else if (tipoSeleccionado === 'imagen') {
-        const archivo = imagenInput.files[0];
-        if (!archivo) return alert('Selecciona una imagen.');
-        const reader = new FileReader();
-        reader.onload = () => {
-          const img = new Image();
-          img.onload = () => {
-            if (img.width > 400 || img.height > 400) {
-              alert('La imagen supera los 400x400px.');
-              return;
-            }
-            img.src = reader.result;
-            nuevo.appendChild(img);
-            mural.appendChild(nuevo);
-            imagenInput.value = '';
-            previewImg.src = '';
-            preview.style.display = 'none';
-          };
-          img.src = reader.result;
-        };
-        reader.readAsDataURL(archivo);
-        return;
-
-      } else if (tipoSeleccionado === 'doodle') {
-        const dataURL = canvas.toDataURL();
-        const img = new Image();
-        img.src = dataURL;
-        nuevo.appendChild(img);
-        mural.appendChild(nuevo);
-        limpiarCanvas();
-        return;
-      }
-
-      mural.appendChild(nuevo);
+  if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
+    if (!contenido.value.trim()) {
+      return alert('Escribe algo primero.');
     }
+    contenidoFinal = contenido.value.trim();
+    contenido.value = '';
+  }
+
+  else if (tipoSeleccionado === 'imagen') {
+    const archivo = imagenInput.files[0];
+    if (!archivo) return alert('Selecciona una imagen.');
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const img = new Image();
+      img.onload = async () => {
+        if (img.width > 400 || img.height > 400) {
+          return alert('La imagen supera los 400x400px.');
+        }
+        contenidoFinal = reader.result;
+        await enviarAlBackend(usuario, tipoSeleccionado, contenidoFinal);
+        imagenInput.value = '';
+        previewImg.src = '';
+        preview.style.display = 'none';
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(archivo);
+    return;
+  }
+
+  else if (tipoSeleccionado === 'doodle') {
+    contenidoFinal = canvas.toDataURL();
+    limpiarCanvas();
+  }
+
+  await enviarAlBackend(usuario, tipoSeleccionado, contenidoFinal);
+}
+
+  async function enviarAlBackend(usuario, tipo, contenido) {
+  try {
+    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuario, tipo, contenido })
+    });
+
+    if (!res.ok) throw new Error('No se pudo guardar el aporte');
+
+    const data = await res.json();
+    mostrarAporte(data.data); // Mostrar el aporte recién guardado
+  } catch (err) {
+    console.error('Error guardando en el mural:', err);
+    alert('Ocurrió un error al guardar tu aporte.');
+  }
+}
+
+function mostrarAporte({ tipo, contenido, usuario }) {
+  const nuevo = document.createElement('div');
+  nuevo.classList.add('mural-item');
+  const { offsetWidth: w, offsetHeight: h } = mural;
+  const x = Math.floor(Math.random() * (w - 200));
+  const y = Math.floor(Math.random() * (h - 200));
+  const rot = `${Math.floor(Math.random() * 10 - 5)}deg`;
+  const scale = `${0.95 + Math.random() * 0.1}`;
+  nuevo.style.left = `${x}px`;
+  nuevo.style.top = `${y}px`;
+  nuevo.style.setProperty('--rot', rot);
+  nuevo.style.setProperty('--scale', scale);
+  nuevo.title = `Aporte de: ${usuario}`;
+
+  if (tipo === 'frase') {
+    nuevo.classList.add('frase');
+    nuevo.textContent = contenido;
+  } else if (tipo === 'emoji') {
+    nuevo.classList.add('emoji');
+    nuevo.textContent = contenido;
+  } else if (tipo === 'imagen' || tipo === 'doodle') {
+    const img = new Image();
+    img.src = contenido;
+    img.onload = () => mural.appendChild(nuevo);
+    nuevo.appendChild(img);
+  }
+
+  mural.appendChild(nuevo);
+}
+
+cargarAportes();
+
+async function cargarAportes() {
+  try {
+    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
+    const datos = await res.json();
+    datos.forEach(aporte => mostrarAporte(aporte));
+  } catch (err) {
+    console.error('Error al cargar el mural:', err);
+  }
+}
+
+    
   </script>
 </body>
 </html>
