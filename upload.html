@@ -154,28 +154,42 @@
 </section>
       
 <div class="sidebar-buttons">
-  <button class="sidebar-btn">✨ Explora</button>
+  <!-- Explorar -->
+  <button id="exploreBtn" class="sidebar-btn" aria-label="Explorar emociones">
+    ✨ Explorar
+  </button>
 
+  <!-- Subir imagen -->
   <div class="tooltip-container">
-    <button class="sidebar-btn">📸 Sube</button>
+    <button id="toggleUploadBtn" class="sidebar-btn" aria-label="Subir imagen">
+      📸 Sube
+    </button>
     <div class="tooltip-text">
       Sube algo que solo tú entiendas.<br>No tiene que tener sentido.<br>Solo que diga algo.<br>Aunque sea sin decirlo.
     </div>
   </div>
 
-  <button class="sidebar-btn">🌌 Menú</button>
+  <!-- Menú -->
+  <button id="menuToggleBtn" class="sidebar-btn" aria-label="Abrir menú">
+    🌌 Menú
+  </button>
 
+  <!-- Parches -->
   <div class="tooltip-container">
-    <a href="circles.html" class="sidebar-btn">🫂 Parche</a>
+    <a href="circles.html" class="sidebar-btn" aria-label="Gestionar parches">
+      🫂 Parche
+    </a>
     <div class="tooltip-text">👥 Gestiona tus parches y alianzas.</div>
   </div>
 
+  <!-- Mural -->
   <div class="tooltip-container">
-    <a href="mural.html" class="sidebar-btn">🎨 Mural</a>
+    <a href="mural.html" class="sidebar-btn" aria-label="Mural del Momento">
+      🎨 Mural
+    </a>
     <div class="tooltip-text">El Mural del Momento</div>
   </div>
 </div>
-
   
   <!-- Contenedor relativo para el botón y su dropdown -->
   <div id="notificationsContainer" style="position: relative;">
