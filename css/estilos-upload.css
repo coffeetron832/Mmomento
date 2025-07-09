@@ -249,32 +249,41 @@
       font-size: 0.9rem;
     }
 
-    #notificationsContainer {
-      position: relative;
-    }
-    #notifDropdown {
-      display: none;
-      position: absolute;
-      top: 100%; /* ✅ Aparece justo debajo del botón */
-      right: 0;
-      background-color: var(--notif-bg);
-      border: 1px solid var(--notif-border);
-      border-radius: 6px;
-      max-height: 250px;
-      overflow-y: auto;
-      width: 300px;
-      color: inherit;
-      z-index: 100;
-    }
-    #notifCount {
-      font-size: 0.75rem;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      padding: 0 6px;
-      margin-left: 4px;
-      display: none;
-    }
+    /* El contenedor ya no es externo */
+#notifDropdown {
+  display: none;
+  position: absolute;
+  top: 120%; /* Aparece justo debajo del botón */
+  right: 0;
+  background-color: var(--notif-bg, #222);
+  border: 1px solid var(--notif-border, #555);
+  border-radius: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  width: 280px;
+  color: white;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-size: 0.85rem;
+}
+
+/* Posicionamiento del badge */
+#notifBtn {
+  position: relative;
+}
+
+#notifCount {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+  display: inline-block; /* visible por defecto, o usa JS para alternar */
+}
 
       body.dark-mode #timeline {
   background-color: transparent;
