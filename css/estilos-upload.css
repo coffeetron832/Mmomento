@@ -52,16 +52,6 @@
   box-shadow: none;
 }
 
-
-
-
-   
-
-
-    
-
-   
-
     .upload-form-container {
   position: fixed;
   top: 50%;
@@ -93,11 +83,6 @@
   transform: translate(-50%, -50%);
 }
 
-
-
-
-
-
 /* Animación suave de entrada */
 @keyframes fadeInUp {
   from {
@@ -110,9 +95,6 @@
   }
 }
 
-
-    
-    
     .upload-form-container input,
     .upload-form-container select,
     .upload-form-container button {
@@ -250,31 +232,62 @@
     }
 
    #notificationsContainer {
-      position: relative;
-    }
-    #notifDropdown {
-      display: none;
-      position: absolute;
-      top: 100%; /* ✅ Aparece justo debajo del botón */
-      right: 0;
-      background-color: var(--notif-bg);
-      border: 1px solid var(--notif-border);
-      border-radius: 6px;
-      max-height: 250px;
-      overflow-y: auto;
-      width: 300px;
-      color: inherit;
-      z-index: 100;
-    }
-    #notifCount {
-      font-size: 0.75rem;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      padding: 0 6px;
-      margin-left: 4px;
-      display: none;
-    }
+  position: relative;
+  display: inline-block;
+}
+
+#notifBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.5rem;
+  white-space: nowrap;
+}
+
+#notifCount {
+  font-size: 0.7rem;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0 6px;
+  margin-left: 4px;
+  display: none; /* JS lo activa si hay notificaciones */
+}
+
+#notifDropdown {
+  display: none;
+  position: absolute;
+  bottom: 120%; /* aparece encima del botón en footer */
+  right: 0;
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  max-height: 250px;
+  overflow-y: auto;
+  width: 280px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.4);
+  z-index: 1001;
+  color: white;
+}
+
+#notifDropdown ul {
+  padding: 0;
+  margin: 0;
+}
+
+#notifDropdown li {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #333;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+#notifDropdown li:hover {
+  background-color: #333;
+}
+
 
       body.dark-mode #timeline {
   background-color: transparent;
