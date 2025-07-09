@@ -153,55 +153,43 @@
   </form>
 </section>
       
-<div class="capsule-container">
-  <!-- Barra de botones -->
-  <div class="sidebar-buttons">
-    <button id="exploreBtn" class="sidebar-btn active-tab" data-index="0">✨ Explora</button>
+<div class="sidebar-buttons">
+  <button id="exploreBtn" class="sidebar-btn" aria-label="Explorar emociones">✨</button>
+  <div class="tooltip-container">
+  <button id="toggleUploadBtn" class="sidebar-btn" aria-label="Subir imagen">
+  <img src="assets/icons/image-up.png" alt="Subir imagen" width="24" height="24">
+</button>
+  <div class="tooltip-text">
+    📸 Sube algo que solo tú entiendas.<br>No tiene que tener sentido.<br>Solo que diga algo.<br>Aunque sea sin decirlo.
+  </div>
+</div>
+  <button id="menuToggleBtn" class="sidebar-btn" aria-label="Abrir menú">
+  <img src="assets/icons/menu.png" alt="Menú" width="24" height="24">
+</button>
+<div class="tooltip-container">
+  <a href="circles.html" class="sidebar-btn" aria-label="Gestionar parches">
+  <img src="/assets/icons/patch-icon.png" alt="Parches" style="width: 1.6rem; height: 1.6rem;" />
+</a>
+  <div class="tooltip-text">👥 Gestiona tus parches y alianzas.</div>
+</div>
 
-    <div class="tooltip-container">
-      <button id="toggleUploadBtn" class="sidebar-btn" data-index="1">
-        📸 Sube
-      </button>
-      <div class="tooltip-text">
-        Sube algo que solo tú entiendas.<br>No tiene que tener sentido.<br>Solo que diga algo.<br>Aunque sea sin decirlo.
-      </div>
-    </div>
-
-    <button id="menuToggleBtn" class="sidebar-btn" data-index="2">🌌 Menú</button>
-
-    <div class="tooltip-container">
-      <a href="circles.html" class="sidebar-btn">🫂 Parche</a>
-      <div class="tooltip-text">👥 Gestiona tus parches y alianzas.</div>
-    </div>
-
-    <div class="tooltip-container">
-      <a href="mural.html" class="sidebar-btn">🎨 Mural</a>
-      <div class="tooltip-text">El Mural del Momento</div>
-    </div>
-
-    <!-- 🔔 Notificaciones -->
-    <div class="tooltip-container" style="position: relative;">
-  <button id="notifBtn" class="sidebar-btn" aria-label="Ver notificaciones">
-    🔔
-    <span id="notifCount">3</span>
-  </button>
-  <div class="tooltip-text">📬 Mira lo que ha vibrado en tu red.</div>
-
-  <!-- Dropdown oculto por defecto -->
-  <div id="notifDropdown">
-    <div style="padding: 0.75rem;">📩 No hay nuevas notificaciones.</div>
+<!-- Nuevo botón para ir al Mural -->
+<div class="tooltip-container">
+  <a href="mural.html" class="sidebar-btn" aria-label="Mural del Momento">
+    <img src="assets/icons/mural-icon.png" alt="Mural" width="24" height="24">
+  </a>
+  <div class="tooltip-text">
+    🎨 El Mural del Momento
   </div>
 </div>
 
 
-  <!-- Contenedor de contenido deslizable -->
-  <div class="tab-content-container" id="sliderContent">
-    <div class="tab-content">🌟 Contenido de Explora: explora lo que no se ve.</div>
-    <div class="tab-content">📷 Contenido de Sube: deja una marca que se borre.</div>
-    <div class="tab-content">🌌 Contenido del Menú: un portal a tus emociones.</div>
-    <div class="tab-content">🔔 Aquí verás tus notificaciones efímeras.</div>
-  </div>
-</div>
+  <!-- Contenedor relativo para el botón y su dropdown -->
+  <div id="notificationsContainer" style="position: relative;">
+    <button id="notifBtn" class="sidebar-btn" aria-label="Ver notificaciones">
+  <img src="assets/icons/bell.png" alt="Notificaciones" width="24" height="24">
+  <span id="notifCount">0</span>
+</button>
 
 
 
