@@ -153,41 +153,38 @@
   </form>
 </section>
       
-<div class="sidebar-buttons">
-  <!-- Explorar -->
-  <button id="exploreBtn" class="sidebar-btn" aria-label="Explorar emociones">
-    ✨ Explorar
-  </button>
+<div class="capsule-container">
+  <!-- Barra de botones -->
+  <div class="sidebar-buttons">
+    <button id="exploreBtn" class="sidebar-btn active-tab" data-index="0">✨ Explora</button>
 
-  <!-- Subir imagen -->
-  <div class="tooltip-container">
-    <button id="toggleUploadBtn" class="sidebar-btn" aria-label="Subir imagen">
-      📸 Sube
-    </button>
-    <div class="tooltip-text">
-      Sube algo que solo tú entiendas.<br>No tiene que tener sentido.<br>Solo que diga algo.<br>Aunque sea sin decirlo.
+    <div class="tooltip-container">
+      <button id="toggleUploadBtn" class="sidebar-btn" data-index="1">
+        📸 Sube
+      </button>
+      <div class="tooltip-text">
+        Sube algo que solo tú entiendas.<br>No tiene que tener sentido.<br>Solo que diga algo.<br>Aunque sea sin decirlo.
+      </div>
+    </div>
+
+    <button id="menuToggleBtn" class="sidebar-btn" data-index="2">🌌 Menú</button>
+
+    <div class="tooltip-container">
+      <a href="circles.html" class="sidebar-btn">🫂 Parche</a>
+      <div class="tooltip-text">👥 Gestiona tus parches y alianzas.</div>
+    </div>
+
+    <div class="tooltip-container">
+      <a href="mural.html" class="sidebar-btn">🎨 Mural</a>
+      <div class="tooltip-text">El Mural del Momento</div>
     </div>
   </div>
 
-  <!-- Menú -->
-  <button id="menuToggleBtn" class="sidebar-btn" aria-label="Abrir menú">
-    🌌 Menú
-  </button>
-
-  <!-- Parches -->
-  <div class="tooltip-container">
-    <a href="circles.html" class="sidebar-btn" aria-label="Gestionar parches">
-      🫂 Parche
-    </a>
-    <div class="tooltip-text">👥 Gestiona tus parches y alianzas.</div>
-  </div>
-
-  <!-- Mural -->
-  <div class="tooltip-container">
-    <a href="mural.html" class="sidebar-btn" aria-label="Mural del Momento">
-      🎨 Mural
-    </a>
-    <div class="tooltip-text">El Mural del Momento</div>
+  <!-- Contenedor de contenido deslizable -->
+  <div class="tab-content-container" id="sliderContent">
+    <div class="tab-content">🌟 Contenido de Explora: explora lo que no se ve.</div>
+    <div class="tab-content">📷 Contenido de Sube: deja una marca que se borre.</div>
+    <div class="tab-content">🌌 Contenido del Menú: un portal a tus emociones.</div>
   </div>
 </div>
   
@@ -271,6 +268,23 @@
       document.body.classList.remove('menu-open');
     });
 
+    const buttons = document.querySelectorAll('.sidebar-btn[data-index]');
+  const slider = document.getElementById('sliderContent');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.getAttribute('data-index'));
+      if (!isNaN(index)) {
+        // Mover el slider
+        slider.style.transform = `translateX(-${index * 100}%)`;
+
+        // Cambiar botón activo
+        buttons.forEach(b => b.classList.remove('active-tab'));
+        btn.classList.add('active-tab');
+      }
+    });
+  });
+    
     // ——— Lógica para “Mi Soulprint” ———
     const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
     let userObj = null;
