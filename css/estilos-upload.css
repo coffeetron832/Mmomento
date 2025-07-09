@@ -1066,10 +1066,10 @@ footer.nav-buttons {
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   background-color: #111;
-  padding: 0.7rem 0.5rem;
+  padding: 0.4rem 0.3rem;
   border-top: 1px solid #333;
   z-index: 1000;
   font-family: 'Inter', sans-serif;
@@ -1084,9 +1084,9 @@ footer.nav-buttons {
   background: none;
   border: none;
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  padding: 0.3rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   transition: transform 0.2s ease;
   white-space: nowrap;
 }
