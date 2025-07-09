@@ -178,22 +178,31 @@
       <a href="mural.html" class="sidebar-btn">🎨 Mural</a>
       <div class="tooltip-text">El Mural del Momento</div>
     </div>
+
+    <!-- 🔔 Notificaciones -->
+    <div class="tooltip-container" style="position: relative;">
+  <button id="notifBtn" class="sidebar-btn" aria-label="Ver notificaciones">
+    🔔
+    <span id="notifCount">3</span>
+  </button>
+  <div class="tooltip-text">📬 Mira lo que ha vibrado en tu red.</div>
+
+  <!-- Dropdown oculto por defecto -->
+  <div id="notifDropdown">
+    <div style="padding: 0.75rem;">📩 No hay nuevas notificaciones.</div>
   </div>
+</div>
+
 
   <!-- Contenedor de contenido deslizable -->
   <div class="tab-content-container" id="sliderContent">
     <div class="tab-content">🌟 Contenido de Explora: explora lo que no se ve.</div>
     <div class="tab-content">📷 Contenido de Sube: deja una marca que se borre.</div>
     <div class="tab-content">🌌 Contenido del Menú: un portal a tus emociones.</div>
+    <div class="tab-content">🔔 Aquí verás tus notificaciones efímeras.</div>
   </div>
 </div>
-  
-  <!-- Contenedor relativo para el botón y su dropdown -->
-  <div id="notificationsContainer" style="position: relative;">
-    <button id="notifBtn" class="sidebar-btn" aria-label="Ver notificaciones">
-  <img src="assets/icons/bell.png" alt="Notificaciones" width="24" height="24">
-  <span id="notifCount">0</span>
-</button>
+
 
 
     <!-- 🔽 Dropdown va aquí mismo -->
