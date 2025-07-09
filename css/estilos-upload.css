@@ -1046,3 +1046,61 @@ h2.section-title {
   width: 32px;
   height: 32px;
 }
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #1a1a1a;
+  padding: 0.7rem 1rem;
+  border-top: 1px solid #333;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem;
+  transition: transform 0.2s;
+}
+
+.nav-btn:hover {
+  transform: scale(1.1);
+  color: #ff6fd8;
+}
+
+/* Tooltips */
+.tooltip-container {
+  position: relative;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  bottom: 140%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
