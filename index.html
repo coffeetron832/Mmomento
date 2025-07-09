@@ -240,13 +240,14 @@ body::before {
 .tooltip-container::after {
   content: attr(data-tooltip);
   position: absolute;
-  top: calc(100% + 12px);           /* CAMBIAMOS de bottom a top */
+  bottom: calc(100% + 8px);           /* CAMBIAMOS de bottom a top */
   left: 50%;
   transform: translateX(-50%);
-  width: 220px;
+  width: 300px; 
+  max-width: 90vw;
   background-color: rgba(0, 0, 0, 0.85);
   color: #fff;
-  padding: 0.8rem;
+  padding: 1rem;
   border-radius: 8px;
   font-size: 0.85rem;
   font-family: 'Inter', sans-serif;
@@ -404,8 +405,6 @@ Solo aparezco cuando alguien siente algo con lo que subiste.
 No te doy fama, pero sí una pista: eso que compartiste… le gustó a alguien.
 
 Momento no tiene historial, ni memoria a largo plazo.
-Cada cosa que ves es del momento. Literal.
-¿Qué anda diciendo la gente hoy?
 En 6 horas, se va.">
   🦋
 </span>
