@@ -1110,7 +1110,7 @@ footer.nav-buttons-wrapper {
   color: #4f46e5;
 }
 
-/* Flechas de desplazamiento */
+/* 🔄 Flechas de desplazamiento */
 .scroll-arrow {
   background: rgba(0, 0, 0, 0.6);
   color: white;
@@ -1121,7 +1121,9 @@ footer.nav-buttons-wrapper {
   height: 2rem;
   pointer-events: auto;
   cursor: pointer;
-  display: none; /* se muestran solo en móviles */
+  display: none;
+  align-items: center;
+  justify-content: center;
   z-index: 1001;
 }
 
