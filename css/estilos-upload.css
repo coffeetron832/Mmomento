@@ -234,7 +234,6 @@
    #notificationsContainer {
   position: relative;
   display: inline-block;
-  z-index: 1002; /* asegura que esté por encima del footer */
 }
 
 #notifBtn {
@@ -245,7 +244,6 @@
   font-size: 0.9rem;
   padding: 0.3rem 0.5rem;
   white-space: nowrap;
-  border-radius: 1rem;
 }
 
 #notifCount {
@@ -255,14 +253,13 @@
   border-radius: 50%;
   padding: 0 6px;
   margin-left: 4px;
-  display: none;
+  display: none; /* JS lo activa si hay notificaciones */
 }
 
-/* Este es el dropdown corregido */
 #notifDropdown {
   display: none;
   position: absolute;
-  bottom: 120%; /* sube sobre el botón */
+  bottom: 120%; /* aparece encima del botón en footer */
   right: 0;
   background-color: #1e1e1e;
   border: 1px solid #444;
@@ -271,7 +268,7 @@
   overflow-y: auto;
   width: 280px;
   box-shadow: 0 0 6px rgba(0,0,0,0.4);
-  z-index: 3000; /* muy por encima */
+  z-index: 1001;
   color: white;
 }
 
