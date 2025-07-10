@@ -587,13 +587,27 @@ loadImages();
   const notifCount = document.getElementById('notifCount');
 
   if (notifBtn && notifDropdown) {
-    notifBtn.addEventListener('click', async () => {
-      notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
-      if (notifDropdown.style.display === 'block') {
-        await loadNotifications();
-      }
-    });
-  }
+  notifBtn.addEventListener('click', async (e) => {
+    e.stopPropagation(); // Evita que el clic se propague al documento
+
+    notifDropdown.classList.toggle('show');
+
+    if (notifDropdown.classList.contains('show')) {
+      await loadNotifications();
+    }
+  });
+
+  // Cerrar el dropdown si se hace clic fuera de él
+  document.addEventListener('click', (e) => {
+    if (
+      notifDropdown.classList.contains('show') &&
+      !notifDropdown.contains(e.target) &&
+      e.target !== notifBtn
+    ) {
+      notifDropdown.classList.remove('show');
+    }
+  });
+}
 
   // 🔄 Cargar notificaciones del usuario
   async function loadNotifications() {
