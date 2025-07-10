@@ -1134,9 +1134,10 @@ footer.nav-buttons-wrapper {
   }
 
   .nav-buttons {
-  max-width: 85%;
-  overflow-x: auto;    /* ✅ scroll horizontal */
-  overflow-y: visible; /* ✅ permite que los dropdowns salgan hacia arriba */
+  overflow-x: auto;
+  overflow-y: visible;
+  position: relative;
+  z-index: 2000;
 }
 
 
