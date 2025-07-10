@@ -1180,11 +1180,22 @@ footer.nav-buttons-wrapper {
     z-index: 9999;
   }
 
+    #notifDropdown ul {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+    #notifList {
+  border: 1px dashed lime; /* Solo para probar si aparece */
+}
+
+
   #notifDropdown.show {
-    transform: translate(-50%, -50%) scale(1) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+ }   
 }
 
 .nav-buttons a.nav-btn {
