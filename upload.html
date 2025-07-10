@@ -153,26 +153,29 @@
   </form>
 </section>
       
-<footer class="nav-buttons">
+<footer class="nav-buttons-wrapper">
+  <button class="scroll-arrow left-arrow">←</button>
 
-  <button id="exploreBtn" class="nav-btn">🌌 Curiosear</button>
-  <button id="toggleUploadBtn" class="nav-btn">📤 ¿Y esto pa' qué?</button>
-  <button id="menuToggleBtn" class="nav-btn">🌀 Me perdí</button>
-  <a href="circles.html" class="nav-btn">🌿 Mi tribu secreta</a>
-  <a href="mural.html" class="nav-btn">🎨 Desahógate aquí</a>
+  <div class="nav-buttons" id="navScroller">
+    <button id="exploreBtn" class="nav-btn">🌌 Curiosear</button>
+    <button id="toggleUploadBtn" class="nav-btn">📤 ¿Y esto pa' qué?</button>
+    <button id="menuToggleBtn" class="nav-btn">🌀 Me perdí</button>
+    <a href="circles.html" class="nav-btn">🌿 Mi tribu secreta</a>
+    <a href="mural.html" class="nav-btn">🎨 Desahógate aquí</a>
 
-  <!-- 🔔 Botón de notificaciones con dropdown -->
-  <div id="notificationsContainer" class="nav-btn" style="position: relative;">
-    <button id="notifBtn" class="nav-btn" aria-label="Ver notificaciones">
-      🔔<span id="notifCount">0</span>
-    </button>
-
-    <div id="notifDropdown">
-      <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
+    <div id="notificationsContainer" class="nav-btn" style="position: relative;">
+      <button id="notifBtn" class="nav-btn" aria-label="Ver notificaciones">
+        🔔<span id="notifCount">0</span>
+      </button>
+      <div id="notifDropdown">
+        <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
+      </div>
     </div>
   </div>
 
+  <button class="scroll-arrow right-arrow">→</button>
 </footer>
+
 
 
 
@@ -257,6 +260,19 @@
       }
     });
   });
+
+const scroller = document.getElementById('navScroller');
+  const leftArrow = document.querySelector('.left-arrow');
+  const rightArrow = document.querySelector('.right-arrow');
+
+  leftArrow.addEventListener('click', () => {
+    scroller.scrollBy({ left: -100, behavior: 'smooth' });
+  });
+
+  rightArrow.addEventListener('click', () => {
+    scroller.scrollBy({ left: 100, behavior: 'smooth' });
+  });
+
     
     // ——— Lógica para “Mi Soulprint” ———
     const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
