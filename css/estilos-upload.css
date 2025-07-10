@@ -1162,40 +1162,50 @@ footer.nav-buttons-wrapper {
     text-align: center;
   }
 
-#notifDropdown {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) scale(0.8) !important;
-    width: 90vw !important;
-    max-height: 60vh;
-    padding: 0.75rem;
+/* 1. Ocultamos por defecto */
+  #notifDropdown {
+    display: none;               /* no lo mostremos hasta tener la clase .show */
+    position: fixed;             /* modal centrado */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 90vw;                 /* casi todo el ancho */
+    max-width: 350px;            /* opcional: límite razonable */
+    max-height: 70vh;            /* dejar espacio para scrolling */
+    padding: 0.5rem;
     background-color: #1e1e1e;
     border: 1px solid #444;
     border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    pointer-events: none;
-    display: block;
-    z-index: 9999;
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+    overflow-y: auto;            /* scrolling interno */
+    z-index: 10001;              /* encima de todo */
   }
 
-    #notifDropdown ul {
-  max-height: 100%;
-  overflow-y: auto;
-}
-
-    #notifList {
-  border: 1px dashed lime; /* Solo para probar si aparece */
-}
-
-
+  /* 2. Cuando tenga .show, lo mostramos */
   #notifDropdown.show {
-  display: block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transform: translate(-50%, -50%) scale(1) !important;
- }   
+    display: block;              /* ahora sí */
+    opacity: 1 !important;       /* asegurar visibilidad */
+    pointer-events: auto !important;
+  }
+
+  /* 3. Garantizamos que la lista ocupe todo el contenedor y permita scroll */
+  #notifDropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  #notifDropdown li {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #333;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  #notifDropdown li:hover {
+    background-color: #222;
+  }
 }
 
 .nav-buttons a.nav-btn {
