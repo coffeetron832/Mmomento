@@ -1219,6 +1219,7 @@ footer.nav-buttons-wrapper {
     z-index: 9999;
     padding: 0.5rem;
     opacity: 0;
+    pointer-events: auto;
     transition: all 0.3s ease-in-out;
   }
 
