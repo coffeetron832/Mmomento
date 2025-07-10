@@ -1060,31 +1060,35 @@ h2.section-title {
   height: 32px;
 }
 
-footer.nav-buttons {
+/* 🌟 Footer flotante con flechas de navegación */
+footer.nav-buttons-wrapper {
   position: fixed;
-  bottom: 1.2rem; /* lo levanta del borde */
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  width: auto;
+  width: 100%;
   max-width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  pointer-events: none; /* para que solo los hijos sean clickeables */
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 0.6rem;
+  overflow: hidden;
   background-color: #111;
   padding: 0.5rem 1rem;
   border-radius: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  z-index: 1000;
-  font-family: 'Inter', sans-serif;
-  gap: 0.6rem; /* separa un poco los botones */
+  pointer-events: auto;
+  scroll-behavior: smooth;
+  max-width: 100%;
 }
 
-
-.content {
-  padding-bottom: 80px; /* igual o mayor que la altura del footer */
-}
-
-
+/* Botones del footer */
 .nav-btn {
   background: none;
   border: none;
@@ -1095,83 +1099,55 @@ footer.nav-buttons {
   transition: transform 0.2s ease;
   white-space: nowrap;
   border-radius: 1rem;
+  flex: 0 0 auto;
 }
+
 .nav-btn:hover {
   transform: scale(1.05);
   background-color: #222;
   color: #4f46e5;
 }
 
-.tooltip-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.tooltip-text {
-  visibility: hidden;
-  position: absolute;
-  bottom: 140%;
-  background: rgba(50, 50, 50, 0.95);
+/* Flechas de desplazamiento */
+.scroll-arrow {
+  background: rgba(0, 0, 0, 0.6);
   color: white;
-  font-size: 0.75rem;
-  line-height: 1.2rem;
-  padding: 0.5rem;
-  border-radius: 6px;
-  width: max-content;
-  max-width: 200px;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  border: none;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  pointer-events: auto;
+  cursor: pointer;
+  display: none; /* se muestran solo en móviles */
   z-index: 1001;
 }
 
-.tooltip-container:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-}
-
+/* Adaptaciones móviles */
 @media (max-width: 600px) {
-  footer.nav-buttons {
-    flex-wrap: nowrap; /* ❌ no hacer wrap */
-    overflow-x: auto;   /* ✅ scroll lateral suave */
-    gap: 0.4rem;
-    padding: 0.5rem 0.7rem;
-    border-radius: 1.2rem;
-    max-width: 98%;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE 10+ */
+  .scroll-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  footer.nav-buttons::-webkit-scrollbar {
-    display: none; /* Chrome */
+  .nav-buttons {
+    max-width: 85%;
+    overflow-x: hidden;
   }
 
   .nav-btn {
     font-size: 0.8rem;
     padding: 0.4rem 0.6rem;
-    flex: 0 0 auto; /* ✅ no se expanden, se mantienen delgados */
+    flex: 0 0 auto;
     text-align: center;
-    border-radius: 1rem;
   }
 }
 
-
-  .tooltip-text {
-    font-size: 0.7rem;
-    padding: 0.4rem;
-    bottom: 120%;
-    max-width: 90vw;
-  }
-
-  .tooltip-container {
-    width: 100%;
-    align-items: center;
-  }
+/* Ajustes generales */
+.content {
+  padding-bottom: 100px; /* mayor al alto del footer flotante */
 }
+
 
 
