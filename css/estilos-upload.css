@@ -1081,30 +1081,28 @@ footer.nav-buttons-wrapper {
 /* 🔔 Estilo base para notifDropdown */
 #notifDropdown {
   display: none;
-  position: absolute; /* En escritorio, que dependa del botón */
-  bottom: 120%;
-  right: 0;
+  position: absolute;    /* relativo al notificationsContainer */
+  bottom: 120%;          /* justo arriba del botón */
+  left: 50%;
+  transform: translateX(-50%);
   background-color: var(--notif-bg);
   border: 1px solid var(--notif-border);
   border-radius: 6px;
+  width: 280px;
   max-height: 250px;
   overflow-y: auto;
-  width: 280px;
   box-shadow: 0 0 6px rgba(0,0,0,0.4);
   color: var(--btn-text);
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity .3s ease, transform .3s ease;
   pointer-events: none;
   z-index: 9999;
 }
 
-
-/* Cuando se activa (en cualquier vista) */
 #notifDropdown.show {
   display: block;
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
 
@@ -1163,35 +1161,31 @@ footer.nav-buttons-wrapper {
     text-align: center;
   }
 
-/* 🔔 Posicionamiento del dropdown EN RELACIÓN AL BOTÓN 🔔 */
-  #notificationsContainer {
-    position: relative; /* mantiene el contexto relativo */
-  }
-
   #notifDropdown {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    width: 90vw;
+    position: fixed !important;    /* ahora lo sacamos del footer */
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.8) !important;
+    width: 90vw !important;
+    max-width: 300px;
     max-height: 60vh;
-    padding: 0.75rem;
+    padding: .6rem;
     background-color: #1e1e1e;
     border: 1px solid #444;
     border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    z-index: 9999;
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+    overflow-y: auto;
+    display: none;                 /* se mostrará con .show */
     opacity: 0;
     pointer-events: none;
-    display: none;
-    overflow-y: auto;
+    z-index: 10001;
   }
 
   #notifDropdown.show {
     display: block;
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
 
