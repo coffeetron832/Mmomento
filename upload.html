@@ -163,21 +163,23 @@
     <a href="circles.html" class="nav-btn">🌿 Mi tribu secreta</a>
     <a href="mural.html" class="nav-btn">🎨 Desahógate aquí</a>
 
-    <!-- 🔔 Botón de notificaciones -->
-    <div id="notificationsContainer" class="nav-btn">
-      <button id="notifBtn" aria-label="Ver notificaciones">
-        🔔<span id="notifCount">0</span>
-      </button>
-    </div>
+    <!-- 🔔 Botón de notificaciones y dropdown JUNTOS -->
+<div id="notificationsContainer" class="nav-btn">
+  <button id="notifBtn" aria-label="Ver notificaciones">
+    🔔<span id="notifCount">0</span>
+  </button>
+
+  <!-- 🔽 Aquí adentro el dropdown -->
+  <div id="notifDropdown">
+    <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
   </div>
+</div>
+
 
   <div class="scroll-arrow right-arrow">→</div>
 </footer>
 
-<!-- 🔔 DROPDOWN DE NOTIFICACIONES FUERA DEL FOOTER -->
-<div id="notifDropdown">
-  <ul id="notifList" style="list-style:none;padding:0.5rem;margin:0;"></ul>
-</div>
+
 
 
 
