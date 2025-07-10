@@ -1070,7 +1070,7 @@ footer.nav-buttons-wrapper {
   max-width: 95%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 1000;
   pointer-events: none; /* para que solo los hijos sean clickeables */
 }
@@ -1085,6 +1085,7 @@ footer.nav-buttons-wrapper {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   pointer-events: auto;
   scroll-behavior: smooth;
+  margin-inline: auto;
   max-width: 100%;
 }
 
