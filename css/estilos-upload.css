@@ -1066,13 +1066,13 @@ footer.nav-buttons-wrapper {
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 95%;
+  width: auto; /* Cambiado */
+  max-width: 95vw; /* Mantiene límite sin forzar 100% */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  pointer-events: none; /* para que solo los hijos sean clickeables */
+  pointer-events: none;
 }
 
 .nav-buttons {
