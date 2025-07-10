@@ -1162,9 +1162,8 @@ footer.nav-buttons-wrapper {
     text-align: center;
   }
 
-#notifDropdown {
-    display: none;
-    position: fixed; /* ahora es fijo, no absoluto */
+ #notifDropdown {
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
@@ -1177,16 +1176,16 @@ footer.nav-buttons-wrapper {
     z-index: 9999;
     padding: 0.5rem;
     opacity: 0;
-    pointer-events: auto;
+    pointer-events: none;
     transition: all 0.3s ease-in-out;
   }
 
   #notifDropdown.show {
     display: block;
     opacity: 1;
+    pointer-events: auto;
     transform: translate(-50%, -50%) scale(1);
   }
-    
 }
 
 .nav-buttons a.nav-btn {
