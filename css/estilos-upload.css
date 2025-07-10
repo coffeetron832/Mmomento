@@ -231,63 +231,6 @@
       font-size: 0.9rem;
     }
 
-   #notificationsContainer {
-  position: relative;
-  display: inline-block;
-}
-
-#notifBtn {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0.3rem 0.5rem;
-  white-space: nowrap;
-}
-
-#notifCount {
-  font-size: 0.7rem;
-  background: red;
-  color: white;
-  border-radius: 50%;
-  padding: 0 6px;
-  margin-left: 4px;
-  display: none; /* JS lo activa si hay notificaciones */
-}
-
-#notifDropdown {
-  display: none;
-  position: absolute;
-  bottom: 120%; /* aparece encima del botón en footer */
-  right: 0;
-  background-color: #1e1e1e;
-  border: 1px solid #444;
-  border-radius: 6px;
-  max-height: 250px;
-  overflow-y: auto;
-  width: 280px;
-  box-shadow: 0 0 6px rgba(0,0,0,0.4);
-  z-index: 1001;
-  color: white;
-}
-
-#notifDropdown ul {
-  padding: 0;
-  margin: 0;
-}
-
-#notifDropdown li {
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid #333;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-#notifDropdown li:hover {
-  background-color: #333;
-}
-
 
       body.dark-mode #timeline {
   background-color: transparent;
@@ -1135,25 +1078,39 @@ footer.nav-buttons-wrapper {
   display: none;
 }
 
+/* 🔔 Estilo base para notifDropdown */
 #notifDropdown {
   display: none;
   position: absolute;
-  bottom: 120%;
+  bottom: 120%; /* Escritorio: aparece arriba del botón */
   right: 0;
-  background-color: #1e1e1e;
-  border: 1px solid #444;
+  background-color: var(--notif-bg);
+  border: 1px solid var(--notif-border);
   border-radius: 6px;
   max-height: 250px;
   overflow-y: auto;
   width: 280px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 6px rgba(0,0,0,0.4);
   z-index: 2001;
-  color: white;
+  color: var(--btn-text);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
 }
 
+/* Cuando se activa (en cualquier vista) */
+#notifDropdown.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Listado de notificaciones */
 #notifDropdown ul {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 #notifDropdown li {
@@ -1164,8 +1121,9 @@ footer.nav-buttons-wrapper {
 }
 
 #notifDropdown li:hover {
-  background-color: #333;
+  background-color: #222;
 }
+
 
 
 /* 🔄 Flechas */
