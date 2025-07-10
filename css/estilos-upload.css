@@ -1066,14 +1066,14 @@ footer.nav-buttons-wrapper {
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  width: auto; /* Cambiado */
-  max-width: 95vw; /* Mantiene límite sin forzar 100% */
+  width: auto;
+  max-width: 95vw;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
   z-index: 1000;
   pointer-events: none;
-  overflow: visible;
 }
 
 .nav-buttons {
@@ -1086,11 +1086,11 @@ footer.nav-buttons-wrapper {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   pointer-events: auto;
   scroll-behavior: smooth;
-  margin-inline: auto;
   max-width: 100%;
+  position: relative;
 }
 
-/* Botones del footer */
+/* Botones */
 .nav-btn {
   background: none;
   border: none;
@@ -1110,7 +1110,64 @@ footer.nav-buttons-wrapper {
   color: #4f46e5;
 }
 
-/* 🔄 Flechas de desplazamiento */
+/* 🔔 Notificaciones */
+#notificationsContainer {
+  position: relative;
+}
+
+#notifBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.5rem;
+  white-space: nowrap;
+}
+
+#notifCount {
+  font-size: 0.7rem;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0 6px;
+  margin-left: 4px;
+  display: none;
+}
+
+#notifDropdown {
+  display: none;
+  position: absolute;
+  bottom: 120%;
+  right: 0;
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  max-height: 250px;
+  overflow-y: auto;
+  width: 280px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  z-index: 2001;
+  color: white;
+}
+
+#notifDropdown ul {
+  margin: 0;
+  padding: 0;
+}
+
+#notifDropdown li {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #333;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+#notifDropdown li:hover {
+  background-color: #333;
+}
+
+/* 🔄 Flechas */
 .scroll-arrow {
   background: rgba(0, 0, 0, 0.6);
   color: white;
@@ -1127,21 +1184,17 @@ footer.nav-buttons-wrapper {
   z-index: 1001;
 }
 
-/* Adaptaciones móviles */
+/* 📱 Adaptaciones móviles */
 @media (max-width: 600px) {
   .scroll-arrow {
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .nav-buttons {
-  overflow-x: auto;
-  overflow-y: visible;
-  position: relative;
-  z-index: 2000;
-}
-
+    overflow-x: auto;
+    overflow-y: visible;
+    max-width: 85vw;
+  }
 
   .nav-btn {
     font-size: 0.8rem;
@@ -1151,12 +1204,6 @@ footer.nav-buttons-wrapper {
   }
 }
 
-/* Ajustes generales */
-.content {
-  padding-bottom: 100px; /* mayor al alto del footer flotante */
-}
-
-
 .nav-buttons a.nav-btn {
   display: inline-flex;
   align-items: center;
@@ -1164,4 +1211,9 @@ footer.nav-buttons-wrapper {
   vertical-align: middle;
   text-decoration: none;
 }
+
+.content {
+  padding-bottom: 100px;
+}
+
 
