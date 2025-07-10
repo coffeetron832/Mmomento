@@ -1078,7 +1078,7 @@ footer.nav-buttons-wrapper {
 .nav-buttons {
   display: flex;
   gap: 0.6rem;
-  overflow: hidden;
+  overflow: visible;
   background-color: #111;
   padding: 0.5rem 1rem;
   border-radius: 1.5rem;
