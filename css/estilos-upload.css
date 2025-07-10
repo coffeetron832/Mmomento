@@ -1081,8 +1081,8 @@ footer.nav-buttons-wrapper {
 /* 🔔 Estilo base para notifDropdown */
 #notifDropdown {
   display: none;
-  position: fixed !important;
-  z-index: 9999 !important;
+  position: absolute; /* ✅ Esto permite posicionamiento relativo al contenedor */
+  z-index: 9999;
   bottom: 120%; /* Escritorio: aparece arriba del botón */
   right: 0;
   background-color: var(--notif-bg);
@@ -1162,7 +1162,8 @@ footer.nav-buttons-wrapper {
     text-align: center;
   }
 
- #notifDropdown {
+#notifDropdown {
+    position: fixed !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) scale(0.8) !important;
@@ -1173,6 +1174,10 @@ footer.nav-buttons-wrapper {
     border: 1px solid #444;
     border-radius: 10px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    display: block;
+    z-index: 9999;
   }
 
   #notifDropdown.show {
