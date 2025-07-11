@@ -450,6 +450,7 @@ async function cargarAportes() {
 }
 
 // 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
+window.addEventListener('DOMContentLoaded', () => {
   if (!localStorage.getItem('noMostrarMensajeMural')) {
     document.getElementById('mensajeInicial').style.display = 'block';
   }
