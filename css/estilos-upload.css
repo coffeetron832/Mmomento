@@ -1119,7 +1119,8 @@ footer.nav-buttons-wrapper {
 }
 
 #notifDropdown li:hover {
-  background-color: #222;
+  background-color: #2a2a2a; /* más claro que #111 o #222 */
+  color: #fff; /* asegúrate de que el texto siga siendo blanco */
 }
 
 
