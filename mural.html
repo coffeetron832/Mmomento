@@ -742,9 +742,10 @@ if (!token) {
   try {
     const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${id}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usuario })
-    });
+      headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
 
     const data = await res.json();
 
