@@ -313,8 +313,7 @@
 
     
     // ✅ Definimos usuario como variable global al inicio
-let usuario = obtenerUsuarioDesdeToken();
-console.log('👤 Usuario autenticado desde token:', usuario);
+let usuario; // ✅ Declaración vacía global
 
 
 function verificarToken() {
@@ -330,6 +329,9 @@ function verificarToken() {
 
 window.addEventListener('DOMContentLoaded', () => {
   if (!verificarToken()) return;
+
+  usuario = obtenerUsuarioDesdeToken();
+  console.log('👤 Usuario cargado desde token:', usuario); // ✅ Aquí sí se llena correctamente
 
   // Puedes iniciar la carga del mural aquí
   cargarAportes();
