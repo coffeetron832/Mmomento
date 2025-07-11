@@ -1192,10 +1192,6 @@ footer.nav-buttons-wrapper {
     border-radius: 6px;
   }
 
-  #notifDropdown li:hover {
-    background-color: #2a2a2a;
-  }
-
   #notifDropdown li:last-child {
     border-bottom: none;
   }
