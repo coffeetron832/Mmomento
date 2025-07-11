@@ -177,6 +177,59 @@
   margin: 0;
 }
 
+/* Panel flotante para aportes del usuario */
+#misAportes {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  max-height: 300px;
+  width: 250px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border-radius: 1rem;
+  padding: 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  z-index: 9999;
+}
+
+#misAportes h3 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: #ff9a9e;
+}
+
+.aporte-propio {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 0.5rem;
+  position: relative;
+}
+
+.aporte-propio:hover .tiempo-restante {
+  display: block;
+}
+
+.borrar-aporte {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #ff6666;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tiempo-restante {
+  display: none;
+  font-size: 0.75rem;
+  color: #ccc;
+  margin-top: 0.3rem;
+}
+    
   </style>
 </head>
 <body>
@@ -224,7 +277,12 @@
   <section id="mural" class="mural"></section>
 </div>
 
-  
+  <!-- Panel flotante con aportes del usuario -->
+<div id="misAportes">
+  <h3>Mis Aportes</h3>
+  <div id="listaMisAportes"></div>
+</div>
+
   <script>
     // 🔐 Obtener usuario desde localStorage
     const usuario = localStorage.getItem('usuarioMomento') || null;
@@ -453,11 +511,13 @@ function mostrarAporte({ tipo, contenido, usuario }) {
 
 cargarAportes();
 
+// Reemplazar esta parte en cargarAportes()
 async function cargarAportes() {
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
     const datos = await res.json();
     datos.forEach(aporte => mostrarAporte(aporte));
+    mostrarMisAportes(datos); // ← NUEVO
   } catch (err) {
     console.error('Error al cargar el mural:', err);
   }
@@ -477,6 +537,64 @@ function cerrarMensaje() {
   }
   document.getElementById('mensajeInicial').style.display = 'none';
 }
+
+// 🧠 Palabras prohibidas
+const palabrasProhibidas = ['odio', 'muerte', 'estúpido', 'imbécil'];
+const tiempoSuspension = 30 * 60 * 1000; // 30 minutos
+
+function contienePalabraProhibida(texto) {
+  const palabras = texto.toLowerCase().split(/\s+/);
+  return palabrasProhibidas.some(prohibida => palabras.includes(prohibida));
+}
+
+function estaSuspendido() {
+  const finSuspension = localStorage.getItem('momentoSuspension');
+  return finSuspension && new Date().getTime() < parseInt(finSuspension);
+}
+
+// Mostrar aportes del usuario y sus tiempos restantes
+function mostrarMisAportes(datos) {
+  const contenedor = document.getElementById('listaMisAportes');
+  contenedor.innerHTML = '';
+
+  const usuario = localStorage.getItem('usuarioMomento');
+  const ahora = new Date();
+
+  datos
+    .filter(aporte => aporte.usuario === usuario)
+    .forEach(aporte => {
+      const div = document.createElement('div');
+      div.className = 'aporte-propio';
+
+      const span = document.createElement('span');
+      span.textContent = `• ${aporte.tipo}`;
+
+      const tiempoRestante = document.createElement('div');
+      tiempoRestante.className = 'tiempo-restante';
+      const creado = new Date(aporte.fechaCreacion);
+      const expiracion = new Date(creado.getTime() + 6 * 60 * 60 * 1000);
+      const minutosRestantes = Math.floor((expiracion - ahora) / 60000);
+      tiempoRestante.textContent = `⏳ ${minutosRestantes} min restantes`;
+
+      const btnBorrar = document.createElement('button');
+      btnBorrar.textContent = '✖';
+      btnBorrar.className = 'borrar-aporte';
+      btnBorrar.onclick = async () => {
+        if (!confirm('¿Eliminar este aporte?')) return;
+        await fetch(`https://momento-backend-production.up.railway.app/api/mural/${aporte._id}`, {
+          method: 'DELETE'
+        });
+        div.remove();
+      };
+
+      div.appendChild(span);
+      div.appendChild(btnBorrar);
+      div.appendChild(tiempoRestante);
+      contenedor.appendChild(div);
+    });
+}
+
+
 
     
   </script>
