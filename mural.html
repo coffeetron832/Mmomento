@@ -491,9 +491,11 @@
   }
 }
 
-function mostrarAporte({ tipo, contenido, usuario }) {
+function mostrarAporte({ _id, tipo, contenido, usuario }) {
   const nuevo = document.createElement('div');
   nuevo.classList.add('mural-item');
+  nuevo.id = `aporte-${_id}`; // ✅ ← esta línea
+
   const { offsetWidth: w, offsetHeight: h } = mural;
   const x = Math.floor(Math.random() * (w - 200));
   const y = Math.floor(Math.random() * (h - 200));
@@ -520,6 +522,7 @@ function mostrarAporte({ tipo, contenido, usuario }) {
 
   mural.appendChild(nuevo);
 }
+
 
 cargarAportes();
 
@@ -664,10 +667,15 @@ async function borrarAporte(id) {
     console.error('Error eliminando aporte:', err);
     alert('Error al eliminar el aporte.');
   }
+  if (res.ok) {
+  alert('Aporte eliminado.');
+  document.getElementById(`aporte-${id}`)?.remove(); // ✅ Eliminar del mural
+  cargarMisAportes(); // Actualizar panel lateral
 }
 
-// Llamar al cargar
-cargarMisAportes();
+}
+
+
 
     
   </script>
