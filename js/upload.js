@@ -580,34 +580,44 @@ loadImages();
     }
   }
 
-  // 🔔 Botón para mostrar notificaciones
-  const notifBtn = document.getElementById('notifBtn');
-  const notifDropdown = document.getElementById('notifDropdown');
-  const notifList = document.getElementById('notifList');
-  const notifCount = document.getElementById('notifCount');
+  // 🔔 Botones de notificaciones
+const notifBtn = document.getElementById('notifBtn');
+const mobileNotifBtn = document.getElementById('mobileNotifBtn'); // <- NUEVO
+const notifDropdown = document.getElementById('notifDropdown');
+const notifList = document.getElementById('notifList');
+const notifCount = document.getElementById('notifCount');
 
-  if (notifBtn && notifDropdown) {
-  notifBtn.addEventListener('click', async (e) => {
-    e.stopPropagation(); // Evita que el clic se propague al documento
-
+if ((notifBtn || mobileNotifBtn) && notifDropdown) {
+  const toggleNotif = async () => {
     notifDropdown.classList.toggle('show');
-
     if (notifDropdown.classList.contains('show')) {
       await loadNotifications();
     }
+  };
+
+  notifBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleNotif();
   });
 
-  // Cerrar el dropdown si se hace clic fuera de él
+  mobileNotifBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleNotif();
+  });
+
+  // Cerrar dropdown si se hace clic fuera de él
   document.addEventListener('click', (e) => {
     if (
       notifDropdown.classList.contains('show') &&
       !notifDropdown.contains(e.target) &&
-      e.target !== notifBtn
+      e.target !== notifBtn &&
+      e.target !== mobileNotifBtn
     ) {
       notifDropdown.classList.remove('show');
     }
   });
 }
+
 
   // 🔄 Cargar notificaciones del usuario
   async function loadNotifications() {
