@@ -297,8 +297,12 @@
 
   <script>
     // 🔐 Obtener usuario desde localStorage
-    const usuario = localStorage.getItem('usuarioMomento') || null;
-    if (!usuario) alert('Debes iniciar sesión para usar el mural.');
+    const token = localStorage.getItem('tokenMomento');
+if (!token) {
+  alert('Debes iniciar sesión para usar el mural.');
+  throw new Error('Token no encontrado');
+}
+
 
     // 🕛 Borrar mural si es un nuevo día
     const hoy = new Date().toDateString();
@@ -415,13 +419,15 @@
 
     async function agregarAlMural() {
   const tipoSeleccionado = tipo.value;
-  const usuario = localStorage.getItem('usuarioMomento');
+  const token = localStorage.getItem('tokenMomento');
+if (!token) {
+  alert('Debes iniciar sesión para usar el mural.');
+  throw new Error('Token no encontrado');
+}
+
   let contenidoFinal = '';
 
-  if (!usuario) {
-    alert('Debes iniciar sesión para aportar al Mural');
-    return;
-  }
+ 
 
   if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
     if (!contenido.value.trim()) {
@@ -474,22 +480,29 @@
 }
 
   async function enviarAlBackend(usuario, tipo, contenido) {
+  const token = localStorage.getItem('tokenMomento');
+  if (!token) return alert('No has iniciado sesión.');
+
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usuario, tipo, contenido })
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ tipo, contenido })
     });
 
-    if (!res.ok) throw new Error('No se pudo guardar el aporte');
-
     const data = await res.json();
-    mostrarAporte(data.data); // Mostrar el aporte recién guardado
+    if (!res.ok) throw new Error(data.message || 'No se pudo guardar el aporte');
+
+    mostrarAporte(data.data);
   } catch (err) {
+    alert(err.message);
     console.error('Error guardando en el mural:', err);
-    alert('Ocurrió un error al guardar tu aporte.');
   }
 }
+
 
 function mostrarAporte({ _id, tipo, contenido, usuario }) {
   const nuevo = document.createElement('div');
@@ -572,7 +585,12 @@ function mostrarMisAportes(datos) {
   const contenedor = document.getElementById('listaMisAportes');
   contenedor.innerHTML = '';
 
-  const usuario = localStorage.getItem('usuarioMomento');
+  const token = localStorage.getItem('tokenMomento');
+if (!token) {
+  alert('Debes iniciar sesión para usar el mural.');
+  throw new Error('Token no encontrado');
+}
+
   const ahora = new Date();
 
   datos
@@ -622,7 +640,12 @@ function mostrarMisAportes(datos) {
 }
 
 async function cargarMisAportes() {
-  const usuario = localStorage.getItem('usuarioMomento');
+  const token = localStorage.getItem('tokenMomento');
+if (!token) {
+  alert('Debes iniciar sesión para usar el mural.');
+  throw new Error('Token no encontrado');
+}
+
   const lista = document.getElementById('listaAportesUsuario');
   lista.innerHTML = '';
 
@@ -659,8 +682,12 @@ async function cargarMisAportes() {
 }
 
 async function eliminarAporte(id, divElemento) {
-  const usuario = localStorage.getItem('usuarioMomento');
-  if (!usuario) return alert('Debes iniciar sesión.');
+  const token = localStorage.getItem('tokenMomento');
+if (!token) {
+  alert('Debes iniciar sesión para usar el mural.');
+  throw new Error('Token no encontrado');
+}
+
 
   const confirmacion = confirm('¿Estás seguro de eliminar este aporte?');
   if (!confirmacion) return;
