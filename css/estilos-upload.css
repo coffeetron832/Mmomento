@@ -505,16 +505,17 @@
 
 /* Ajuste visual para fondo oscuro fijo */
 #notifDropdown {
-  background-color: #000 !important; /* negro sólido */
-  color: #f5f5f5; /* texto claro */
-  border: 1px solid #333;
+  background-color: #000 !important;    /* negro puro */
+  border: 1px solid #333 !important;    /* gris oscuro */
+  color: #fff !important;               /* texto blanco */
 }
 
 #notifDropdown li {
-  background-color: transparent; /* sin fondo raro */
-  color: #f5f5f5; /* texto claro */
+  background-color: transparent !important;
+  color: #fff !important;
   padding: 0.6rem 1rem;
   border-bottom: 1px solid #222;
+  transition: none;    /* elimina cualquier transición */
 }
 
 #notifDropdown li:last-child {
@@ -1118,7 +1119,7 @@ footer.nav-buttons-wrapper {
 }
 
 #notifDropdown li:hover {
-  background-color: #2a2a2a; /* más claro que #111 o #222 */
+  background-color: transparent !important;
   color: #fff; /* asegúrate de que el texto siga siendo blanco */
 }
 
@@ -1246,5 +1247,44 @@ footer.nav-buttons-wrapper {
 
   .mobile-notif-btn {
     display: block;
+  }
+}
+
+
+/* Dropdown base: fondo negro sólido, borde tenue */
+#notifDropdown {
+  background-color: #000 !important;    /* negro puro */
+  border: 1px solid #333 !important;    /* gris oscuro */
+  color: #fff !important;               /* texto blanco */
+}
+
+/* Cada ítem: fondo transparente, texto blanco */
+#notifDropdown li {
+  background-color: transparent !important;
+  color: #fff !important;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #222;
+  transition: none;    /* elimina cualquier transición */
+}
+
+/* Quita cualquier hover oscuro y deja el mismo fondo */
+#notifDropdown li:hover {
+  background-color: transparent !important;
+  color: #fff !important;
+  /* Si quieres un leve resaltado, descomenta:
+  background-color: rgba(255,255,255,0.05) !important;
+  */
+}
+
+/* Ajustes móviles (si los tienes) */
+@media (max-width: 600px) {
+  #notifDropdown {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+  #notifDropdown li,
+  #notifDropdown li:hover {
+    background-color: transparent !important;
+    color: #fff !important;
   }
 }
