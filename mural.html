@@ -595,12 +595,24 @@ function mostrarMisAportes(datos) {
       btnBorrar.textContent = '✖';
       btnBorrar.className = 'borrar-aporte';
       btnBorrar.onclick = async () => {
-        if (!confirm('¿Eliminar este aporte?')) return;
-        await fetch(`https://momento-backend-production.up.railway.app/api/mural/${aporte._id}`, {
-          method: 'DELETE'
-        });
-        div.remove();
-      };
+  if (!confirm('¿Eliminar este aporte?')) return;
+
+  const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${aporte._id}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ usuario })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.message || 'Error al eliminar.');
+    return;
+  }
+
+  div.remove();
+};
+
 
       div.appendChild(span);
       div.appendChild(btnBorrar);
@@ -646,8 +658,12 @@ async function cargarMisAportes() {
   }
 }
 
-async function borrarAporte(id) {
+async function eliminarAporte(id, divElemento) {
   const usuario = localStorage.getItem('usuarioMomento');
+  if (!usuario) return alert('Debes iniciar sesión.');
+
+  const confirmacion = confirm('¿Estás seguro de eliminar este aporte?');
+  if (!confirmacion) return;
 
   try {
     const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${id}`, {
@@ -657,23 +673,17 @@ async function borrarAporte(id) {
     });
 
     const data = await res.json();
-    if (res.ok) {
-      alert('Aporte eliminado.');
-      cargarMisAportes(); // recargar
-    } else {
-      alert(data.message || 'No se pudo eliminar.');
-    }
+
+    if (!res.ok) throw new Error(data.message || 'Error al eliminar');
+
+    // Eliminar visualmente el aporte del DOM
+    divElemento.remove();
   } catch (err) {
-    console.error('Error eliminando aporte:', err);
-    alert('Error al eliminar el aporte.');
+    alert(err.message);
+    console.error(err);
   }
-  if (res.ok) {
-  alert('Aporte eliminado.');
-  document.getElementById(`aporte-${id}`)?.remove(); // ✅ Eliminar del mural
-  cargarMisAportes(); // Actualizar panel lateral
 }
 
-}
 
 
 
