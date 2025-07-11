@@ -429,7 +429,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     async function agregarAlMural() {
   const tipoSeleccionado = tipo.value;
-  const token = localStorage.getItem('tokenMomento');
+  localStorage.getItem('token')
 if (!token) {
   alert('Debes iniciar sesión para usar el mural.');
   throw new Error('Token no encontrado');
@@ -491,7 +491,7 @@ if (!token) {
 }
 
   async function enviarAlBackend(usuario, tipo, contenido) {
-  const token = localStorage.getItem('tokenMomento');
+  localStorage.getItem('token')
   if (!token) return alert('No has iniciado sesión.');
 
   try {
@@ -596,7 +596,7 @@ function mostrarMisAportes(datos) {
   const contenedor = document.getElementById('listaMisAportes');
   contenedor.innerHTML = '';
 
-  const token = localStorage.getItem('tokenMomento');
+  localStorage.getItem('token')
 if (!token) {
   alert('Debes iniciar sesión para usar el mural.');
   throw new Error('Token no encontrado');
@@ -651,7 +651,7 @@ if (!token) {
 }
 
 async function cargarMisAportes() {
-  const token = localStorage.getItem('tokenMomento');
+  localStorage.getItem('token')
 if (!token) {
   alert('Debes iniciar sesión para usar el mural.');
   throw new Error('Token no encontrado');
@@ -693,7 +693,7 @@ if (!token) {
 }
 
 async function eliminarAporte(id, divElemento) {
-  const token = localStorage.getItem('tokenMomento');
+  localStorage.getItem('token')
 if (!token) {
   alert('Debes iniciar sesión para usar el mural.');
   throw new Error('Token no encontrado');
