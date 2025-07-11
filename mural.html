@@ -7,12 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #e9e4e0; /* más suave y cálido */
-      color: #222; /* mejor contraste */
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #000; /* fondo negro */
+  color: #fff; /* texto claro */
+}
 
-    }
 
     header {
       padding: 2rem 1rem 1rem;
@@ -154,18 +154,26 @@
   width: 3000px;
   height: 3000px;
 }
+
+.formulario.flotante {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  margin: 0;
+}
+
   </style>
 </head>
 <body>
-  <header>
-    <h1>🧱 El Mural del Momento</h1>
-    <p>
-      Un lienzo efímero donde puedes dejar tu huella emocional del día:
-      imágenes, emojis, frases o dibujos. Lo que compartas aquí desaparece a medianoche.
-    </p>
-  </header>
+  <div id="mensajeInicial" style="position: fixed; top: 0; left: 0; right: 0; background: #222; color: #fff; padding: 1rem; text-align: center; z-index: 10000; display: none;">
+  <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
+  <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
+  <button onclick="cerrarMensaje()">Cerrar</button>
+</div>
 
-  <section class="formulario">
+
+  <section class="formulario flotante">
     <label>¿Qué quieres dejar hoy?</label>
     <select id="tipo">
       <option value="frase">✍️ Frase corta</option>
@@ -439,6 +447,20 @@ async function cargarAportes() {
   } catch (err) {
     console.error('Error al cargar el mural:', err);
   }
+}
+
+// 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
+  if (!localStorage.getItem('noMostrarMensajeMural')) {
+    document.getElementById('mensajeInicial').style.display = 'block';
+  }
+});
+
+function cerrarMensaje() {
+  const noMostrar = document.getElementById('noMostrarCheckbox').checked;
+  if (noMostrar) {
+    localStorage.setItem('noMostrarMensajeMural', 'true');
+  }
+  document.getElementById('mensajeInicial').style.display = 'none';
 }
 
     
