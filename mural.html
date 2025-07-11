@@ -565,6 +565,10 @@ async function cargarAportes() {
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
     const datos = await res.json();
+
+console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
+    console.log('👤 Usuario localStorage:', usuario);
+    
     datos.forEach(aporte => mostrarAporte(aporte));
     mostrarMisAportes(datos); // ← NUEVO
   } catch (err) {
