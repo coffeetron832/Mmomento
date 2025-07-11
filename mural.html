@@ -296,12 +296,22 @@
 </div>
 
   <script>
-    // 🔐 Obtener usuario desde localStorage
-    const token = localStorage.getItem('tokenMomento');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
+    function verificarToken() {
+  const token = localStorage.getItem('tokenMomento');
+  if (!token) {
+    alert('Debes iniciar sesión para usar el mural.');
+    window.location.href = '/index.html'; // o a donde tengas el login
+    return false;
+  }
+  return true;
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (!verificarToken()) return;
+
+  // aquí puedes llamar a funciones como cargarAportes()
+  cargarAportes();
+});
 
 
     // 🕛 Borrar mural si es un nuevo día
@@ -443,7 +453,7 @@ if (!token) {
 
   const formData = new FormData();
   formData.append('imagen', archivo);
-  formData.append('usuario', usuario);
+  .filter(aporte => aporte.usuario === usuario)
 
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
