@@ -34,33 +34,43 @@
     }
 
     .formulario {
-      padding: 1rem;
-      background-color: #fff3e6;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      max-width: 500px;
-      margin: 2rem auto;
-      border-radius: 1rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 1rem;
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 320px;
+  z-index: 9999;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #f1f1f1;
+}
+
 
     .formulario input,
-    .formulario textarea,
-    .formulario select,
-    .formulario button {
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      border: none;
-      font-size: 1rem;
-    }
+.formulario textarea,
+.formulario select {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1rem;
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+}
 
-    .formulario button {
-      background-color: #ff9a9e;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.formulario button {
+  background-color: #ff9a9e;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 0.75rem;
+}
+
 
     .formulario .doodle-controls {
       display: flex;
