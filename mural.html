@@ -453,7 +453,8 @@ if (!token) {
 
   const formData = new FormData();
   formData.append('imagen', archivo);
-  .filter(aporte => aporte.usuario === usuario)
+  formData.append('usuario', usuario);
+
 
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
