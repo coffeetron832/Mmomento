@@ -313,7 +313,9 @@
 
     
     // ✅ Definimos usuario como variable global al inicio
-let usuario = localStorage.getItem('usuario');
+let usuario = obtenerUsuarioDesdeToken();
+console.log('👤 Usuario autenticado desde token:', usuario);
+
 
 function verificarToken() {
   const token = localStorage.getItem('token');
