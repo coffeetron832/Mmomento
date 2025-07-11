@@ -1217,7 +1217,7 @@ footer.nav-buttons-wrapper {
 /* 🔔 Botón de notificaciones flotante en móviles */
 .mobile-notif-btn {
   display: none;
-  position: fixed;
+  position: fixed !important;
   top: 1rem;
   right: 1rem;
   background-color: #4f46e5;
@@ -1228,7 +1228,7 @@ footer.nav-buttons-wrapper {
   height: 3rem;
   font-size: 1.4rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  z-index: 10000;
+  z-index: 100000;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
