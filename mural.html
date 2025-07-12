@@ -261,6 +261,24 @@
   <button onclick="cerrarMensaje()">Cerrar</button>
 </div>
 
+  <button id="toggleUIBtn" style="
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10000;
+  background: #ff9a9e;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  display: none;
+">
+  👁️ Mostrar
+</button>
+
 
   <section class="formulario flotante">
     <label>¿Qué quieres dejar hoy?</label>
@@ -347,6 +365,18 @@ window.addEventListener('DOMContentLoaded', () => {
   cargarAportes();
 });
 
+const toggleBtn = document.getElementById('toggleUIBtn');
+const formulario = document.querySelector('.formulario');
+const misAportes = document.getElementById('misAportes');
+
+let uiVisible = true;
+
+toggleBtn.addEventListener('click', () => {
+  uiVisible = !uiVisible;
+  formulario.style.display = uiVisible ? 'flex' : 'none';
+  misAportes.style.display = uiVisible ? 'block' : 'none';
+  toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
+});
 
 
     // 🕛 Borrar mural si es un nuevo día
@@ -657,6 +687,10 @@ console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
 
 // 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
 window.addEventListener('DOMContentLoaded', () => {
+  if (window.innerWidth <= 600) {
+  document.getElementById('toggleUIBtn').style.display = 'block';
+}
+
   if (!localStorage.getItem('noMostrarMensajeMural')) {
     document.getElementById('mensajeInicial').style.display = 'block';
   }
