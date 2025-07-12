@@ -462,40 +462,35 @@ let initialScale = scale;
     });
 
 
-    // Eventos táctiles para móviles
+   let isDragging = false;
+let isPinching = false;
+let startX, startY;
+
 muralContainer.addEventListener('touchstart', e => {
-  if (e.touches.length !== 1) return;
-  isDragging = true;
-  const touch = e.touches[0];
-  startX = touch.clientX - posX;
-  startY = touch.clientY - posY;
-  muralContainer.style.cursor = 'grabbing';
-});
-
-muralContainer.addEventListener('touchmove', e => {
-  if (!isDragging || e.touches.length !== 1) return;
-  const touch = e.touches[0];
-  posX = touch.clientX - startX;
-  posY = touch.clientY - startY;
-  updateTransform();
-});
-
-muralContainer.addEventListener('touchend', () => {
-  isDragging = false;
-  muralContainer.style.cursor = 'grab';
-});
-
-    muralContainer.addEventListener('touchstart', e => {
-  if (e.touches.length === 2) {
-    // Iniciar gesto de zoom
+  if (e.touches.length === 1) {
+    // Empieza desplazamiento con un dedo
+    isDragging = true;
+    const touch = e.touches[0];
+    startX = touch.clientX - posX;
+    startY = touch.clientY - posY;
+    muralContainer.style.cursor = 'grabbing';
+  } else if (e.touches.length === 2) {
+    // Empieza gesto de zoom con dos dedos
+    isDragging = false;
+    isPinching = true;
     initialDistance = getDistance(e.touches[0], e.touches[1]);
     initialScale = scale;
   }
 }, { passive: false });
 
 muralContainer.addEventListener('touchmove', e => {
-  if (e.touches.length === 2 && initialDistance !== null) {
-    e.preventDefault(); // Previene scroll del navegador
+  if (isDragging && e.touches.length === 1) {
+    const touch = e.touches[0];
+    posX = touch.clientX - startX;
+    posY = touch.clientY - startY;
+    updateTransform();
+  } else if (isPinching && e.touches.length === 2) {
+    e.preventDefault();
     const newDistance = getDistance(e.touches[0], e.touches[1]);
     const scaleChange = newDistance / initialDistance;
     scale = Math.min(2, Math.max(0.4, initialScale * scaleChange));
@@ -505,15 +500,12 @@ muralContainer.addEventListener('touchmove', e => {
 
 muralContainer.addEventListener('touchend', e => {
   if (e.touches.length < 2) {
-    initialDistance = null;
+    isDragging = false;
+    isPinching = false;
+    muralContainer.style.cursor = 'grab';
   }
 });
 
-function getDistance(touch1, touch2) {
-  const dx = touch2.clientX - touch1.clientX;
-  const dy = touch2.clientY - touch1.clientY;
-  return Math.sqrt(dx * dx + dy * dy);
-}
 
 
     function limpiarCanvas() {
