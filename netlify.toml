@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/api/admin/*"
-  to = "https://momento-backend.up.railway.app/api/admin/:splat"
+  to = "https://momento-backend-production.up.railway.app/api/admin/:splat"
   status = 200
   force = true
