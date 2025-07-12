@@ -198,4 +198,26 @@ document.querySelectorAll('.emotion-filter').forEach(btn => {
     emotionPanel.style.display = 'none';
   });
 });
+
+// ✅ Botones del menú lateral con la misma funcionalidad que los originales
+const toggleUploadBtnMenu = document.getElementById('toggleUploadBtnMenu');
+toggleUploadBtnMenu?.addEventListener('click', () => {
+  const isVisible = uploadForm.classList.toggle('visible');
+  uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
+
+  // Cerrar el menú lateral
+  menuOverlay.classList.remove('show');
+});
+
+const exploreBtnMenu = document.getElementById('exploreBtnMenu');
+exploreBtnMenu?.addEventListener('click', () => {
+  emotionPanel.style.display = 'flex';
+  emotionPanel.setAttribute('aria-hidden', 'false');
+
+  // Cerrar el menú lateral
+  menuOverlay.classList.remove('show');
+});
+
+
+  
     });
