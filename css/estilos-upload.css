@@ -1215,11 +1215,13 @@ footer.nav-buttons-wrapper {
 
 
 /* 🔔 Botón de notificaciones flotante en móviles */
+/* 🔔 Botón de notificaciones flotante en móviles */
 .mobile-notif-btn {
   display: none;
   position: fixed !important;
   top: 1rem;
-  right: 1rem;
+  left: 1rem;        /* ✅ Ahora a la izquierda */
+  right: auto;       /* ✅ Asegura que no haya conflicto */
   background-color: #4f46e5;
   color: white;
   border: none;
