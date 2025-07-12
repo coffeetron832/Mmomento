@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de Momento</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f2f2f2;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      color: #555;
+    }
+    .card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard Momento 💖</h1>
+
+  <div class="stats" id="stats-container">
+    <div class="card">
+      <h2>Usuarios totales</h2>
+      <div class="number" id="totalUsers">...</div>
+    </div>
+    <div class="card">
+      <h2>Registrados hoy</h2>
+      <div class="number" id="todayUsers">...</div>
+    </div>
+    <div class="card">
+      <h2>Conectados ahora</h2>
+      <div class="number" id="connectedUsers">...</div>
+    </div>
+    <div class="card">
+      <h2>Imágenes hoy</h2>
+      <div class="number" id="imagesToday">...</div>
+    </div>
+    <div class="card">
+      <h2>Aportes mural</h2>
+      <div class="number" id="muralToday">...</div>
+    </div>
+  </div>
+
+  <script>
+    const API = 'https://momento-backend-production.up.railway.app/api/admin/stats';
+    const token = prompt("Ingresa tu token de administrador");
+
+    const endpoints = {
+      totalUsers: `${API}/users/total`,
+      todayUsers: `${API}/users/today`,
+      connectedUsers: `${API}/users/online`,
+      imagesToday: `${API}/images/today`,
+      muralToday: `${API}/mural/today`
+    };
+
+    async function fetchStat(endpoint, elementId) {
+      try {
+        const res = await fetch(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        const data = await res.json();
+        const value = Object.values(data)[0];
+        document.getElementById(elementId).textContent = value;
+      } catch (err) {
+        document.getElementById(elementId).textContent = 'Error';
+      }
+    }
+
+    fetchStat(endpoints.totalUsers, 'totalUsers');
+    fetchStat(endpoints.todayUsers, 'todayUsers');
+    fetchStat(endpoints.connectedUsers, 'connectedUsers');
+    fetchStat(endpoints.imagesToday, 'imagesToday');
+    fetchStat(endpoints.muralToday, 'muralToday');
+  </script>
+</body>
+</html>
