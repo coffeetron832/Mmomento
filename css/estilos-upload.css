@@ -1081,9 +1081,10 @@ footer.nav-buttons-wrapper {
 /* 🔔 Estilo base para notifDropdown */
 #notifDropdown {
   display: none;
-  position: fixed; /* ✅ SIEMPRE fijo en pantalla */
-  top: 60px;       /* Espacio desde la parte superior */
-  right: 1.5rem;   /* Pegado a la derecha */
+  position: fixed; /* ✅ Se mantiene fijo */
+  top: 60px;        /* Altura desde arriba */
+  left: 1.5rem;     /* ⬅️ Cambiamos de right a left */
+  right: auto;      /* Por si tenía herencia */
   background-color: var(--notif-bg);
   border: 1px solid var(--notif-border);
   border-radius: 12px;
@@ -1094,16 +1095,19 @@ footer.nav-buttons-wrapper {
   color: var(--btn-text);
   opacity: 0;
   pointer-events: none;
+  transform: translateY(-12px); /* 👇 Empieza levemente arriba */
   transition: all 0.3s ease;
   z-index: 10000;
 }
 
-/* Al estar activo */
+/* 🔽 Al estar activo */
 #notifDropdown.show {
   display: block;
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(0); /* Se desliza hacia abajo */
 }
+
 
 /* Listado de notificaciones */
 #notifDropdown ul {
