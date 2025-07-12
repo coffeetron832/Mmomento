@@ -275,17 +275,48 @@
     });
   });
 
-const scroller = document.getElementById('navScroller');
-  const leftArrow = document.querySelector('.left-arrow');
-  const rightArrow = document.querySelector('.right-arrow');
 
-  leftArrow.addEventListener('click', () => {
-    scroller.scrollBy({ left: -100, behavior: 'smooth' });
-  });
+    // 🔁 Función para mostrar/ocultar el formulario de subida
+function toggleUploadForm() {
+  const formContainer = document.getElementById('uploadFormContainer');
+  if (!formContainer) return;
 
-  rightArrow.addEventListener('click', () => {
-    scroller.scrollBy({ left: 100, behavior: 'smooth' });
-  });
+  const isVisible = formContainer.style.display === 'block';
+  formContainer.style.display = isVisible ? 'none' : 'block';
+  formContainer.setAttribute('aria-hidden', isVisible ? 'true' : 'false');
+
+  // Cierra el menú lateral si está abierto
+  const menuOverlay = document.getElementById('menuOverlay');
+  if (menuOverlay?.classList.contains('show')) {
+    menuOverlay.classList.remove('show');
+  }
+}
+
+// 🔁 Función para mostrar el panel de emociones
+function showEmotionPanel() {
+  const panel = document.getElementById('emotionPanel');
+  if (panel) {
+    panel.style.display = 'block';
+    panel.setAttribute('aria-hidden', 'false');
+  }
+
+  // Cierra el menú lateral si está abierto
+  const menuOverlay = document.getElementById('menuOverlay');
+  if (menuOverlay?.classList.contains('show')) {
+    menuOverlay.classList.remove('show');
+  }
+}
+
+    // Nuevos botones del menú lateral
+const toggleUploadBtnMenu = document.getElementById('toggleUploadBtnMenu');
+if (toggleUploadBtnMenu) {
+  toggleUploadBtnMenu.addEventListener('click', toggleUploadForm);
+}
+
+const exploreBtnMenu = document.getElementById('exploreBtnMenu');
+if (exploreBtnMenu) {
+  exploreBtnMenu.addEventListener('click', showEmotionPanel);
+}
 
     
     // ——— Lógica para “Mi Soulprint” ———
