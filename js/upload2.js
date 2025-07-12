@@ -201,13 +201,14 @@ document.querySelectorAll('.emotion-filter').forEach(btn => {
 
 // ✅ Botones del menú lateral con la misma funcionalidad que los originales
 const toggleUploadBtnMenu = document.getElementById('toggleUploadBtnMenu');
-toggleUploadBtnMenu?.addEventListener('click', () => {
-  const isVisible = uploadForm.classList.toggle('visible');
-  uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
+if (toggleUploadBtnMenu) {
+  toggleUploadBtnMenu.addEventListener('click', () => {
+    const isVisible = uploadForm.classList.toggle('visible');
+    uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
+    menuOverlay.classList.remove('show');
+  });
+}
 
-  // Cerrar el menú lateral
-  menuOverlay.classList.remove('show');
-});
 
 const exploreBtnMenu = document.getElementById('exploreBtnMenu');
 exploreBtnMenu?.addEventListener('click', () => {
