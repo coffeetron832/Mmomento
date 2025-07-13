@@ -409,6 +409,16 @@ function getCurrentUserId() {
   }
 }
 
+window.addEventListener('beforeunload', () => {
+  const token = localStorage.getItem('tokenMomento');
+  if (!token) return;
+
+  fetch('/api/ping', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` },
+    keepalive: true
+  });
+});
 
 
 loadUserPatches(); // ✅ Cargar parches apenas cargue la página
