@@ -6,41 +6,82 @@
   <title>Panel de Momento</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: #f2f2f2;
+      background: black;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
       padding: 2rem;
+      overflow: hidden;
     }
+
     h1 {
       text-align: center;
-      color: #333;
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px #00ff00;
     }
+
     .stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5rem;
-      margin-top: 2rem;
     }
+
     .card {
-      background: white;
-      padding: 1.2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #00ff00;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ff00;
       text-align: center;
+      transition: transform 0.2s ease;
     }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
     .card h2 {
       font-size: 1.2rem;
-      margin: 0.5rem 0;
-      color: #555;
+      margin-bottom: 0.8rem;
+      color: #aaffaa;
+      text-shadow: 0 0 5px #00ff00;
     }
+
     .card .number {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: bold;
-      color: #111;
+      color: #00ff00;
+      animation: blink 1s infinite alternate;
+    }
+
+    @keyframes blink {
+      0%   { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+
+    button {
+      margin: 2rem auto;
+      display: block;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-family: 'Courier New', monospace;
+      color: black;
+      background: #00ff00;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ff00;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: #33ff33;
+      box-shadow: 0 0 15px #00ff00;
     }
   </style>
 </head>
 <body>
-  <h1>Dashboard Momento 💖</h1>
+  <h1>DASHBOARD MOMENTO 🧠💚</h1>
 
   <div class="stats" id="stats-container">
     <div class="card">
@@ -65,9 +106,7 @@
     </div>
   </div>
 
-    <button onclick="updateStats()" style="margin: 2rem auto; display: block; padding: 0.7rem 1.2rem; font-size: 1rem; border-radius: 8px; border: none; background-color: #4CAF50; color: white; cursor: pointer;">
-    🔄 Actualizar ahora
-  </button>
+  <button onclick="updateStats()">🔄 Actualizar ahora</button>
 
     <script>
     const API = 'https://momento-backend-production.up.railway.app/api/admin/stats';
