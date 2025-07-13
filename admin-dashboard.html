@@ -65,7 +65,11 @@
     </div>
   </div>
 
-  <script>
+    <button onclick="updateStats()" style="margin: 2rem auto; display: block; padding: 0.7rem 1.2rem; font-size: 1rem; border-radius: 8px; border: none; background-color: #4CAF50; color: white; cursor: pointer;">
+    🔄 Actualizar ahora
+  </button>
+
+    <script>
     const API = 'https://momento-backend-production.up.railway.app/api/admin/stats';
     const token = prompt("Ingresa tu token de administrador");
 
@@ -92,11 +96,20 @@
       }
     }
 
-    fetchStat(endpoints.totalUsers, 'totalUsers');
-    fetchStat(endpoints.todayUsers, 'todayUsers');
-    fetchStat(endpoints.connectedUsers, 'connectedUsers');
-    fetchStat(endpoints.imagesToday, 'imagesToday');
-    fetchStat(endpoints.muralToday, 'muralToday');
+    function updateStats() {
+      fetchStat(endpoints.totalUsers, 'totalUsers');
+      fetchStat(endpoints.todayUsers, 'todayUsers');
+      fetchStat(endpoints.connectedUsers, 'connectedUsers');
+      fetchStat(endpoints.imagesToday, 'imagesToday');
+      fetchStat(endpoints.muralToday, 'muralToday');
+    }
+
+    // Ejecutar al cargar
+    updateStats();
+
+    // Ejecutar cada 10 segundos (10,000 ms)
+    setInterval(updateStats, 10000);
   </script>
+
 </body>
 </html>
