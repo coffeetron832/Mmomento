@@ -302,6 +302,19 @@
       window.location.href = 'index.html';
     });
   });
+
+window.addEventListener('beforeunload', () => {
+  const token = localStorage.getItem('tokenMomento');
+  if (!token) return;
+
+  fetch('/api/ping', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` },
+    keepalive: true
+  });
+});
+
+    
 </script>
   <script src="js/upload2.js"></script>
   <script src="js/upload.js"></script>
