@@ -1444,10 +1444,10 @@ body.dark-mode .upload-form-container {
 /* ✅ Ajustes SOLO para móviles */
 @media (max-width: 600px) {
   .upload-form-container {
-    width: 92vw;
-    max-width: 95vw;
-    margin: 1.5rem auto;
-    padding: 1rem 0.8rem 1.8rem;
+    width: 88vw; /* 🔹 Más angosto */
+    max-width: 90vw;
+    margin: 1.2rem auto;
+    padding: 0.9rem 0.7rem 1.5rem;
     background-color: rgba(17, 17, 17, 0.95);
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -1457,14 +1457,14 @@ body.dark-mode .upload-form-container {
   .upload-form-container form {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: 0.5rem;
   }
 
   .upload-form-container input,
   .upload-form-container select,
   .upload-form-container button {
-    font-size: 0.85rem;
-    padding: 0.55rem 0.8rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.7rem;
     border-radius: 6px;
     background-color: #1a1a1a;
     color: #fff;
@@ -1473,13 +1473,13 @@ body.dark-mode .upload-form-container {
 
   .upload-form-container input[type="file"] {
     padding: 0.4rem;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .upload-form-container button {
     background-color: #4f46e5;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .upload-form-container button:hover {
@@ -1495,8 +1495,8 @@ body.dark-mode .upload-form-container {
   }
 
   .section-button {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
     background-color: #222;
     border-radius: 6px;
     border: 1px solid #444;
@@ -1509,11 +1509,12 @@ body.dark-mode .upload-form-container {
   }
 
   label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #ccc;
     margin-bottom: 0.2rem;
   }
 }
+
 
 
 @media (min-width: 768px) {
