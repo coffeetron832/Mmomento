@@ -1132,7 +1132,7 @@ footer.nav-buttons-wrapper {
 .nav-side-panel {
   position: fixed;
   top: 50%;
-  left: 2.5rem; /* un poco más a la derecha del borde */
+  left: 2.5rem;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -1144,8 +1144,9 @@ footer.nav-buttons-wrapper {
   z-index: 1000;
 }
 
-/* 🔘 Botones ícono pequeños */
-.nav-side-panel .nav-btn {
+/* Botones íconos */
+.nav-side-panel .nav-btn,
+.nav-icon-link {
   background: none;
   color: white;
   border: none;
@@ -1159,9 +1160,11 @@ footer.nav-buttons-wrapper {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
+  text-decoration: none;
 }
 
-.nav-side-panel .nav-btn:hover {
+.nav-side-panel .nav-btn:hover,
+.nav-icon-link:hover {
   background-color: #222;
   color: #4f46e5;
 }
