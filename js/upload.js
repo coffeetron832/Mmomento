@@ -144,7 +144,7 @@ const formData = new FormData(form);
 // after: const formData = new FormData(form);
 const visibilityValue = formData.get('visibility');
 
-const sectionValue = selectedSectionInput.value;
+const sectionValue = hiddenInput.value;
 if (!sectionValue) {
   alert('Por favor selecciona una categoría emocional');
   return;
