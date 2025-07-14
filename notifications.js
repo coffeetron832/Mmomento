@@ -28,58 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         content.innerHTML = `🦋 ${noti.message}`;
 
         li.appendChild(content);
-
-        // Si es tipo invitación a parche, agregar botones
-        if (noti.type === 'invitacion_parche' && noti.patchId) {
-          const btns = document.createElement('div');
-          btns.style.marginTop = '0.5rem';
-
-          const acceptBtn = document.createElement('button');
-          acceptBtn.textContent = 'Aceptar';
-          acceptBtn.style.marginRight = '0.5rem';
-          acceptBtn.style.cursor = 'pointer';
-
-          const rejectBtn = document.createElement('button');
-          rejectBtn.textContent = 'Rechazar';
-          rejectBtn.style.cursor = 'pointer';
-
-          acceptBtn.onclick = async () => {
-            try {
-              const res = await fetch(`${API_URL}/patches/${noti.patchId}/request/${noti.sender._id}/accept`, {
-                method: 'POST',
-                headers: { Authorization: `Bearer ${token}` }
-              });
-              if (res.ok) {
-                li.innerHTML = `✅ Te has unido al parche.`;
-              } else {
-                li.innerHTML = `❌ Error al aceptar.`;
-              }
-            } catch (err) {
-              console.error(err);
-            }
-          };
-
-          rejectBtn.onclick = async () => {
-            try {
-              const res = await fetch(`${API_URL}/patches/${noti.patchId}/request/${noti.sender._id}/reject`, {
-                method: 'POST',
-                headers: { Authorization: `Bearer ${token}` }
-              });
-              if (res.ok) {
-                li.innerHTML = `🚫 Invitación rechazada.`;
-              } else {
-                li.innerHTML = `❌ Error al rechazar.`;
-              }
-            } catch (err) {
-              console.error(err);
-            }
-          };
-
-          btns.appendChild(acceptBtn);
-          btns.appendChild(rejectBtn);
-          li.appendChild(btns);
-        }
-
         notifList.appendChild(li);
       });
     } catch (err) {
