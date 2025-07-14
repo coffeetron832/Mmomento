@@ -1451,3 +1451,27 @@ body.dark-mode .upload-form-container {
   }
 }
 
+@media (min-width: 768px) {
+  .upload-form-container form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2rem;
+    align-items: start;
+  }
+
+  /* Elementos grandes que deben ocupar toda la fila */
+  #image,
+  #imagePreviewContainer,
+  #section-buttons,
+  #patchSelectorContainer,
+  #uploadForm button {
+    grid-column: 1 / -1;
+  }
+
+  /* Opcional: ajustar campos más pequeños si quieres que queden uno al lado del otro */
+  #description,
+  #visibility,
+  #duration {
+    width: 100%;
+  }
+}
