@@ -1389,3 +1389,44 @@ h2.section-title {
   transform: scale(1.05);
   color: #4f46e5;
 }
+
+
+@media (max-width: 600px) {
+  .upload-form-container {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    padding: 2rem 1.2rem 4rem;
+    background-color: transparent;
+    box-shadow: none;
+    margin-top: 1.5rem;
+  }
+
+  .upload-form-container input,
+  .upload-form-container select,
+  .upload-form-container button {
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+  }
+
+  .upload-form-container button {
+    background-color: #4f46e5;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
+  .upload-form-container button:hover {
+    background-color: #3730a3;
+  }
+
+  body.dark-mode .upload-form-container {
+    background-color: #000;
+  }
+}
