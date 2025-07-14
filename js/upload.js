@@ -7,7 +7,6 @@ let currentSectionFilter = 'all'; // ✅ Sección activa por defecto
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("uploadForm");
-  const circleContainer = document.getElementById('patchSelectorContainer');
   const imagesContainer = document.getElementById("imagesContainer");
   const imageActionMessage = document.getElementById("imageActionMessage");
   
@@ -79,45 +78,6 @@ if (welcomeBackMessage) {
   const welcomeEl = document.getElementById('welcomeText');
   if (welcomeEl && user.name) welcomeEl.textContent = user.name;
 
-  // 👁 Mostrar selector de parches
-const visibilitySelect = document.getElementById('visibility');
-const patchSelectorContainer = document.getElementById('patchSelectorContainer');
-const selector = document.getElementById('circleSelector');
-const sectionButtons = document.getElementById('section-buttons');
-const selectedSectionInput = document.getElementById('selected-section');
-
-if (visibilitySelect && patchSelectorContainer && selector) {
-  visibilitySelect.addEventListener('change', () => {
-    const vis = visibilitySelect.value;
-
-    if (vis === 'patch') {
-      // 1️⃣ Mostrar parche, ocultar secciones
-      patchSelectorContainer.style.display = 'block';
-      sectionButtons.style.display = 'none';
-      selectedSectionInput.value = '';
-
-      // 2️⃣ Quitar required para que no interfiera
-      selector.removeAttribute('required');
-
-      loadUserPatches();
-    } else {
-      // 1️⃣ Ocultar parche, mostrar secciones
-      patchSelectorContainer.style.display = 'none';
-      sectionButtons.style.display = 'block';
-
-      // 2️⃣ Restaurar required
-      selector.setAttribute('required', 'true');
-    }
-  });
-
-  // Estado inicial si ya venía seleccionado
-  if (visibilitySelect.value === 'patch') {
-    visibilitySelect.dispatchEvent(new Event('change'));
-  }
-}
-
-
-
 
   // 🪄 Botón subir imagen
   const toggleUploadBtn = document.getElementById('toggleUploadBtn');
@@ -165,10 +125,11 @@ if (logoutBtn) {
     const hiddenInput = document.getElementById('selected-section');
 const visibility = document.getElementById('visibility')?.value;
 
-if (visibility !== 'patch' && !hiddenInput.value) {
+if (!hiddenInput.value) {
   alert('Por favor selecciona una sección creativa.');
   return;
 }
+
 
 
   
@@ -183,30 +144,13 @@ const formData = new FormData(form);
 // after: const formData = new FormData(form);
 const visibilityValue = formData.get('visibility');
 
-if (visibilityValue === 'patch') {
-  // 1️⃣ El selector ya existe en el DOM
-    const selectedCheckboxes = document.querySelectorAll('input[name="patches"]:checked');
-  if (!selectedCheckboxes.length) {
-    alert('Selecciona al menos un parche para compartir');
-    return;
-  }
-
-  // Añadir cada parche seleccionado como patchIds[]
-  selectedCheckboxes.forEach(checkbox => {
-    formData.append('patchIds[]', checkbox.value);
-  });
-
-  formData.set('section', 'patch'); // Esto se puede usar para clasificar como sección 'patch'
-
-} else {
-  // validación normal de sección creativa
-  const sectionValue = selectedSectionInput.value;
-  if (!sectionValue) {
-    alert('Por favor selecciona una categoría emocional');
-    return;
-  }
-  formData.set('section', sectionValue);
+const sectionValue = selectedSectionInput.value;
+if (!sectionValue) {
+  alert('Por favor selecciona una categoría emocional');
+  return;
 }
+formData.set('section', sectionValue);
+
 
 
 
@@ -254,7 +198,6 @@ if (visibilityValue === 'patch') {
       }
 
       form.reset();
-      if (circleContainer) circleContainer.style.display = 'none';
 
       // 🔁 Recargar desde backend (evita duplicados)
       await loadImages();
@@ -301,7 +244,6 @@ function applyFilter() {
   emocional_404: '🧨 404 Emocional',
   nunca_antes_visto: '🤐 Nunca antes visto',
   sin_seccion: '📦 Sin sección',
-  patch: '🔰 Parches compartidos' // 👈 AÑADE ESTA LÍNEA
 };
 
 
@@ -333,13 +275,7 @@ function applyFilter() {
       img.alt = image.description || 'imagen subida';
       img.loading = 'lazy';
 
-      // ✅ Mostrar distintivo de parche si aplica
-if (image.visibility === 'patch' && image.patch?.name) {
-  const badge = document.createElement('div');
-  badge.className = 'patch-badge';
-  badge.textContent = `🔰 ${image.patch.name}`;
-  card.appendChild(badge);
-}
+      
 
 
       // ✅ Crear fila de usuario
@@ -657,21 +593,7 @@ if ((notifBtn || mobileNotifBtn) && notifDropdown) {
   actions.style.display = 'flex';
   actions.style.gap = '10px';
 
-  // 🔘 Solo si es invitación a parche
-  if (n.type === 'invitacion_parche' && n.status === 'pending') {
-  const acceptBtn = document.createElement('button');
-  acceptBtn.textContent = 'Aceptar';
-  acceptBtn.className = 'notif-action-btn';
-  acceptBtn.addEventListener('click', () => respondToInvite(n._id, 'accepted', li));
-
-  const rejectBtn = document.createElement('button');
-  rejectBtn.textContent = 'Rechazar';
-  rejectBtn.className = 'notif-action-btn';
-  rejectBtn.addEventListener('click', () => respondToInvite(n._id, 'rejected', li));
-
-  li.append(acceptBtn, rejectBtn);
-}
-
+  
 
   const delBtn = document.createElement('button');
   delBtn.textContent = '✖';
@@ -745,88 +667,7 @@ function showFullImage(imageUrl) {
   overlay.style.display = 'flex';
 }
 
-async function respondToInvite(notificationId, action, notifElement) {
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/patches/respond-invite', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ notificationId, status: action })
-    });
 
-    const data = await res.json();
-    console.log('Respuesta enviada:', data);
-
-    if (res.ok && notifElement) {
-      // ✅ Quitar notificación del DOM
-      notifElement.remove();
-
-      // ✅ Mostrar mensaje temporal (si quieres)
-      const msgBox = document.getElementById('imageActionMessage');
-      if (msgBox) {
-        msgBox.innerText = action === 'accepted' 
-          ? '🎉 ¡Te uniste al parche!' 
-          : '👌 Invitación rechazada';
-        msgBox.style.display = 'block';
-        msgBox.style.opacity = '1';
-        setTimeout(() => {
-          msgBox.style.opacity = '0';
-          setTimeout(() => (msgBox.style.display = 'none'), 1000);
-        }, 3000);
-      }
-    }
-  } catch (err) {
-    console.error('Error al responder invitación:', err);
-  }
-}
-
-async function loadUserPatches() {
-  const selector = document.getElementById('circleSelector');
-  if (!selector) return;
-
-  try {
-    const res = await fetch(`${API_URL}/api/patches/`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) throw new Error('Error al obtener parches');
-    const patches = await res.json();
-
-    selector.innerHTML = ''; // Limpia lo anterior
-
-const placeholder = document.createElement('option');
-placeholder.value = '';
-placeholder.disabled = true;
-placeholder.selected = true;
-placeholder.textContent = '-- Elige tu parche --';
-selector.appendChild(placeholder);
-
-
-    if (!patches.length) {
-      const opt = document.createElement('option');
-      opt.value = '';
-      opt.textContent = 'No perteneces a ningún parche';
-      selector.appendChild(opt);
-      return;
-    }
-
-    patches.forEach(patch => {
-      const opt = document.createElement('option');
-      opt.value = patch._id;
-      opt.textContent = patch.name;
-      selector.appendChild(opt);
-    });
-
-  } catch (err) {
-    console.error('Error al cargar los parches:', err);
-    const selector = document.getElementById('circleSelector');
-    selector.innerHTML = `<option value="">Error al cargar tus parches</option>`;
-  }
-}
 
 
   
