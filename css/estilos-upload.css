@@ -1393,22 +1393,13 @@ h2.section-title {
 
 @media (max-width: 600px) {
   .upload-form-container {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    width: 90vw !important;
-    max-width: 100%;
-    margin: 2rem auto !important;
-    padding: 2rem 1.2rem 4rem !important;
+    width: 90vw;
+    max-width: 95vw;
+    padding: 1.2rem 1rem 2rem;
     border-radius: 12px;
-    background-color: #111 !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
   }
 }
+
 
 
   .upload-form-container input,
