@@ -1003,55 +1003,7 @@ h2.section-title {
   height: 32px;
 }
 
-/* 🌟 Footer flotante con flechas de navegación */
-footer.nav-buttons-wrapper {
-  position: fixed;
-  bottom: 0.6rem; /* más cerca del borde */
-  left: 50%;
-  transform: translateX(-50%);
-  width: auto;
-  max-width: 95vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.2rem; /* menor espacio entre elementos */
-  z-index: 1000;
-  pointer-events: none;
-}
 
-.nav-buttons {
-  display: flex;
-  gap: 0.4rem;
-  overflow: visible;
-  background-color: #111;
-  padding: 0.3rem 0.8rem; /* menos padding interno */
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  pointer-events: auto;
-  scroll-behavior: smooth;
-  max-width: 100%;
-  position: relative;
-}
-
-/* Botones */
-.nav-btn {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 0.85rem;
-  cursor: pointer;
-  padding: 0.3rem 0.5rem;
-  transition: transform 0.2s ease;
-  white-space: nowrap;
-   border-radius: 0.8rem;
-  flex: 0 0 auto;
-}
-
-.nav-btn:hover {
-  transform: scale(1.05);
-  background-color: #222;
-  color: #4f46e5;
-}
 
 /* 🔔 Notificaciones */
 #notificationsContainer {
