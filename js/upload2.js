@@ -221,7 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const uploadForm = document.getElementById('uploadForm');
 
       const isVisible = uploadFormContainer.classList.contains('visible');
-      const touchedOutside = !uploadForm.contains(e.target) && !e.target.closest('#toggleUploadBtn');
+      const touchedOutside = !uploadForm.contains(e.target) &&
+                        !e.target.closest('#toggleUploadBtn') &&
+                        !e.target.closest('#toggleUploadBtnMenu');
 
       if (isVisible && touchedOutside) {
         uploadFormContainer.classList.remove('visible');
