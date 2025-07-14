@@ -277,6 +277,25 @@
         panel.classList.remove('show');
       }
     });
+
+
+    // Cerrar el formulario al tocar fuera (solo en móviles)
+    const uploadFormContainer = document.getElementById('uploadFormContainer');
+    const uploadForm = document.getElementById('uploadForm');
+
+    document.addEventListener('click', (e) => {
+      const isMobile = window.innerWidth <= 600;
+
+      if (
+        isMobile &&
+        uploadFormContainer.getAttribute('aria-hidden') === 'false' &&
+        !uploadForm.contains(e.target)
+      ) {
+        uploadFormContainer.setAttribute('aria-hidden', 'true');
+        uploadFormContainer.style.display = 'none'; // O quitar clase si usas .active
+      }
+    });
+
     
     // ——— Lógica para “Mi Soulprint” ———
     const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
