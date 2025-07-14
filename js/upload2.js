@@ -213,6 +213,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  // 📱 Cerrar formulario al tocar fuera (solo móviles)
+  if (window.innerWidth <= 600) {
+    document.addEventListener('click', (e) => {
+      const uploadFormContainer = document.getElementById('uploadFormContainer');
+      const uploadForm = document.getElementById('uploadForm');
+
+      const isVisible = uploadFormContainer.classList.contains('visible');
+      const touchedOutside = !uploadForm.contains(e.target) && !e.target.closest('#toggleUploadBtn');
+
+      if (isVisible && touchedOutside) {
+        uploadFormContainer.classList.remove('visible');
+        uploadFormContainer.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+
+  
   // 🔗 Ir a círculos
   const openPatchManagerBtn = document.getElementById('openPatchManagerBtn');
   if (openPatchManagerBtn) {
