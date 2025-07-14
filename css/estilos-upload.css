@@ -1363,3 +1363,29 @@ h2.section-title {
     display: block;
   }
 }
+
+
+/* Ítems dentro del panel lateral (botones o enlaces) */
+.nav-side-panel a,
+.nav-side-panel button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  width: 42px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.25rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  padding: 0;
+}
+
+.nav-side-panel a:hover,
+.nav-side-panel button:hover {
+  background-color: #222;
+  transform: scale(1.05);
+  color: #4f46e5;
+}
