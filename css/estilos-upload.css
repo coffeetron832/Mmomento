@@ -1128,31 +1128,36 @@ footer.nav-buttons-wrapper {
 }
 
 
-/* 📍 Panel lateral en lugar de footer flotante */
+/* 📍 Panel lateral ajustado: centrado vertical, más a la derecha */
 .nav-side-panel {
   position: fixed;
-  top: 5rem;
-  left: 1rem;
+  top: 50%;
+  left: 2.5rem; /* un poco más a la derecha del borde */
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  z-index: 1000;
-  background: rgba(17, 17, 17, 0.85); /* misma base que el actual footer */
-  padding: 0.8rem;
+  gap: 0.6rem;
+  background: rgba(17, 17, 17, 0.85);
+  padding: 0.7rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  pointer-events: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
 }
 
-/* Ajustar botón de notificación */
+/* 🔘 Botones ícono pequeños */
 .nav-side-panel .nav-btn {
   background: none;
   color: white;
   border: none;
-  font-size: 0.9rem;
-  padding: 0.4rem 0.8rem;
+  font-size: 1.3rem;
+  padding: 0.5rem;
   cursor: pointer;
-  border-radius: 0.8rem;
+  border-radius: 50%;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.2s ease;
 }
 
@@ -1160,8 +1165,6 @@ footer.nav-buttons-wrapper {
   background-color: #222;
   color: #4f46e5;
 }
-
-/* Notificaciones se mantendrán igual (ya bien diseñadas) */
 
 
 /* 🔄 Flechas */
