@@ -259,6 +259,25 @@
   });
 
 
+    const panel = document.querySelector('.nav-side-panel');
+    const openBtn = document.getElementById('openSidePanelBtn');
+
+    // Abrir panel
+    openBtn.addEventListener('click', () => {
+      panel.classList.add('show');
+    });
+
+    // Cerrar panel al hacer clic fuera (opcional)
+    document.addEventListener('click', (e) => {
+      if (
+        panel.classList.contains('show') &&
+        !panel.contains(e.target) &&
+        e.target !== openBtn
+      ) {
+        panel.classList.remove('show');
+      }
+    });
+  });
     
     // ——— Lógica para “Mi Soulprint” ———
     const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
