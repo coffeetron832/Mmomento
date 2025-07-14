@@ -14,57 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hiddenInput       = document.getElementById('selected-section');
   const form              = document.getElementById('uploadForm');
   const visibilitySelect  = document.getElementById('visibility');
-  const patchSelectorContainer = document.getElementById('patchSelectorContainer');
 
-  if (visibilitySelect) {
-    visibilitySelect.addEventListener('change', async () => {
-      const isPatch = visibilitySelect.value === 'patch';
-      const sectionButtons = document.getElementById('section-buttons');
-      const sectionInput = document.getElementById('selected-section');
-
-      if (sectionButtons && sectionInput) {
-        sectionButtons.style.display = isPatch ? 'none' : 'block';
-        sectionInput.value = isPatch ? '' : sectionInput.value;
-      }
-
-      if (patchSelectorContainer) {
-        patchSelectorContainer.style.display = isPatch ? 'block' : 'none';
-        patchSelectorContainer.innerHTML = isPatch
-          ? `<p style="margin-bottom: 0.5rem;">Selecciona los parches con los que quieres compartir:</p>`
-          : '';
-      }
-
-      if (!isPatch) return;
-
-      try {
-        const res = await fetch(`${API_URL}/api/patches`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const patches = await res.json();
-
-        if (!Array.isArray(patches)) throw new Error('No se recibieron parches válidos');
-
-        patches.forEach(patch => {
-          const label = document.createElement('label');
-          label.style.display = 'block';
-          label.style.marginBottom = '0.25rem';
-
-          const checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.name = 'patches';
-          checkbox.value = patch._id;
-
-          label.appendChild(checkbox);
-          label.appendChild(document.createTextNode(' ' + patch.name));
-          patchSelectorContainer.appendChild(label);
-        });
-
-      } catch (err) {
-        console.error('Error al cargar parches:', err);
-        patchSelectorContainer.innerHTML = '<p style="color:red;">Error al cargar parches.</p>';
-      }
-    });
-  }
 
   // 🔹 Secciones
   if (buttons && hiddenInput) {
@@ -232,12 +182,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  
-  // 🔗 Ir a círculos
-  const openPatchManagerBtn = document.getElementById('openPatchManagerBtn');
-  if (openPatchManagerBtn) {
-    openPatchManagerBtn.addEventListener('click', () => {
-      window.location.href = 'circles.html';
-    });
-  }
+
 });
