@@ -241,20 +241,7 @@
   <!-- Aquí, antes de cerrar body -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const menuToggleBtn = document.getElementById('menuToggleBtn');
-    const menuOverlay   = document.getElementById('menuOverlay');
     
-    menuToggleBtn.addEventListener('click', () => {
-      const isVisible = menuOverlay.classList.toggle('show');
-      menuOverlay.setAttribute('aria-hidden', (!isVisible).toString());
-    });
-
-    const closeMenuBtn = document.getElementById('closeMenuBtn');
-    closeMenuBtn.addEventListener('click', () => {
-      menuOverlay.classList.remove('show');
-      menuOverlay.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('menu-open');
-    });
 
     const buttons = document.querySelectorAll('.sidebar-btn[data-index]');
   const slider = document.getElementById('sliderContent');
