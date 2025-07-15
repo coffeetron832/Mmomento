@@ -154,9 +154,10 @@ html, body {
 @media (max-width: 600px) {
   .image-card {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0.5rem;
+    padding: 1rem;
     text-align: center;
   }
 
@@ -167,7 +168,20 @@ html, body {
     display: block;
     border-radius: 10px;
   }
+
+  .card-title,
+  .card-user,
+  .card-likes {
+    text-align: center;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .butterfly-btn {
+    margin-top: 0.3rem;
+  }
 }
+
 
 
 
