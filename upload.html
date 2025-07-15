@@ -273,54 +273,39 @@
   });
 
 
-    const uploadBtn = document.getElementById('toggleUploadBtnMenu');
-const uploadFormContainer = document.getElementById('floatingUploadForm');
+  const uploadBtn = document.getElementById('toggleUploadBtnMenu');
+  const form = document.getElementById('floatingUploadForm');
 
-let hoveringForm = false;
-let hoveringButton = false;
-
-if (uploadBtn && uploadFormContainer) {
-  // Mostrar cuando se pasa por el botón
+  // Mostrar al pasar el cursor
   uploadBtn.addEventListener('mouseenter', () => {
-    hoveringButton = true;
-    showUploadForm();
+    const rect = uploadBtn.getBoundingClientRect();
+    form.style.top = `${rect.top + window.scrollY + 10}px`;     // un poquito abajo
+    form.style.left = `${rect.right + 10}px`;                   // un poquito a la derecha
+    form.classList.add('visible');
   });
 
-  uploadBtn.addEventListener('mouseleave', () => {
-    hoveringButton = false;
-    checkHoverLeave();
-  });
-
-  // Mantener abierto si pasa por el formulario
-  uploadFormContainer.addEventListener('mouseenter', () => {
-    hoveringForm = true;
-  });
-
-  uploadFormContainer.addEventListener('mouseleave', () => {
-    hoveringForm = false;
-    checkHoverLeave();
-  });
-}
-
-function showUploadForm() {
-  uploadFormContainer.classList.add('visible');
-  uploadFormContainer.classList.remove('hidden');
-  uploadFormContainer.setAttribute('aria-hidden', 'false');
-}
-
-function hideUploadForm() {
-  uploadFormContainer.classList.remove('visible');
-  uploadFormContainer.classList.add('hidden');
-  uploadFormContainer.setAttribute('aria-hidden', 'true');
-}
-
-function checkHoverLeave() {
-  setTimeout(() => {
-    if (!hoveringButton && !hoveringForm) {
-      hideUploadForm();
+  // Ocultar si se hace click fuera
+  document.addEventListener('click', (e) => {
+    const isForm = form.contains(e.target);
+    const isBtn = uploadBtn.contains(e.target);
+    if (!isForm && !isBtn) {
+      form.classList.remove('visible');
     }
-  }, 150); // breve espera para evitar cierres bruscos
-}
+  });
+
+  // Evitar que desaparezca si se pasa el cursor por encima del form
+  form.addEventListener('mouseenter', () => {
+    form.classList.add('visible');
+  });
+
+  form.addEventListener('mouseleave', (e) => {
+    // Opcional: cerrar si se sale también del formulario (solo si no se hace clic)
+    if (!form.contains(e.relatedTarget)) {
+      form.classList.remove('visible');
+    }
+  });
+});
+
 
     
     // ——— Lógica para “Mi Soulprint” ———
