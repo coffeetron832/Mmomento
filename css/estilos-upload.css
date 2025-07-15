@@ -1688,7 +1688,8 @@ body.dark-mode .upload-form-container {
     left: 50%;
     transform: translateX(-50%);
     width: 90vw;
-    pointer-events: auto;
+    display: none !important;
+    pointer-events: none !important;
   }
 
   .emotion-floating-menu {
