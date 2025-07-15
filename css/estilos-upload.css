@@ -1637,17 +1637,20 @@ body.dark-mode .upload-form-container {
 
 .floating-upload-form {
   position: fixed;
-  top: 80px; /* ajusta según tu diseño */
-  left: 80px; /* ajusta para alinearlo al botón 📤 */
-  background: white;
+  top: 80px; /* ajusta si quieres más espacio */
+  left: 80px;
+  background: #111; /* tono casi negro */
   border-radius: 1rem;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
   z-index: 2000;
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  color: #f5f5f5;
+  width: 320px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .floating-upload-form.visible {
@@ -1656,26 +1659,86 @@ body.dark-mode .upload-form-container {
   transform: translateY(0);
 }
 
-
-
-
-
-.hidden {
-  display: none;
-}
-
-.close-upload-btn {
-  margin-top: 1rem;
-  background: #eee;
+/* Inputs y selects oscuros */
+.floating-upload-form input[type="text"],
+.floating-upload-form select,
+.floating-upload-form input[type="file"] {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
   border: none;
   border-radius: 8px;
-  padding: 0.5rem 1rem;
+  background: #222;
+  color: #eee;
   font-size: 0.9rem;
+}
+
+.floating-upload-form input::placeholder {
+  color: #aaa;
+}
+
+/* Botones de sección */
+.section-button {
+  display: inline-block;
+  margin: 0.3rem 0.3rem 0 0;
+  padding: 0.4rem 0.8rem;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #ccc;
   cursor: pointer;
   transition: background 0.2s ease;
 }
 
-.close-upload-btn:hover {
-  background: #ccc;
+.section-button.selected,
+.section-button:hover {
+  background: #444;
+  color: #fff;
 }
+
+/* Botón principal de enviar */
+.floating-upload-form button[type="submit"] {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.floating-upload-form button[type="submit"]:hover {
+  background: #6d63ff;
+}
+
+/* Botón cerrar */
+.close-upload-btn {
+  margin-top: 1rem;
+  background: #222;
+  border: 1px solid #444;
+  color: #aaa;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s ease;
+}
+
+.close-upload-btn:hover {
+  background: #333;
+  color: #fff;
+}
+
+/* Vista previa de imagen */
+#imagePreview {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px solid #444;
+}
+
 
