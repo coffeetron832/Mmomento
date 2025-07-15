@@ -23,18 +23,19 @@
 </script>
 </head>  
 <body class="upload-page">
-  <!-- Panel de exploración emocional -->
-<div id="emotionPanel" class="emotion-panel" aria-hidden="true">
-  <h2>Explora por emociones</h2>
-  <div class="emotion-options">
+<!-- Botón para mostrar emociones -->
+<div class="emotion-menu-container">
+  <button id="exploreBtn" class="explore-trigger">🌌</button>
+
+  <div class="emotion-floating-menu" id="emotionFloatingMenu">
     <button class="emotion-filter" data-filter="all">🌍 Explora sin brújula</button>
     <button class="emotion-filter" data-filter="caos_bonito">❤️‍🔥 Caos bonito</button>
     <button class="emotion-filter" data-filter="zona_cero">👾 Zona cer0</button>
     <button class="emotion-filter" data-filter="emocional_404">😶‍🌫️ 404 Emocional</button>
     <button class="emotion-filter" data-filter="lo_que_no_se_dice">👻 Nunca antes visto</button>
   </div>
-  <button id="closeEmotionPanel" class="close-panel-btn">Cerrar</button>
 </div>
+
 
   
 <!-- Botones ocultos para funcionalidad de Soulprint y Logout -->
