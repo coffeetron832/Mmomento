@@ -289,6 +289,20 @@ if (exploreBtn && floatingWrapper && window.innerWidth > 768) {
   });
 }
 
+if (exploreBtn && floatingWrapper && window.innerWidth <= 768) {
+  exploreBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Evita cierre inmediato
+    floatingWrapper.classList.toggle('mobile-visible');
+  });
+
+  // Cerrar si se toca fuera del menú
+  document.addEventListener('click', (e) => {
+    const clickedInside = floatingWrapper.contains(e.target) || exploreBtn.contains(e.target);
+    if (!clickedInside) {
+      floatingWrapper.classList.remove('mobile-visible');
+    }
+  });
+}
 
 
 
