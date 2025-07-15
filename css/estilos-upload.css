@@ -1592,3 +1592,59 @@ body.dark-mode .upload-form-container {
     margin-bottom: 0.2rem;
   }
 }
+
+
+.emotion-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.explore-trigger {
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.explore-trigger:hover {
+  transform: scale(1.2);
+}
+
+.emotion-floating-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 0.8rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.3s ease;
+}
+
+.emotion-menu-container:hover .emotion-floating-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(5px);
+}
+
+.emotion-filter {
+  margin: 4px 0;
+  padding: 0.5rem 1rem;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.emotion-filter:hover {
+  background: #ddd;
+}
