@@ -146,26 +146,26 @@
   <!-- Navegación rápida -->
   <a href="mural.html" class="nav-icon-link" title="Ver mural">🎨</a>
 
-  <!-- Contenedor del botón 🌌 y su menú -->
-  <div class="emotion-menu-container">
-    <button id="exploreBtnMenu" class="nav-icon-link" title="Explorar momentos">🌌</button>
+  <!-- Solo el botón 🌌 -->
+  <button id="exploreBtnMenu" class="nav-icon-link" title="Explorar momentos">🌌</button>
 
-    <div class="emotion-floating-menu" id="emotionFloatingMenu">
-      <button class="emotion-filter" data-filter="all">🌍 Explora sin brújula</button>
-      <button class="emotion-filter" data-filter="caos_bonito">❤️‍🔥 Caos bonito</button>
-      <button class="emotion-filter" data-filter="zona_cero">👾 Zona cer0</button>
-      <button class="emotion-filter" data-filter="emocional_404">😶‍🌫️ 404 Emocional</button>
-      <button class="emotion-filter" data-filter="lo_que_no_se_dice">👻 Nunca antes visto</button>
-    </div>
-  </div>
-
-  <!-- Otros botones -->
   <button id="toggleUploadBtnMenu" class="nav-icon-link" title="Subir imagen">📤</button>
 
   <!-- Personales -->
   <a href="#" id="soulprintMenuBtn" class="nav-icon-link" title="Mi Soulprint">🧬</a>
   <button id="logoutMenuBtn" class="nav-icon-link" title="Cerrar sesión">🚪</button>
 </aside>
+
+<!-- 🔮 Menú flotante FUERA del aside -->
+<div class="emotion-floating-wrapper" id="emotionFloatingWrapper">
+  <div class="emotion-floating-menu">
+    <button class="emotion-filter" data-filter="all">🌍 Explora sin brújula</button>
+    <button class="emotion-filter" data-filter="caos_bonito">❤️‍🔥 Caos bonito</button>
+    <button class="emotion-filter" data-filter="zona_cero">👾 Zona cer0</button>
+    <button class="emotion-filter" data-filter="emocional_404">😶‍🌫️ 404 Emocional</button>
+    <button class="emotion-filter" data-filter="lo_que_no_se_dice">👻 Nunca antes visto</button>
+  </div>
+</div>
 
 
 
@@ -256,7 +256,31 @@
       }
     });
 
+  const exploreBtn = document.getElementById("exploreBtnMenu");
+  const floatingWrapper = document.getElementById("emotionFloatingWrapper");
 
+  exploreBtn.addEventListener("mouseenter", () => {
+    floatingWrapper.querySelector('.emotion-floating-menu').style.opacity = "1";
+    floatingWrapper.querySelector('.emotion-floating-menu').style.transform = "translateY(0)";
+  });
+
+  exploreBtn.addEventListener("mouseleave", () => {
+    setTimeout(() => {
+      floatingWrapper.querySelector('.emotion-floating-menu').style.opacity = "0";
+      floatingWrapper.querySelector('.emotion-floating-menu').style.transform = "translateY(10px)";
+    }, 200); // retrasa un poquito para que no se esconda tan abrupto
+  });
+
+  // También mantenerlo abierto si el mouse está encima del menú
+  floatingWrapper.addEventListener("mouseenter", () => {
+    floatingWrapper.querySelector('.emotion-floating-menu').style.opacity = "1";
+    floatingWrapper.querySelector('.emotion-floating-menu').style.transform = "translateY(0)";
+  });
+
+  floatingWrapper.addEventListener("mouseleave", () => {
+    floatingWrapper.querySelector('.emotion-floating-menu').style.opacity = "0";
+    floatingWrapper.querySelector('.emotion-floating-menu').style.transform = "translateY(10px)";
+  });
     
     
     // ——— Lógica para “Mi Soulprint” ———
