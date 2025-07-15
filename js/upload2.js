@@ -180,27 +180,21 @@ if (closeUploadFormBtn && floatingUploadForm) {
 
 
 
-  // 📱 Cerrar formulario al tocar fuera (solo móviles)
-if (window.innerWidth <= 600) {
-  document.addEventListener('click', (e) => {
-    const floatingUploadForm = document.getElementById('floatingUploadForm');
-    const uploadBtn = document.getElementById('toggleUploadBtnMenu');
+  // 📱🖥️ Cerrar formulario al tocar fuera (móvil y PC)
+document.addEventListener('click', (e) => {
+  const floatingUploadForm = document.getElementById('floatingUploadForm');
+  const uploadBtn = document.getElementById('toggleUploadBtnMenu');
 
-    if (!floatingUploadForm) return;
+  if (!floatingUploadForm || !uploadBtn) return;
 
-    const isVisible = floatingUploadForm.classList.contains('visible');
-    const clickedOutside = !floatingUploadForm.contains(e.target) &&
-                           !uploadBtn.contains(e.target);
+  const isVisible = floatingUploadForm.classList.contains('visible');
+  const clickedOutside = !floatingUploadForm.contains(e.target) &&
+                         !uploadBtn.contains(e.target);
 
-    if (isVisible && clickedOutside) {
-      floatingUploadForm.classList.remove('visible');
-      floatingUploadForm.classList.add('hidden');
-      floatingUploadForm.setAttribute('aria-hidden', 'true');
-    }
-  });
-}
-
-  })
-
-
+  if (isVisible && clickedOutside) {
+    floatingUploadForm.classList.remove('visible');
+    floatingUploadForm.classList.add('hidden');
+    floatingUploadForm.setAttribute('aria-hidden', 'true');
+  }
+});
 });
