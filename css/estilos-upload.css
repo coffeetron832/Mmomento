@@ -1598,7 +1598,7 @@ body.dark-mode .upload-form-container {
 .emotion-floating-wrapper {
   position: absolute;
   top: 100px; /* Ajusta según altura del botón 🌌 */
-  left: 80px; /* Saldrá a la derecha del aside */
+  left: 110px; /* Saldrá a la derecha del aside */
   z-index: 1000;
   pointer-events: none;
 }
