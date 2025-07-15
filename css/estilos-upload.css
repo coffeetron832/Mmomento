@@ -1633,6 +1633,8 @@ body.dark-mode .upload-form-container {
 }
 
 
+
+
 .floating-upload-form {
   position: fixed;
   top: 50%;
@@ -1641,16 +1643,16 @@ body.dark-mode .upload-form-container {
   background: #fff;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
   z-index: 9999;
-  max-width: 90vw;
-  width: 400px;
+  width: 90%;
+  max-width: 420px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
 }
 
-.floating-upload-form.show {
+.floating-upload-form.visible {
   opacity: 1;
   pointer-events: auto;
 }
@@ -1663,8 +1665,14 @@ body.dark-mode .upload-form-container {
   margin-top: 1rem;
   background: #eee;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 0.5rem 1rem;
-  cursor: pointer;
   font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
+
+.close-upload-btn:hover {
+  background: #ccc;
+}
+
