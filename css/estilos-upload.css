@@ -1635,10 +1635,10 @@ body.dark-mode .upload-form-container {
 
 
 
-.floating-upload-form {
+..floating-upload-form {
   position: fixed;
-  top: 110px;      /* Más abajo del botón 📤 */
-  left: 115px;      /* Un poco más a la derecha del panel lateral */
+  top: 110px;
+  left: 115px;
   background: #fff;
   padding: 1.5rem;
   border-radius: 1rem;
@@ -1646,17 +1646,20 @@ body.dark-mode .upload-form-container {
   z-index: 9999;
   width: 300px;
   max-width: 90%;
+
+  /* Estado oculto */
   opacity: 0;
   pointer-events: none;
+  transform: translateY(-10px) scale(0.98);
   transition: opacity 0.3s ease, transform 0.3s ease;
-  transform: translateX(-10px);
 }
 
 .floating-upload-form.visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translateX(0);
+  transform: translateY(0) scale(1);
 }
+
 
 
 
