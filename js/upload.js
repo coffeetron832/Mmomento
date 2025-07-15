@@ -160,7 +160,7 @@ formData.set('section', sectionValue);
     const imagesContainer = document.getElementById('imagesContainer');
 
     // 🔄 Mostrar loader y desactivar botón
-    if (imagesContainer) imagesContainer.innerHTML = '<p class="loader">Cargando...</p>';
+    if (imagesContainer) imagesContainer.innerHTML = '<p class="loader">Calma... todo lo bueno se demora. O eso dicen..</p>';
     if (submitBtn) submitBtn.disabled = true;
 
     try {
