@@ -74,8 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("user", JSON.stringify(result.user));
 
         const userName = result.user.username || result.user.name || 'viajero';
-        localStorage.setItem("welcomeBackMessage", `🫂 ¡Hola, ${userName}! Nos alegra verte de nuevo 💫`);
+        localStorage.setItem("welcomeBackMessage", `De vuelta ${userName}! justo a tiempo para distraerte de todo lo importante.`);
 
+
+        
         // ✨ Pequeña pausa para mostrar el spinner
         setTimeout(() => {
           window.location.href = "upload.html";
