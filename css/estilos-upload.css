@@ -47,6 +47,12 @@ html, body {
   overflow-x: hidden;
 }
 
+@media (max-width: 480px) {
+  :root {
+    --gutter: 1rem;
+  }
+}
+
 
 #timeline {
   background-color: transparent;
