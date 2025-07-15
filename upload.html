@@ -339,6 +339,35 @@ floatingWrapper.addEventListener("mouseleave", () => {
   });
 
 
+const isMobile = window.innerWidth <= 768;
+let isEmotionMenuOpen = false;
+
+if (isMobile) {
+  exploreBtn.addEventListener("click", () => {
+    isEmotionMenuOpen = !isEmotionMenuOpen;
+
+    if (isEmotionMenuOpen) {
+      floatingMenu.style.opacity = "1";
+      floatingMenu.style.transform = "translateY(0)";
+      floatingMenu.style.pointerEvents = "auto";
+    } else {
+      floatingMenu.style.opacity = "0";
+      floatingMenu.style.transform = "translateY(10px)";
+      floatingMenu.style.pointerEvents = "none";
+    }
+  });
+
+  // Cerrar si se toca fuera del menú
+  document.addEventListener("click", (e) => {
+    const clickedOutside = !floatingWrapper.contains(e.target) && !exploreBtn.contains(e.target);
+    if (isEmotionMenuOpen && clickedOutside) {
+      floatingMenu.style.opacity = "0";
+      floatingMenu.style.transform = "translateY(10px)";
+      floatingMenu.style.pointerEvents = "none";
+      isEmotionMenuOpen = false;
+    }
+  });
+}
 
     
     // ——— Lógica para “Mi Soulprint” ———
