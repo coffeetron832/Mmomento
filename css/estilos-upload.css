@@ -1635,7 +1635,7 @@ body.dark-mode .upload-form-container {
 
 
 
-..floating-upload-form {
+.floating-upload-form {
   position: fixed;
   top: 110px;
   left: 115px;
