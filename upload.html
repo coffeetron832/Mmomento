@@ -276,32 +276,50 @@
   const uploadBtn = document.getElementById('toggleUploadBtnMenu');
   const form = document.getElementById('floatingUploadForm');
 
-  // Mostrar al pasar el cursor
+  let isHovered = false;
+
+  function showForm() {
+    form.classList.add('visible');
+    form.classList.remove('hidden');
+    form.setAttribute('aria-hidden', 'false');
+  }
+
+  function hideForm() {
+    form.classList.remove('visible');
+    form.classList.add('hidden');
+    form.setAttribute('aria-hidden', 'true');
+  }
+
+  // Mostrar al pasar el mouse
   uploadBtn.addEventListener('mouseenter', () => {
-    const rect = uploadBtn.getBoundingClientRect();
-    form.style.top = `${rect.top + window.scrollY + 10}px`;     // un poquito abajo
-    form.style.left = `${rect.right + 10}px`;                   // un poquito a la derecha
-    form.classList.add('visible');
+    isHovered = true;
+    showForm();
   });
 
-  // Ocultar si se hace click fuera
-  document.addEventListener('click', (e) => {
-    const isForm = form.contains(e.target);
-    const isBtn = uploadBtn.contains(e.target);
-    if (!isForm && !isBtn) {
-      form.classList.remove('visible');
-    }
+  // Ocultar al salir del botón (si no está sobre el formulario)
+  uploadBtn.addEventListener('mouseleave', () => {
+    setTimeout(() => {
+      if (!isHovered) hideForm();
+    }, 200);
   });
 
-  // Evitar que desaparezca si se pasa el cursor por encima del form
+  // Si se pasa sobre el formulario, mantenerlo visible
   form.addEventListener('mouseenter', () => {
-    form.classList.add('visible');
+    isHovered = true;
   });
 
-  form.addEventListener('mouseleave', (e) => {
-    // Opcional: cerrar si se sale también del formulario (solo si no se hace clic)
-    if (!form.contains(e.relatedTarget)) {
-      form.classList.remove('visible');
+  // Al salir del formulario, ocultar si ya no está en botón
+  form.addEventListener('mouseleave', () => {
+    isHovered = false;
+    setTimeout(() => {
+      if (!isHovered) hideForm();
+    }, 200);
+  });
+
+  // Ocultar al hacer clic fuera
+  document.addEventListener('click', (e) => {
+    if (!form.contains(e.target) && !uploadBtn.contains(e.target)) {
+      hideForm();
     }
   });
 
