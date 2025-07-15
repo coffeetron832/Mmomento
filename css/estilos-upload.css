@@ -1680,33 +1680,41 @@ body.dark-mode .upload-form-container {
   transform: translateX(4px);
 }
 
-/* ✅ RESPONSIVE en móviles */
 @media (max-width: 768px) {
   .emotion-floating-wrapper {
     position: fixed;
-    top: 90px;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
-    width: 90vw;
-    display: none !important;
-    pointer-events: none !important;
+    width: 90%;
+    background: #111;
+    border-radius: 12px;
+    z-index: 3000;
+    display: none; /* oculto por defecto */
+    box-shadow: 0 6px 24px rgba(255, 255, 255, 0.08);
+  }
+
+  .emotion-floating-wrapper.mobile-visible {
+    display: block;
   }
 
   .emotion-floating-menu {
-    width: 100%;
-    min-width: unset;
-    max-width: unset;
-    border-radius: 1rem;
-    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(8px);
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
   }
 
   .emotion-filter {
+    padding: 0.7rem 1rem;
     font-size: 1rem;
-    padding: 0.75rem 1rem;
+    margin: 0.3rem 0;
     text-align: center;
   }
 }
+
 
 
 
