@@ -1594,12 +1594,14 @@ body.dark-mode .upload-form-container {
 }
 
 
+/* Contenedor del botón 🌌 y el menú flotante */
 .emotion-menu-container {
   position: relative;
   display: inline-block;
 }
 
-.explore-trigger {
+/* Botón 🌌 en el aside lateral */
+#exploreBtnMenu {
   font-size: 1.8rem;
   background: none;
   border: none;
@@ -1607,15 +1609,16 @@ body.dark-mode .upload-form-container {
   transition: transform 0.3s ease;
 }
 
-.explore-trigger:hover {
+#exploreBtnMenu:hover {
   transform: scale(1.2);
 }
 
+/* Menú flotante de emociones */
 .emotion-floating-menu {
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(15px);
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -1628,12 +1631,14 @@ body.dark-mode .upload-form-container {
   transition: opacity 0.4s ease, transform 0.3s ease;
 }
 
+/* Mostrar menú al pasar el cursor */
 .emotion-menu-container:hover .emotion-floating-menu {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(-50%) translateY(5px);
 }
 
+/* Botones dentro del menú de emociones */
 .emotion-filter {
   margin: 4px 0;
   padding: 0.5rem 1rem;
@@ -1648,3 +1653,4 @@ body.dark-mode .upload-form-container {
 .emotion-filter:hover {
   background: #ddd;
 }
+
