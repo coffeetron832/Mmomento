@@ -1638,7 +1638,7 @@ body.dark-mode .upload-form-container {
 .floating-upload-form {
   position: fixed;
   top: 80px; /* ajusta si quieres más espacio */
-  left: 80px;
+  left: 100px;
   background: #111; /* tono casi negro */
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(255, 255, 255, 0.05);
