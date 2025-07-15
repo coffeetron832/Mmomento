@@ -1637,25 +1637,27 @@ body.dark-mode .upload-form-container {
 
 .floating-upload-form {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 80px; /* Ajusta según lo alto que quieras */
+  left: 72px; /* Aproximadamente a la derecha del aside */
   background: #fff;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
   z-index: 9999;
-  width: 90%;
-  max-width: 420px;
+  width: 300px;
+  max-width: 90%;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateX(-10px);
 }
 
 .floating-upload-form.visible {
   opacity: 1;
   pointer-events: auto;
+  transform: translateX(0);
 }
+
 
 .hidden {
   display: none;
