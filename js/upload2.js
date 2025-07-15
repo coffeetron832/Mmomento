@@ -153,15 +153,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ☁️ Mostrar formulario desde menú
   const toggleUploadBtnMenu = document.getElementById('toggleUploadBtnMenu');
-  if (toggleUploadBtnMenu && uploadForm && menuOverlay) {
-    toggleUploadBtnMenu.addEventListener('click', () => {
-      const isVisible = uploadForm.classList.toggle('visible');
-      uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
-      menuOverlay.classList.remove('show');
-    });
-  }
+const floatingUploadForm = document.getElementById('floatingUploadForm');
+const closeUploadFormBtn = document.getElementById('closeUploadForm');
+
+if (toggleUploadBtnMenu && floatingUploadForm && menuOverlay) {
+  toggleUploadBtnMenu.addEventListener('click', () => {
+    const isMobile = window.innerWidth <= 600;
+
+    if (isMobile) {
+      // Si estás en móvil, simplemente navegamos al formulario (ya implementado antes)
+      floatingUploadForm.classList.add('visible');
+      floatingUploadForm.classList.remove('hidden');
+      floatingUploadForm.setAttribute('aria-hidden', 'false');
+    } else {
+      // En computadoras: mostrar el formulario flotante
+      floatingUploadForm.classList.add('visible');
+      floatingUploadForm.classList.remove('hidden');
+      floatingUploadForm.setAttribute('aria-hidden', 'false');
+    }
+
+    menuOverlay.classList.remove('show');
+  });
+}
+
+// Cerrar el formulario con el botón "Cerrar"
+if (closeUploadFormBtn && floatingUploadForm) {
+  closeUploadFormBtn.addEventListener('click', () => {
+    floatingUploadForm.classList.remove('visible');
+    floatingUploadForm.setAttribute('aria-hidden', 'true');
+    floatingUploadForm.classList.add('hidden');
+  });
+}
+
 
 
   // 📱 Cerrar formulario al tocar fuera (solo móviles)
