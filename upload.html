@@ -271,7 +271,57 @@
     floatingWrapper.querySelector('.emotion-floating-menu').style.opacity = "0";
     floatingWrapper.querySelector('.emotion-floating-menu').style.transform = "translateY(10px)";
   });
-    
+
+
+    const uploadBtn = document.getElementById('toggleUploadBtnMenu');
+const uploadFormContainer = document.getElementById('floatingUploadForm');
+
+let hoveringForm = false;
+let hoveringButton = false;
+
+if (uploadBtn && uploadFormContainer) {
+  // Mostrar cuando se pasa por el botón
+  uploadBtn.addEventListener('mouseenter', () => {
+    hoveringButton = true;
+    showUploadForm();
+  });
+
+  uploadBtn.addEventListener('mouseleave', () => {
+    hoveringButton = false;
+    checkHoverLeave();
+  });
+
+  // Mantener abierto si pasa por el formulario
+  uploadFormContainer.addEventListener('mouseenter', () => {
+    hoveringForm = true;
+  });
+
+  uploadFormContainer.addEventListener('mouseleave', () => {
+    hoveringForm = false;
+    checkHoverLeave();
+  });
+}
+
+function showUploadForm() {
+  uploadFormContainer.classList.add('visible');
+  uploadFormContainer.classList.remove('hidden');
+  uploadFormContainer.setAttribute('aria-hidden', 'false');
+}
+
+function hideUploadForm() {
+  uploadFormContainer.classList.remove('visible');
+  uploadFormContainer.classList.add('hidden');
+  uploadFormContainer.setAttribute('aria-hidden', 'true');
+}
+
+function checkHoverLeave() {
+  setTimeout(() => {
+    if (!hoveringButton && !hoveringForm) {
+      hideUploadForm();
+    }
+  }, 150); // breve espera para evitar cierres bruscos
+}
+
     
     // ——— Lógica para “Mi Soulprint” ———
     const soulprintMenuBtn = document.getElementById('soulprintMenuBtn');
