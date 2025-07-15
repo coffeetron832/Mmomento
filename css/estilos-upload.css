@@ -152,17 +152,23 @@ html, body {
 }
 
 @media (max-width: 600px) {
-  .image-card img {
-    width: 90%;        /* un poco más pequeño que el 100% */
-    margin: 0 auto;    /* centra horizontalmente */
-    display: block;    /* asegura que el margin funcione */
-    border-radius: 10px;
+  .image-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    text-align: center;
   }
 
-  .image-card {
-    padding: 0.5rem;
+  .image-card img {
+    width: 90%;
+    max-width: 250px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 10px;
   }
 }
+
 
 
 
