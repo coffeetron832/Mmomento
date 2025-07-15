@@ -75,15 +75,11 @@
         🌟 ¡Tu momento ha sido compartido con el alma!
       </div>
 
-      <!-- El contenido sigue aquí 👇 -->
-    <section id="uploadFormContainer" class="upload-form-container" aria-hidden="true">
-      
-
-  
-
+     <!-- 🔼 FORMULARIO FLOTANTE (fuera del flujo) -->
+<div class="floating-upload-form hidden" id="floatingUploadForm">
   <form id="uploadForm" enctype="multipart/form-data" method="post">
 
-    <!-- 🌅 Imagen emocional primero -->
+    <!-- 🌅 Imagen emocional -->
     <input type="file" id="image" name="image" accept="image/*" required />
 
     <div id="imagePreviewContainer" style="margin-top: 1rem; display:none;">
@@ -92,11 +88,9 @@
 
     <!-- 📝 Descripción emocional -->
     <input type="text" name="description" id="description"
-       placeholder="Escribe lo que sientes" required />
+           placeholder="Escribe lo que sientes" required />
 
-
-
-    <!-- 🔮 Sección o categoría emocional -->
+    <!-- 🔮 Categoría -->
     <div id="section-buttons" style="margin-top: 1rem; margin-bottom: 1rem;">
       <span class="section-button" data-value="caos_bonito">❤️‍🔥 Caos bonito</span>
       <span class="section-button" data-value="zona_cero">👾 Zona cer0</span>
@@ -107,33 +101,29 @@
     <input type="hidden" name="section" id="selected-section" required>
 
     <!-- 🔐 Visibilidad -->
-    <div style="margin-top: 1rem;">
-  <label for="visibility" style="display:block; margin-bottom: 0.25rem;">¿Quién lo verá?</label>
-  <select name="visibility" id="visibility">
-    <option value="public">🌍 Que lo vea el mundo</option>
-    <option value="private">🕶️ Solo yo</option>
-  </select>
-</div>
+    <label for="visibility">¿Quién lo verá?</label>
+    <select name="visibility" id="visibility">
+      <option value="public">🌍 Que lo vea el mundo</option>
+      <option value="private">🕶️ Solo yo</option>
+    </select>
 
+    <!-- ⏳ Duración -->
+    <label for="duration">¿Por cuánto tiempo se quedará vivo?</label>
+    <select name="duration" id="duration" required>
+      <option value="">⏳ Elige su duración...</option>
+      <option value="30">30 minutos </option>
+      <option value="60">1 hora </option>
+      <option value="180">3 horas </option>
+      <option value="360">6 horas </option>
+    </select>
 
-    <!-- ⏳ Duración emocional -->
-    <div style="margin-top: 1rem;">
-  <label for="duration" style="display:block; margin-bottom: 0.25rem;">¿Por cuánto tiempo se quedará vivo?</label>
-  <select name="duration" id="duration" required>
-    <option value="">⏳ Elige su duración...</option>
-    <option value="30">30 minutos </option>
-    <option value="60">1 hora </option>
-    <option value="180">3 horas </option>
-    <option value="360">6 horas </option>
-  </select>
-</div>
-
-   
-  
-    <!-- ✨ Botón emocional -->
+    <!-- 🕊️ Botón -->
     <button type="submit" style="margin-top: 1.5rem;">Que vuele</button>
   </form>
-</section>
+
+  <button id="closeUploadForm" class="close-upload-btn">Cerrar</button>
+</div>
+
       
 <aside class="nav-side-panel">
   <!-- Notificaciones -->
