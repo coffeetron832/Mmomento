@@ -200,7 +200,7 @@ if (window.innerWidth <= 600) {
   });
 }
 
-  }
+  })
 
 
 });
