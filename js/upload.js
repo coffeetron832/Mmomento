@@ -183,7 +183,7 @@ formData.set('section', sectionValue);
       // ✅ Mensaje de éxito
       const successMsg = document.getElementById('imageActionMessage');
       if (successMsg) {
-        successMsg.innerHTML = '🌟 ¡Tu momento ha sido compartido con el alma!';
+        successMsg.innerHTML = 'Subido ;) Esperemos que no explote el servidor.';
         successMsg.style.display = 'block';
         successMsg.style.opacity = '0';
         successMsg.style.transition = 'opacity 0.8s ease';
