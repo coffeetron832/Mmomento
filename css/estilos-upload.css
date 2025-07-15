@@ -1637,8 +1637,8 @@ body.dark-mode .upload-form-container {
 
 .floating-upload-form {
   position: fixed;
-  top: 80px; /* Ajusta según lo alto que quieras */
-  left: 72px; /* Aproximadamente a la derecha del aside */
+  top: 100px;      /* Más abajo del botón 📤 */
+  left: 90px;      /* Un poco más a la derecha del panel lateral */
   background: #fff;
   padding: 1.5rem;
   border-radius: 1rem;
@@ -1657,6 +1657,7 @@ body.dark-mode .upload-form-container {
   pointer-events: auto;
   transform: translateX(0);
 }
+
 
 
 .hidden {
