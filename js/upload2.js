@@ -83,14 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ✅ Mostrar/ocultar formulario
-  if (toggleBtn && uploadForm) {
-    toggleBtn.addEventListener('click', () => {
-      const isVisible = uploadForm.classList.toggle('visible');
-      uploadForm.setAttribute('aria-hidden', (!isVisible).toString());
-    });
-  }
-
   // ✅ Cerrar sesión
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -189,21 +181,25 @@ if (closeUploadFormBtn && floatingUploadForm) {
 
 
   // 📱 Cerrar formulario al tocar fuera (solo móviles)
-  if (window.innerWidth <= 600) {
-    document.addEventListener('click', (e) => {
-      const uploadFormContainer = document.getElementById('uploadFormContainer');
-      const uploadForm = document.getElementById('uploadForm');
+if (window.innerWidth <= 600) {
+  document.addEventListener('click', (e) => {
+    const floatingUploadForm = document.getElementById('floatingUploadForm');
+    const uploadBtn = document.getElementById('toggleUploadBtnMenu');
 
-      const isVisible = uploadFormContainer.classList.contains('visible');
-      const touchedOutside = !uploadForm.contains(e.target) &&
-                        !e.target.closest('#toggleUploadBtn') &&
-                        !e.target.closest('#toggleUploadBtnMenu');
+    if (!floatingUploadForm) return;
 
-      if (isVisible && touchedOutside) {
-        uploadFormContainer.classList.remove('visible');
-        uploadFormContainer.setAttribute('aria-hidden', 'true');
-      }
-    });
+    const isVisible = floatingUploadForm.classList.contains('visible');
+    const clickedOutside = !floatingUploadForm.contains(e.target) &&
+                           !uploadBtn.contains(e.target);
+
+    if (isVisible && clickedOutside) {
+      floatingUploadForm.classList.remove('visible');
+      floatingUploadForm.classList.add('hidden');
+      floatingUploadForm.setAttribute('aria-hidden', 'true');
+    }
+  });
+}
+
   }
 
 
