@@ -248,43 +248,47 @@
 
  const exploreBtn = document.getElementById("exploreBtnMenu");
 const floatingWrapper = document.getElementById("emotionFloatingWrapper");
-const floatingMenu = floatingWrapper.querySelector('.emotion-floating-menu');
 
-let hoverTimeout;
+// Prevenir errores si no están presentes
+if (exploreBtn && floatingWrapper && window.innerWidth > 768) {
+  const floatingMenu = floatingWrapper.querySelector('.emotion-floating-menu');
+  let hoverTimeout;
 
-// Mostrar el menú al entrar al botón
-exploreBtn.addEventListener("mouseenter", () => {
-  clearTimeout(hoverTimeout); // Evita que se esconda si estaba saliendo
-  floatingMenu.style.opacity = "1";
-  floatingMenu.style.transform = "translateY(0)";
-  floatingMenu.style.pointerEvents = "auto";
-});
+  // Mostrar el menú al entrar al botón
+  exploreBtn.addEventListener("mouseenter", () => {
+    clearTimeout(hoverTimeout); // Evita que se esconda si estaba saliendo
+    floatingMenu.style.opacity = "1";
+    floatingMenu.style.transform = "translateY(0)";
+    floatingMenu.style.pointerEvents = "auto";
+  });
 
-// Ocultarlo con pequeño delay al salir del botón
-exploreBtn.addEventListener("mouseleave", () => {
-  hoverTimeout = setTimeout(() => {
-    floatingMenu.style.opacity = "0";
-    floatingMenu.style.transform = "translateY(10px)";
-    floatingMenu.style.pointerEvents = "none";
-  }, 400); // delay para evitar parpadeo si pasa rápido al menú
-});
+  // Ocultarlo con pequeño delay al salir del botón
+  exploreBtn.addEventListener("mouseleave", () => {
+    hoverTimeout = setTimeout(() => {
+      floatingMenu.style.opacity = "0";
+      floatingMenu.style.transform = "translateY(10px)";
+      floatingMenu.style.pointerEvents = "none";
+    }, 400); // delay para evitar parpadeo si pasa rápido al menú
+  });
 
-// Mantener visible si se entra al menú
-floatingWrapper.addEventListener("mouseenter", () => {
-  clearTimeout(hoverTimeout);
-  floatingMenu.style.opacity = "1";
-  floatingMenu.style.transform = "translateY(0)";
-  floatingMenu.style.pointerEvents = "auto";
-});
+  // Mantener visible si se entra al menú
+  floatingWrapper.addEventListener("mouseenter", () => {
+    clearTimeout(hoverTimeout);
+    floatingMenu.style.opacity = "1";
+    floatingMenu.style.transform = "translateY(0)";
+    floatingMenu.style.pointerEvents = "auto";
+  });
 
-// Ocultarlo si se sale del menú
-floatingWrapper.addEventListener("mouseleave", () => {
-  hoverTimeout = setTimeout(() => {
-    floatingMenu.style.opacity = "0";
-    floatingMenu.style.transform = "translateY(10px)";
-    floatingMenu.style.pointerEvents = "none";
-  }, 400);
-});
+  // Ocultarlo si se sale del menú
+  floatingWrapper.addEventListener("mouseleave", () => {
+    hoverTimeout = setTimeout(() => {
+      floatingMenu.style.opacity = "0";
+      floatingMenu.style.transform = "translateY(10px)";
+      floatingMenu.style.pointerEvents = "none";
+    }, 400);
+  });
+}
+
 
 
 
