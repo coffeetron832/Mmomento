@@ -65,10 +65,63 @@
   <button id="zoomOut">🔍 –</button>
 </div>
 
-
-
-
   <script>
+window.addEventListener('DOMContentLoaded', () => {
+  if (!verificarToken()) return;
+
+  const usuario = obtenerUsuarioDesdeToken();
+  console.log('👤 Usuario cargado desde token:', usuario);
+
+  const mural = document.getElementById("mural");
+  const formulario = document.querySelector('.formulario.flotante');
+  const misAportes = document.getElementById('misAportes');
+  const btnFormulario = document.getElementById("btnMostrarFormulario");
+  const btnAportes = document.getElementById("btnMostrarAportes");
+  const zoomInBtn = document.getElementById("zoomIn");
+  const zoomOutBtn = document.getElementById("zoomOut");
+
+  // Validación para evitar errores
+  if (!mural || !formulario || !misAportes || !btnFormulario || !btnAportes || !zoomInBtn || !zoomOutBtn) {
+    console.error("❌ Faltan elementos del DOM requeridos.");
+    return;
+  }
+
+  // Botones de aportar y ver aportes
+  btnFormulario.addEventListener("click", () => {
+    const visible = formulario.classList.toggle("mostrar");
+    btnFormulario.textContent = visible ? "✖ Cerrar" : "✚ Aportar";
+
+    if (visible) {
+      misAportes.classList.remove("mostrar");
+      btnAportes.textContent = "📁 Aportes";
+    }
+  });
+
+  btnAportes.addEventListener("click", () => {
+    const visible = misAportes.classList.toggle("mostrar");
+    btnAportes.textContent = visible ? "✖ Cerrar" : "📁 Aportes";
+
+    if (visible) {
+      formulario.classList.remove("mostrar");
+      btnFormulario.textContent = "✚ Aportar";
+    }
+  });
+
+  // Zoom
+  zoomInBtn.addEventListener("click", () => {
+    mural.style.transform = "scale(1.1)";
+  });
+
+  zoomOutBtn.addEventListener("click", () => {
+    mural.style.transform = "scale(0.9)";
+  });
+
+  // Cargar aportes
+  cargarAportes();
+});
+
+
+    
     function obtenerUsuarioDesdeToken() {
   const token = localStorage.getItem('token');
   if (!token) return null;
