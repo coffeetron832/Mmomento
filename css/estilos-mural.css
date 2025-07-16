@@ -441,3 +441,55 @@ html, body {
     flex-direction: column;
   }
 }
+
+
+@media (max-width: 600px) {
+  .formulario.flotante,
+  #misAportes {
+    position: fixed;
+    top: 60px; /* debajo del header o navbar si tienes uno */
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: white;
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 80vh;
+    overflow-y: auto;
+    display: none; /* oculto por defecto, se muestra con la clase 'mostrar' */
+    flex-direction: column;
+  }
+
+  .formulario.flotante.mostrar,
+  #misAportes.mostrar {
+    display: flex;
+  }
+
+  /* Para asegurar que el mural no se tape ni se mueva */
+  #muralContainer {
+    margin-top: 0;
+  }
+
+  /* Opcional: hacer que los botones floten arriba */
+  #btnMostrarFormulario,
+  #btnMostrarAportes {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    margin-left: 0;
+    margin-top: 0;
+    display: block;
+  }
+
+  #btnMostrarFormulario {
+    right: 20px;
+    bottom: 80px;
+  }
+
+  #btnMostrarAportes {
+    right: 20px;
+    bottom: 20px;
+  }
+}
