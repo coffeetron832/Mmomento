@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="/css/estilos-mural.css" />
 </head>
 <body>
- <div id="modalOverlay">
+
+<div id="modalOverlay">
   <div id="mensajeInicial" class="modal">
     <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
     <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
@@ -17,33 +18,41 @@
   </div>
 </div>
 
-  <section class="formulario flotante">
-    <label>¿Qué quieres dejar hoy?</label>
-    <select id="tipo">
-      <option value="frase">✍️ Frase corta</option>
-      <option value="emoji">😄 Emoji gigante</option>
-      <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
-      <option value="doodle">🎨 Doodle rápido</option>
-    </select>
+<!-- 🔧 Formulario adicional requerido por el JS -->
+<button id="btnMostrarFormulario" style="display:none;">✚ Aportar (invisible para compatibilidad)</button>
+<div id="formularioAporte" class="oculto" style="display:none;">
+  <input type="file" id="inputImagen" />
+  <input type="text" id="descripcion" placeholder="Escribe una descripción..." />
+  <button id="cerrarFormulario">❌ Cerrar</button>
+</div>
 
-    <input type="text" id="contenido" placeholder="Escribe algo..." />
-    <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
-    <div class="doodle-controls" id="doodleControls" style="display:none;">
-      <label>Color:</label>
-      <input type="color" id="colorPicker" value="#222222">
-      <button type="button" onclick="limpiarCanvas()">🧼 Borrar doodle</button>
-    </div>
-    <canvas id="canvasDoodle" width="300" height="300"></canvas>
+<section class="formulario flotante">
+  <label>¿Qué quieres dejar hoy?</label>
+  <select id="tipo">
+    <option value="frase">✍️ Frase corta</option>
+    <option value="emoji">😄 Emoji gigante</option>
+    <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
+    <option value="doodle">🎨 Doodle rápido</option>
+  </select>
 
-    <div class="preview" id="preview">
-      <strong>Vista previa:</strong>
-      <img id="previewImg" src="" alt="Previsualización" />
-    </div>
+  <input type="text" id="contenido" placeholder="Escribe algo..." />
+  <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
+  <div class="doodle-controls" id="doodleControls" style="display:none;">
+    <label>Color:</label>
+    <input type="color" id="colorPicker" value="#222222">
+    <button type="button" onclick="limpiarCanvas()">🧼 Borrar doodle</button>
+  </div>
+  <canvas id="canvasDoodle" width="300" height="300"></canvas>
 
-    <button onclick="agregarAlMural()">Compartir en el Mural</button>
-  </section>
+  <div class="preview" id="preview">
+    <strong>Vista previa:</strong>
+    <img id="previewImg" src="" alt="Previsualización" />
+  </div>
 
-  <!-- Panel flotante con aportes del usuario -->
+  <button onclick="agregarAlMural()">Compartir en el Mural</button>
+</section>
+
+<!-- Panel flotante con aportes del usuario -->
 <div id="misAportes">
   <h3>Mis Aportes</h3>
   <div id="listaMisAportes"></div>
@@ -58,6 +67,7 @@
   <button id="zoomIn">🔍 +</button>
   <button id="zoomOut">🔍 –</button>
 </div>
+
 <script>
 
   document.addEventListener("DOMContentLoaded", () => {
