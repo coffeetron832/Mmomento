@@ -1,305 +1,202 @@
+/* --- RESET Y FUNDAMENTALES --- */
 html, body {
-  overflow: auto;
-}
-
-
-
-    body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: auto;
   font-family: 'Inter', sans-serif;
-  background: #000; /* fondo negro */
-  color: #fff; /* texto claro */
+  background: #000;
+  color: #fff;
 }
 
-
-    header {
-      padding: 2rem 1rem 1rem;
-      background: linear-gradient(to right, #ff9a9e, #fad0c4);
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
-    header p {
-      font-size: 1rem;
-      margin-top: 0.5rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .formulario {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  padding: 1rem;
-  background-color: #1a1a1a;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 320px;
-  z-index: 9999;
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-  color: #f1f1f1;
-}
-
-
-    .formulario input,
-.formulario textarea,
-.formulario select {
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  border: none;
-  font-size: 1rem;
-  background-color: #2c2c2c;
-  color: #f1f1f1;
-}
-
-.formulario button {
-  background-color: #4f46e5;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  padding: 0.75rem;
-}
-
-
-    .formulario .doodle-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .preview {
-      display: none;
-      text-align: center;
-    }
-
-    .preview img {
-      max-width: 100%;
-      max-height: 400px;
-      margin-top: 1rem;
-      border-radius: 0.5rem;
-    }
-
-    #canvasDoodle {
-  display: none;
-  border: 2px dashed #ff9a9e;
-  border-radius: 0.5rem;
-  background-color: #111;
-  touch-action: none;
-}
-
-
-    .mural {
-  position: relative;
-  padding: 2rem;
-  width: 100%;
-  height: 100vh;
-  background: #000; /* fondo negro completo */
-  overflow: hidden;
-}
-
-
-    .mural-item {
-  position: absolute;
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2); /* borde blanco sutil */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  max-width: 200px;
+/* --- HEADER --- */
+header {
+  padding: 2rem 1rem 1rem;
+  background: linear-gradient(to right, #ff9a9e, #fad0c4);
   text-align: center;
-  word-break: break-word;
-  background: rgba(255, 251, 224, 0.95);
-  transform: rotate(var(--rot)) scale(var(--scale));
-  opacity: 0.95;
-  transition: transform 0.3s ease;
+}
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+header p {
+  margin: .5rem auto 0;
+  font-size: 1rem;
+  max-width: 600px;
 }
 
-    .mural-item.frase {
-      font-size: 1.1rem;
-      font-style: italic;
-      color: #5a3e36;
-    }
-
-    .mural-item.emoji {
-      font-size: 2.5rem;
-      background: none;
-      box-shadow: none;
-      padding: 0;
-    }
-
-    .mural-item img {
-      max-width: 100%;
-      border-radius: 0.5rem;
-    }
-
-    @media (max-width: 600px) {
-      .formulario {
-        margin: 1rem;
-      }
-    }
-
-    #muralContainer {
+/* --- MURAL CONTAINER --- */
+#muralContainer {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  width: 100%;
-  height: 100%;
   background: #000;
   cursor: grab;
   touch-action: none;
-  -webkit-user-select: none;
   user-select: none;
-  z-index: 0; /* Debajo de los flotantes */
+  z-index: 0;
 }
-
-
 #mural {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   transform-origin: top left;
-  transition: transform 0.2s ease;
-  width: 3000px;
-  height: 3000px;
+  width: 3000px; height: 3000px;
+  transition: transform .2s ease;
 }
 
-.formulario.flotante {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 9999;
-  margin: 0;
+/* --- MURAL ITEMS --- */
+.mural-item {
+  position: absolute;
+  padding: 1rem;
+  max-width: 200px;
+  background: rgba(255,251,224,0.95);
+  border-radius: 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  text-align: center;
+  word-break: break-word;
+  opacity: .95;
+  transition: transform .3s ease;
+}
+.mural-item.frase {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #5a3e36;
+}
+.mural-item.emoji {
+  font-size: 2.5rem;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+.mural-item img {
+  max-width: 100%;
+  border-radius: .5rem;
 }
 
-/* Panel flotante para aportes del usuario */
+/* --- PANEL FLOTANTE (Aportar & Mis Aportes) --- */
+.formulario.flotante,
 #misAportes {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  max-height: 300px;
-  width: 250px;
-  overflow-y: auto;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(6px);
-  border-radius: 1rem;
-  padding: 1rem;
-  color: #fff;
-  font-size: 0.9rem;
-  z-index: 9999;
-}
-
-#misAportes h3 {
-  margin-top: 0;
-  font-size: 1rem;
-  color: #ff9a9e;
-}
-
-.aporte-propio {
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  background: rgba(255,255,255,0.05);
-  border-radius: 0.5rem;
-  position: relative;
-}
-
-.aporte-propio:hover .tiempo-restante {
-  display: block;
-}
-
-.borrar-aporte {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  background: transparent;
-  border: none;
-  color: #ff6666;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.tiempo-restante {
-  display: none;
-  font-size: 0.75rem;
-  color: #ccc;
-  margin-top: 0.3rem;
-}
-
-.aporte-usuario button {
-  margin-top: 0.5rem;
-  background: #ff5c5c;
-  color: white;
-  border: none;
-  padding: 0.3rem 0.6rem;
-  font-size: 0.8rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-}
-
-#muralContainer, #mural {
-  touch-action: none;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-#modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 10000;
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal {
-  background: #1a1a1a;
-  color: #fff;
-  padding: 2rem;
-  border-radius: 1rem;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
   max-width: 400px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-.modal button {
-  margin-top: 1rem;
-  background: #ff9a9e;
-  color: black;
-  font-weight: bold;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 1rem;
-  cursor: pointer;
-}
-
-#zoomControls {
-  position: fixed;
-  bottom: 5rem;
-  left: 1rem;
-  z-index: 10000;
-  display: flex;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: #111;
+  color: #f0f0f0;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(255,255,255,0.1);
+  display: none;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+  z-index: 999;
+}
+.formulario.flotante.mostrar,
+#misAportes.mostrar {
+  display: flex;
 }
 
-#zoomControls button {
-  background: #4f46e5;
-  color: white;
+/* Inputs y botones dentro del panel */
+.formulario label,
+.formulario select,
+.formulario input,
+.formulario button,
+#misAportes h3,
+#misAportes button {
+  font-size: .95rem;
+  color: #f0f0f0;
+  background-color: #222;
+  border: 1px solid #444;
+  padding: .5rem;
+  border-radius: 6px;
+  margin-bottom: .7rem;
+}
+.formulario button,
+#misAportes button {
+  background-color: #e91e63;
+  color: #fff;
   border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.formulario button:hover,
+#misAportes button:hover {
+  background-color: #ff4081;
 }
 
+/* --- FOOTER DE CONTROLES --- */
+.footer-controles {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: .5rem 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 10000;
+}
+.footer-controles button {
+  font-size: .95rem;
+  padding: .5rem .8rem;
+  border: none;
+  border-radius: 999px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: background-color .2s ease;
+}
+.footer-controles button:hover {
+  background-color: #f0f0f0;
+}
 
+/* IDs específicos de posición si hace falta */
+#btnMostrarFormulario { order: 1; }
+#btnMostrarAportes    { order: 2; }
+
+/* --- CONTROLES DE ZOOM --- */
+#zoomControls {
+  display: none; /* opcional, si quieres integrarlo en el footer */
+}
+#zoomControls button {
+  font-size: 1rem;
+  padding: .5rem .75rem;
+  border: none;
+  border-radius: .5rem;
+  background: #4f46e5;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* --- RESPONSIVE MÓVIL --- */
+@media (max-width: 600px) {
+  .footer-controles {
+    flex-direction: row;
+    justify-content: center;
+    gap: .5rem;
+    padding: .6rem;
+  }
+  .footer-controles button {
+    font-size: 1rem;
+    padding: .6rem 1rem;
+  }
+  .mural-item {
+    max-width: 140px;
+    padding: .5rem;
+  }
+  .mural-item.frase { font-size: .9rem; }
+  .mural-item.emoji { font-size: 2rem; }
+
+  /* Opcional: mostrar controles de zoom combinados en footer */
+  #zoomControls { display: none; }
+}
