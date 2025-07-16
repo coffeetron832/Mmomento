@@ -444,21 +444,23 @@ console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
 // 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
 window.addEventListener('DOMContentLoaded', () => {
   if (window.innerWidth <= 600) {
-  document.getElementById('toggleUIBtn').style.display = 'block';
-}
+    document.getElementById('toggleUIBtn').style.display = 'block';
+  }
 
   if (!localStorage.getItem('noMostrarMensajeMural')) {
-    document.getElementById('mensajeInicial').style.display = 'block';
+    document.getElementById('modalOverlay').style.display = 'flex';
   }
 });
+
 
 function cerrarMensaje() {
   const noMostrar = document.getElementById('noMostrarCheckbox').checked;
   if (noMostrar) {
     localStorage.setItem('noMostrarMensajeMural', 'true');
   }
-  document.getElementById('mensajeInicial').style.display = 'none';
+  document.getElementById('modalOverlay').style.display = 'none';
 }
+
 
 // 🧠 Palabras prohibidas
 const palabrasProhibidas = ['odio', 'muerte', 'estúpido', 'imbécil'];
