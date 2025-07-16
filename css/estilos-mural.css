@@ -1,3 +1,9 @@
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+
     body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -142,16 +148,17 @@
     }
 
     #muralContainer {
-  position: relative;
+  position: fixed;
+  inset: 0;
   overflow: hidden;
   width: 100%;
-  height: 100vh;
-  background: #000; /* fondo negro */
+  height: 100%;
+  background: #000;
   cursor: grab;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
-  overscroll-behavior: contain; /* evita que se tire el body */
+  z-index: 0; /* Debajo de los flotantes */
 }
 
 
@@ -409,3 +416,8 @@
   }
 }
 
+@media (max-width: 600px) {
+  #zoomControls {
+    bottom: calc(12rem + 3rem); /* espacio extra si el formulario está visible */
+  }
+}
