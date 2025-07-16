@@ -58,6 +58,12 @@
   <div id="listaMisAportes"></div>
 </div>
 
+  <!-- Contenedor del mural -->
+<div id="mural" class="mural-contenedor">
+  <!-- Aquí se renderizan los aportes -->
+</div>
+
+
 <div class="footer-controles">
   <!-- Botones de acción -->
   <button class="toggle-ui-btn" id="btnMostrarFormulario">✚ Aportar</button>
@@ -98,6 +104,20 @@
     formularioAporte.classList.add("oculto");
   });
 
+function cerrarMensaje() {
+  const overlay = document.getElementById("modalOverlay");
+  const checkbox = document.getElementById("noMostrarCheckbox");
+
+  if (checkbox.checked) {
+    localStorage.setItem("noMostrarMensaje", "true");
+  }
+
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
+    
   // Mostrar aporte en el mural
   function mostrarAporte(aporte) {
     const { imagenUrl, descripcion, usuario } = aporte;
