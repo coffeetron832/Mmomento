@@ -394,3 +394,50 @@ html, body {
     bottom: calc(12rem + 3rem); /* espacio extra si el formulario está visible */
   }
 }
+
+
+/* Botón para mostrar el formulario */
+.toggle-ui-btn,
+.toggle-aportes-btn {
+  display: none; /* solo móviles */
+  position: fixed;
+  bottom: 1rem;
+  z-index: 10001;
+  background: #ff9a9e;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#btnMostrarFormulario {
+  left: 1rem;
+}
+
+#btnMostrarAportes {
+  left: 8rem;
+}
+
+@media (max-width: 600px) {
+  .toggle-ui-btn,
+  .toggle-aportes-btn {
+    display: block;
+  }
+
+  .formulario.flotante,
+  #misAportes {
+    display: none;
+  }
+
+  .formulario.flotante.mostrar,
+  #misAportes.mostrar {
+    display: flex;
+  }
+
+  #misAportes.mostrar {
+    flex-direction: column;
+  }
+}
