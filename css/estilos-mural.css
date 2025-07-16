@@ -447,18 +447,20 @@ html, body {
   .formulario.flotante,
   #misAportes {
     position: fixed;
-    top: 60px; /* debajo del header o navbar si tienes uno */
+    top: 60px;
     left: 0;
     right: 0;
     z-index: 999;
-    background: white;
-    padding: 1rem;
-    border-bottom: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    color: #111111;
+    padding: 1.2rem;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     max-height: 80vh;
     overflow-y: auto;
-    display: none; /* oculto por defecto, se muestra con la clase 'mostrar' */
+    display: none;
     flex-direction: column;
+    font-family: 'Inter', sans-serif;
   }
 
   .formulario.flotante.mostrar,
@@ -466,30 +468,59 @@ html, body {
     display: flex;
   }
 
-  /* Para asegurar que el mural no se tape ni se mueva */
-  #muralContainer {
-    margin-top: 0;
+  .formulario label,
+  .formulario select,
+  .formulario input,
+  .formulario button,
+  #misAportes h3,
+  #misAportes button {
+    color: #111;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
   }
 
-  /* Opcional: hacer que los botones floten arriba */
+  .formulario button,
+  #misAportes button {
+    background-color: #222;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  .formulario button:hover,
+  #misAportes button:hover {
+    background-color: #000;
+  }
+
   #btnMostrarFormulario,
   #btnMostrarAportes {
     position: fixed;
-    bottom: 20px;
     right: 20px;
     z-index: 1000;
-    margin-left: 0;
-    margin-top: 0;
-    display: block;
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 999px;
+    background-color: #111;
+    color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
   }
 
   #btnMostrarFormulario {
-    right: 20px;
     bottom: 80px;
   }
 
   #btnMostrarAportes {
-    right: 20px;
     bottom: 20px;
   }
+
+  #btnMostrarFormulario:hover,
+  #btnMostrarAportes:hover {
+    background-color: #000;
+  }
 }
+
