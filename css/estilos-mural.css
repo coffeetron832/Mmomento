@@ -451,11 +451,11 @@ html, body {
     left: 0;
     right: 0;
     z-index: 999;
-    background: #ffffff;
-    color: #111111;
+    background-color: #111111; /* más suave que #000 */
+    color: #ffffff;
     padding: 1.2rem;
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid #333;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
     max-height: 80vh;
     overflow-y: auto;
     display: none;
@@ -474,9 +474,9 @@ html, body {
   .formulario button,
   #misAportes h3,
   #misAportes button {
-    color: #111;
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
+    color: #f0f0f0;
+    background-color: #222;
+    border: 1px solid #444;
     padding: 0.5rem;
     border-radius: 6px;
     margin-bottom: 0.8rem;
@@ -485,7 +485,7 @@ html, body {
 
   .formulario button,
   #misAportes button {
-    background-color: #222;
+    background-color: #e91e63;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -493,7 +493,7 @@ html, body {
 
   .formulario button:hover,
   #misAportes button:hover {
-    background-color: #000;
+    background-color: #ff4081;
   }
 
   #btnMostrarFormulario,
@@ -505,9 +505,9 @@ html, body {
     font-size: 1rem;
     border: none;
     border-radius: 999px;
-    background-color: #111;
-    color: #fff;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
   }
 
   #btnMostrarFormulario {
@@ -520,7 +520,7 @@ html, body {
 
   #btnMostrarFormulario:hover,
   #btnMostrarAportes:hover {
-    background-color: #000;
+    background-color: #f0f0f0;
   }
 }
 
