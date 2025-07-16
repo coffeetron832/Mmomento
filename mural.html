@@ -65,6 +65,13 @@
   <div id="listaMisAportes"></div>
 </div>
 
+
+<!-- Botón para mostrar formulario -->
+<button class="toggle-ui-btn" id="btnMostrarFormulario">✚ Aportar</button>
+
+<!-- Botón para mostrar "Mis Aportes" -->
+<button class="toggle-aportes-btn" id="btnMostrarAportes">📁 Aportes</button>
+
   <script>
     function obtenerUsuarioDesdeToken() {
   const token = localStorage.getItem('token');
@@ -120,6 +127,22 @@ toggleBtn.addEventListener('click', () => {
   toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
 });
 
+
+    const btnFormulario = document.getElementById("btnMostrarFormulario");
+  const formulario = document.querySelector(".formulario.flotante");
+
+  const btnAportes = document.getElementById("btnMostrarAportes");
+  const misAportes = document.getElementById("misAportes");
+
+  btnFormulario.addEventListener("click", () => {
+    formulario.classList.toggle("mostrar");
+    misAportes.classList.remove("mostrar"); // ocultar aportes si están abiertos
+  });
+
+  btnAportes.addEventListener("click", () => {
+    misAportes.classList.toggle("mostrar");
+    formulario.classList.remove("mostrar"); // ocultar formulario si está abierto
+  });
 
     // 🕛 Borrar mural si es un nuevo día
     const hoy = new Date().toDateString();
