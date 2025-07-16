@@ -9,158 +9,226 @@
 </head>
 <body>
 
-<div id="modalOverlay">
-  <div id="mensajeInicial" class="modal">
-    <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
-    <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
-    <br />
-    <button onclick="cerrarMensaje()">Cerrar</button>
-  </div>
-</div>
-
-<!-- 🔧 Formulario adicional requerido por el JS -->
-<button id="btnMostrarFormulario" style="display:none;">✚ Aportar (invisible para compatibilidad)</button>
-<div id="formularioAporte" class="oculto" style="display:none;">
-  <input type="file" id="inputImagen" />
-  <input type="text" id="descripcion" placeholder="Escribe una descripción..." />
-  <button id="cerrarFormulario">❌ Cerrar</button>
-</div>
-
-<section class="formulario flotante">
-  <label>¿Qué quieres dejar hoy?</label>
-  <select id="tipo">
-    <option value="frase">✍️ Frase corta</option>
-    <option value="emoji">😄 Emoji gigante</option>
-    <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
-    <option value="doodle">🎨 Doodle rápido</option>
-  </select>
-
-  <input type="text" id="contenido" placeholder="Escribe algo..." />
-  <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
-  <div class="doodle-controls" id="doodleControls" style="display:none;">
-    <label>Color:</label>
-    <input type="color" id="colorPicker" value="#222222">
-    <button type="button" onclick="limpiarCanvas()">🧼 Borrar doodle</button>
-  </div>
-  <canvas id="canvasDoodle" width="300" height="300"></canvas>
-
-  <div class="preview" id="preview">
-    <strong>Vista previa:</strong>
-    <img id="previewImg" src="" alt="Previsualización" />
+  <!-- Modal inicial -->
+  <div id="modalOverlay">
+    <div id="mensajeInicial" class="modal">
+      <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
+      <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
+      <br/>
+      <button id="btnCerrarModal">Cerrar</button>
+    </div>
   </div>
 
-  <button onclick="agregarAlMural()">Compartir en el Mural</button>
-</section>
+  <!-- Formulario flotante -->
+  <section class="formulario flotante" id="formularioPrincipal">
+    <label>¿Qué quieres dejar hoy?</label>
+    <select id="tipo">
+      <option value="frase">✍️ Frase corta</option>
+      <option value="emoji">😄 Emoji gigante</option>
+      <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
+      <option value="doodle">🎨 Doodle rápido</option>
+    </select>
+    <input type="text" id="contenido" placeholder="Escribe algo..." />
+    <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
+    <div class="doodle-controls" id="doodleControls" style="display:none;">
+      <label>Color:</label>
+      <input type="color" id="colorPicker" value="#222222">
+      <button type="button" id="btnLimpiarDoodle">🧼 Borrar doodle</button>
+    </div>
+    <canvas id="canvasDoodle" width="300" height="300"></canvas>
+    <div class="preview" id="preview" style="display:none;">
+      <strong>Vista previa:</strong>
+      <img id="previewImg" src="" alt="Previsualización" />
+    </div>
+    <button id="btnCompartir">Compartir en el Mural</button>
+  </section>
 
-<!-- Panel flotante con aportes del usuario -->
-<div id="misAportes">
-  <h3>Mis Aportes</h3>
-  <div id="listaMisAportes"></div>
-</div>
+  <!-- Panel “Mis Aportes” -->
+  <div id="misAportes">
+    <h3>Mis Aportes</h3>
+    <div id="listaMisAportes"></div>
+  </div>
 
   <!-- Contenedor del mural -->
-<div id="mural" class="mural-contenedor">
-  <!-- Aquí se renderizan los aportes -->
-</div>
+  <div id="muralContainer">
+    <div id="mural" class="mural-contenedor"></div>
+  </div>
 
+  <!-- Footer con acciones y zoom -->
+  <div class="footer-controles">
+    <button id="btnMostrarFormulario">✚ Aportar</button>
+    <button id="btnMostrarAportes">📁 Aportes</button>
+    <button id="zoomIn">🔍 +</button>
+    <button id="zoomOut">🔍 –</button>
+  </div>
 
-<div class="footer-controles">
-  <!-- Botones de acción -->
-  <button class="toggle-ui-btn" id="btnMostrarFormulario">✚ Aportar</button>
-  <button class="toggle-aportes-btn" id="btnMostrarAportes">📁 Aportes</button>
-
-  <!-- Controles de zoom -->
-  <button id="zoomIn">🔍 +</button>
-  <button id="zoomOut">🔍 –</button>
-</div>
-
-<script>
-
+  <script>
   document.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token");
-  const user = localStorage.getItem("username");
-  const mural = document.getElementById("mural");
-  const btnMostrarFormulario = document.getElementById("btnMostrarFormulario");
-  const formularioAporte = document.getElementById("formularioAporte");
-  const cerrarFormularioBtn = document.getElementById("cerrarFormulario");
-  const inputImagen = document.getElementById("inputImagen");
+    // Referencias
+    const modalOverlay = document.getElementById("modalOverlay");
+    const btnCerrarModal = document.getElementById("btnCerrarModal");
+    const noMostrarCheckbox = document.getElementById("noMostrarCheckbox");
 
-  // Mostrar usuario
-  if (user) console.log("👤 Usuario cargado desde token:", user);
+    const tipo = document.getElementById("tipo");
+    const contenido = document.getElementById("contenido");
+    const imagenInput = document.getElementById("imagenInput");
+    const preview = document.getElementById("preview");
+    const previewImg = document.getElementById("previewImg");
+    const canvas = document.getElementById("canvasDoodle");
+    const ctx = canvas.getContext("2d");
+    const colorPicker = document.getElementById("colorPicker");
+    const btnLimpiarDoodle = document.getElementById("btnLimpiarDoodle");
 
-  // Validación de elementos esenciales
-  if (!mural || !btnMostrarFormulario || !formularioAporte || !cerrarFormularioBtn || !inputImagen) {
-    console.error("❌ Faltan elementos del DOM requeridos.");
-    return;
-  }
+    const formulario = document.getElementById("formularioPrincipal");
+    const misAportes = document.getElementById("misAportes");
+    const btnMostrarFormulario = document.getElementById("btnMostrarFormulario");
+    const btnMostrarAportes = document.getElementById("btnMostrarAportes");
+    const btnCompartir = document.getElementById("btnCompartir");
 
-  // Mostrar formulario
-  btnMostrarFormulario.addEventListener("click", () => {
-    formularioAporte.classList.remove("oculto");
-  });
+    const mural = document.getElementById("mural");
+    const zoomInBtn = document.getElementById("zoomIn");
+    const zoomOutBtn = document.getElementById("zoomOut");
+    const muralContainer = document.getElementById("muralContainer");
 
-  // Cerrar formulario
-  cerrarFormularioBtn.addEventListener("click", () => {
-    formularioAporte.classList.add("oculto");
-  });
-
-function cerrarMensaje() {
-  const overlay = document.getElementById("modalOverlay");
-  const checkbox = document.getElementById("noMostrarCheckbox");
-
-  if (checkbox.checked) {
-    localStorage.setItem("noMostrarMensaje", "true");
-  }
-
-  if (overlay) {
-    overlay.style.display = "none";
-  }
-}
-
-    
-  // Mostrar aporte en el mural
-  function mostrarAporte(aporte) {
-    const { imagenUrl, descripcion, usuario } = aporte;
-
-    if (!imagenUrl || !descripcion || !usuario) return;
-
-    const div = document.createElement("div");
-    div.className = "aporte";
-
-    const img = document.createElement("img");
-    img.src = imagenUrl;
-    img.alt = descripcion;
-
-    const p = document.createElement("p");
-    p.textContent = descripcion;
-
-    const autor = document.createElement("span");
-    autor.textContent = `Por ${usuario}`;
-
-    div.appendChild(img);
-    div.appendChild(p);
-    div.appendChild(autor);
-
-    mural.appendChild(div);
-  }
-
-  // Cargar aportes existentes
-  async function cargarAportes() {
-    try {
-      const res = await fetch("/api/aportes");
-      const data = await res.json();
-
-      console.log("🧩 Aportes recibidos:", data);
-      console.log("👤 Usuario localStorage:", user);
-
-      data.forEach(aporte => mostrarAporte(aporte));
-    } catch (error) {
-      console.error("Error al cargar el mural:", error);
+    // Verificar token
+    function verificarToken() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Debes iniciar sesión para usar el mural.");
+        window.location.href = "/index.html";
+        return false;
+      }
+      return true;
     }
-  }
+    if (!verificarToken()) return;
 
-  cargarAportes();
-});
-</script>
+    // Cerrar modal
+    btnCerrarModal.addEventListener("click", () => {
+      if (noMostrarCheckbox.checked) {
+        localStorage.setItem("noMostrarMensaje", "true");
+      }
+      modalOverlay.style.display = "none";
+    });
+
+    // Tipo cambia visibilidad
+    tipo.addEventListener("change", () => {
+      const val = tipo.value;
+      contenido.style.display = (val === "imagen" || val === "doodle") ? "none" : "block";
+      imagenInput.style.display = (val === "imagen") ? "block" : "none";
+      canvas.style.display = (val === "doodle") ? "block" : "none";
+      btnLimpiarDoodle.style.display = (val === "doodle") ? "inline-block" : "none";
+      preview.style.display = (val === "imagen") ? "block" : "none";
+    });
+
+    // Previsualizar imagen
+    imagenInput.addEventListener("change", () => {
+      const file = imagenInput.files[0];
+      if (!file) return;
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = e => {
+        img.onload = () => {
+          if (img.width > 400 || img.height > 400) {
+            alert("La imagen supera los 400×400px.");
+            imagenInput.value = "";
+            previewImg.src = "";
+            return;
+          }
+          previewImg.src = e.target.result;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Doodle
+    let drawing = false;
+    canvas.addEventListener("mousedown", () => drawing = true);
+    canvas.addEventListener("mouseup",   () => drawing = false);
+    canvas.addEventListener("mouseleave",() => drawing = false);
+    canvas.addEventListener("mousemove", e => {
+      if (!drawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ctx.fillStyle = colorPicker.value;
+      ctx.beginPath();
+      ctx.arc(x, y, 2, 0, Math.PI*2);
+      ctx.fill();
+    });
+    btnLimpiarDoodle.addEventListener("click", () => ctx.clearRect(0,0,canvas.width,canvas.height));
+
+    // Mostrar/Ocultar formulario y aportes
+    btnMostrarFormulario.addEventListener("click", () => {
+      formulario.classList.toggle("mostrar");
+      misAportes.classList.remove("mostrar");
+      btnMostrarFormulario.textContent = formulario.classList.contains("mostrar") ? "✖ Cerrar" : "✚ Aportar";
+      btnMostrarAportes.textContent = "📁 Aportes";
+    });
+    btnMostrarAportes.addEventListener("click", () => {
+      misAportes.classList.toggle("mostrar");
+      formulario.classList.remove("mostrar");
+      btnMostrarAportes.textContent = misAportes.classList.contains("mostrar") ? "✖ Cerrar" : "📁 Aportes";
+      btnMostrarFormulario.textContent = "✚ Aportar";
+    });
+
+    // Zoom simple
+    zoomInBtn.addEventListener("click",  ()=> muralContainer.style.transform = "scale(1.1)");
+    zoomOutBtn.addEventListener("click", ()=> muralContainer.style.transform = "scale(0.9)");
+
+    // Agregar al mural
+    async function agregarAlMural() {
+      const tipoSel = tipo.value;
+      let contenidoFinal = "";
+      if (tipoSel === "frase" || tipoSel === "emoji") {
+        if (!contenido.value.trim()) return alert("Escribe algo primero.");
+        contenidoFinal = contenido.value.trim();
+        contenido.value = "";
+      } else if (tipoSel === "imagen") {
+        const file = imagenInput.files[0];
+        if (!file) return alert("Selecciona una imagen.");
+        // aquí enviar formData al backend...
+        return;
+      } else {
+        contenidoFinal = canvas.toDataURL();
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+      }
+      // ... y luego actualizarlo localmente:
+      mostrarAporte({ tipo: tipoSel, contenido: contenidoFinal, usuario: localStorage.getItem("username") });
+    }
+    btnCompartir.addEventListener("click", agregarAlMural);
+
+    // Renderizar aporte
+    function mostrarAporte({ tipo, contenido, usuario }) {
+      const item = document.createElement("div");
+      item.className = "mural-item " + tipo;
+      item.title = `Por ${usuario}`;
+      if (tipo === "imagen" || tipo === "doodle") {
+        const img = new Image();
+        img.src = contenido;
+        item.appendChild(img);
+      } else {
+        item.textContent = contenido;
+      }
+      mural.appendChild(item);
+    }
+
+    // Cargar desde el backend
+    async function cargarAportes() {
+      try {
+        const API = window.location.hostname.includes("localhost")
+          ? "http://localhost:3000"
+          : "https://momento-backend-production.up.railway.app";
+        const res = await fetch(`${API}/api/aportes`);
+        const datos = await res.json();
+        datos.forEach(mostrarAporte);
+      } catch (err) {
+        console.error("Error al cargar el mural:", err);
+      }
+    }
+    cargarAportes();
+
+  });
+  </script>
 </body>
 </html>
