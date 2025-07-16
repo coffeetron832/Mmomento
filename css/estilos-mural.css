@@ -396,36 +396,7 @@ html, body {
 }
 
 
-/* Botón para mostrar el formulario */
-.toggle-ui-btn,
-.toggle-aportes-btn {
-  display: none; /* solo móviles */
-  position: fixed;
-  bottom: 1rem;
-  z-index: 10001;
-  background: #ff9a9e;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 2rem;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
 
-#btnMostrarFormulario {
-  left: 1rem;
-}
-
-#btnMostrarAportes {
-  left: 8rem;
-}
-
-@media (max-width: 600px) {
-  .toggle-ui-btn,
-  .toggle-aportes-btn {
-    display: block;
-  }
 
   .formulario.flotante,
   #misAportes {
@@ -561,7 +532,6 @@ html, body {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
     white-space: nowrap;
     cursor: pointer;
-    min-width: auto;
     max-width: 150px;
     text-align: center;
   }
@@ -569,10 +539,5 @@ html, body {
   .botones-flotantes-movil button:hover {
     background-color: #f0f0f0;
   }
-
-  /* Ocultamos los estilos anteriores para evitar doble posición */
-  #btnMostrarFormulario,
-  #btnMostrarAportes {
-    display: none !important;
-  }
 }
+
