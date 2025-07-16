@@ -273,3 +273,26 @@
   border-radius: 1rem;
   cursor: pointer;
 }
+
+.toggle-ui-btn {
+  display: none; /* oculto por defecto */
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10000;
+  background: #ff9a9e;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Mostrar solo en móviles */
+@media (max-width: 600px) {
+  .toggle-ui-btn {
+    display: block;
+  }
+}
