@@ -483,3 +483,9 @@ html, body {
 }
 
 
+@media (max-width: 600px) {
+  .toggle-ui-btn,
+  .toggle-aportes-btn {
+    display: inline-block;
+  }
+}
