@@ -399,29 +399,45 @@ html, body {
 
 .botones-flotantes-movil {
   position: fixed;
-  bottom: 20px;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;         /* ¡SIEMPRE visibles! */
-  gap: 10px;
+  display: flex;
+  gap: 0.75rem;
   z-index: 1000;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
 }
 
+/* Botones dentro del contenedor flotante */
 .botones-flotantes-movil button {
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem;
   border: none;
   border-radius: 999px;
-  background-color: #fff;
+  background-color: #ffffff;
   color: #000;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color 0.2s ease;
 }
 
+/* Hover */
 .botones-flotantes-movil button:hover {
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
 }
+
+/* Mejorar el espaciado táctil en móviles */
+@media (max-width: 600px) {
+  .botones-flotantes-movil button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+}
+
 
 
 @media (max-width: 600px) {
