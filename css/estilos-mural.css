@@ -461,3 +461,16 @@ html, body {
     display: inline-block;
   }
 }
+
+.toggle-ui-btn,
+.toggle-aportes-btn {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .toggle-ui-btn,
+  .toggle-aportes-btn {
+    display: inline-block;
+  }
+}
+
