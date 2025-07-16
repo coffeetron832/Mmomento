@@ -110,34 +110,41 @@ window.addEventListener('DOMContentLoaded', () => {
   cargarAportes();
 });
 
-// 🎯 Elementos comunes
-const formulario = document.querySelector('.formulario.flotante');
-const misAportes = document.getElementById('misAportes');
-const btnFormulario = document.getElementById("btnMostrarFormulario");
-const btnAportes = document.getElementById("btnMostrarAportes");
+window.addEventListener('DOMContentLoaded', () => {
+  if (!verificarToken()) return;
 
+  usuario = obtenerUsuarioDesdeToken();
+  console.log('👤 Usuario cargado desde token:', usuario);
 
-btnFormulario.addEventListener("click", () => {
-  const visible = formulario.classList.toggle("mostrar");
-  btnFormulario.textContent = visible ? "✖ Cerrar" : "✚ Aportar";
+  // Mueve aquí los elementos DOM
+  const formulario = document.querySelector('.formulario.flotante');
+  const misAportes = document.getElementById('misAportes');
+  const btnFormulario = document.getElementById("btnMostrarFormulario");
+  const btnAportes = document.getElementById("btnMostrarAportes");
 
-  // Cierra el otro panel
-  if (visible) {
-    misAportes.classList.remove("mostrar");
-    btnAportes.textContent = "📁 Aportes";
-  }
+  btnFormulario.addEventListener("click", () => {
+    const visible = formulario.classList.toggle("mostrar");
+    btnFormulario.textContent = visible ? "✖ Cerrar" : "✚ Aportar";
+
+    if (visible) {
+      misAportes.classList.remove("mostrar");
+      btnAportes.textContent = "📁 Aportes";
+    }
+  });
+
+  btnAportes.addEventListener("click", () => {
+    const visible = misAportes.classList.toggle("mostrar");
+    btnAportes.textContent = visible ? "✖ Cerrar" : "📁 Aportes";
+
+    if (visible) {
+      formulario.classList.remove("mostrar");
+      btnFormulario.textContent = "✚ Aportar";
+    }
+  });
+
+  cargarAportes(); // Ahora sí cargamos el mural después de todo
 });
 
-btnAportes.addEventListener("click", () => {
-  const visible = misAportes.classList.toggle("mostrar");
-  btnAportes.textContent = visible ? "✖ Cerrar" : "📁 Aportes";
-
-  // Cierra el otro panel
-  if (visible) {
-    formulario.classList.remove("mostrar");
-    btnFormulario.textContent = "✚ Aportar";
-  }
-});
 
 
 
