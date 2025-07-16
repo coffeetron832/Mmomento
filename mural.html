@@ -217,7 +217,7 @@
     async function cargarAportes() {
       try {
         const API = window.location.hostname.includes("localhost")
-          ? "http://localhost:3000"
+          ? "http://localhost:8000"
           : "https://momento-backend-production.up.railway.app";
         const res = await fetch(`${API}/api/aportes`);
         const datos = await res.json();
