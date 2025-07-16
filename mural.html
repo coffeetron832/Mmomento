@@ -114,31 +114,26 @@ window.addEventListener('DOMContentLoaded', () => {
   cargarAportes();
 });
 
-const toggleBtn = document.getElementById('toggleUIBtn');
+// 🎯 Elementos comunes
 const formulario = document.querySelector('.formulario.flotante');
 const misAportes = document.getElementById('misAportes');
-
-let uiVisible = true;
-
-toggleBtn.addEventListener('click', () => {
-  uiVisible = !uiVisible;
-  formulario.style.display = uiVisible ? 'flex' : 'none';
-  misAportes.style.display = uiVisible ? 'block' : 'none';
-  toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
-});
-
-
-    const btnFormulario = document.getElementById("btnMostrarFormulario");
+const btnFormulario = document.getElementById("btnMostrarFormulario");
 const btnAportes = document.getElementById("btnMostrarAportes");
-const misAportes = document.getElementById("misAportes");
+const toggleBtn = document.getElementById('toggleUIBtn');
+
+// 👁️ Botón para ocultar/mostrar toda la interfaz flotante (en móviles)
+toggleBtn.addEventListener('click', () => {
+  const visible = formulario.classList.toggle("mostrar");
+  misAportes.classList.toggle("mostrar");
+
+  toggleBtn.textContent = visible ? '👁️ Ocultar' : '👁️ Mostrar';
+});
 
 btnFormulario.addEventListener("click", () => {
   const visible = formulario.classList.toggle("mostrar");
-
-  // Cambiar texto del botón según estado
   btnFormulario.textContent = visible ? "✖ Cerrar" : "✚ Aportar";
 
-  // Asegurar que el otro panel se cierre
+  // Cierra el otro panel
   if (visible) {
     misAportes.classList.remove("mostrar");
     btnAportes.textContent = "📁 Aportes";
@@ -147,16 +142,15 @@ btnFormulario.addEventListener("click", () => {
 
 btnAportes.addEventListener("click", () => {
   const visible = misAportes.classList.toggle("mostrar");
-
-  // Cambiar texto del botón según estado
   btnAportes.textContent = visible ? "✖ Cerrar" : "📁 Aportes";
 
-  // Asegurar que el otro panel se cierre
+  // Cierra el otro panel
   if (visible) {
     formulario.classList.remove("mostrar");
     btnFormulario.textContent = "✚ Aportar";
   }
 });
+
 
 
     // 🕛 Borrar mural si es un nuevo día
