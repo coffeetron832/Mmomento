@@ -17,11 +17,6 @@
   </div>
 </div>
 
-  <button id="toggleUIBtn" class="toggle-ui-btn">
-  👁️ Mostrar
-</button>
-
-
   <section class="formulario flotante">
     <label>¿Qué quieres dejar hoy?</label>
     <select id="tipo">
@@ -119,15 +114,7 @@ const formulario = document.querySelector('.formulario.flotante');
 const misAportes = document.getElementById('misAportes');
 const btnFormulario = document.getElementById("btnMostrarFormulario");
 const btnAportes = document.getElementById("btnMostrarAportes");
-const toggleBtn = document.getElementById('toggleUIBtn');
 
-// 👁️ Botón para ocultar/mostrar toda la interfaz flotante (en móviles)
-toggleBtn.addEventListener('click', () => {
-  const visible = formulario.classList.toggle("mostrar");
-  misAportes.classList.toggle("mostrar");
-
-  toggleBtn.textContent = visible ? '👁️ Ocultar' : '👁️ Mostrar';
-});
 
 btnFormulario.addEventListener("click", () => {
   const visible = formulario.classList.toggle("mostrar");
@@ -461,10 +448,6 @@ console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
 
 // 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
 window.addEventListener('DOMContentLoaded', () => {
-  if (window.innerWidth <= 600) {
-    document.getElementById('toggleUIBtn').style.display = 'block';
-  }
-
   if (!localStorage.getItem('noMostrarMensajeMural')) {
     document.getElementById('modalOverlay').style.display = 'flex';
   }
