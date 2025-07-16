@@ -296,3 +296,67 @@
     display: block;
   }
 }
+
+@media (max-width: 600px) {
+  .formulario.flotante {
+    top: auto;
+    bottom: 4.5rem; /* justo encima del botón toggle 👁️ */
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    border-radius: 1rem 1rem 0 0;
+    padding: 1rem;
+    background-color: #1a1a1a;
+    z-index: 9998;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+    overflow-y: auto;
+    max-height: 70vh;
+    gap: 1rem;
+  }
+
+  .formulario.flotante input,
+  .formulario.flotante select,
+  .formulario.flotante button,
+  .formulario.flotante textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+
+  #canvasDoodle {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 1rem;
+  }
+
+  #zoomControls {
+    position: fixed;
+    bottom: 10rem; /* más arriba para no estorbar */
+    left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 10000;
+  }
+
+  #zoomControls button {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  #misAportes {
+    width: 90%;
+    right: 5%;
+    max-height: 180px;
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+
+  .preview img {
+    max-width: 100%;
+    max-height: 200px;
+  }
+}
