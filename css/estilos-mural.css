@@ -497,18 +497,24 @@ html, body {
   }
 
   #btnMostrarFormulario,
-  #btnMostrarAportes {
-    position: fixed;
-    right: 20px;
-    z-index: 1000;
-    padding: 0.6rem 1.1rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 999px;
-    background-color: #fff;
-    color: #000;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-  }
+#btnMostrarAportes {
+  position: fixed;
+  right: 20px;
+  z-index: 1000;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  min-width: auto;
+  width: auto;
+  max-width: 150px;
+  text-align: center;
+  border: none;
+  border-radius: 999px;
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
 
   #btnMostrarFormulario {
     bottom: 80px;
