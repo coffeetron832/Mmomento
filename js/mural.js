@@ -551,12 +551,10 @@ window.addEventListener('beforeunload', () => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  // 1️⃣ Verificación de sesión y carga de usuario
   if (!verificarToken()) return;
   usuario = obtenerUsuarioDesdeToken();
   console.log('👤 Usuario:', usuario);
 
-  // 2️⃣ Montar UI de formularios y mis aportes
   const btnFormulario   = document.getElementById('btnFormulario');
   const btnMisAportes   = document.getElementById('btnMisAportes');
   const panelFormulario = document.querySelector('.formulario.flotante');
@@ -589,7 +587,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ) cerrarTodosLosPopovers();
   });
 
-  // 3️⃣ Adaptar UI móvil y mensaje inicial
+  // 👇 Este bloque ya cubre lo que estaba en el DOMContentLoaded duplicado
   if (window.innerWidth <= 600) {
     document.getElementById('toggleUIBtn').style.display = 'block';
   }
@@ -597,7 +595,8 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('mensajeInicial').style.display = 'block';
   }
 
-  // 4️⃣ ¡Al fin, carga los aportes!
+  // ✅ Finalmente, carga los aportes
   cargarAportes();
 });
+
 
