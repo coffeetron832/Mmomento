@@ -118,3 +118,14 @@
   transform: scale(1.05);
   color: #4f46e5;
 }
+
+@media (max-width: 768px) {
+  .mobile-panel-toggle {
+    display: flex !important;
+  }
+
+  .nav-side-panel {
+    display: flex !important;
+  }
+}
+
