@@ -242,3 +242,21 @@ body {
   -webkit-user-select: none;
   user-select: none;
 }
+
+
+/* Ocultar el botón por defecto */
+  #toggleUIBtn {
+    display: none;
+  }
+
+  /* Mostrar el botón solo en pantallas menores a 768px */
+  @media (max-width: 768px) {
+    #toggleUIBtn {
+      display: block;
+    }
+
+    .formulario,
+    #misAportes {
+      display: none;
+    }
+  }
