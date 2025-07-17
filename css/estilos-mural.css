@@ -402,8 +402,7 @@ body {
 
 #muralContainer {
   background-color: #000;
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 40px 40px; /* Tamaño de la cuadrícula */
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNDBweCcgaGVpZ2h0PSc0MHB4JyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxsaW5lIHgxPScwJyB5MT0nMCcgeDI9JzAnIHkyPSc0MCcgc3Ryb2tlPSd3aGl0ZScgc3Ryb2tlLXdpZHRoPScwLjEnLz48bGluZSB4MT0nMCcgeTE9JzAnIHgyPSc0MCcgeTI9JzAnIHN0cm9rZT0nd2hpdGUnIHN0cm9rZS13aWR0aD0nMC4xJy8+PC9zdmc+");
+  background-size: 40px 40px;
 }
+
