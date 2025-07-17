@@ -1,134 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página en Desarrollo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at center, #1a1a2e, #0f0f1e);
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
 
-   .cube-scene {
-  width: 200px;
-  height: 200px;
-  margin: 3rem auto;
-  perspective: 1000px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .butterfly-scene {
+      width: 200px;
+      height: 200px;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
 
-.cube {
-  width: 200px;
-  height: 200px;
-  position: relative;
-  transform-style: preserve-3d;
-  transform: rotateX(0deg) rotateY(0deg);
-  transition: transform 0.5s ease;
-}
+    .butterfly {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      animation: float 4s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
 
-.cube-face {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-weight: 500;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-  color: white;
-  backface-visibility: hidden;
-}
+    .body {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 60px;
+      background: #f5f5f5;
+      border-radius: 5px;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
 
-.cube-scene {
-  user-select: none;        /* Evita selección de texto */
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  cursor: grab;
-}
-.cube-scene:active {
-  cursor: grabbing;
-}
-    
-/* Posición 3D de las caras */
-.cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(100px); }
-.cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(100px); }
-.cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(100px); }
-.cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(100px); }
-.cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(100px); }
-.cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(100px); }
+    .wing {
+      position: absolute;
+      top: 50%;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at center, #ff77d0, #a40080);
+      border-radius: 60% 40% 60% 40%;
+      opacity: 0.9;
+      transform-origin: center right;
+      animation: flap 1s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(255, 0, 128, 0.4);
+    }
+
+    .left-wing {
+      left: -60px;
+      transform-origin: right center;
+      animation-delay: 0s;
+    }
+
+    .right-wing {
+      right: -60px;
+      transform-origin: left center;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes flap {
+      0%, 100% { transform: rotateY(0deg); }
+      50% { transform: rotateY(35deg); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .mensaje {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #ccc;
+      padding: 1rem 2rem;
+      max-width: 500px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mensaje strong {
+      color: #ff77d0;
+    }
   </style>
 </head>
 <body>
-
-  <div class="cube-scene">
-  <div class="cube" id="cssBox">
-    <div class="cube-face">Conecta con tu alma</div>
-    <div class="cube-face">Tu viaje, tus momentos</div>
-    <div class="cube-face">Siente cada color</div>
-    <div class="cube-face">Solo por ti</div>
-    <div class="cube-face">Aquí y ahora</div>
-    <div class="cube-face">Comparte instantes</div>
+  <div class="butterfly-scene">
+    <div class="butterfly">
+      <div class="wing left-wing"></div>
+      <div class="body"></div>
+      <div class="wing right-wing"></div>
+    </div>
   </div>
-</div>
-
-  <!-- 🔵 Mensaje de error/success -->
-
-
-  <script>    
-  const cube = document.getElementById('cssBox');
-  let isDragging = false;
-  document.body.style.userSelect = '';
-  let startX, startY;
-  let currentX = 0, currentY = 0;
-
-  function rotateCube(deltaX, deltaY) {
-    currentX += deltaX;
-    currentY += deltaY;
-    cube.style.transform = `rotateX(${currentY}deg) rotateY(${currentX}deg)`;
-  }
-
-  function onMouseDown(e) {
-    isDragging = true;
-    document.body.style.userSelect = 'none';
-    startX = e.clientX;
-    startY = e.clientY;
-  }
-
-  function onMouseMove(e) {
-    if (!isDragging) return;
-    const deltaX = (e.clientX - startX) * 0.5;
-    const deltaY = (e.clientY - startY) * 0.5;
-    rotateCube(deltaX, -deltaY);
-    startX = e.clientX;
-    startY = e.clientY;
-  }
-
-  function onMouseUp() {
-    isDragging = false;
-  }
-
-  // Mouse events
-  const scene = document.querySelector('.cube-scene');
-  scene.addEventListener('mousedown', onMouseDown);
-  scene.addEventListener('mousemove', onMouseMove);
-  window.addEventListener('mouseup', onMouseUp);
-
-  // Touch events (para móviles)
-  scene.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
-    startX = touch.clientX;
-    startY = touch.clientY;
-    isDragging = true;
-  });
-
-  scene.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const touch = e.touches[0];
-    const deltaX = (touch.clientX - startX) * 0.5;
-    const deltaY = (touch.clientY - startY) * 0.5;
-    rotateCube(deltaX, -deltaY);
-    startX = touch.clientX;
-    startY = touch.clientY;
-  });
-
-  scene.addEventListener('touchend', () => {
-    isDragging = false;
-  });
-</script>
+  <div class="mensaje">
+    <p><strong>Esta sección aún está en desarrollo.</strong><br>Regresa pronto para descubrir algo especial 🦋</p>
+  </div>
+</body>
+</html>
