@@ -457,8 +457,10 @@ function cerrarMensaje() {
   if (noMostrar) {
     localStorage.setItem('noMostrarMensajeMural', 'true');
   }
-  document.getElementById('mensajeInicial').style.display = 'none';
+  // Añade la clase que oculta el overlay
+  document.getElementById('modalOverlay').classList.add('hidden');
 }
+
 
 // 🧠 Palabras prohibidas
 const palabrasProhibidas = ['odio', 'muerte', 'estúpido', 'imbécil'];
