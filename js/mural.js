@@ -236,32 +236,7 @@ muralContainer.addEventListener('touchend', e => {
 
     const texto = contenido.value.trim();
 
-    // 🧠 Verificamos si contiene palabras prohibidas
-    if (contienePalabraProhibida(texto)) {
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/users/suspension', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ suspender: true, duracionMinutos: 30 }) // O ajusta según backend
-    });
-
-    if (!res.ok) {
-      const data = await res.json();
-      alert(data.message || 'Error al suspender usuario.');
-      return;
-    }
-
-    alert('Has usado palabras prohibidas y estás suspendido por 30 minutos.');
-  } catch (err) {
-    console.error('Error al suspender usuario:', err);
-    alert('Error al suspender usuario.');
-  }
-  return;
-}
-
+    
 
     contenidoFinal = texto;
     contenido.value = '';
