@@ -217,3 +217,16 @@ button:hover {
     right: 0.5rem;
   }
 }
+
+/* Por defecto el overlay está visible */
+#modalOverlay {
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Cuando tenga la clase .hidden, desaparece y deja pasar los clics */
+#modalOverlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
