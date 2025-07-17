@@ -32,15 +32,7 @@ function verificarToken() {
   return true;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  if (!verificarToken()) return;
 
-  usuario = obtenerUsuarioDesdeToken();
-  console.log('👤 Usuario cargado desde token:', usuario); // ✅ Aquí sí se llena correctamente
-
-  // Puedes iniciar la carga del mural aquí
-  cargarAportes();
-});
 
 const toggleBtn = document.getElementById('toggleUIBtn');
 const formulario = document.querySelector('.formulario');
@@ -568,15 +560,14 @@ window.addEventListener('beforeunload', () => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  // Verificación de sesión
+  // 1️⃣ Verificación de sesión y carga de usuario
   if (!verificarToken()) return;
-
   usuario = obtenerUsuarioDesdeToken();
   console.log('👤 Usuario:', usuario);
 
-  // Mostrar/Ocultar paneles flotantes
-  const btnFormulario = document.getElementById('btnFormulario');
-  const btnMisAportes = document.getElementById('btnMisAportes');
+  // 2️⃣ Montar UI de formularios y mis aportes
+  const btnFormulario   = document.getElementById('btnFormulario');
+  const btnMisAportes   = document.getElementById('btnMisAportes');
   const panelFormulario = document.querySelector('.formulario.flotante');
   const panelMisAportes = document.getElementById('misAportes');
 
@@ -585,42 +576,37 @@ window.addEventListener('DOMContentLoaded', () => {
     panelMisAportes.style.display = 'none';
   }
 
-  btnFormulario.addEventListener('click', (e) => {
+  btnFormulario.addEventListener('click', e => {
     e.stopPropagation();
-    const visible = panelFormulario.style.display === 'block';
+    const show = panelFormulario.style.display !== 'block';
     cerrarTodosLosPopovers();
-    panelFormulario.style.display = visible ? 'none' : 'block';
+    panelFormulario.style.display = show ? 'block' : 'none';
   });
 
-  btnMisAportes.addEventListener('click', (e) => {
+  btnMisAportes.addEventListener('click', e => {
     e.stopPropagation();
-    const visible = panelMisAportes.style.display === 'block';
+    const show = panelMisAportes.style.display !== 'block';
     cerrarTodosLosPopovers();
-    panelMisAportes.style.display = visible ? 'none' : 'block';
+    panelMisAportes.style.display = show ? 'block' : 'none';
   });
 
-  // Cierre global si se hace clic fuera
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     if (
       !e.target.closest('.formulario.flotante') &&
       !e.target.closest('#misAportes') &&
       !e.target.closest('#footerButtons')
-    ) {
-      cerrarTodosLosPopovers();
-    }
+    ) cerrarTodosLosPopovers();
   });
 
-  // Mostrar el botón de UI en móviles
+  // 3️⃣ Adaptar UI móvil y mensaje inicial
   if (window.innerWidth <= 600) {
     document.getElementById('toggleUIBtn').style.display = 'block';
   }
-
-  // Mostrar mensaje si no fue ocultado antes
   if (!localStorage.getItem('noMostrarMensajeMural')) {
     document.getElementById('mensajeInicial').style.display = 'block';
   }
 
-  // Finalmente, cargar los aportes
+  // 4️⃣ ¡Al fin, carga los aportes!
   cargarAportes();
 });
 
