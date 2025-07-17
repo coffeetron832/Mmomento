@@ -16,6 +16,13 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+#modalOverlay.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .modal {
@@ -23,6 +30,7 @@ body {
   padding: 2rem;
   border-radius: 1rem;
   max-width: 400px;
+  width: 90%;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
@@ -39,7 +47,6 @@ button {
   cursor: pointer;
   transition: background 0.3s ease;
 }
-
 button:hover {
   background: #fcb1b5;
 }
@@ -60,7 +67,6 @@ button:hover {
   gap: 0.8rem;
   z-index: 999;
 }
-
 .formulario input[type="text"],
 .formulario select {
   padding: 0.5rem;
@@ -82,6 +88,7 @@ button:hover {
 /* Doodle controls */
 .doodle-controls {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
 }
@@ -92,7 +99,6 @@ button:hover {
   flex-direction: column;
   gap: 0.5rem;
 }
-
 .preview img {
   max-width: 100%;
   border-radius: 0.5rem;
@@ -108,7 +114,6 @@ button:hover {
   cursor: grab;
   background: #fffefc;
 }
-
 .mural {
   position: absolute;
   width: 2000px;
@@ -128,7 +133,6 @@ button:hover {
   transform: rotate(var(--rot)) scale(var(--scale));
   transition: transform 0.2s;
 }
-
 .mural-item img {
   width: 100%;
   border-radius: 0.5rem;
@@ -139,7 +143,6 @@ button:hover {
   font-style: italic;
   font-weight: 600;
 }
-
 .mural-item.emoji {
   font-size: 3rem;
   text-align: center;
@@ -155,7 +158,6 @@ button:hover {
   gap: 0.5rem;
   z-index: 1000;
 }
-
 #zoomControls button {
   padding: 0.5rem;
   width: 40px;
@@ -177,7 +179,6 @@ button:hover {
   padding: 1rem;
   z-index: 999;
 }
-
 .aporte-propio {
   display: flex;
   align-items: center;
@@ -187,12 +188,10 @@ button:hover {
   padding: 0.4rem 0;
   font-size: 0.9rem;
 }
-
 .tiempo-restante {
   font-size: 0.75rem;
   color: #777;
 }
-
 .borrar-aporte {
   background: none;
   border: none;
@@ -202,31 +201,39 @@ button:hover {
   cursor: pointer;
 }
 
-/* Responsive */
+/* Responsivo para móviles */
 @media screen and (max-width: 600px) {
   .formulario {
     top: auto;
     bottom: 4rem;
-    right: 1rem;
+    right: 0.5rem;
     width: 90%;
+    padding: 1rem;
   }
 
   #misAportes {
     width: 90%;
     bottom: 0.5rem;
     right: 0.5rem;
+    max-height: 35vh;
   }
-}
 
-/* Por defecto el overlay está visible */
-#modalOverlay {
-  pointer-events: auto;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
+  #zoomControls {
+    flex-direction: row;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    top: auto;
+  }
 
-/* Cuando tenga la clase .hidden, desaparece y deja pasar los clics */
-#modalOverlay.hidden {
-  opacity: 0;
-  pointer-events: none;
+  .modal {
+    padding: 1.5rem;
+  }
+
+  .mural-item {
+    max-width: 150px;
+  }
+
+  .doodle-controls {
+    flex-direction: column;
+  }
 }
