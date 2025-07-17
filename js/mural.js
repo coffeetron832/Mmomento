@@ -207,58 +207,71 @@ muralContainer.addEventListener('touchend', e => {
     async function agregarAlMural() {
   const tipoSeleccionado = tipo.value;
   const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
 
+  if (!token) {
+    alert('Debes iniciar sesión para usar el mural.');
+    throw new Error('Token no encontrado');
+  }
+
+  // 🚫 Verificamos si el usuario está suspendido
+  if (estaSuspendido()) {
+    alert('Estás suspendido por 30 minutos por lenguaje inapropiado.');
+    return;
+  }
 
   let contenidoFinal = '';
-
-
 
   if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
     if (!contenido.value.trim()) {
       return alert('Escribe algo primero.');
     }
-    contenidoFinal = contenido.value.trim();
+
+    const texto = contenido.value.trim();
+
+    // 🧠 Verificamos si contiene palabras prohibidas
+    if (contienePalabraProhibida(texto)) {
+      const fin = Date.now() + tiempoSuspension;
+      localStorage.setItem('momentoSuspension', fin.toString());
+      alert('Has usado palabras prohibidas y estás suspendido por 30 minutos.');
+      return;
+    }
+
+    contenidoFinal = texto;
     contenido.value = '';
   }
 
   else if (tipoSeleccionado === 'imagen') {
-  const archivo = imagenInput.files[0];
-  if (!archivo) return alert('Selecciona una imagen.');
+    const archivo = imagenInput.files[0];
+    if (!archivo) return alert('Selecciona una imagen.');
 
-  const formData = new FormData();
-  formData.append('imagen', archivo);
-  formData.append('usuario', usuario);
+    const formData = new FormData();
+    formData.append('imagen', archivo);
+    formData.append('usuario', usuario);
 
+    try {
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
+        method: 'POST',
+        body: formData
+      });
 
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
-      method: 'POST',
-      body: formData
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Error subiendo imagen.');
+      }
 
-    if (!res.ok) {
-      throw new Error(data.message || 'Error subiendo imagen.');
+      mostrarAporte(data.data);
+      imagenInput.value = '';
+      previewImg.src = '';
+      preview.style.display = 'none';
+
+    } catch (err) {
+      console.error('Error al subir imagen:', err);
+      alert('La imagen fue rechazada o hubo un error.');
     }
 
-    mostrarAporte(data.data);
-    imagenInput.value = '';
-    previewImg.src = '';
-    preview.style.display = 'none';
-
-  } catch (err) {
-    console.error('Error al subir imagen:', err);
-    alert('La imagen fue rechazada o hubo un error.');
+    return;
   }
-
-  return;
-}
-
 
   else if (tipoSeleccionado === 'doodle') {
     contenidoFinal = canvas.toDataURL();
@@ -267,6 +280,7 @@ if (!token) {
 
   await enviarAlBackend(usuario, tipoSeleccionado, contenidoFinal);
 }
+
 
   async function enviarAlBackend(usuario, tipo, contenido) {
   const token = localStorage.getItem('token');
