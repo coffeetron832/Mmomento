@@ -310,9 +310,13 @@ if (!token) {
 
 
 function mostrarAporte({ _id, tipo, contenido, usuario }) {
+  if (aportesMostrados.has(_id)) return; // ✅ Evita duplicados
+
+  aportesMostrados.add(_id); // ✅ Marca este aporte como ya mostrado
+
   const nuevo = document.createElement('div');
   nuevo.classList.add('mural-item');
-  nuevo.id = `aporte-${_id}`; // ✅ ← esta línea
+  nuevo.id = `aporte-${_id}`;
 
   const { offsetWidth: w, offsetHeight: h } = mural;
   const x = Math.floor(Math.random() * (w - 200));
@@ -342,12 +346,14 @@ function mostrarAporte({ _id, tipo, contenido, usuario }) {
 }
 
 
+
 cargarAportes();
 
 // Reemplazar esta parte en cargarAportes()
 async function cargarAportes() {
   try {
     mural.innerHTML = '';
+    aportesMostrados.clear(); // ✅ También limpiamos el Set
     
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
     const datos = await res.json();
