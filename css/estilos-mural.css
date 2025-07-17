@@ -450,13 +450,12 @@ body {
   position: sticky;
   top: 0;
   z-index: 1;
-  background: #ffffffdd;
-  color: #111;
+  background: transparent;       /* sin recuadro blanco */
+  color: #eee;                   /* contraste claro sobre fondo oscuro */
   font-size: 1.2rem;
   font-weight: bold;
-  padding: 0.75rem 1rem;
-  margin: -1rem -1rem 0.5rem -1rem; /* anula el padding lateral del contenedor */
-  border-bottom: 1px solid #ccc;
+  padding: 0.5rem 0 0.25rem 0;   /* más compacto y más arriba */
+  margin: 0 0 0.5rem 0;          /* quitamos los márgenes negativos */
   text-align: center;
-  backdrop-filter: blur(5px);
 }
+
