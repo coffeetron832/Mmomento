@@ -430,8 +430,23 @@ if (!token) {
       tiempoRestante.className = 'tiempo-restante';
       const creado = new Date(aporte.fechaCreacion);
       const expiracion = new Date(creado.getTime() + 6 * 60 * 60 * 1000);
-      const minutosRestantes = Math.floor((expiracion - ahora) / 60000);
-      tiempoRestante.textContent = `⏳ ${minutosRestantes} min restantes`;
+      const msRestantes = expiracion - ahora;
+
+if (msRestantes <= 0) {
+  tiempoRestante.textContent = '✅ Expirado';
+} else {
+  const minutos = Math.floor(msRestantes / 60000);
+  const horas = Math.floor(minutos / 60);
+  const mins = minutos % 60;
+
+  if (horas > 0) {
+    tiempoRestante.textContent = `⏳ Quedan ${horas}h ${mins}min`;
+  } else if (minutos > 5) {
+    tiempoRestante.textContent = `⏳ Quedan ${minutos} min`;
+  } else {
+    tiempoRestante.textContent = '⏳ Últimos minutos';
+  }
+}
 
       const btnBorrar = document.createElement('button');
       btnBorrar.textContent = '✖';
