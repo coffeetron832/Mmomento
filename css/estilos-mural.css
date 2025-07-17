@@ -351,4 +351,45 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  #mobileButtonBar {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
+    z-index: 10000;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 0.4rem 0.8rem;
+    border-radius: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+    align-items: center;
+  }
+
+  #toggleUIBtn,
+  #zoomControls button {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 1.5rem;
+    font-weight: 600;
+    background: #ffd6d6;
+    color: #111;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+  }
+
+  #zoomControls {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  #zoomControls button:hover,
+  #toggleUIBtn:hover {
+    transform: scale(1.05);
+    background: #ffc2c2;
+  }
+}
 
