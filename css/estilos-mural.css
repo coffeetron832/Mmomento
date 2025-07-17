@@ -413,10 +413,14 @@ body {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.95);
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0s linear 0.3s;
   position: fixed;
   left: 50%;
   top: 50%;
+  z-index: 9999;
 }
 
 .popover.mostrar, #misAportes.mostrar, .formulario.flotante.mostrar {
@@ -426,3 +430,5 @@ body {
   pointer-events: auto;
   transition-delay: 0s;
 }
+
+
