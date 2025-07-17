@@ -209,3 +209,31 @@ button:hover {
   opacity: 0;
   pointer-events: none !important;
 }
+
+
+/* Mostrar controles de zoom solo en móviles */
+#zoomControls {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000;
+}
+
+#zoomControls button {
+  background: #ffdfdf;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Ocultar en pantallas grandes */
+@media (min-width: 768px) {
+  #zoomControls {
+    display: none !important;
+  }
+}
