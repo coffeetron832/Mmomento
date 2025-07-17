@@ -573,14 +573,6 @@ const btnMisAportes   = document.getElementById('btnMisAportes');
 const panelFormulario = document.querySelector('.formulario.flotante');
 const panelMisAportes = document.getElementById('misAportes');
 
-if (suspension && suspension.suspendido) {
-    alert(`Estás suspendido por lenguaje inapropiado hasta ${new Date(suspension.suspensionHasta).toLocaleTimeString()}. No podrás publicar.`);
-    // Aquí bloqueas el formulario:
-    formulario.style.display = 'none'; // o deshabilitar inputs y botones
-  } else {
-    formulario.style.display = 'block';
-  }
-
   
 function cerrarTodosLosPopovers() {
   panelFormulario.classList.remove('mostrar');
@@ -632,6 +624,15 @@ document.addEventListener('click', e => {
   }
   if (!localStorage.getItem('noMostrarMensajeMural')) {
     document.getElementById('mensajeInicial').style.display = 'block';
+  }
+
+
+  if (suspension && suspension.suspendido) {
+    alert(`Estás suspendido por lenguaje inapropiado hasta ${new Date(suspension.suspensionHasta).toLocaleTimeString()}. No podrás publicar.`);
+    // Aquí bloqueas el formulario:
+    formulario.style.display = 'none'; // o deshabilitar inputs y botones
+  } else {
+    formulario.style.display = 'block';
   }
 
   // ✅ Finalmente, carga los aportes
