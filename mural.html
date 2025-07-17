@@ -189,7 +189,12 @@
     }
 
     // Finalmente, envía el aporte
-    await enviarAlBackend(usuario, tipo, contenidoFinal);
+    await enviarAlBackend({
+  usuario,
+  tipo,
+  contenido: contenidoFinal
+});
+
   }
 
   // Limpia el canvas
