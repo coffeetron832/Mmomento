@@ -1790,4 +1790,6 @@ body.dark-mode .upload-form-container {
 
 body {
   background: radial-gradient(circle at center, #1a1a2e, #0f0f1e) !important;
+  background-attachment: fixed;
 }
+
