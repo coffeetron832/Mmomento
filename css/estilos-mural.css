@@ -173,3 +173,16 @@ body {
     justify-content: center;
   }
 }
+
+
+.btn-eliminar {
+  background-color: transparent;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.1rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.btn-eliminar:hover {
+  color: #c0392b;
+}
