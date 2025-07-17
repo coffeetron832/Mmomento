@@ -431,3 +431,10 @@ body {
 }
 
 
+#misAportes {
+  width: 85vw;
+  max-width: 300px;
+  padding: 1.2rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
