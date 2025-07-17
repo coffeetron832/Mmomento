@@ -129,12 +129,17 @@
   }
 }
 
-/* Forzar alineación perfecta de íconos/emojis */
 .nav-side-panel a,
 .nav-side-panel button {
-  font-size: 1.5rem; /* Aumenta ligeramente para armonizar */
+  font-family: 'Inter', sans-serif; /* Asegura fuente coherente */
+  font-size: 1.6rem; /* Ajuste ideal para emojis */
   line-height: 1;
   text-align: center;
+  vertical-align: middle;
+}
+
+.nav-side-panel a::before,
+.nav-side-panel button::before {
   vertical-align: middle;
 }
 
