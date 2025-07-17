@@ -17,6 +17,8 @@ function obtenerUsuarioDesdeToken() {
 
     // ✅ Definimos usuario como variable global al inicio
 let usuario; // ✅ Declaración vacía global
+// ✅ Declarar este Set al inicio del archivo, antes de usarlo
+const aportesMostrados = new Set();
 
 
 function verificarToken() {
