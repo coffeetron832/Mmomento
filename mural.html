@@ -77,6 +77,20 @@ window.addEventListener('DOMContentLoaded', () => {
   const zoomInBtn = document.getElementById("zoomIn");
   const zoomOutBtn = document.getElementById("zoomOut");
 
+  const btnCerrarModal = document.getElementById('btnCerrarModal');
+const modalOverlay   = document.getElementById('modalOverlay');
+
+if (btnCerrarModal && modalOverlay) {
+  btnCerrarModal.addEventListener('click', () => {
+    // Si el usuario marcó "No volver a mostrar", lo guardamos
+    if (document.getElementById('noMostrarCheckbox').checked) {
+      localStorage.setItem('noMostrarMensajeMural', 'true');
+    }
+    modalOverlay.style.display = 'none';
+  });
+}
+
+  
   // Validación para evitar errores
   if (!mural || !formulario || !misAportes || !btnFormulario || !btnAportes || !zoomInBtn || !zoomOutBtn) {
     console.error("❌ Faltan elementos del DOM requeridos.");
