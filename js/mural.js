@@ -639,10 +639,14 @@ document.addEventListener('click', e => {
 
   if (suspension && suspension.suspendido) {
     alert(`Estás suspendido por lenguaje inapropiado hasta ${new Date(suspension.suspensionHasta).toLocaleTimeString()}. No podrás publicar.`);
-    // Aquí bloqueas el formulario:
-    formulario.style.display = 'none'; // o deshabilitar inputs y botones
+    formulario.style.display = 'none';
+
+    // Guardar suspensión actualizada en localStorage
+    localStorage.setItem('momentoSuspension', new Date(suspension.suspensionHasta).getTime().toString());
+
   } else {
     formulario.style.display = 'block';
+    localStorage.removeItem('momentoSuspension'); // Quitar suspensión si ya pasó
   }
 
   // ✅ Finalmente, carga los aportes
