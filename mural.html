@@ -41,14 +41,17 @@
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
-<!-- Contenedor de botones -->
 <div id="mobileButtonBar">
+  <!-- Botón único de toggle -->
   <button id="toggleUIBtn">👁️ Mostrar</button>
+
+  <!-- Controles de zoom con los mismos IDs que tu script espera -->
   <div id="zoomControls">
-    <button onclick="zoomOut()">➖</button>
-    <button onclick="zoomIn()">➕</button>
+    <button id="zoomOut">➖</button>
+    <button id="zoomIn">➕</button>
   </div>
 </div>
+
 
 
 <!-- Contenedor del mural para pan/zoom -->
@@ -171,22 +174,18 @@ let initialScale = scale;
 
 
   const muralContainer = document.getElementById('muralContainer');
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn = document.getElementById('zoomOut');
+ const zoomInBtn  = document.getElementById('zoomIn');
+const zoomOutBtn = document.getElementById('zoomOut');
 
-  function updateTransform() {
-    mural.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-  }
+zoomInBtn.addEventListener('click', () => {
+  scale = Math.min(2, scale + 0.1);
+  updateTransform();
+});
 
-  zoomInBtn.addEventListener('click', () => {
-    scale = Math.min(2, scale + 0.1);
-    updateTransform();
-  });
-
-  zoomOutBtn.addEventListener('click', () => {
-    scale = Math.max(0.4, scale - 0.1);
-    updateTransform();
-  });
+zoomOutBtn.addEventListener('click', () => {
+  scale = Math.max(0.4, scale - 0.1);
+  updateTransform();
+});
 
   muralContainer.addEventListener('mousedown', e => {
     isDragging = true;
