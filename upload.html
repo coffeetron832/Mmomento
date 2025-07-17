@@ -240,23 +240,20 @@
 
 
     const panel = document.querySelector('.nav-side-panel');
-    const openBtn = document.getElementById('openSidePanelBtn');
+const openBtn = document.getElementById('openSidePanelBtn');
 
-    // Abrir panel
-    openBtn.addEventListener('click', () => {
-      panel.classList.add('show');
-    });
+openBtn.addEventListener('click', () => {
+  panel.classList.toggle('show'); // esto es clave
+});
 
-    // Cerrar panel al hacer clic fuera (opcional)
-    document.addEventListener('click', (e) => {
-      if (
-        panel.classList.contains('show') &&
-        !panel.contains(e.target) &&
-        e.target !== openBtn
-      ) {
-        panel.classList.remove('show');
-      }
-    });
+// OPCIONAL: cerrar si se hace clic fuera
+document.addEventListener('click', (e) => {
+  const clickedInside = panel.contains(e.target) || openBtn.contains(e.target);
+  if (!clickedInside && panel.classList.contains('show')) {
+    panel.classList.remove('show');
+  }
+});
+
 
  const exploreBtn = document.getElementById("exploreBtnMenu");
 const floatingWrapper = document.getElementById("emotionFloatingWrapper");
