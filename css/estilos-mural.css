@@ -438,3 +438,11 @@ body {
   font-size: 0.95rem;
   line-height: 1.4;
 }
+
+#misAportes h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111111;
+  margin-bottom: 0.8rem;
+  text-align: center;
+}
