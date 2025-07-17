@@ -199,29 +199,29 @@
   }
 
   // Envia al backend y actualiza mural + “mis aportes”
-  async function enviarAlBackend(usuario, tipo, contenido) {
-    const token = localStorage.getItem('token');
-    try {
-      const res = await fetch('https://momento-backend-production.up.railway.app/api/mural', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ tipo, contenido })
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message);
-      // muestra en el mural
-      mostrarAporte(json.data);
-      // actualiza mis aportes
-      ultimosAportes.push(json.data);
-      mostrarMisAportes(ultimosAportes);
-    } catch (e) {
-      alert('No se pudo guardar el aporte: ' + e.message);
-      console.error(e);
+  async function enviarAlBackend(data) {
+  const token = localStorage.getItem("token"); // Asegúrate de que esté guardado correctamente
+
+  try {
+    const res = await fetch("https://momento-backend-production.up.railway.app/api/mural", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // 👈 Agregado correctamente
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      throw new Error("Error al enviar el aporte");
     }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error", error);
+    throw error;
   }
+}
 
   // Renderiza un aporte suelto en el mural
   function mostrarAporte({ _id, tipo, contenido, usuario }) {
