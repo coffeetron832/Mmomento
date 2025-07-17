@@ -1,35 +1,41 @@
     :root {
-      --btn-bg: #f5f5f5;
-      --btn-hover: #e0e0e0;
-      --btn-text: #111;
-      --max-width: 650px;
-      --gutter: 2.5rem;
-      --notif-bg: #fff;
-      --notif-border: #ccc;
-    }
+  --btn-bg: #ff77d0;
+  --btn-hover: #a40080;
+  --btn-text: #fff;
+  --notif-bg: #1a1a2e;
+  --notif-border: rgba(255, 255, 255, 0.15);
+  --max-width: 650px;
+  --gutter: 2.5rem;
+
+  --momento-deep: #1a1a2e;
+  --momento-dark: #0f0f1e;
+  --momento-glow: rgba(255, 0, 128, 0.4);
+  --momento-accent: #ff77d0;
+}
 
     .dark-mode {
-  --btn-bg: #333;
-  --btn-hover: #444;
+  --btn-bg: var(--momento-deep);
+  --btn-hover: var(--momento-accent);
   --btn-text: #fff;
-  --notif-bg: #111; /* más oscuro */
-  --notif-border: #444;
-  background-color: #111; /* fondo negro oscuro */
-  color: #fff;
+  --notif-bg: var(--momento-dark);
+  --notif-border: rgba(255, 255, 255, 0.15);
+  background: radial-gradient(circle at center, var(--momento-deep), var(--momento-dark));
+  color: #f5f5f5;
 }
 
 
-    body {
+   body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #000; /* fondo negro puro */
-  color: #f5f5f5; /* texto claro */
+  background: radial-gradient(circle at center, var(--momento-deep), var(--momento-dark));
+  color: #f5f5f5;
   transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Clave para forzar el footer abajo */
+  min-height: 100vh;
 }
+
 
     .container {
   width: 100%;
@@ -118,14 +124,15 @@ html, body {
     }
 
     .upload-form-container button {
-      background-color: #4f46e5;
-      color: white;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
-    .upload-form-container button:hover {
-      background-color: #3730a3;
-    }
+  background-color: var(--momento-accent);
+  color: white;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+.upload-form-container button:hover {
+  background-color: var(--btn-hover);
+}
 
     .images-grid {
   display: grid;
@@ -548,9 +555,9 @@ html, body {
 
 /* Ajuste visual para fondo oscuro fijo */
 #notifDropdown {
-  background-color: #000 !important;    /* negro puro */
-  border: 1px solid #333 !important;    /* gris oscuro */
-  color: #fff !important;               /* texto blanco */
+  background-color: var(--momento-dark) !important;
+  border: 1px solid var(--notif-border) !important;
+  color: #f5f5f5 !important;
 }
 
 #notifDropdown li {
@@ -571,8 +578,8 @@ html, body {
   padding: 8px 16px;
   margin: 4px;
   border-radius: 20px;
-  background-color: #eee;
-  color: #111;
+  background-color: var(--momento-deep);
+  color: #f5f5f5;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.78rem;
@@ -581,10 +588,10 @@ html, body {
 }
 
 .section-button.selected {
-  background-color: #4f46e5;
+  background-color: var(--momento-accent);
   color: white;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4);
+  border-color: var(--momento-accent);
+  box-shadow: 0 0 0 2px var(--momento-glow);
 }
 
 body.dark-mode .section-button {
@@ -596,84 +603,83 @@ body.dark-mode .section-button.selected {
   color: white;
 }
 
-    .loader {
+   .loader {
   text-align: center;
   font-size: 1.2rem;
   padding: 1rem;
-  color: #888;
+  color: #aaa;
   font-style: italic;
 }
 
-    .user-row {
+.user-row {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   margin-top: 0.2rem;
   font-size: 0.85rem;
+  color: #ddd;
 }
 
 h2.section-title {
-  font-size: 0.95rem !important; /* Forzamos el tamaño */
+  font-size: 1.1rem !important;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Unbounded', sans-serif;
   margin: 1.5rem 0 1rem;
   text-align: center;
+  color: #fff;
 }
 
-/* 🔹 Para botón seleccionado en el header */
+/* Botón seleccionado */
 .header-buttons .btn.selected {
-  background-color: #4f46e5;
+  background-color: #ff69b4;
   color: white;
   padding: 0.3rem 0.6rem;
   border-radius: 8px;
 }
 
-    .butterfly-btn {
+.butterfly-btn {
   transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #bbb;
+  opacity: 0.7;
 }
 
-/* Estado “ya diste” */
 .butterfly-btn[data-given="true"] {
   color: #ff69b4;
   opacity: 1;
 }
 
-/* Estado “aún no diste” */
-.butterfly-btn[data-given="false"] {
-  color: #bbb;
-  opacity: 0.7;
+.butterfly-btn:hover {
+  transform: scale(1.1);
+  color: #fff;
 }
 
 .butterfly-btn[data-given="true"]:hover {
   transform: scale(1.25);
 }
 
-.butterfly-btn[data-given="false"]:hover {
-  transform: scale(1.1);
-  color: #e0e0e0;
+.butterfly-btn.active {
+  animation: flutter 0.6s ease;
 }
 
-/* Animación extra si quieres que siga “flutter” cuando es activo */
 @keyframes flutter {
   0% { transform: scale(1); }
   50% { transform: scale(1.3) rotate(6deg); }
   100% { transform: scale(1); }
 }
-.butterfly-btn.active {
-  animation: flutter 0.6s ease;
-}
 
-    
 .card-overlay {
   position: absolute;
   bottom: 0;
   width: 100%;
   padding: 0.8rem;
   border-radius: 0 0 12px 12px;
-  background: rgba(0, 0, 0, 0.4); /* <- TRANSPARENTE, no linear-gradient */
-  backdrop-filter: blur(8px);     /* <- Aumenté un poco el blur para que se note más */
-  -webkit-backdrop-filter: blur(8px); /* <- para Safari */
-  color: white;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  color: #fff;
   font-size: 0.9rem;
   display: flex;
   flex-direction: column;
@@ -681,11 +687,11 @@ h2.section-title {
   z-index: 2;
 }
 
-
 .card-title {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 0.95rem;
   word-break: break-word;
+  color: #fff;
 }
 
 .card-user,
@@ -693,40 +699,19 @@ h2.section-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-    
-.butterfly-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
+  color: #ccc;
 }
 
-.butterfly-btn.active {
-  color: #90ee90;
-}
-
-
-
-.delete-btn {
-  background: none;
-  border: none;
-  font-size: 1.1rem;
-  color: #f88;
-  cursor: pointer;
-}
-
-    .like-count {
+.like-count {
   font-size: 0.9rem;
   color: #eee;
 }
 
-    .section-group {
+.section-group {
   border-bottom: 1px solid rgba(255,255,255,0.1);
   padding-bottom: 2rem;
   margin-bottom: 2rem;
 }
-
 
 .image-column {
   display: flex;
@@ -746,23 +731,19 @@ h2.section-title {
   background: transparent;
 }
 
-
 .image-card:hover {
   transform: scale(1.03);
   transition: transform 0.3s ease;
   z-index: 5;
 }
 
-
-
-
-    @media (max-width: 600px) {
+@media (max-width: 600px) {
   .images-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Estilo para efecto tilt */
+/* Tilt efecto */
 .tilt-card {
   perspective: 1000px;
   transform-style: preserve-3d;
@@ -773,25 +754,26 @@ h2.section-title {
   border-radius: 12px;
 }
 
-
-    .floating-emotion-btn {
+/* Botón flotante */
+.floating-emotion-btn {
   position: fixed;
   bottom: 6rem;
   right: 1rem;
-  background-color: #4f46e5;
+  background-color: #ff69b4;
   color: white;
   font-weight: bold;
   padding: 0.75rem 1rem;
   border: none;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   font-size: 0.9rem;
   cursor: pointer;
   z-index: 1000;
   transition: background-color 0.3s ease;
 }
+
 .floating-emotion-btn:hover {
-  background-color: #3730a3;
+  background-color: #e55a96;
 }
 
 .emotion-panel {
@@ -800,8 +782,8 @@ h2.section-title {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.94);
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(12px);
   color: white;
   display: none;
   flex-direction: column;
@@ -816,6 +798,7 @@ h2.section-title {
 .emotion-panel h2 {
   font-size: 1.6rem;
   margin-bottom: 1rem;
+  font-family: 'Unbounded', sans-serif;
 }
 
 .emotion-options {
@@ -825,7 +808,7 @@ h2.section-title {
 }
 
 .emotion-filter {
-  background-color: #333;
+  background-color: #222;
   color: #f5f5f5;
   border: none;
   padding: 0.75rem 1.2rem;
@@ -834,24 +817,15 @@ h2.section-title {
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
 .emotion-filter:hover {
   background-color: #4f46e5;
   color: white;
 }
 
-.close-panel-btn {
-  margin-top: 2rem;
-  background: none;
-  border: none;
-  color: #ccc;
-  font-size: 0.9rem;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-
-  .emotion-filter[data-filter="caos_bonito"] {
-  background: linear-gradient(45deg, #ff6b81, #ff8787);
+/* Filtros con gradiente emocional */
+.emotion-filter[data-filter="caos_bonito"] {
+  background: linear-gradient(45deg, #ff6b81, #ff87b0);
 }
 .emotion-filter[data-filter="zona_cero"] {
   background: linear-gradient(45deg, #6c5ce7, #4834d4);
@@ -863,10 +837,15 @@ h2.section-title {
   background: linear-gradient(45deg, #fdcb6e, #ffeaa7);
 }
 
-    .close-panel-btn {
-  color: #888;
-  font-style: italic;
-  opacity: 0.6;
+.close-panel-btn {
+  margin-top: 2rem;
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.7;
   transition: all 0.3s ease;
 }
 .close-panel-btn:hover {
@@ -875,7 +854,7 @@ h2.section-title {
   transform: scale(1.05);
 }
 
-
+/* Sidebar de íconos */
 .sidebar-buttons {
   position: fixed;
   top: 50%;
@@ -890,7 +869,7 @@ h2.section-title {
 .sidebar-btn {
   background-color: transparent;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil por defecto */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   width: 3rem;
   height: 3rem;
@@ -899,13 +878,12 @@ h2.section-title {
   justify-content: center;
   font-size: 1.4rem;
   cursor: pointer;
-  box-shadow: none;
   transition: border-color 0.3s ease, transform 0.2s ease, background-color 0.3s ease;
 }
 
 .sidebar-btn:hover {
   border-color: rgba(255, 255, 255, 0.3);
-  background-color: rgba(255, 255, 255, 0.05); /* Efecto hover sutil */
+  background-color: rgba(255, 255, 255, 0.05);
   transform: scale(1.08);
 }
 
@@ -920,9 +898,6 @@ h2.section-title {
     padding: 0.6rem 1rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    display: flex;
-    position: fixed;
-    z-index: 10000;
   }
 
   .sidebar-btn {
@@ -932,14 +907,18 @@ h2.section-title {
   }
 
   .tooltip-text {
-    display: none; /* Oculta tooltips en móviles para no saturar */
+    display: none;
   }
 }
 
 
 
-    body.upload-page {
+
+   body.upload-page {
   padding-top: 5px;
+  background: transparent;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
 }
 
 .tooltip-container {
@@ -950,10 +929,10 @@ h2.section-title {
 .tooltip-text {
   visibility: hidden;
   width: 260px;
-  background-color: #0d0d0d; /* 🔥 Fondo más oscuro */
-  color: #e5e5e5;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #eee;
   text-align: left;
-  padding: 0.9rem 1rem;
+  padding: 1rem;
   border-radius: 10px;
   font-size: 0.75rem;
   font-style: italic;
@@ -967,21 +946,20 @@ h2.section-title {
   line-height: 1.5;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
   white-space: normal;
-  backdrop-filter: blur(4px); /* ✨ Difuminado elegante */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde tenue */
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 
 .tooltip-container:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
 }
 
-    .patch-badge {
+.patch-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
   color: #111;
   padding: 4px 10px;
   border-radius: 16px;
@@ -990,6 +968,7 @@ h2.section-title {
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   pointer-events: none;
 }
+
 .image-card {
   position: relative;
   overflow: hidden;
@@ -1009,15 +988,11 @@ h2.section-title {
     width: 95%;
     padding: 1rem;
   }
-}
 
-    @media (max-width: 600px) {
   .container {
     padding: 0 1rem 2rem;
   }
-}
 
-    @media (max-width: 600px) {
   .upload-form-container input,
   .upload-form-container select,
   .upload-form-container button {
@@ -1030,9 +1005,7 @@ h2.section-title {
     padding: 0.6rem 1.2rem;
     margin: 6px 4px;
   }
-}
 
-    @media (max-width: 500px) {
   .tooltip-text {
     left: 50%;
     transform: translateX(-50%);
@@ -1045,8 +1018,6 @@ h2.section-title {
   width: 32px;
   height: 32px;
 }
-
-
 
 /* 🔔 Notificaciones */
 #notificationsContainer {
@@ -1065,7 +1036,7 @@ h2.section-title {
 
 #notifCount {
   font-size: 0.7rem;
-  background: red;
+  background: #ff69b4;
   color: white;
   border-radius: 50%;
   padding: 0 6px;
@@ -1073,41 +1044,39 @@ h2.section-title {
   display: none;
 }
 
-/* 🔔 Estilo base para notifDropdown */
+/* Dropdown notificaciones */
 #notifDropdown {
   display: none;
-  position: fixed; /* ✅ Se mantiene fijo */
-  top: 60px;        /* Altura desde arriba */
-  left: 1.5rem;     /* ⬅️ Cambiamos de right a left */
-  right: auto;      /* Por si tenía herencia */
-  background-color: var(--notif-bg);
-  border: 1px solid var(--notif-border);
+  position: fixed;
+  top: 60px;
+  left: 1.5rem;
+  right: auto;
+  background-color: rgba(0, 0, 0, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   width: 280px;
   max-height: 300px;
   overflow-y: auto;
   box-shadow: 0 0 12px rgba(0,0,0,0.6);
-  color: var(--btn-text);
+  color: #fff;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-12px); /* 👇 Empieza levemente arriba */
+  transform: translateY(-12px);
   transition: all 0.3s ease;
   z-index: 10000;
 }
 
-/* 🔽 Al estar activo */
 #notifDropdown.show {
   display: block;
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0); /* Se desliza hacia abajo */
+  transform: translateY(0);
 }
 
-
-/* Listado de notificaciones */
 #notifDropdown ul {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 #notifDropdown li {
@@ -1118,12 +1087,11 @@ h2.section-title {
 }
 
 #notifDropdown li:hover {
-  background-color: transparent !important;
-  color: #fff; /* asegúrate de que el texto siga siendo blanco */
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
 }
 
-
-/* 📍 Panel lateral ajustado: centrado vertical, más a la derecha */
+/* Panel lateral */
 .nav-side-panel {
   position: fixed;
   top: 50%;
@@ -1132,14 +1100,13 @@ h2.section-title {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  background: rgba(17, 17, 17, 0.85);
+  background: rgba(0, 0, 0, 0.75);
   padding: 0.7rem;
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   z-index: 1000;
 }
 
-/* Botones íconos */
 .nav-side-panel .nav-btn,
 .nav-icon-link {
   background: none;
@@ -1160,10 +1127,9 @@ h2.section-title {
 
 .nav-side-panel .nav-btn:hover,
 .nav-icon-link:hover {
-  background-color: #222;
-  color: #4f46e5;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ff69b4;
 }
-
 
 /* 🔄 Flechas */
 .scroll-arrow {
@@ -1182,7 +1148,7 @@ h2.section-title {
   z-index: 1001;
 }
 
-/* 📱 Adaptaciones móviles */
+/* Responsive */
 @media (max-width: 600px) {
   .scroll-arrow {
     display: flex;
@@ -1207,12 +1173,11 @@ h2.section-title {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.95);
-    right: auto; /* Evita conflicto */
     width: 90vw;
     max-height: 60vh;
     padding: 1rem;
   }
-    
+
   #notifDropdown.show {
     transform: translate(-50%, -50%) scale(1);
   }
@@ -1220,9 +1185,6 @@ h2.section-title {
   #notifDropdown ul {
     max-height: 45vh;
     overflow-y: auto;
-    padding: 0;
-    margin: 0;
-    list-style: none;
   }
 
   #notifDropdown li {
@@ -1237,31 +1199,14 @@ h2.section-title {
   #notifDropdown li:last-child {
     border-bottom: none;
   }
-    
 }
 
-
-.nav-buttons a.nav-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  text-decoration: none;
-}
-
-.content {
-  padding-bottom: 100px;
-}
-
-
-/* 🔔 Botón de notificaciones flotante en móviles */
-/* 🔔 Botón de notificaciones flotante en móviles */
+/* Botón notificación móvil */
 .mobile-notif-btn {
   display: none;
   position: fixed !important;
   top: 1rem;
-  left: 1rem;        /* ✅ Ahora a la izquierda */
-  right: auto;       /* ✅ Asegura que no haya conflicto */
+  left: 1rem;
   background-color: #4f46e5;
   color: white;
   border: none;
@@ -1279,7 +1224,6 @@ h2.section-title {
   background-color: #3730a3;
 }
 
-/* Solo visible en móviles */
 @media (max-width: 600px) {
   #notifBtn {
     display: none;
@@ -1290,38 +1234,48 @@ h2.section-title {
   }
 }
 
-
-/* Dropdown base: fondo negro sólido, borde tenue */
-#notifDropdown {
-  background-color: #000 !important;    /* negro puro */
-  border: 1px solid #333 !important;    /* gris oscuro */
-  color: #fff !important;               /* texto blanco */
+.content {
+  padding-bottom: 100px;
 }
 
-/* Cada ítem: fondo transparente, texto blanco */
+.nav-buttons a.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+
+
+/* 🔔 Dropdown de notificaciones */
+#notifDropdown {
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
 #notifDropdown li {
   background-color: transparent !important;
   color: #fff !important;
   padding: 0.6rem 1rem;
-  border-bottom: 1px solid #222;
-  transition: none;    /* elimina cualquier transición */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: none;
 }
 
-/* Quita cualquier hover oscuro y deja el mismo fondo */
 #notifDropdown li:hover {
-  background-color: transparent !important;
+  background-color: rgba(255,255,255,0.04) !important;
   color: #fff !important;
-  /* Si quieres un leve resaltado, descomenta:
-  background-color: rgba(255,255,255,0.05) !important;
-  */
 }
 
-/* Ajustes móviles (si los tienes) */
 @media (max-width: 600px) {
   #notifDropdown {
-    background-color: #000 !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
     color: #fff !important;
   }
+
   #notifDropdown li,
   #notifDropdown li:hover {
     background-color: transparent !important;
@@ -1329,7 +1283,7 @@ h2.section-title {
   }
 }
 
-/* Botón solo visible en móviles */
+/* 🔘 Botón flotante solo en móviles */
 .mobile-panel-toggle {
   position: fixed;
   bottom: 1.2rem;
@@ -1338,9 +1292,9 @@ h2.section-title {
   color: #ffffff;
   font-size: 1.25rem;
   border: none;
-  border-radius: 12px; /* ya no es completamente circular */
-  width: 42px;          /* 🔽 menos ancho */
-  height: 42px;         /* 🔽 menos alto */
+  border-radius: 12px;
+  width: 42px;
+  height: 42px;
   display: none;
   align-items: center;
   justify-content: center;
@@ -1350,7 +1304,6 @@ h2.section-title {
   cursor: pointer;
   padding: 0;
 }
-
 
 .mobile-panel-toggle:hover {
   background: #222;
@@ -1363,8 +1316,7 @@ h2.section-title {
   background-color: #333;
 }
 
-
-/* Panel lateral general */
+/* 📍 Panel lateral (desktop y móvil) */
 .nav-side-panel {
   position: fixed;
   top: 50%;
@@ -1381,34 +1333,6 @@ h2.section-title {
   transition: transform 0.3s ease;
 }
 
-/* En móviles, el panel se oculta y aparece como overlay */
-@media (max-width: 768px) {
-  @media (max-width: 768px) {
-  .nav-side-panel {
-    top: 0;
-    left: 0;
-    transform: translateX(-100%);
-    height: 100vh;
-    width: 70px; /* 🔽 más angosto aún */
-    border-radius: 0;
-    padding-top: 3rem;
-    background-color: #111;
-    z-index: 1100;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
-  }
-
-  .nav-side-panel.show {
-    transform: translateX(0);
-  }
-}
-
-  .mobile-panel-toggle {
-    display: block;
-  }
-}
-
-
-/* Ítems dentro del panel lateral (botones o enlaces) */
 .nav-side-panel a,
 .nav-side-panel button {
   display: flex;
@@ -1423,23 +1347,46 @@ h2.section-title {
   border-radius: 0.6rem;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
-  padding: 0;
 }
 
 .nav-side-panel a:hover,
 .nav-side-panel button:hover {
   background-color: #222;
   transform: scale(1.05);
-  color: #4f46e5;
+  color: #a78bfa; /* lila Momento */
 }
 
+/* Panel oculto en móviles */
+@media (max-width: 768px) {
+  .nav-side-panel {
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    height: 100vh;
+    width: 70px;
+    border-radius: 0;
+    padding-top: 3rem;
+    background-color: #111;
+    z-index: 1100;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
+  }
 
+  .nav-side-panel.show {
+    transform: translateX(0);
+  }
+
+  .mobile-panel-toggle {
+    display: flex;
+  }
+}
+
+/* ⬆️ Formulario flotante (subir imagen) */
 .upload-form-container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #111;
+  background-color: rgba(17, 17, 17, 0.95);
   padding: 2rem 2rem 3rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -1450,6 +1397,7 @@ h2.section-title {
   visibility: hidden;
   pointer-events: none;
   transition: all 0.3s ease-in-out;
+  backdrop-filter: blur(6px);
 }
 
 .upload-form-container.visible {
@@ -1484,12 +1432,10 @@ body.dark-mode .upload-form-container {
   background-color: #000;
 }
 
-/* ✅ Ajustes SOLO para móviles */
+/* 📱 Versión móvil del formulario */
 @media (max-width: 600px) {
   .upload-form-container {
-    width: 88vw; /* 🔹 Más angosto */
-    max-width: 90vw;
-    margin: 1.2rem auto;
+    width: 88vw;
     padding: 0.9rem 0.7rem 1.5rem;
     background-color: rgba(17, 17, 17, 0.95);
     border-radius: 10px;
@@ -1509,9 +1455,6 @@ body.dark-mode .upload-form-container {
     font-size: 0.8rem;
     padding: 0.5rem 0.7rem;
     border-radius: 6px;
-    background-color: #1a1a1a;
-    color: #fff;
-    border: 1px solid #333;
   }
 
   .upload-form-container input[type="file"] {
@@ -1546,29 +1489,24 @@ body.dark-mode .upload-form-container {
     cursor: pointer;
   }
 
-  #imagePreview {
-    margin-top: 0.5rem;
-    border-radius: 6px;
-  }
-
   label {
     font-size: 0.75rem;
     color: #ccc;
     margin-bottom: 0.2rem;
   }
+
+  #imagePreview {
+    margin-top: 0.5rem;
+    border-radius: 6px;
+  }
 }
 
-
-
+/* 🖥️ Versión escritorio */
 @media (min-width: 768px) {
   .upload-form-container {
     max-width: 480px;
     margin: 2rem auto;
     padding: 1.2rem 1rem;
-    background-color: rgba(17, 17, 17, 0.9);
-    backdrop-filter: blur(6px);
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   }
 
   .upload-form-container form {
@@ -1637,7 +1575,9 @@ body.dark-mode .upload-form-container {
 }
 
 
-/* Menú flotante que sale del aside */
+
+
+/* 🌌 Menú flotante de emociones */
 .emotion-floating-wrapper {
   position: absolute;
   top: 100px;
@@ -1647,19 +1587,21 @@ body.dark-mode .upload-form-container {
 }
 
 .emotion-floating-menu {
-  background: #111;
+  background: rgba(17, 17, 17, 0.95);
   padding: 0.8rem;
   border-radius: 1rem;
-  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   min-width: 220px;
   max-width: 90vw;
+  backdrop-filter: blur(6px);
+  font-family: 'Inter', sans-serif;
 }
 
 /* Botones del menú */
@@ -1673,6 +1615,7 @@ body.dark-mode .upload-form-container {
   color: #f5f5f5;
   cursor: pointer;
   transition: background 0.25s ease, transform 0.2s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .emotion-filter:hover {
@@ -1680,6 +1623,7 @@ body.dark-mode .upload-form-container {
   transform: translateX(4px);
 }
 
+/* 🌙 Versión móvil */
 @media (max-width: 768px) {
   .emotion-floating-wrapper {
     position: fixed;
@@ -1687,11 +1631,12 @@ body.dark-mode .upload-form-container {
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    background: #111;
+    background: rgba(17, 17, 17, 0.95);
     border-radius: 12px;
     z-index: 3000;
-    display: none; /* oculto por defecto */
-    box-shadow: 0 6px 24px rgba(255, 255, 255, 0.08);
+    display: none;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
   }
 
   .emotion-floating-wrapper.mobile-visible {
@@ -1702,8 +1647,6 @@ body.dark-mode .upload-form-container {
     opacity: 1 !important;
     transform: none !important;
     pointer-events: auto !important;
-    display: flex;
-    flex-direction: column;
     padding: 1rem;
   }
 
@@ -1715,19 +1658,14 @@ body.dark-mode .upload-form-container {
   }
 }
 
-
-
-
-
-
-
+/* 📤 Formulario flotante para subir imagen */
 .floating-upload-form {
   position: fixed;
-  top: 80px; /* ajusta si quieres más espacio */
+  top: 80px;
   left: 100px;
-  background: #111; /* tono casi negro */
+  background: rgba(17, 17, 17, 0.95);
   border-radius: 1rem;
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   padding: 1.5rem;
   z-index: 2000;
   opacity: 0;
@@ -1736,7 +1674,8 @@ body.dark-mode .upload-form-container {
   transition: opacity 0.3s ease, transform 0.3s ease;
   color: #f5f5f5;
   width: 320px;
-  font-family: 'Segoe UI', sans-serif;
+  backdrop-filter: blur(6px);
+  font-family: 'Inter', sans-serif;
 }
 
 .floating-upload-form.visible {
@@ -1745,7 +1684,6 @@ body.dark-mode .upload-form-container {
   transform: translateY(0);
 }
 
-/* Inputs y selects oscuros */
 .floating-upload-form input[type="text"],
 .floating-upload-form select,
 .floating-upload-form input[type="file"] {
@@ -1763,7 +1701,7 @@ body.dark-mode .upload-form-container {
   color: #aaa;
 }
 
-/* Botones de sección */
+/* ✳️ Botones de sección */
 .section-button {
   display: inline-block;
   margin: 0.3rem 0.3rem 0 0;
@@ -1775,15 +1713,16 @@ body.dark-mode .upload-form-container {
   color: #ccc;
   cursor: pointer;
   transition: background 0.2s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .section-button.selected,
 .section-button:hover {
-  background: #444;
-  color: #fff;
+  background: #4f46e5;
+  color: white;
 }
 
-/* Botón principal de enviar */
+/* 🔘 Botón principal */
 .floating-upload-form button[type="submit"] {
   background: #4f46e5;
   color: #fff;
@@ -1800,7 +1739,7 @@ body.dark-mode .upload-form-container {
   background: #6d63ff;
 }
 
-/* Botón cerrar */
+/* ❌ Botón de cerrar */
 .close-upload-btn {
   margin-top: 1rem;
   background: #222;
@@ -1819,7 +1758,7 @@ body.dark-mode .upload-form-container {
   color: #fff;
 }
 
-/* Vista previa de imagen */
+/* 🖼️ Vista previa */
 #imagePreview {
   max-width: 100%;
   border-radius: 8px;
@@ -1827,6 +1766,7 @@ body.dark-mode .upload-form-container {
   border: 1px solid #444;
 }
 
+/* 📱 Adaptaciones móviles */
 @media (max-width: 768px) {
   .floating-upload-form {
     top: 90px;
@@ -1859,3 +1799,4 @@ body.dark-mode .upload-form-container {
     padding: 0.7rem 1rem;
   }
 }
+
