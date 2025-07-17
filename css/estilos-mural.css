@@ -291,3 +291,59 @@ body {
   max-height: 90vh;
   overflow: auto;
 }
+
+
+.popover {
+  background: rgba(255, 255, 255, 0.96); /* fondo casi blanco, traslúcido */
+  color: #111; /* texto oscuro para contraste */
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  max-width: 400px;
+  margin: auto;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  overflow-y: auto;
+  backdrop-filter: blur(4px);
+}
+
+.popover h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.popover label,
+.popover input,
+.popover select,
+.popover button {
+  display: block;
+  margin: 0.5rem 0;
+  width: 100%;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+}
+
+.popover input[type="text"],
+.popover select {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+}
+
+.popover button {
+  background: #ff9a9e;
+  border: none;
+  font-weight: bold;
+  padding: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.popover button:hover {
+  background: #ff747b;
+}
