@@ -427,30 +427,3 @@ body {
   transition-delay: 0s;
 }
 
-.popover,
-#misAportes,
-.formulario.flotante {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  background: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-.popover.mostrar,
-#misAportes.mostrar,
-.formulario.flotante.mostrar {
-  visibility: visible;
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-  transition-delay: 0s;
-  pointer-events: auto;
-}
