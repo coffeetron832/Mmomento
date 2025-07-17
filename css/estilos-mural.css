@@ -1,270 +1,244 @@
-/* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Fuente y base */
 body {
+  margin: 0;
   font-family: 'Inter', sans-serif;
-  background-color: #fffdf9;
-  color: #222;
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-  position: relative;
+  background: #000; /* fondo negro */
+  color: #fff; /* texto claro */
 }
 
-/* Botón flotante Mostrar/Ocultar */
-#toggleUIBtn {
+
+    header {
+      padding: 2rem 1rem 1rem;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    header p {
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .formulario {
   position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 9999;
-  background: #ff9a9e;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 2rem;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  cursor: pointer;
-}
-
-/* Modal de bienvenida */
-#modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-}
-
-.modal {
-  background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  max-width: 90%;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-/* Formulario */
-.formulario {
-  position: absolute;
   top: 1rem;
-  left: 1rem;
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 1rem;
+  right: 1rem;
   padding: 1rem;
-  width: 320px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  overflow-y: auto;
-  max-height: 90vh;
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 320px;
+  z-index: 9999;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #f1f1f1;
+}
+
+
+    .formulario input,
+.formulario textarea,
+.formulario select {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1rem;
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+}
+
+.formulario button {
+  background-color: #4f46e5;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 0.75rem;
+}
+
+
+    .formulario .doodle-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .preview {
+      display: none;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 100%;
+      max-height: 400px;
+      margin-top: 1rem;
+      border-radius: 0.5rem;
+    }
+
+    #canvasDoodle {
+  display: none;
+  border: 2px dashed #ff9a9e;
+  border-radius: 0.5rem;
+  background-color: #111;
+  touch-action: none;
+}
+
+
+    .mural {
+  position: relative;
+  padding: 2rem;
+  width: 100%;
+  height: 100vh;
+  background: #000; /* fondo negro completo */
+  overflow: hidden;
+}
+
+
+    .mural-item {
+  position: absolute;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* borde blanco sutil */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  max-width: 200px;
+  text-align: center;
+  word-break: break-word;
+  background: rgba(255, 251, 224, 0.95);
+  transform: rotate(var(--rot)) scale(var(--scale));
+  opacity: 0.95;
   transition: transform 0.3s ease;
 }
 
-/* Ocultar en móviles */
-@media (max-width: 768px) {
-  .formulario,
-  #misAportes {
-    transform: translateY(120%);
-    position: fixed;
-    left: 0;
-    width: 100%;
-    border-radius: 1rem 1rem 0 0;
-    bottom: 0;
-    top: auto;
-    max-height: 80vh;
-  }
+    .mural-item.frase {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #5a3e36;
+    }
 
-  .formulario.mostrar,
-  #misAportes.mostrar {
-    transform: translateY(0);
-  }
+    .mural-item.emoji {
+      font-size: 2.5rem;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+    }
 
-  #toggleUIBtn {
-    display: block;
-  }
-}
+    .mural-item img {
+      max-width: 100%;
+      border-radius: 0.5rem;
+    }
 
-/* Input y select */
-input, select, button {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  font-size: 1rem;
+    @media (max-width: 600px) {
+      .formulario {
+        margin: 1rem;
+      }
+    }
+
+    #muralContainer {
+  position: relative;
+  overflow: hidden;
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  height: 100vh;
+  background: #000; /* fondo negro */
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: contain; /* evita que se tire el body */
 }
 
-button {
-  background: #ffd6dc;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
 
-button:hover {
-  background: #ffbbc3;
-}
-
-/* Preview */
-.preview img {
-  max-width: 100%;
-  margin-top: 0.5rem;
-  border-radius: 0.5rem;
-}
-
-/* Canvas doodle */
-#canvasDoodle {
-  border: 1px dashed #aaa;
-  margin-top: 0.5rem;
-  width: 100%;
-  max-width: 300px;
-  display: block;
-}
-
-/* Mural */
-#muralContainer {
+#mural {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  z-index: 0;
-}
-
-#mural {
-  width: 2000px;
-  height: 2000px;
-  background: linear-gradient(135deg, #f9f6f2, #fefefe);
-  position: relative;
-  transform-origin: 0 0;
+  transform-origin: top left;
   transition: transform 0.2s ease;
+  width: 3000px;
+  height: 3000px;
 }
 
-/* Zoom controls */
-#zoomControls {
+.formulario.flotante {
   position: fixed;
   top: 1rem;
   right: 1rem;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
+  z-index: 9999;
+  margin: 0;
 }
 
-#zoomControls button {
-  margin-bottom: 0.5rem;
-  background: #e0f7fa;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-}
-
-/* Mis aportes */
+/* Panel flotante para aportes del usuario */
 #misAportes {
-  position: absolute;
-  top: 1rem;
+  position: fixed;
+  bottom: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.96);
+  max-height: 300px;
+  width: 250px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
   border-radius: 1rem;
   padding: 1rem;
-  width: 260px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  max-height: 90vh;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
+  color: #fff;
+  font-size: 0.9rem;
+  z-index: 9999;
 }
 
-/* ————————————————
-   FORZAR BOTÓN TOGGLE EN MÓVILES
-   ———————————————— */
-@media screen and (max-width: 600px) {
-  /* Mostrar siempre el botón, ignorando el inline display:none */
-  #toggleUIBtn {
-    display: block !important;
-    z-index: 10001; /* por encima de todo */
-  }
-
-  /* Ocultar por defecto estos paneles */
-  .formulario,
-  #misAportes {
-    display: none;
-  }
+#misAportes h3 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: #ff9a9e;
 }
 
-/* ————————————————
-   Ocultar el overlay cuando tenga la clase .hidden
-   ———————————————— */
-#modalOverlay.hidden {
-  display: none !important;
-  opacity: 0;
-  pointer-events: none !important;
+.aporte-propio {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 0.5rem;
+  position: relative;
 }
 
-
-/* Mostrar controles de zoom solo en móviles */
-#zoomControls {
-  position: fixed;
-  bottom: 5rem;
-  right: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  z-index: 1000;
+.aporte-propio:hover .tiempo-restante {
+  display: block;
 }
 
-#zoomControls button {
-  background: #ffdfdf;
+.borrar-aporte {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: transparent;
   border: none;
-  padding: 0.6rem 1rem;
-  font-size: 1.2rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  color: #ff6666;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-/* Ocultar en pantallas grandes */
-@media (min-width: 768px) {
-  #zoomControls {
-    display: none !important;
-  }
-}
-
-
-/* Mostrar solo en móviles */
-.solo-movil {
+.tiempo-restante {
   display: none;
+  font-size: 0.75rem;
+  color: #ccc;
+  margin-top: 0.3rem;
 }
 
-@media screen and (max-width: 768px) {
-  .solo-movil {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    z-index: 9999;
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
+.aporte-usuario button {
+  margin-top: 0.5rem;
+  background: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
 
-  .solo-movil button {
-    background: #ff9a9e;
-    border: none;
-    padding: 0.6rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: black;
-    border-radius: 0.8rem;
-    margin: 0.2rem;
-  }
+#muralContainer, #mural {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
