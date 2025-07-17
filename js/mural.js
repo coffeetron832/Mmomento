@@ -1,4 +1,9 @@
-function obtenerUsuarioDesdeToken() {
+window.addEventListener('DOMContentLoaded', () => {
+  if (!verificarToken()) return;
+  usuario = obtenerUsuarioDesdeToken();
+  console.log('👤 Usuario:', usuario);
+
+  function obtenerUsuarioDesdeToken() {
   const token = localStorage.getItem('token');
   if (!token) return null;
 
@@ -598,5 +603,11 @@ window.addEventListener('DOMContentLoaded', () => {
   // ✅ Finalmente, carga los aportes
   cargarAportes();
 });
+
+
+});
+
+
+
 
 
