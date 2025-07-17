@@ -201,8 +201,11 @@ button:hover {
   }
 }
 
-/* Cierra el modal completamente cuando tenga la clase .hidden */
+/* ————————————————
+   Ocultar el overlay cuando tenga la clase .hidden
+   ———————————————— */
 #modalOverlay.hidden {
   display: none !important;
-  pointer-events: none;
+  opacity: 0;
+  pointer-events: none !important;
 }
