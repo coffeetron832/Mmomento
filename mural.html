@@ -9,23 +9,10 @@
 </head>
 <body>
 
-  <button id="toggleUIBtn" style="
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 10000;
-  background: #ff9a9e;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 2rem;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  display: none;
-">
+ <button id="toggleUIBtn">
   👁️ Mostrar
 </button>
+
 
 
   <section class="formulario flotante">
@@ -113,21 +100,41 @@ window.addEventListener('DOMContentLoaded', () => {
   cargarAportes();
 });
 
-const toggleBtn = document.getElementById('toggleUIBtn');
-const formulario = document.querySelector('.formulario');
-const misAportes = document.getElementById('misAportes');
+const toggleBtn = document.getElementById("toggleUIBtn");
+  const formulario = document.querySelector(".formulario");
+  const misAportes = document.getElementById("misAportes");
 
-let uiVisible = true;
+  let visible = false;
 
-toggleBtn.addEventListener('click', () => {
-  uiVisible = !uiVisible;
+  toggleBtn.addEventListener("click", () => {
+    visible = !visible;
 
-  if (window.innerWidth <= 768) {
-    formulario.style.display = uiVisible ? 'flex' : 'none';
-    misAportes.style.display = uiVisible ? 'block' : 'none';
-    toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
-  }
-});
+    if (visible) {
+      formulario.style.display = "block";
+      misAportes.style.display = "block";
+      toggleBtn.textContent = "👁️ Ocultar";
+    } else {
+      formulario.style.display = "none";
+      misAportes.style.display = "none";
+      toggleBtn.textContent = "👁️ Mostrar";
+    }
+  });
+
+  // Asegurarse que en pantallas grandes siempre se vea todo
+  const handleResize = () => {
+    if (window.innerWidth > 768) {
+      formulario.style.display = "block";
+      misAportes.style.display = "block";
+      toggleBtn.style.display = "none";
+    } else if (!visible) {
+      formulario.style.display = "none";
+      misAportes.style.display = "none";
+      toggleBtn.style.display = "block";
+    }
+  };
+
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("DOMContentLoaded", handleResize);
 
 
 
