@@ -220,6 +220,13 @@ muralContainer.addEventListener('touchend', e => {
     return;
   }
 
+  if (suspension && suspension.suspendido) {
+  localStorage.setItem('momentoSuspension', new Date(suspension.suspensionHasta).getTime().toString());
+} else {
+  localStorage.removeItem('momentoSuspension');
+}
+
+      
   let contenidoFinal = '';
 
   if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
