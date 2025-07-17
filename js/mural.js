@@ -205,96 +205,61 @@ muralContainer.addEventListener('touchend', e => {
     }
 
     async function agregarAlMural() {
+  if (!verificarToken()) return;
+
   const tipoSeleccionado = tipo.value;
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    alert('Debes iniciar sesión para usar el mural.');
-    throw new Error('Token no encontrado');
-  }
-
-  // 🚫 Verificar suspensión con consulta al backend
-  const suspension = await consultarSuspension();
-  if (suspension && suspension.suspendido) {
-    alert(`Estás suspendido por lenguaje inapropiado hasta ${new Date(suspension.suspensionHasta).toLocaleTimeString()}. No podrás publicar.`);
-    return;
-  }
-
-  if (suspension && suspension.suspendido) {
-  localStorage.setItem('momentoSuspension', new Date(suspension.suspensionHasta).getTime().toString());
-} else {
-  localStorage.removeItem('momentoSuspension');
-}
-
-      
   let contenidoFinal = '';
 
   if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
     if (!contenido.value.trim()) {
       return alert('Escribe algo primero.');
     }
-
-    const texto = contenido.value.trim();
-
-    
-
-    contenidoFinal = texto;
+    contenidoFinal = contenido.value.trim();
     contenido.value = '';
   }
-
   else if (tipoSeleccionado === 'imagen') {
+    // Lógica de subida de imagen permanece igual:
     const archivo = imagenInput.files[0];
     if (!archivo) return alert('Selecciona una imagen.');
 
     const formData = new FormData();
     formData.append('imagen', archivo);
-    formData.append('usuario', usuario);
 
     try {
       const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
-  method: 'POST',
-  headers: {
-    Authorization: `Bearer ${token}`
-  },
-  body: formData
-});
-
-
+        method: 'POST',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        body: formData
+      });
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || 'Error subiendo imagen.');
-      }
-
+      if (!res.ok) throw new Error(data.message || 'Error subiendo imagen.');
       mostrarAporte(data.data);
       imagenInput.value = '';
       previewImg.src = '';
       preview.style.display = 'none';
-
     } catch (err) {
       console.error('Error al subir imagen:', err);
-      alert('La imagen fue rechazada o hubo un error.');
+      alert(err.message || 'La imagen fue rechazada o hubo un error.');
     }
-
     return;
   }
-
   else if (tipoSeleccionado === 'doodle') {
     contenidoFinal = canvas.toDataURL();
     limpiarCanvas();
   }
 
-  await enviarAlBackend(usuario, tipoSeleccionado, contenidoFinal);
+  // Llamada unificada al backend (aquí el backend decide suspensión o publicación)
+  await enviarAlBackend(tipoSeleccionado, contenidoFinal);
 }
 
 
-  async function enviarAlBackend(usuario, tipo, contenido) {
+
+  async function enviarAlBackend(tipo, contenido) {
   const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
+  if (!token) {
+    alert('Debes iniciar sesión para usar el mural.');
+    throw new Error('Token no encontrado');
+  }
 
   try {
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural', {
@@ -307,12 +272,17 @@ if (!token) {
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'No se pudo guardar el aporte');
+
+    if (!res.ok) {
+      // muestro siempre el mensaje que venga del backend (403 o 400)
+      alert(data.message || 'Error al crear aporte');
+      return;
+    }
 
     mostrarAporte(data.data);
   } catch (err) {
-    alert(err.message);
     console.error('Error guardando en el mural:', err);
+    alert('Error de conexión al crear aporte.');
   }
 }
 
