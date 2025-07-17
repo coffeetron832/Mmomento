@@ -540,3 +540,40 @@ window.addEventListener('beforeunload', () => {
     keepalive: true
   });
 });
+
+
+document.addEventListener('click', function (e) {
+  const existingPopover = document.querySelector('.popover');
+  const isButton = e.target.closest('.btn-popover');
+
+  // Si hay un popover y no hiciste clic dentro de él ni en un botón, ciérralo
+  if (existingPopover && !e.target.closest('.popover') && !isButton) {
+    existingPopover.remove();
+    return;
+  }
+
+  // Si hiciste clic en un botón que ya activó un popover, ciérralo
+  if (existingPopover && isButton) {
+    existingPopover.remove();
+    return;
+  }
+
+  if (isButton) {
+    const contentId = isButton.getAttribute('data-popover-content');
+    const content = document.getElementById(contentId);
+    if (!content) return;
+
+    // Crear nuevo popover
+    const popover = document.createElement('div');
+    popover.className = 'popover';
+    popover.innerHTML = content.innerHTML;
+
+    // Posicionar encima del botón
+    const rect = isButton.getBoundingClientRect();
+    popover.style.top = `${rect.top - 200}px`;
+    popover.style.left = `${rect.left}px`;
+
+    document.body.appendChild(popover);
+  }
+});
+
