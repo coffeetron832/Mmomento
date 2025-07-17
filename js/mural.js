@@ -569,10 +569,13 @@ function togglePanel(panel) {
   if (panel.classList.contains('mostrar')) {
     panel.classList.remove('mostrar');
   } else {
-    cerrarTodosLosPopovers();
+    // Forzar reflow para que sí ocurra la transición
+    panel.classList.remove('mostrar');
+    void panel.offsetWidth; // <- Esto reinicia el estilo del DOM
     panel.classList.add('mostrar');
   }
 }
+
 
 btnFormulario.addEventListener('click', e => {
   e.stopPropagation();
