@@ -201,11 +201,51 @@ button:hover {
   cursor: pointer;
 }
 
-/* Responsivo para móviles */
+/* BOTONES FLOTANTES PARA MÓVILES */
+.toggle-btn {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  background: #ff9a9e;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.4rem 0.8rem;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+#toggleFormularioBtn {
+  bottom: 5rem;
+  right: 1rem;
+}
+
+#toggleAportesBtn {
+  bottom: 1rem;
+  right: 1rem;
+}
+
 @media screen and (max-width: 600px) {
+  #muralContainer {
+    height: 100dvh;
+  }
+
+  .formulario,
+  #misAportes {
+    display: none;
+  }
+
+  .formulario.visible,
+  #misAportes.visible {
+    display: flex;
+  }
+
   .formulario {
+    flex-direction: column;
+    bottom: 6rem;
     top: auto;
-    bottom: 4rem;
     right: 0.5rem;
     width: 90%;
     padding: 1rem;
@@ -213,27 +253,12 @@ button:hover {
 
   #misAportes {
     width: 90%;
-    bottom: 0.5rem;
+    bottom: 1rem;
     right: 0.5rem;
-    max-height: 35vh;
   }
 
-  #zoomControls {
-    flex-direction: row;
-    bottom: 0.5rem;
-    left: 0.5rem;
-    top: auto;
-  }
-
-  .modal {
-    padding: 1.5rem;
-  }
-
-  .mural-item {
-    max-width: 150px;
-  }
-
-  .doodle-controls {
-    flex-direction: column;
+  .toggle-btn {
+    display: block;
   }
 }
+
