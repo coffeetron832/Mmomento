@@ -574,23 +574,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const panelMisAportes = document.getElementById('misAportes');
 
   function cerrarTodosLosPopovers() {
-    panelFormulario.style.display = 'none';
-    panelMisAportes.style.display = 'none';
-  }
+  panelFormulario.classList.remove('mostrar');
+  panelMisAportes.classList.remove('mostrar');
+}
+
 
   btnFormulario.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const visible = panelFormulario.style.display === 'block';
-    cerrarTodosLosPopovers();
-    panelFormulario.style.display = visible ? 'none' : 'block';
-  });
+  e.stopPropagation();
+  const visible = panelFormulario.classList.contains('mostrar');
+  cerrarTodosLosPopovers();
+  if (!visible) panelFormulario.classList.add('mostrar');
+});
 
-  btnMisAportes.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const visible = panelMisAportes.style.display === 'block';
-    cerrarTodosLosPopovers();
-    panelMisAportes.style.display = visible ? 'none' : 'block';
-  });
+btnMisAportes.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const visible = panelMisAportes.classList.contains('mostrar');
+  cerrarTodosLosPopovers();
+  if (!visible) panelMisAportes.classList.add('mostrar');
+});
+
 
   // Cierra los paneles si haces clic fuera de ellos
   document.addEventListener('click', (e) => {
