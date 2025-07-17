@@ -346,6 +346,8 @@ cargarAportes();
 // Reemplazar esta parte en cargarAportes()
 async function cargarAportes() {
   try {
+    mural.innerHTML = '';
+    
     const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
     const datos = await res.json();
 
