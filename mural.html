@@ -457,9 +457,11 @@ function cerrarMensaje() {
   if (noMostrar) {
     localStorage.setItem('noMostrarMensajeMural', 'true');
   }
-  // Añade la clase que oculta el overlay
-  document.getElementById('modalOverlay').classList.add('hidden');
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('hidden');
+  overlay.style.display = 'none';
 }
+
 
 
 // 🧠 Palabras prohibidas
