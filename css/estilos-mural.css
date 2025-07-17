@@ -182,52 +182,58 @@ body {
   border-radius: 0.5rem;
 }
 
-/* Mis aportes */
+/* Panel flotante de "Mis Aportes" */
 #misAportes {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999;
-  background: #1a1a1a;
+  background-color: #1a1a1a;
   color: #f5f5f5;
   padding: 2rem;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-  border-radius: 1rem;
   width: 90%;
   max-width: 400px;
   max-height: 80vh;
   overflow-y: auto;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
   display: none;
   box-sizing: border-box;
 }
 
-
+/* Cada aporte del usuario dentro del panel */
 .aporte-propio {
-  background: #111;
+  background-color: #111;
   color: #f5f5f5;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
   border-radius: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.9rem;
+  word-break: break-word;
 }
 
+/* Botón para borrar un aporte */
 .borrar-aporte {
   background: transparent;
   border: none;
   color: #ff6b6b;
   font-size: 1.2rem;
   cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
 }
 
+/* Muestra el tiempo restante del aporte */
 .tiempo-restante {
   font-size: 0.75rem;
   color: #bbb;
   margin-top: 0.25rem;
 }
+
 
 
 
