@@ -257,17 +257,22 @@ body {
 }
 
 .popover {
+  /* Anulamos posicionamientos previos */
+  right: auto !important;
+  bottom: auto !important;
+
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
   max-width: 90vw;
-  width: 300px; /* o el que quieras fijo */
+  width: 300px;
   background: #fff;
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
   box-sizing: border-box;
 }
+
 
