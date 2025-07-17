@@ -1,3 +1,5 @@
+/* === BASE.CSS === */
+
 :root {
   --btn-bg: #ff77d0;
   --btn-hover: #a40080;
@@ -12,14 +14,22 @@
   --momento-accent: #ff77d0;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
+html, body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at center, #1a1a2e, #0f0f1e) !important;
-  background-attachment: fixed;
+  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
   color: #f5f5f5;
+  background: radial-gradient(circle at center, var(--momento-deep), var(--momento-dark)) !important;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --gutter: 1rem;
+  }
 }
