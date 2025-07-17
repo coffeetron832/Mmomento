@@ -237,3 +237,34 @@ button:hover {
     display: none !important;
   }
 }
+
+
+/* Mostrar solo en móviles */
+.solo-movil {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .solo-movil {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 9999;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .solo-movil button {
+    background: #ff9a9e;
+    border: none;
+    padding: 0.6rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+    border-radius: 0.8rem;
+    margin: 0.2rem;
+  }
+}
