@@ -565,19 +565,25 @@ window.addEventListener('DOMContentLoaded', () => {
     panelMisAportes.style.display = 'none';
   }
 
-  btnFormulario.addEventListener('click', e => {
-    e.stopPropagation();
-    const show = panelFormulario.style.display !== 'block';
-    cerrarTodosLosPopovers();
-    panelFormulario.style.display = show ? 'block' : 'none';
-  });
+  function isVisible(element) {
+  return window.getComputedStyle(element).display !== 'none';
+}
 
-  btnMisAportes.addEventListener('click', e => {
-    e.stopPropagation();
-    const show = panelMisAportes.style.display !== 'block';
-    cerrarTodosLosPopovers();
-    panelMisAportes.style.display = show ? 'block' : 'none';
-  });
+  
+  btnFormulario.addEventListener('click', e => {
+  e.stopPropagation();
+  const show = !isVisible(panelFormulario);
+  cerrarTodosLosPopovers();
+  panelFormulario.style.display = show ? 'block' : 'none';
+});
+
+btnMisAportes.addEventListener('click', e => {
+  e.stopPropagation();
+  const show = !isVisible(panelMisAportes);
+  cerrarTodosLosPopovers();
+  panelMisAportes.style.display = show ? 'block' : 'none';
+});
+
 
   document.addEventListener('click', e => {
     if (
