@@ -556,32 +556,40 @@ window.addEventListener('DOMContentLoaded', () => {
   console.log('👤 Usuario:', usuario);
 
   const btnFormulario   = document.getElementById('btnFormulario');
-  const btnMisAportes   = document.getElementById('btnMisAportes');
-  const panelFormulario = document.querySelector('.formulario.flotante');
-  const panelMisAportes = document.getElementById('misAportes');
+const btnMisAportes   = document.getElementById('btnMisAportes');
+const panelFormulario = document.querySelector('.formulario.flotante');
+const panelMisAportes = document.getElementById('misAportes');
 
-  function cerrarTodosLosPopovers() {
-    panelFormulario.style.display = 'none';
-    panelMisAportes.style.display = 'none';
-  }
-
-  function isVisible(element) {
-  return window.getComputedStyle(element).display !== 'none';
+function cerrarTodosLosPopovers() {
+  panelFormulario.classList.remove('mostrar');
+  panelMisAportes.classList.remove('mostrar');
 }
 
-  
-  btnFormulario.addEventListener('click', e => {
+function togglePanel(panel) {
+  if (panel.classList.contains('mostrar')) {
+    panel.classList.remove('mostrar');
+  } else {
+    cerrarTodosLosPopovers();
+    panel.classList.add('mostrar');
+  }
+}
+
+btnFormulario.addEventListener('click', e => {
   e.stopPropagation();
-  const show = !isVisible(panelFormulario);
-  cerrarTodosLosPopovers();
-  panelFormulario.style.display = show ? 'block' : 'none';
+  togglePanel(panelFormulario);
 });
 
 btnMisAportes.addEventListener('click', e => {
   e.stopPropagation();
-  const show = !isVisible(panelMisAportes);
-  cerrarTodosLosPopovers();
-  panelMisAportes.style.display = show ? 'block' : 'none';
+  togglePanel(panelMisAportes);
+});
+
+document.addEventListener('click', e => {
+  if (
+    !e.target.closest('.formulario.flotante') &&
+    !e.target.closest('#misAportes') &&
+    !e.target.closest('#footerButtons')
+  ) cerrarTodosLosPopovers();
 });
 
 
