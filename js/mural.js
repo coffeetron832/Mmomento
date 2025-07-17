@@ -40,12 +40,6 @@ const misAportes = document.getElementById('misAportes');
 
 let uiVisible = true;
 
-toggleBtn.addEventListener('click', () => {
-  uiVisible = !uiVisible;
-  formulario.style.display = uiVisible ? 'flex' : 'none';
-  misAportes.style.display = uiVisible ? 'block' : 'none';
-  toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
-});
 
 
     // 🕛 Borrar mural si es un nuevo día
