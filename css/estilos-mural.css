@@ -264,24 +264,63 @@ body {
 
 /* Ocultar formulario y "Mis Aportes" por defecto en móviles */
 @media (max-width: 768px) {
+  #toggleUIBtn {
+    display: block;
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: #000;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  #toggleUIBtn:hover {
+    transform: translateX(-50%) scale(1.05);
+    background: linear-gradient(135deg, #fad0c4, #ff9a9e);
+  }
+
   .formulario,
   #misAportes {
     display: none;
+    animation: fadeIn 0.3s ease-in-out;
   }
 
-  #toggleUIBtn {
-    display: block !important;
-    position: fixed;
-    bottom: 1rem;
+  .formulario {
+    width: calc(100% - 2rem);
     left: 1rem;
-    z-index: 10000;
-    background: #ff9a9e;
-    color: black;
-    font-weight: bold;
-    border: none;
-    border-radius: 2rem;
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    right: 1rem;
+    top: 5rem;
+    max-width: unset;
+    border-radius: 1rem;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  }
+
+  #misAportes {
+    width: calc(100% - 2rem);
+    left: 1rem;
+    right: 1rem;
+    max-height: 200px;
+    bottom: 5.5rem;
   }
 }
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
