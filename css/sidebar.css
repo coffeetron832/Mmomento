@@ -129,3 +129,19 @@
   }
 }
 
+/* Forzar alineación perfecta de íconos/emojis */
+.nav-side-panel a,
+.nav-side-panel button {
+  font-size: 1.5rem; /* Aumenta ligeramente para armonizar */
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.nav-side-panel a > *,
+.nav-side-panel button > * {
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+}
+
