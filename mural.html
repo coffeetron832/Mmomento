@@ -41,11 +41,15 @@
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
-<!-- Controles de zoom -->
-<div id="zoomControls">
-  <button id="zoomIn">+</button>
-  <button id="zoomOut">–</button>
+<!-- Contenedor de botones -->
+<div id="mobileButtonBar">
+  <button id="toggleUIBtn">👁️ Mostrar</button>
+  <div id="zoomControls">
+    <button onclick="zoomOut()">➖</button>
+    <button onclick="zoomIn()">➕</button>
+  </div>
 </div>
+
 
 <!-- Contenedor del mural para pan/zoom -->
 <div id="muralContainer">
