@@ -8,11 +8,36 @@
   <link rel="stylesheet" href="/css/estilos-mural.css" />
 </head>
 <body>
+  <div id="mensajeInicial" style="position: fixed; top: 0; left: 0; right: 0; background: #222; color: #fff; padding: 1rem; text-align: center; z-index: 10000; display: none;">
+  <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
+  <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
+  <button onclick="cerrarMensaje()">Cerrar</button>
+ <div id="modalOverlay">
+  <div id="mensajeInicial" class="modal">
+    <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
+    <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
+    <br />
+    <button onclick="cerrarMensaje()">Cerrar</button>
+  </div>
+</div>
 
- <button id="toggleUIBtn">
+  <button id="toggleUIBtn" style="
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10000;
+  background: #ff9a9e;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  display: none;
+">
   👁️ Mostrar
 </button>
-
 
 
   <section class="formulario flotante">
@@ -41,18 +66,11 @@
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
-<div id="mobileButtonBar">
-  <!-- Botón único de toggle -->
-  <button id="toggleUIBtn">👁️ Mostrar</button>
-
-  <!-- Controles de zoom con los mismos IDs que tu script espera -->
-  <div id="zoomControls">
-    <button id="zoomOut">➖</button>
-    <button id="zoomIn">➕</button>
-  </div>
+<!-- Controles de zoom -->
+<div id="zoomControls">
+  <button id="zoomIn">+</button>
+  <button id="zoomOut">–</button>
 </div>
-
-
 
 <!-- Contenedor del mural para pan/zoom -->
 <div id="muralContainer">
@@ -107,42 +125,18 @@ window.addEventListener('DOMContentLoaded', () => {
   cargarAportes();
 });
 
-const toggleBtn = document.getElementById("toggleUIBtn");
-  const formulario = document.querySelector(".formulario");
-  const misAportes = document.getElementById("misAportes");
+const toggleBtn = document.getElementById('toggleUIBtn');
+const formulario = document.querySelector('.formulario');
+const misAportes = document.getElementById('misAportes');
 
-  let visible = false;
+let uiVisible = true;
 
-  toggleBtn.addEventListener("click", () => {
-    visible = !visible;
-
-    if (visible) {
-      formulario.style.display = "block";
-      misAportes.style.display = "block";
-      toggleBtn.textContent = "👁️ Ocultar";
-    } else {
-      formulario.style.display = "none";
-      misAportes.style.display = "none";
-      toggleBtn.textContent = "👁️ Mostrar";
-    }
-  });
-
-  // Asegurarse que en pantallas grandes siempre se vea todo
-  const handleResize = () => {
-    if (window.innerWidth > 768) {
-      formulario.style.display = "block";
-      misAportes.style.display = "block";
-      toggleBtn.style.display = "none";
-    } else if (!visible) {
-      formulario.style.display = "none";
-      misAportes.style.display = "none";
-      toggleBtn.style.display = "block";
-    }
-  };
-
-  window.addEventListener("resize", handleResize);
-  window.addEventListener("DOMContentLoaded", handleResize);
-
+toggleBtn.addEventListener('click', () => {
+  uiVisible = !uiVisible;
+  formulario.style.display = uiVisible ? 'flex' : 'none';
+  misAportes.style.display = uiVisible ? 'block' : 'none';
+  toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
+});
 
 
     // 🕛 Borrar mural si es un nuevo día
@@ -164,35 +158,32 @@ const toggleBtn = document.getElementById("toggleUIBtn");
     const colorPicker = document.getElementById('colorPicker');
     const doodleControls = document.getElementById('doodleControls');
 
-  // Variables necesarias para el zoom
-let scale = 1;
-let posX = 0;
-let posY = 0;
+   let scale = 1, posX = 0, posY = 0;
 let isDragging = false;
-let startX = 0;
-let startY = 0;
+let isPinching = false;
+let startX, startY;
+let initialDistance = null;
+let initialScale = scale;
 
-const mural = document.getElementById('mural');
-const muralContainer = document.getElementById('muralContainer');
-const zoomInBtn = document.getElementById('zoomIn');
-const zoomOutBtn = document.getElementById('zoomOut');
 
-// ✅ Define primero la función
-function updateTransform() {
-  mural.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-}
 
-// 🧠 Luego sí puedes asignar los eventos
-zoomInBtn.addEventListener('click', () => {
-  scale = Math.min(2, scale + 0.1);
-  updateTransform();
-});
+  const muralContainer = document.getElementById('muralContainer');
+  const zoomInBtn = document.getElementById('zoomIn');
+  const zoomOutBtn = document.getElementById('zoomOut');
 
-zoomOutBtn.addEventListener('click', () => {
-  scale = Math.max(0.4, scale - 0.1);
-  updateTransform();
-});
+  function updateTransform() {
+    mural.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+  }
 
+  zoomInBtn.addEventListener('click', () => {
+    scale = Math.min(2, scale + 0.1);
+    updateTransform();
+  });
+
+  zoomOutBtn.addEventListener('click', () => {
+    scale = Math.max(0.4, scale - 0.1);
+    updateTransform();
+  });
 
   muralContainer.addEventListener('mousedown', e => {
     isDragging = true;
@@ -454,7 +445,24 @@ console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
   }
 }
 
+// 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.innerWidth <= 600) {
+  document.getElementById('toggleUIBtn').style.display = 'block';
+}
 
+  if (!localStorage.getItem('noMostrarMensajeMural')) {
+    document.getElementById('mensajeInicial').style.display = 'block';
+  }
+});
+
+function cerrarMensaje() {
+  const noMostrar = document.getElementById('noMostrarCheckbox').checked;
+  if (noMostrar) {
+    localStorage.setItem('noMostrarMensajeMural', 'true');
+  }
+  document.getElementById('mensajeInicial').style.display = 'none';
+}
 
 // 🧠 Palabras prohibidas
 const palabrasProhibidas = ['odio', 'muerte', 'estúpido', 'imbécil'];
@@ -618,10 +626,6 @@ window.addEventListener('beforeunload', () => {
     keepalive: true
   });
 });
-
-
-
-
   </script>
 </body>
 </html>
