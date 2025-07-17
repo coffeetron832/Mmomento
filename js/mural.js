@@ -250,9 +250,13 @@ muralContainer.addEventListener('touchend', e => {
 
     try {
       const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
-        method: 'POST',
-        body: formData
-      });
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${token}`
+  },
+  body: formData
+});
+
 
       const data = await res.json();
 
