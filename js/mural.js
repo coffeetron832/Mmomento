@@ -567,34 +567,39 @@ window.addEventListener('beforeunload', () => {
   });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
+  // Verificación de sesión
+  if (!verificarToken()) return;
+
+  usuario = obtenerUsuarioDesdeToken();
+  console.log('👤 Usuario:', usuario);
+
+  // Mostrar/Ocultar paneles flotantes
   const btnFormulario = document.getElementById('btnFormulario');
   const btnMisAportes = document.getElementById('btnMisAportes');
   const panelFormulario = document.querySelector('.formulario.flotante');
   const panelMisAportes = document.getElementById('misAportes');
 
   function cerrarTodosLosPopovers() {
-  panelFormulario.classList.remove('mostrar');
-  panelMisAportes.classList.remove('mostrar');
-}
-
+    panelFormulario.style.display = 'none';
+    panelMisAportes.style.display = 'none';
+  }
 
   btnFormulario.addEventListener('click', (e) => {
-  e.stopPropagation();
-  const visible = panelFormulario.classList.contains('mostrar');
-  cerrarTodosLosPopovers();
-  if (!visible) panelFormulario.classList.add('mostrar');
-});
+    e.stopPropagation();
+    const visible = panelFormulario.style.display === 'block';
+    cerrarTodosLosPopovers();
+    panelFormulario.style.display = visible ? 'none' : 'block';
+  });
 
-btnMisAportes.addEventListener('click', (e) => {
-  e.stopPropagation();
-  const visible = panelMisAportes.classList.contains('mostrar');
-  cerrarTodosLosPopovers();
-  if (!visible) panelMisAportes.classList.add('mostrar');
-});
+  btnMisAportes.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const visible = panelMisAportes.style.display === 'block';
+    cerrarTodosLosPopovers();
+    panelMisAportes.style.display = visible ? 'none' : 'block';
+  });
 
-
-  // Cierra los paneles si haces clic fuera de ellos
+  // Cierre global si se hace clic fuera
   document.addEventListener('click', (e) => {
     if (
       !e.target.closest('.formulario.flotante') &&
@@ -604,4 +609,18 @@ btnMisAportes.addEventListener('click', (e) => {
       cerrarTodosLosPopovers();
     }
   });
+
+  // Mostrar el botón de UI en móviles
+  if (window.innerWidth <= 600) {
+    document.getElementById('toggleUIBtn').style.display = 'block';
+  }
+
+  // Mostrar mensaje si no fue ocultado antes
+  if (!localStorage.getItem('noMostrarMensajeMural')) {
+    document.getElementById('mensajeInicial').style.display = 'block';
+  }
+
+  // Finalmente, cargar los aportes
+  cargarAportes();
 });
+
