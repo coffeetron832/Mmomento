@@ -391,6 +391,65 @@
     });
   });
 
+
+    const mural = document.getElementById("mural");
+  const muralContainer = document.getElementById("muralContainer");
+
+  let isDragging = false;
+  let startX, startY;
+  let offsetX = 0;
+  let offsetY = 0;
+  let scale = 1;
+
+  muralContainer.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.clientX - offsetX;
+    startY = e.clientY - offsetY;
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    offsetX = e.clientX - startX;
+    offsetY = e.clientY - startY;
+    updateTransform();
+  });
+
+  window.addEventListener("mouseup", () => {
+    isDragging = false;
+  });
+
+  muralContainer.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const zoomFactor = 0.1;
+    if (e.deltaY < 0) {
+      scale += zoomFactor;
+    } else {
+      scale -= zoomFactor;
+      if (scale < 0.2) scale = 0.2;
+    }
+    updateTransform();
+  });
+
+  function updateTransform() {
+    mural.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+  }
+
+  // Botones de zoom solo para móviles
+  const zoomInBtn = document.getElementById("zoomIn");
+  const zoomOutBtn = document.getElementById("zoomOut");
+
+  if (zoomInBtn && zoomOutBtn) {
+    zoomInBtn.addEventListener("click", () => {
+      scale += 0.1;
+      updateTransform();
+    });
+
+    zoomOutBtn.addEventListener("click", () => {
+      scale -= 0.1;
+      if (scale < 0.2) scale = 0.2;
+      updateTransform();
+    });
+  }
 </script>
 
 </body>
