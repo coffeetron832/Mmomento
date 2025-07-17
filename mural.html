@@ -81,601 +81,317 @@
 </div>
 
   <script>
-    function obtenerUsuarioDesdeToken() {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
+  let usuario; // Variable global
 
-  try {
-    const payloadBase64 = token.split('.')[1];
-    const payloadDecoded = atob(payloadBase64);
-    const payload = JSON.parse(payloadDecoded);
-    return payload.username;
-  } catch (err) {
-    console.error('Error decodificando token:', err);
-    return null;
+  function obtenerUsuarioDesdeToken() {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const payloadDecoded = atob(payloadBase64);
+      const payload = JSON.parse(payloadDecoded);
+      return payload.username;
+    } catch (err) {
+      console.error('Error decodificando token:', err);
+      return null;
+    }
   }
-}
 
-
-    // ✅ Definimos usuario como variable global al inicio
-let usuario; // ✅ Declaración vacía global
-
-
-function verificarToken() {
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    alert('Debes iniciar sesión para usar el mural.');
-    window.location.href = '/index.html'; // o la ruta que uses para login
-    return false;
+  function verificarToken() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Debes iniciar sesión para usar el mural.');
+      window.location.href = '/index.html';
+      return false;
+    }
+    return true;
   }
-  return true;
-}
 
-window.addEventListener('DOMContentLoaded', () => {
-  if (!verificarToken()) return;
+  window.addEventListener('DOMContentLoaded', () => {
+    if (!verificarToken()) return;
+    usuario = obtenerUsuarioDesdeToken();
+    console.log('👤 Usuario cargado desde token:', usuario);
+    cargarAportes();
 
-  usuario = obtenerUsuarioDesdeToken();
-  console.log('👤 Usuario cargado desde token:', usuario); // ✅ Aquí sí se llena correctamente
+    // Mostrar botón de UI en móvil
+    if (window.innerWidth <= 600) {
+      document.getElementById('toggleUIBtn').style.display = 'block';
+    }
 
-  // Puedes iniciar la carga del mural aquí
-  cargarAportes();
-});
+    // Mostrar mensaje inicial si aplica
+    if (!localStorage.getItem('noMostrarMensajeMural')) {
+      document.getElementById('mensajeInicial').style.display = 'block';
+    }
 
-const toggleBtn = document.getElementById('toggleUIBtn');
-const formulario = document.querySelector('.formulario');
-const misAportes = document.getElementById('misAportes');
-
-let uiVisible = true;
-
-toggleBtn.addEventListener('click', () => {
-  uiVisible = !uiVisible;
-  formulario.style.display = uiVisible ? 'flex' : 'none';
-  misAportes.style.display = uiVisible ? 'block' : 'none';
-  toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
-});
-
-
-    // 🕛 Borrar mural si es un nuevo día
+    // Borrar mural si es nuevo día
     const hoy = new Date().toDateString();
     const ultimaVisita = localStorage.getItem('muralFecha');
     if (ultimaVisita !== hoy) {
       localStorage.setItem('muralFecha', hoy);
       document.getElementById('mural').innerHTML = '';
     }
+  });
 
-    const tipo = document.getElementById('tipo');
-    const contenido = document.getElementById('contenido');
-    const imagenInput = document.getElementById('imagenInput');
-    const mural = document.getElementById('mural');
-    const preview = document.getElementById('preview');
-    const previewImg = document.getElementById('previewImg');
-    const canvas = document.getElementById('canvasDoodle');
-    const ctx = canvas.getContext('2d');
-    const colorPicker = document.getElementById('colorPicker');
-    const doodleControls = document.getElementById('doodleControls');
-
-   let scale = 1, posX = 0, posY = 0;
-let isDragging = false;
-let isPinching = false;
-let startX, startY;
-let initialDistance = null;
-let initialScale = scale;
-
-
-
-  const muralContainer = document.getElementById('muralContainer');
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn = document.getElementById('zoomOut');
-
-  function updateTransform() {
-    mural.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+  function cerrarMensaje() {
+    const noMostrar = document.getElementById('noMostrarCheckbox').checked;
+    if (noMostrar) {
+      localStorage.setItem('noMostrarMensajeMural', 'true');
+    }
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.add('hidden');
+    overlay.style.display = 'none';
   }
 
-  zoomInBtn.addEventListener('click', () => {
-    scale = Math.min(2, scale + 0.1);
-    updateTransform();
+  const palabrasProhibidas = ['odio', 'muerte', 'estúpido', 'imbécil'];
+  const tiempoSuspension = 30 * 60 * 1000;
+
+  function contienePalabraProhibida(texto) {
+    const palabras = texto.toLowerCase().split(/\s+/);
+    return palabrasProhibidas.some(p => palabras.includes(p));
+  }
+
+  function estaSuspendido() {
+    const fin = localStorage.getItem('momentoSuspension');
+    return fin && Date.now() < parseInt(fin);
+  }
+
+  const toggleBtn = document.getElementById('toggleUIBtn');
+  const formulario = document.querySelector('.formulario');
+  const misAportes = document.getElementById('misAportes');
+  let uiVisible = true;
+
+  toggleBtn.addEventListener('click', () => {
+    uiVisible = !uiVisible;
+    formulario.style.display = uiVisible ? 'flex' : 'none';
+    misAportes.style.display = uiVisible ? 'block' : 'none';
+    toggleBtn.textContent = uiVisible ? '👁️ Ocultar' : '👁️ Mostrar';
   });
 
-  zoomOutBtn.addEventListener('click', () => {
-    scale = Math.max(0.4, scale - 0.1);
-    updateTransform();
+  const tipo = document.getElementById('tipo');
+  const contenido = document.getElementById('contenido');
+  const imagenInput = document.getElementById('imagenInput');
+  const mural = document.getElementById('mural');
+  const preview = document.getElementById('preview');
+  const previewImg = document.getElementById('previewImg');
+  const canvas = document.getElementById('canvasDoodle');
+  const ctx = canvas.getContext('2d');
+  const colorPicker = document.getElementById('colorPicker');
+  const doodleControls = document.getElementById('doodleControls');
+
+  tipo.addEventListener('change', () => {
+    const val = tipo.value;
+    contenido.style.display = val === 'imagen' || val === 'doodle' ? 'none' : 'block';
+    imagenInput.style.display = val === 'imagen' ? 'block' : 'none';
+    canvas.style.display = val === 'doodle' ? 'block' : 'none';
+    doodleControls.style.display = val === 'doodle' ? 'flex' : 'none';
+    preview.style.display = val === 'imagen' ? 'block' : 'none';
   });
 
-  muralContainer.addEventListener('mousedown', e => {
-    isDragging = true;
-    startX = e.clientX - posX;
-    startY = e.clientY - posY;
-    muralContainer.style.cursor = 'grabbing';
-  });
-
-  muralContainer.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    posX = e.clientX - startX;
-    posY = e.clientY - startY;
-    updateTransform();
-  });
-
-  muralContainer.addEventListener('mouseup', () => {
-    isDragging = false;
-    muralContainer.style.cursor = 'grab';
-  });
-
-  muralContainer.addEventListener('mouseleave', () => {
-    isDragging = false;
-    muralContainer.style.cursor = 'grab';
-  });
-
-    let drawing = false;
-
-    tipo.addEventListener('change', () => {
-      const tipoVal = tipo.value;
-      contenido.style.display = tipoVal === 'imagen' || tipoVal === 'doodle' ? 'none' : 'block';
-      imagenInput.style.display = tipoVal === 'imagen' ? 'block' : 'none';
-      canvas.style.display = tipoVal === 'doodle' ? 'block' : 'none';
-      doodleControls.style.display = tipoVal === 'doodle' ? 'flex' : 'none';
-      preview.style.display = tipoVal === 'imagen' ? 'block' : 'none';
-    });
-
-    imagenInput.addEventListener('change', () => {
-      const archivo = imagenInput.files[0];
-      if (!archivo) return;
+  imagenInput.addEventListener('change', () => {
+    const archivo = imagenInput.files[0];
+    if (!archivo) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
       const img = new Image();
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        img.onload = function() {
-          if (img.width > 400 || img.height > 400) {
-            alert('La imagen supera los 400x400px. Por favor, súbela más pequeña.');
-            imagenInput.value = '';
-            previewImg.src = '';
-            return;
-          }
-          previewImg.src = e.target.result;
-        };
-        img.src = e.target.result;
+      img.onload = () => {
+        if (img.width > 400 || img.height > 400) {
+          alert('La imagen supera los 400x400px.');
+          imagenInput.value = '';
+          previewImg.src = '';
+          return;
+        }
+        previewImg.src = e.target.result;
       };
-      reader.readAsDataURL(archivo);
-    });
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(archivo);
+  });
 
-    canvas.addEventListener('mousedown', () => drawing = true);
-    canvas.addEventListener('mouseup', () => drawing = false);
-    canvas.addEventListener('mouseleave', () => drawing = false);
-    canvas.addEventListener('mousemove', e => {
-      if (!drawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.fillStyle = colorPicker.value;
-      ctx.beginPath();
-      ctx.arc(x, y, 2, 0, Math.PI * 2);
-      ctx.fill();
-    });
+  let drawing = false;
 
+  canvas.addEventListener('mousedown', () => drawing = true);
+  canvas.addEventListener('mouseup', () => drawing = false);
+  canvas.addEventListener('mouseleave', () => drawing = false);
+  canvas.addEventListener('mousemove', (e) => {
+    if (!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    ctx.fillStyle = colorPicker.value;
+    ctx.beginPath();
+    ctx.arc(x, y, 2, 0, Math.PI * 2);
+    ctx.fill();
+  });
 
-muralContainer.addEventListener('touchstart', e => {
-  if (e.touches.length === 1) {
-    // Empieza desplazamiento con un dedo
-    isDragging = true;
-    const touch = e.touches[0];
-    startX = touch.clientX - posX;
-    startY = touch.clientY - posY;
-    muralContainer.style.cursor = 'grabbing';
-  } else if (e.touches.length === 2) {
-    // Empieza gesto de zoom con dos dedos
-    isDragging = false;
-    isPinching = true;
-    initialDistance = getDistance(e.touches[0], e.touches[1]);
-    initialScale = scale;
+  function limpiarCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
-}, { passive: false });
 
-muralContainer.addEventListener('touchmove', e => {
-  if (isDragging && e.touches.length === 1) {
-    const touch = e.touches[0];
-    posX = touch.clientX - startX;
-    posY = touch.clientY - startY;
-    updateTransform();
-  } else if (isPinching && e.touches.length === 2) {
-    e.preventDefault();
-    const newDistance = getDistance(e.touches[0], e.touches[1]);
-    const scaleChange = newDistance / initialDistance;
-    scale = Math.min(2, Math.max(0.4, initialScale * scaleChange));
-    updateTransform();
-  }
-}, { passive: false });
+  async function agregarAlMural() {
+    if (!verificarToken()) return;
 
-muralContainer.addEventListener('touchend', e => {
-  if (e.touches.length < 2) {
-    isDragging = false;
-    isPinching = false;
-    muralContainer.style.cursor = 'grab';
-  }
-});
+    const tipoSeleccionado = tipo.value;
+    let contenidoFinal = '';
 
+    if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
+      if (!contenido.value.trim()) return alert('Escribe algo.');
+      contenidoFinal = contenido.value.trim();
+      contenido.value = '';
+    } else if (tipoSeleccionado === 'imagen') {
+      const archivo = imagenInput.files[0];
+      if (!archivo) return alert('Selecciona una imagen.');
 
+      const formData = new FormData();
+      formData.append('imagen', archivo);
+      formData.append('usuario', usuario);
 
-    function limpiarCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      try {
+        const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Error al subir imagen.');
+
+        mostrarAporte(data.data);
+        imagenInput.value = '';
+        previewImg.src = '';
+        preview.style.display = 'none';
+        return;
+      } catch (err) {
+        console.error('Error al subir imagen:', err);
+        return alert('Error al subir la imagen.');
+      }
+    } else if (tipoSeleccionado === 'doodle') {
+      contenidoFinal = canvas.toDataURL();
+      limpiarCanvas();
     }
 
-    async function agregarAlMural() {
-  const tipoSeleccionado = tipo.value;
-  const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
-
-  let contenidoFinal = '';
-
-
-
-  if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
-    if (!contenido.value.trim()) {
-      return alert('Escribe algo primero.');
-    }
-    contenidoFinal = contenido.value.trim();
-    contenido.value = '';
+    await enviarAlBackend(usuario, tipoSeleccionado, contenidoFinal);
   }
-
-  else if (tipoSeleccionado === 'imagen') {
-  const archivo = imagenInput.files[0];
-  if (!archivo) return alert('Selecciona una imagen.');
-
-  const formData = new FormData();
-  formData.append('imagen', archivo);
-  formData.append('usuario', usuario);
-
-
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
-      method: 'POST',
-      body: formData
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || 'Error subiendo imagen.');
-    }
-
-    mostrarAporte(data.data);
-    imagenInput.value = '';
-    previewImg.src = '';
-    preview.style.display = 'none';
-
-  } catch (err) {
-    console.error('Error al subir imagen:', err);
-    alert('La imagen fue rechazada o hubo un error.');
-  }
-
-  return;
-}
-
-
-  else if (tipoSeleccionado === 'doodle') {
-    contenidoFinal = canvas.toDataURL();
-    limpiarCanvas();
-  }
-
-  await enviarAlBackend(usuario, tipoSeleccionado, contenidoFinal);
-}
 
   async function enviarAlBackend(usuario, tipo, contenido) {
-  const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
+    try {
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/mural', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ tipo, contenido })
+      });
 
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'No se pudo guardar el aporte');
+      mostrarAporte(data.data);
+    } catch (err) {
+      alert(err.message);
+      console.error('Error guardando aporte:', err);
+    }
+  }
 
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural', {
+  function mostrarAporte({ _id, tipo, contenido, usuario }) {
+    const nuevo = document.createElement('div');
+    nuevo.classList.add('mural-item');
+    nuevo.id = `aporte-${_id}`;
+
+    const { offsetWidth: w, offsetHeight: h } = mural;
+    const x = Math.floor(Math.random() * (w - 200));
+    const y = Math.floor(Math.random() * (h - 200));
+    const rot = `${Math.floor(Math.random() * 10 - 5)}deg`;
+    const scale = `${0.95 + Math.random() * 0.1}`;
+    nuevo.style.left = `${x}px`;
+    nuevo.style.top = `${y}px`;
+    nuevo.style.setProperty('--rot', rot);
+    nuevo.style.setProperty('--scale', scale);
+    nuevo.title = `Aporte de: ${usuario}`;
+
+    if (tipo === 'frase' || tipo === 'emoji') {
+      nuevo.classList.add(tipo);
+      nuevo.textContent = contenido;
+    } else {
+      const img = new Image();
+      img.src = contenido;
+      img.onload = () => mural.appendChild(nuevo);
+      nuevo.appendChild(img);
+    }
+
+    mural.appendChild(nuevo);
+  }
+
+  async function cargarAportes() {
+    try {
+      const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
+      const datos = await res.json();
+      console.log('🧩 Aportes recibidos:', datos);
+
+      datos.forEach(mostrarAporte);
+      mostrarMisAportes(datos);
+    } catch (err) {
+      console.error('Error al cargar el mural:', err);
+    }
+  }
+
+  function mostrarMisAportes(datos) {
+    const contenedor = document.getElementById('listaMisAportes');
+    contenedor.innerHTML = '';
+
+    const ahora = new Date();
+
+    datos
+      .filter(aporte => aporte.usuario === usuario)
+      .forEach(aporte => {
+        const div = document.createElement('div');
+        div.className = 'aporte-propio';
+
+        const span = document.createElement('span');
+        span.textContent = `• ${aporte.tipo}`;
+
+        const tiempoRestante = document.createElement('div');
+        tiempoRestante.className = 'tiempo-restante';
+        const creado = new Date(aporte.fechaCreacion);
+        const expiracion = new Date(creado.getTime() + 6 * 60 * 60 * 1000);
+        const minutosRestantes = Math.floor((expiracion - ahora) / 60000);
+        tiempoRestante.textContent = `⏳ ${minutosRestantes} min restantes`;
+
+        const btnBorrar = document.createElement('button');
+        btnBorrar.textContent = '✖';
+        btnBorrar.className = 'borrar-aporte';
+        btnBorrar.onclick = async () => {
+          if (!confirm('¿Eliminar este aporte?')) return;
+          const token = localStorage.getItem('token');
+          const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${aporte._id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+          });
+
+          const data = await res.json();
+          if (!res.ok) return alert(data.message || 'Error al eliminar.');
+
+          div.remove();
+        };
+
+        div.appendChild(span);
+        div.appendChild(btnBorrar);
+        div.appendChild(tiempoRestante);
+        contenedor.appendChild(div);
+      });
+  }
+
+  // PING keepalive
+  window.addEventListener('beforeunload', () => {
+    const token = localStorage.getItem('tokenMomento');
+    if (!token) return;
+    fetch('/api/ping', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ tipo, contenido })
+      headers: { 'Authorization': `Bearer ${token}` },
+      keepalive: true
     });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'No se pudo guardar el aporte');
-
-    mostrarAporte(data.data);
-  } catch (err) {
-    alert(err.message);
-    console.error('Error guardando en el mural:', err);
-  }
-}
-
-
-function mostrarAporte({ _id, tipo, contenido, usuario }) {
-  const nuevo = document.createElement('div');
-  nuevo.classList.add('mural-item');
-  nuevo.id = `aporte-${_id}`; // ✅ ← esta línea
-
-  const { offsetWidth: w, offsetHeight: h } = mural;
-  const x = Math.floor(Math.random() * (w - 200));
-  const y = Math.floor(Math.random() * (h - 200));
-  const rot = `${Math.floor(Math.random() * 10 - 5)}deg`;
-  const scale = `${0.95 + Math.random() * 0.1}`;
-  nuevo.style.left = `${x}px`;
-  nuevo.style.top = `${y}px`;
-  nuevo.style.setProperty('--rot', rot);
-  nuevo.style.setProperty('--scale', scale);
-  nuevo.title = `Aporte de: ${usuario}`;
-
-  if (tipo === 'frase') {
-    nuevo.classList.add('frase');
-    nuevo.textContent = contenido;
-  } else if (tipo === 'emoji') {
-    nuevo.classList.add('emoji');
-    nuevo.textContent = contenido;
-  } else if (tipo === 'imagen' || tipo === 'doodle') {
-    const img = new Image();
-    img.src = contenido;
-    img.onload = () => mural.appendChild(nuevo);
-    nuevo.appendChild(img);
-  }
-
-  mural.appendChild(nuevo);
-}
-
-
-cargarAportes();
-
-// Reemplazar esta parte en cargarAportes()
-async function cargarAportes() {
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
-    const datos = await res.json();
-
-console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
-    console.log('👤 Usuario localStorage:', usuario);
-
-    datos.forEach(aporte => mostrarAporte(aporte));
-    mostrarMisAportes(datos); // ← NUEVO
-  } catch (err) {
-    console.error('Error al cargar el mural:', err);
-  }
-}
-
-// 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
-window.addEventListener('DOMContentLoaded', () => {
-  if (window.innerWidth <= 600) {
-  document.getElementById('toggleUIBtn').style.display = 'block';
-}
-
-  if (!localStorage.getItem('noMostrarMensajeMural')) {
-    document.getElementById('mensajeInicial').style.display = 'block';
-  }
-});
-
-function cerrarMensaje() {
-  const noMostrar = document.getElementById('noMostrarCheckbox').checked;
-  if (noMostrar) {
-    localStorage.setItem('noMostrarMensajeMural', 'true');
-  }
-  const overlay = document.getElementById('modalOverlay');
-  overlay.classList.add('hidden');
-  overlay.style.display = 'none';
-}
-
-
-
-// 🧠 Palabras prohibidas
-const palabrasProhibidas = ['odio', 'muerte', 'estúpido', 'imbécil'];
-const tiempoSuspension = 30 * 60 * 1000; // 30 minutos
-
-function contienePalabraProhibida(texto) {
-  const palabras = texto.toLowerCase().split(/\s+/);
-  return palabrasProhibidas.some(prohibida => palabras.includes(prohibida));
-}
-
-function estaSuspendido() {
-  const finSuspension = localStorage.getItem('momentoSuspension');
-  return finSuspension && new Date().getTime() < parseInt(finSuspension);
-}
-
-// Mostrar aportes del usuario y sus tiempos restantes
-function mostrarMisAportes(datos) {
-  const contenedor = document.getElementById('listaMisAportes');
-  contenedor.innerHTML = '';
-
-  const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
-
-  const ahora = new Date();
-
-  datos
-    .filter(aporte => aporte.usuario === usuario)
-    .forEach(aporte => {
-      const div = document.createElement('div');
-      div.className = 'aporte-propio';
-
-      const span = document.createElement('span');
-      span.textContent = `• ${aporte.tipo}`;
-
-      const tiempoRestante = document.createElement('div');
-      tiempoRestante.className = 'tiempo-restante';
-      const creado = new Date(aporte.fechaCreacion);
-      const expiracion = new Date(creado.getTime() + 6 * 60 * 60 * 1000);
-      const minutosRestantes = Math.floor((expiracion - ahora) / 60000);
-      tiempoRestante.textContent = `⏳ ${minutosRestantes} min restantes`;
-
-      const btnBorrar = document.createElement('button');
-      btnBorrar.textContent = '✖';
-      btnBorrar.className = 'borrar-aporte';
-      btnBorrar.onclick = async () => {
-  if (!confirm('¿Eliminar este aporte?')) return;
-
-  const token = localStorage.getItem('token');
-const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${aporte._id}`, {
-  method: 'DELETE',
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    alert(data.message || 'Error al eliminar.');
-    return;
-  }
-
-  div.remove();
-};
-
-
-      div.appendChild(span);
-      div.appendChild(btnBorrar);
-      div.appendChild(tiempoRestante);
-      contenedor.appendChild(div);
-    });
-}
-
-async function cargarMisAportes() {
-const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
-
-  const lista = document.getElementById('listaAportesUsuario');
-  lista.innerHTML = '';
-
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
-    const datos = await res.json();
-    const mios = datos.filter(a => a.usuario === usuario);
-
-    mios.forEach(aporte => {
-      const div = document.createElement('div');
-      div.classList.add('aporte-usuario');
-
-      const tipo = aporte.tipo === 'emoji' ? 'Emoji' :
-                   aporte.tipo === 'frase' ? 'Frase' :
-                   aporte.tipo === 'imagen' ? 'Imagen' : 'Doodle';
-
-      const creado = new Date(aporte.fechaCreacion);
-      const restante = 86400 - Math.floor((Date.now() - creado.getTime()) / 1000);
-      const minutosRestantes = Math.floor(restante / 60);
-
-      div.innerHTML = `
-        <strong>${tipo}</strong><br/>
-        ${aporte.tipo === 'frase' || aporte.tipo === 'emoji' ? aporte.contenido : ''}
-        <div class="tiempo-restante">⏳ Quedan ${minutosRestantes} min</div>
-        <button onclick="borrarAporte('${aporte._id}')">🗑 Eliminar</button>
-      `;
-
-      lista.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error('Error cargando aportes del usuario:', err);
-  }
-}
-
-async function eliminarAporte(id, divElemento) {
-  const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
-
-
-  const confirmacion = confirm('¿Estás seguro de eliminar este aporte?');
-  if (!confirmacion) return;
-
-  try {
-    const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${id}`, {
-      method: 'DELETE',
-      headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message || 'Error al eliminar');
-
-    // Eliminar visualmente el aporte del DOM
-    divElemento.remove();
-  } catch (err) {
-    alert(err.message);
-    console.error(err);
-  }
-}
-
-window.addEventListener('beforeunload', () => {
-  const token = localStorage.getItem('tokenMomento');
-  if (!token) return;
-
-  fetch('/api/ping', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}` },
-    keepalive: true
-  });
-});
-
-const muralContainer = document.getElementById('muralContainer');
-  let scale = 1;
-
-  // Zoom con rueda del mouse solo en escritorio
-  muralContainer.addEventListener('wheel', (e) => {
-    if (window.innerWidth < 768) return; // Solo escritorio
-
-    e.preventDefault();
-    const factor = 0.1;
-    scale += (e.deltaY < 0 ? factor : -factor);
-    scale = Math.max(0.3, Math.min(scale, 3)); // Límites
-    muralContainer.style.transform = `scale(${scale})`;
-    muralContainer.style.transformOrigin = 'center center';
   });
 
-  // Pan con mouse solo en escritorio
-  let isDragging = false;
-  let startX, startY, scrollLeft, scrollTop;
+</script>
 
-  muralContainer.addEventListener('mousedown', (e) => {
-    if (window.innerWidth < 768) return;
-    isDragging = true;
-    startX = e.pageX;
-    startY = e.pageY;
-    scrollLeft = muralContainer.scrollLeft;
-    scrollTop = muralContainer.scrollTop;
-    muralContainer.style.cursor = 'grabbing';
-  });
-
-  muralContainer.addEventListener('mouseup', () => {
-    isDragging = false;
-    muralContainer.style.cursor = 'default';
-  });
-
-  muralContainer.addEventListener('mouseleave', () => {
-    isDragging = false;
-    muralContainer.style.cursor = 'default';
-  });
-
-  muralContainer.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    const dx = e.pageX - startX;
-    const dy = e.pageY - startY;
-    muralContainer.scrollLeft = scrollLeft - dx;
-    muralContainer.scrollTop = scrollTop - dy;
-  });
-
-
-  </script>
 </body>
 </html>
