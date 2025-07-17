@@ -215,18 +215,6 @@
   </div>
 </footer>
 
-<div id="menuOverlay" class="menu-overlay" aria-hidden="true" inert>
-      <!-- Dentro de .menu-content -->
-     <button id="closeMenuBtn" class="close-menu-btn" aria-label="Cerrar menú">
-  <img src="assets/icons/x.png" alt="Cerrar" width="24" height="24">
-</button>
-
-
- <div class="menu-content">
-  <button id="logoutMenuBtn" class="footer-link">Cerrar sesión</button>
-  <a href="#" id="soulprintMenuBtn" class="footer-link">Mi Soulprint</a>
-</div>
-</div>
 
   <!-- Aquí, antes de cerrar body -->
   <script>
@@ -449,22 +437,7 @@ window.addEventListener('beforeunload', () => {
     headers: { 'Authorization': `Bearer ${token}` },
     keepalive: true
   });
-});
-
-    function toggleMenuOverlay(show) {
-  const overlay = document.getElementById('menuOverlay');
-  if (!overlay) return;
-
-  if (show) {
-    overlay.removeAttribute('aria-hidden');
-    overlay.removeAttribute('inert');
-  } else {
-    overlay.setAttribute('aria-hidden', 'true');
-    overlay.setAttribute('inert', '');
-  }
-}
-
-    
+}); 
 </script>
   <script src="js/upload2.js"></script>
   <script src="js/upload.js"></script>
