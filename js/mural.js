@@ -14,6 +14,7 @@ function obtenerUsuarioDesdeToken() {
 }
 
 
+
     // ✅ Definimos usuario como variable global al inicio
 let usuario; // ✅ Declaración vacía global
 
