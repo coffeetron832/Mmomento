@@ -200,3 +200,9 @@ button:hover {
     display: none;
   }
 }
+
+/* Cierra el modal completamente cuando tenga la clase .hidden */
+#modalOverlay.hidden {
+  display: none !important;
+  pointer-events: none;
+}
