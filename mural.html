@@ -62,11 +62,12 @@
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
-<!-- Controles de zoom -->
-<div id="zoomControls">
+<!-- Controles de zoom solo visibles en móviles -->
+<div id="zoomControls" class="solo-movil">
   <button id="zoomIn">+</button>
   <button id="zoomOut">–</button>
 </div>
+
 
 <!-- Contenedor del mural para pan/zoom -->
 <div id="muralContainer">
@@ -630,21 +631,48 @@ window.addEventListener('beforeunload', () => {
 const muralContainer = document.getElementById('muralContainer');
   let scale = 1;
 
+  // Zoom con rueda del mouse solo en escritorio
   muralContainer.addEventListener('wheel', (e) => {
-    // Solo en escritorio (pantallas ≥768px)
-    if (window.innerWidth < 768) return;
+    if (window.innerWidth < 768) return; // Solo escritorio
 
     e.preventDefault();
-
-    const scaleFactor = 0.1;
-    if (e.deltaY < 0) {
-      scale += scaleFactor; // Zoom in
-    } else {
-      scale = Math.max(scale - scaleFactor, 0.3); // Zoom out con mínimo
-    }
-
+    const factor = 0.1;
+    scale += (e.deltaY < 0 ? factor : -factor);
+    scale = Math.max(0.3, Math.min(scale, 3)); // Límites
     muralContainer.style.transform = `scale(${scale})`;
     muralContainer.style.transformOrigin = 'center center';
+  });
+
+  // Pan con mouse solo en escritorio
+  let isDragging = false;
+  let startX, startY, scrollLeft, scrollTop;
+
+  muralContainer.addEventListener('mousedown', (e) => {
+    if (window.innerWidth < 768) return;
+    isDragging = true;
+    startX = e.pageX;
+    startY = e.pageY;
+    scrollLeft = muralContainer.scrollLeft;
+    scrollTop = muralContainer.scrollTop;
+    muralContainer.style.cursor = 'grabbing';
+  });
+
+  muralContainer.addEventListener('mouseup', () => {
+    isDragging = false;
+    muralContainer.style.cursor = 'default';
+  });
+
+  muralContainer.addEventListener('mouseleave', () => {
+    isDragging = false;
+    muralContainer.style.cursor = 'default';
+  });
+
+  muralContainer.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.pageX - startX;
+    const dy = e.pageY - startY;
+    muralContainer.scrollLeft = scrollLeft - dx;
+    muralContainer.scrollTop = scrollTop - dy;
   });
 
 
