@@ -215,7 +215,7 @@
   </div>
 </footer>
 
-    <div id="menuOverlay" class="menu-overlay" aria-hidden="true">
+<div id="menuOverlay" class="menu-overlay" aria-hidden="true" inert>
       <!-- Dentro de .menu-content -->
      <button id="closeMenuBtn" class="close-menu-btn" aria-label="Cerrar menú">
   <img src="assets/icons/x.png" alt="Cerrar" width="24" height="24">
@@ -450,6 +450,19 @@ window.addEventListener('beforeunload', () => {
     keepalive: true
   });
 });
+
+    function toggleMenuOverlay(show) {
+  const overlay = document.getElementById('menuOverlay');
+  if (!overlay) return;
+
+  if (show) {
+    overlay.removeAttribute('aria-hidden');
+    overlay.removeAttribute('inert');
+  } else {
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('inert', '');
+  }
+}
 
     
 </script>
