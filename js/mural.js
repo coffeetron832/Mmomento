@@ -362,16 +362,7 @@ console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
   }
 }
 
-// 🪧 Mostrar mensaje inicial si no ha sido ocultado permanentemente
-window.addEventListener('DOMContentLoaded', () => {
-  if (window.innerWidth <= 600) {
-  document.getElementById('toggleUIBtn').style.display = 'block';
-}
 
-  if (!localStorage.getItem('noMostrarMensajeMural')) {
-    document.getElementById('mensajeInicial').style.display = 'block';
-  }
-});
 
 function cerrarMensaje() {
   const noMostrar = document.getElementById('noMostrarCheckbox').checked;
