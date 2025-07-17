@@ -266,25 +266,67 @@
 
   // Muestra la lista “Mis Aportes”
   function mostrarMisAportes(datos) {
-    const cont = document.getElementById('listaMisAportes');
-    cont.innerHTML = '';
-    const ahora = Date.now();
-    datos
-      .filter(a => a.usuario === usuario)
-      .forEach(a => {
-        const div = document.createElement('div');
-        div.className = 'aporte-propio';
-        div.textContent = `• ${a.tipo}`;
-        // calculo expiración
-        const creado = new Date(a.fechaCreacion).getTime();
-        const restanteMin = Math.max(0, Math.floor((creado + 6*3600*1000 - ahora)/60000));
-        const span = document.createElement('span');
-        span.className = 'tiempo-restante';
-        span.textContent = ` ⏳ ${restanteMin}min`;
-        div.appendChild(span);
-        cont.appendChild(div);
-      });
+  const cont = document.getElementById('listaMisAportes');
+  cont.innerHTML = '';
+  const ahora = Date.now();
+
+  datos
+    .filter(a => a.usuario === usuario)
+    .forEach(a => {
+      const div = document.createElement('div');
+      div.className = 'aporte-propio';
+      div.textContent = `• ${a.tipo}`;
+
+      // Tiempo restante antes de que expire
+      const creado = new Date(a.fechaCreacion).getTime();
+      const restanteMin = Math.max(0, Math.floor((creado + 6 * 3600 * 1000 - ahora) / 60000));
+      const span = document.createElement('span');
+      span.className = 'tiempo-restante';
+      span.textContent = ` ⏳ ${restanteMin}min`;
+
+      // Botón eliminar
+      const btnEliminar = document.createElement('button');
+      btnEliminar.textContent = '🗑️';
+      btnEliminar.className = 'btn-eliminar';
+      btnEliminar.onclick = () => eliminarAporte(a._id);
+
+      div.appendChild(span);
+      div.appendChild(btnEliminar);
+      cont.appendChild(div);
+    });
+}
+
+async function eliminarAporte(id) {
+  const token = localStorage.getItem('token');
+  if (!token) return alert('Token no encontrado');
+
+  if (!confirm('¿Seguro que quieres eliminar este aporte?')) return;
+
+  try {
+    const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) throw new Error('No se pudo eliminar el aporte');
+
+    // Elimina del DOM
+    const elem = document.getElementById(`aporte-${id}`);
+    if (elem) elem.remove();
+
+    // Recarga “Mis Aportes”
+    ultimosAportes = ultimosAportes.filter(a => a._id !== id);
+    mostrarMisAportes(ultimosAportes);
+
+  } catch (err) {
+    console.error('Error al eliminar el aporte:', err);
+    alert('No se pudo eliminar el aporte.');
   }
+}
+
+     
 </script>
 </body>
 </html>
