@@ -383,7 +383,9 @@ body {
   padding: 0.6rem;
   border: 1px solid #ccc;
   background: #f9f9f9;
+  color: #111; /* ← cambio aquí */
 }
+
 
 .popover button {
   background: #ff9a9e;
