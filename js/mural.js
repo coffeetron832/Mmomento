@@ -562,11 +562,13 @@ window.addEventListener('beforeunload', () => {
   });
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   if (!verificarToken()) return;
   usuario = obtenerUsuarioDesdeToken();
   console.log('👤 Usuario:', usuario);
 
+
+  
     const suspension = await consultarSuspension();
   const btnFormulario   = document.getElementById('btnFormulario');
 const btnMisAportes   = document.getElementById('btnMisAportes');
