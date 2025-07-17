@@ -213,9 +213,10 @@ muralContainer.addEventListener('touchend', e => {
     throw new Error('Token no encontrado');
   }
 
-  // 🚫 Verificamos si el usuario está suspendido
-  if (estaSuspendido()) {
-    alert('Estás suspendido por 30 minutos por lenguaje inapropiado.');
+  // 🚫 Verificar suspensión con consulta al backend
+  const suspension = await consultarSuspension();
+  if (suspension && suspension.suspendido) {
+    alert(`Estás suspendido por lenguaje inapropiado hasta ${new Date(suspension.suspensionHasta).toLocaleTimeString()}. No podrás publicar.`);
     return;
   }
 
