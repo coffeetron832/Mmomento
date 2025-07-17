@@ -577,3 +577,39 @@ document.addEventListener('click', function (e) {
   }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  const btnFormulario = document.getElementById('btnFormulario');
+  const btnMisAportes = document.getElementById('btnMisAportes');
+  const panelFormulario = document.querySelector('.formulario.flotante');
+  const panelMisAportes = document.getElementById('misAportes');
+
+  function cerrarTodosLosPopovers() {
+    panelFormulario.style.display = 'none';
+    panelMisAportes.style.display = 'none';
+  }
+
+  btnFormulario.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const visible = panelFormulario.style.display === 'block';
+    cerrarTodosLosPopovers();
+    panelFormulario.style.display = visible ? 'none' : 'block';
+  });
+
+  btnMisAportes.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const visible = panelMisAportes.style.display === 'block';
+    cerrarTodosLosPopovers();
+    panelMisAportes.style.display = visible ? 'none' : 'block';
+  });
+
+  // Cierra los paneles si haces clic fuera de ellos
+  document.addEventListener('click', (e) => {
+    if (
+      !e.target.closest('.formulario.flotante') &&
+      !e.target.closest('#misAportes') &&
+      !e.target.closest('#footerButtons')
+    ) {
+      cerrarTodosLosPopovers();
+    }
+  });
+});
