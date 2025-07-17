@@ -2,7 +2,8 @@
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
-  background: #fffdfc;
+  background: #000;
+  color: #f5f5f5;
   overflow: hidden;
 }
 
@@ -12,7 +13,7 @@ body {
   top: 0; left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,11 +21,13 @@ body {
 }
 
 .modal {
-  background: white;
+  background: #1a1a1a;
+  color: #f0f0f0;
   padding: 2rem;
   border-radius: 1rem;
   max-width: 500px;
   text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 /* Botón flotante para UI */
@@ -50,15 +53,37 @@ body {
   position: fixed;
   top: 1rem;
   right: 1rem;
-  background: white;
+  background: #111;
+  color: #f5f5f5;
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(255,255,255,0.1);
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
   max-width: 300px;
   z-index: 999;
+}
+
+/* Inputs */
+.formulario input[type="text"],
+.formulario select,
+.formulario input[type="color"] {
+  background: #1e1e1e;
+  color: #f5f5f5;
+  border: 1px solid #444;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.formulario button {
+  background: #ff9a9e;
+  color: #000;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* Estilo para vista previa de imagen */
@@ -102,7 +127,7 @@ body {
 }
 
 #zoomControls button {
-  background: #f4c4f3;
+  background: #c0aaff;
   border: none;
   border-radius: 50%;
   width: 2.5rem;
@@ -110,6 +135,7 @@ body {
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
+  color: #000;
 }
 
 /* Mural y sus ítems */
@@ -132,9 +158,10 @@ body {
   position: absolute;
   max-width: 200px;
   padding: 0.5rem;
-  background: white;
+  background: #fff;
+  color: #000;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(255,255,255,0.1);
   transform: rotate(var(--rot)) scale(var(--scale));
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -161,16 +188,18 @@ body {
   position: fixed;
   bottom: 5rem;
   left: 1rem;
-  background: #f0f0f0;
+  background: #1a1a1a;
+  color: #f5f5f5;
   padding: 1rem;
   border-radius: 1rem;
   max-width: 300px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(255,255,255,0.1);
   z-index: 999;
 }
 
 .aporte-propio {
-  background: white;
+  background: #111;
+  color: #f5f5f5;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem;
@@ -183,13 +212,13 @@ body {
 .borrar-aporte {
   background: transparent;
   border: none;
-  color: #e74c3c;
+  color: #ff6b6b;
   font-size: 1.2rem;
   cursor: pointer;
 }
 
 .tiempo-restante {
   font-size: 0.75rem;
-  color: #666;
+  color: #bbb;
   margin-top: 0.25rem;
 }
