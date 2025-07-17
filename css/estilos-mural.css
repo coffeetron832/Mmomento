@@ -183,3 +183,20 @@ button:hover {
   overflow-y: auto;
   transition: transform 0.3s ease;
 }
+
+/* ————————————————
+   FORZAR BOTÓN TOGGLE EN MÓVILES
+   ———————————————— */
+@media screen and (max-width: 600px) {
+  /* Mostrar siempre el botón, ignorando el inline display:none */
+  #toggleUIBtn {
+    display: block !important;
+    z-index: 10001; /* por encima de todo */
+  }
+
+  /* Ocultar por defecto estos paneles */
+  .formulario,
+  #misAportes {
+    display: none;
+  }
+}
