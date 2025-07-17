@@ -28,7 +28,7 @@
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at center, var(--momento-deep), var(--momento-dark));
+  background: radial-gradient(circle at center, #1a1a2e, #0f0f1e);
   color: #f5f5f5;
   transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
