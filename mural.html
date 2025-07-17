@@ -63,6 +63,106 @@
   </div>
 
    <script>
+// Variables globales de transformación
+let scale = 1;
+let position = { x: 0, y: 0 };
+let isDragging = false;
+let startDrag = { x: 0, y: 0 };
+
+const muralContainer = document.getElementById("muralContainer");
+const mural = document.getElementById("mural");
+
+function aplicarTransformaciones() {
+  mural.style.transform = `translate(${position.x}px, ${position.y}px) scale(${scale})`;
+}
+
+// Zoom con scroll
+muralContainer.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const delta = -e.deltaY;
+  const zoomFactor = 0.1;
+  if (delta > 0) {
+    scale = Math.min(scale + zoomFactor, 3); // Zoom máximo 3x
+  } else {
+    scale = Math.max(scale - zoomFactor, 0.5); // Zoom mínimo 0.5x
+  }
+  aplicarTransformaciones();
+});
+
+// Arrastrar con mouse
+muralContainer.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  startDrag = { x: e.clientX - position.x, y: e.clientY - position.y };
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  position.x = e.clientX - startDrag.x;
+  position.y = e.clientY - startDrag.y;
+  aplicarTransformaciones();
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+});
+
+// Compatibilidad táctil
+let lastTouchDistance = null;
+
+muralContainer.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 1) {
+    isDragging = true;
+    startDrag = {
+      x: e.touches[0].clientX - position.x,
+      y: e.touches[0].clientY - position.y,
+    };
+  } else if (e.touches.length === 2) {
+    isDragging = false;
+    lastTouchDistance = getTouchDistance(e.touches);
+  }
+});
+
+muralContainer.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+  if (isDragging && e.touches.length === 1) {
+    position.x = e.touches[0].clientX - startDrag.x;
+    position.y = e.touches[0].clientY - startDrag.y;
+    aplicarTransformaciones();
+  } else if (e.touches.length === 2) {
+    const currentDistance = getTouchDistance(e.touches);
+    const zoomFactor = 0.005;
+    const delta = currentDistance - lastTouchDistance;
+    scale = Math.min(Math.max(scale + delta * zoomFactor, 0.5), 3);
+    lastTouchDistance = currentDistance;
+    aplicarTransformaciones();
+  }
+}, { passive: false });
+
+muralContainer.addEventListener("touchend", () => {
+  isDragging = false;
+  lastTouchDistance = null;
+});
+
+// Ayudante para calcular distancia entre dedos
+function getTouchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Botones de zoom manual
+document.getElementById("zoomIn").addEventListener("click", () => {
+  scale = Math.min(scale + 0.1, 3);
+  aplicarTransformaciones();
+});
+
+document.getElementById("zoomOut").addEventListener("click", () => {
+  scale = Math.max(scale - 0.1, 0.5);
+  aplicarTransformaciones();
+});
+
+
+     
   // Array global para llevar registro de los aportes cargados
   let ultimosAportes = [];
 
