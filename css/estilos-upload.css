@@ -13,22 +13,11 @@
   --momento-accent: #ff77d0;
 }
 
-    .dark-mode {
-  --btn-bg: var(--momento-deep);
-  --btn-hover: var(--momento-accent);
-  --btn-text: #fff;
-  --notif-bg: var(--momento-dark);
-  --notif-border: rgba(255, 255, 255, 0.15);
-  background: radial-gradient(circle at center, var(--momento-deep), var(--momento-dark));
-  color: #f5f5f5;
-}
-
-
    body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at center, #1a1a2e, #0f0f1e);
+  background: radial-gradient(circle at center, var(--momento-deep), var(--momento-dark));
   color: #f5f5f5;
   transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
