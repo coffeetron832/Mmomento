@@ -151,3 +151,14 @@
   vertical-align: middle;
 }
 
+/* 1) Formulario flotante: se mueve a la derecha al hacer hover sobre el botón de subir */
+#toggleUploadBtnMenu:hover ~ #floatingUploadForm {
+  transform: translateX(1rem);      /* desplaza 1rem hacia la derecha */
+  transition: transform 0.3s ease;
+}
+
+/* 2) Menú de secciones emocionales: se mueve a la derecha al hacer hover sobre el botón Explorar */
+#exploreBtnMenu:hover ~ #emotionFloatingWrapper {
+  transform: translateX(1rem);      /* desplaza 1rem hacia la derecha */
+  transition: transform 0.3s ease;
+}
