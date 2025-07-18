@@ -1,5 +1,16 @@
 /* === CARDS.CSS === */
 
+/*.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;      /* Centra las columnas horizontalmente */
+
+
+  align-items: start;           /* Alinea tarjetas desde arriba */
+  max-width: 1200px;            /* Limita el ancho del grid */
+  margin: 0 auto var(--gutter); /* Centra el contenedor y mantiene margen inferior */
+  padding: 0 1rem;              /* Espaciado lateral en pantallas pequeñas */
 
 
 .image-card {
@@ -66,7 +77,7 @@
   margin-bottom: 2rem;
 }
 
-.images-grid {
+.cards-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
