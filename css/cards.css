@@ -1,41 +1,45 @@
 /* === CARDS.CSS === */
 
-/* Grid contenedor de imágenes */
+/* — 1. Grid contenedor de imágenes — */
 .images-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
-  justify-content: center;
+  justify-content: center;      /* centra las columnas */
+  justify-items: center;        /* centra cada tarjeta dentro de su celda */
   align-items: start;
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
-/* Tarjeta individual */
+/* — 2. Tarjeta individual — */
 .image-card {
-  background: #111; /* fondo para rellenar si la imagen no ocupa todo */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  border-radius: 0.8rem;
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  background: transparent;
+  transition: transform 0.3s ease;
 }
 
+/* — 3. Imagen dentro de la tarjeta — */
 .image-card img {
   display: block;
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  object-position: center;
+  height: 200px;               /* altura fija para todas */
+  object-fit: cover;           /* recorta para llenar el área */
+  object-position: center;     /* empieza el recorte desde el centro */
 }
 
-
-
+/* Hover mantiene el mismo recorte, solo escala */
 .image-card:hover {
   transform: scale(1.03);
   z-index: 5;
 }
 
-/* Superposición de texto */
+/* — Overlay y texto — */
 .card-overlay {
   position: absolute;
   bottom: 0;
@@ -52,7 +56,6 @@
   z-index: 2;
 }
 
-/* Título y datos */
 .card-title {
   font-weight: 600;
   font-size: 0.95rem;
@@ -73,7 +76,7 @@
   color: #eee;
 }
 
-/* Sección de grupo (si la usas) */
+/* — Si aún usas secciones agrupadas — */
 .section-group {
   border-bottom: 1px solid rgba(255,255,255,0.1);
   padding-bottom: 2rem;
