@@ -1,5 +1,10 @@
 /* === CARDS.CSS === */
 
+align-items: start;           /* Alinea tarjetas desde arriba */
+  max-width: 1200px;            /* Limita el ancho del grid */
+  margin: 0 auto var(--gutter); /* Centra el contenedor y mantiene margen inferior */
+  padding: 0 1rem;              /* Espaciado lateral en pantallas pequeñas */
+
 .image-card {
   position: relative;
   border-radius: 0.8rem;
@@ -74,9 +79,3 @@
   margin: 2rem auto;              /* Centra horizontalmente */
   padding: 0 1rem;                /* Espacio lateral en móviles */
 }
-
-
-align-items: start;           /* Alinea tarjetas desde arriba */
-  max-width: 1200px;            /* Limita el ancho del grid */
-  margin: 0 auto var(--gutter); /* Centra el contenedor y mantiene margen inferior */
-  padding: 0 1rem;              /* Espaciado lateral en pantallas pequeñas */
