@@ -1,5 +1,18 @@
 /* === CARDS.CSS === */
 
+/* Grid contenedor de imágenes */
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: start;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Tarjeta individual */
 .image-card {
   position: relative;
   border-radius: 0.8rem;
@@ -14,16 +27,16 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: 200px;      /* limita la altura */
-  object-fit: cover;      /* recorta si hace falta */
+  max-height: 200px;     /* altura máxima */
+  object-fit: cover;
 }
-
 
 .image-card:hover {
   transform: scale(1.03);
   z-index: 5;
 }
 
+/* Superposición de texto */
 .card-overlay {
   position: absolute;
   bottom: 0;
@@ -40,6 +53,7 @@
   z-index: 2;
 }
 
+/* Título y datos */
 .card-title {
   font-weight: 600;
   font-size: 0.95rem;
@@ -60,20 +74,9 @@
   color: #eee;
 }
 
+/* Sección de grupo (si la usas) */
 .section-group {
   border-bottom: 1px solid rgba(255,255,255,0.1);
   padding-bottom: 2rem;
   margin-bottom: 2rem;
 }
-
-.images-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* minmax más pequeño */
-  gap: 1.5rem;
-  justify-content: center;
-  align-items: start;
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
