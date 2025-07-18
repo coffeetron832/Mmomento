@@ -28,7 +28,7 @@
 .image-card img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;  /* relación ancho:alto */               /* altura fija para todas */
+  height: 600px;               /* altura fija para todas */
   object-fit: cover;           /* recorta para llenar el área */
   object-position: center;     /* empieza el recorte desde el centro */
 }
