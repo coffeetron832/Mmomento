@@ -203,15 +203,17 @@ h1.page-title {
   font-family: 'Inter', sans-serif;
   border-radius: 0.5rem;
   border: none;
-  background: var(--soul-primary);
+  background: var(--soul-accent);
   color: white;
   font-size: 0.85rem;
   cursor: pointer;
   transition: background 0.2s;
 }
+
 #soulprint-actions button:hover {
-  background: #3730a3;
+  background: #a40080; /* tono más oscuro del lila */
 }
+
 
 .edit-btn,
 #soulprint-actions button {
