@@ -77,3 +77,13 @@
   margin-bottom: 2rem;
 }
 
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;        /* Centra las columnas del grid */
+  align-items: start;
+  max-width: 1200px;              /* Evita que se estiren demasiado */
+  margin: 2rem auto;              /* Centra horizontalmente */
+  padding: 0 1rem;                /* Espacio lateral en móviles */
+}
