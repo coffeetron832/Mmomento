@@ -3,7 +3,7 @@
 .nav-side-panel {
   position: fixed;
   top: 50%;
-  left: 7.0rem;
+  left: 7.1rem;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
