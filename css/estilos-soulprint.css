@@ -41,7 +41,7 @@ h1.page-title {
 }
 
 .edit-btn {
-  background: var(--soul-primary);
+  background: var(--soul-accent); /* #ff77d0 */
   color: white;
   padding: 0.6rem 1.2rem;
   border-radius: 0.5rem;
@@ -50,9 +50,11 @@ h1.page-title {
   display: none;
   transition: background 0.2s;
 }
+
 .edit-btn:hover {
-  background: #3730a3;
+  background: #a40080; /* lila oscuro */
 }
+
 
 .soulprint-card {
   background: rgba(255, 255, 255, 0.07);
