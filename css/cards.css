@@ -19,8 +19,10 @@ align-items: start;           /* Alinea tarjetas desde arriba */
   display: block;
   width: 100%;
   height: auto;
-  object-fit: cover;
+  max-height: 200px;      /* limita la altura */
+  object-fit: cover;      /* recorta si hace falta */
 }
+
 
 .image-card:hover {
   transform: scale(1.03);
@@ -69,13 +71,14 @@ align-items: start;           /* Alinea tarjetas desde arriba */
   margin-bottom: 2rem;
 }
 
-.cards-section {
+.images-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* minmax más pequeño */
   gap: 1.5rem;
-  justify-content: center;        /* Centra las columnas del grid */
+  justify-content: center;
   align-items: start;
-  max-width: 1200px;              /* Evita que se estiren demasiado */
-  margin: 2rem auto;              /* Centra horizontalmente */
-  padding: 0 1rem;                /* Espacio lateral en móviles */
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
+
