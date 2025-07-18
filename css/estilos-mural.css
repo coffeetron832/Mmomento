@@ -1,17 +1,31 @@
-/* Fuente global */
-body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  background: #000;
-  color: #f5f5f5;
+/* === estilos-mural.css adaptado al estilo Momento === */
+
+:root {
+  --soul-bg-start: #1a1a2e;
+  --soul-bg-end: #0f0f1e;
+  --soul-primary: #4f46e5;
+  --soul-accent: #ff77d0;
+  --soul-text: #f5f5f5;
+  --soul-muted: #aaa;
+  --soul-panel-bg: rgba(26, 26, 46, 0.85);
 }
 
-/* Modal */
+/* Fuente global y fondo radial */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at center, var(--soul-bg-start), var(--soul-bg-end));
+  color: var(--soul-text);
+  overflow-x: hidden;
+}
+
+/* Modal overlay */
 #modalOverlay {
   position: fixed;
   top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
@@ -20,23 +34,23 @@ body {
 }
 
 .modal {
-  background: #1a1a1a;
-  color: #f0f0f0;
+  background: var(--soul-panel-bg);
+  color: var(--soul-text);
   padding: 2rem;
   border-radius: 1rem;
   max-width: 500px;
+  width: 90%;
   text-align: center;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
 }
 
-/* Botón flotante para UI */
+/* Botón flotante UI */
 #toggleUIBtn {
   position: fixed;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: 1rem; left: 1rem;
   z-index: 10000;
-  background: #ff9a9e;
-  color: black;
+  background: var(--soul-accent);
+  color: #000;
   font-weight: bold;
   border: none;
   border-radius: 2rem;
@@ -46,15 +60,16 @@ body {
   display: none;
   cursor: pointer;
 }
+#toggleUIBtn:hover {
+  background: #e55a4f;
+}
 
-/* Contenedor del formulario */
-/* FORMULARIO flotante mejorado */
+/* Formulario flotante */
 .formulario {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  background: #1a1a1a;
-  color: #f5f5f5;
+  top: 1rem; right: 1rem;
+  background: var(--soul-panel-bg);
+  color: var(--soul-text);
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
@@ -67,30 +82,27 @@ body {
   box-sizing: border-box;
 }
 
-/* Etiquetas claras */
+/* Labels e inputs */
 .formulario label {
   font-size: 0.9rem;
-  margin-bottom: 0.25rem;
-  color: #ccc;
+  color: var(--soul-muted);
 }
 
-/* Inputs y selects */
 .formulario input[type="text"],
 .formulario input[type="color"],
 .formulario select {
   background: #2a2a2a;
-  color: #f5f5f5;
-  border: 1px solid #555;
+  color: var(--soul-text);
+  border: 1px solid #444;
   padding: 0.6rem;
   border-radius: 0.5rem;
   font-size: 1rem;
   width: 100%;
-  box-sizing: border-box;
 }
 
-/* Botón */
+/* Botón del formulario */
 .formulario button {
-  background: #ff9a9e;
+  background: var(--soul-accent);
   color: #000;
   border: none;
   padding: 0.7rem;
@@ -100,35 +112,32 @@ body {
   font-size: 1rem;
   transition: background 0.2s ease;
 }
-
 .formulario button:hover {
-  background: #ff747b;
+  background: #e55a4f;
 }
 
-/* Vista previa de imagen */
+/* Preview de imagen */
 .preview {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 0.5rem;
 }
-
 .preview img {
-  max-width: 100%;
-  max-height: 150px;
+  max-width: 100%; max-height: 150px;
   border-radius: 0.5rem;
   margin-top: 0.5rem;
 }
 
-/* Canvas de doodle */
+/* Canvas doodle */
 #canvasDoodle {
-  border: 1px solid #666;
+  border: 1px solid #444;
   border-radius: 0.5rem;
   margin-top: 0.5rem;
   background: #222;
 }
 
-/* Controles de doodle */
+/* Controles doodle */
 .doodle-controls {
   display: flex;
   gap: 0.5rem;
@@ -136,43 +145,45 @@ body {
   margin-top: 0.5rem;
 }
 
-
-/* Controles de zoom */
+/* Controles zoom */
 #zoomControls {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
+  bottom: 1rem; right: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   z-index: 999;
 }
-
 #zoomControls button {
-  background: #c0aaff;
+  background: var(--soul-accent);
   border: none;
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.5rem; height: 2.5rem;
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
   color: #000;
+  transition: transform 0.2s;
+}
+#zoomControls button:hover {
+  transform: scale(1.1);
 }
 
-/* Mural y sus ítems */
+/* Mural principal */
 #muralContainer {
-  width: 100vw;
-  height: 100vh;
+  width: 100vw; height: 100vh;
   overflow: hidden;
   position: relative;
   cursor: grab;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .mural {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   transform-origin: 0 0;
 }
 
@@ -180,55 +191,40 @@ body {
   position: absolute;
   max-width: 200px;
   padding: 0.5rem;
-  background: #fff;
+  background: var(--soul-text);
   color: #000;
   border-radius: 0.5rem;
   box-shadow: 0 2px 8px rgba(255,255,255,0.1);
   transform: rotate(var(--rot)) scale(var(--scale));
   word-wrap: break-word;
-  overflow-wrap: break-word;
   text-align: center;
 }
 
 /* Tipos de aportes */
-.mural-item.frase {
-  font-size: 1rem;
-}
+.mural-item.frase { font-size: 1rem; }
+.mural-item.emoji { font-size: 3rem; line-height: 1; }
+.mural-item img { max-width: 100%; border-radius: 0.5rem; }
 
-.mural-item.emoji {
-  font-size: 3rem;
-  line-height: 1;
-}
-
-.mural-item img {
-  max-width: 100%;
-  border-radius: 0.5rem;
-}
-
-/* Panel flotante de "Mis Aportes" */
-/* Panel principal */
+/* Panel “Mis Aportes” */
 #misAportes {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999;
-  background-color: #1a1a1a;
-  color: #f5f5f5;
+  background: var(--soul-panel-bg);
+  color: var(--soul-text);
   padding: 2rem;
-  width: 75%;
-  max-width: 370px;
+  width: 90%; max-width: 370px;
   max-height: 80vh;
   overflow-y: auto;
   border-radius: 1rem;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(255,255,255,0.15);
   box-sizing: border-box;
 }
 
-/* Cada aporte propio como un bloque independiente */
 .aporte-propio {
-  background-color: #111;
-  color: #f5f5f5;
+  background: rgba(0,0,0,0.7);
+  color: var(--soul-text);
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 0.5rem;
@@ -236,10 +232,9 @@ body {
   flex-direction: column;
   gap: 0.5rem;
   font-size: 0.9rem;
-  word-break: break-word;
 }
 
-/* Botón de borrar, alineado a la derecha */
+/* Botón borrar */
 .borrar-aporte {
   align-self: flex-end;
   background: transparent;
@@ -247,32 +242,25 @@ body {
   color: #ff6b6b;
   font-size: 1.2rem;
   cursor: pointer;
-  padding: 0;
 }
 
-/* Tiempo restante debajo del contenido */
+/* Tiempo restante */
 .tiempo-restante {
   font-size: 0.75rem;
-  color: #bbb;
-  margin-top: 0.25rem;
+  color: var(--soul-muted);
 }
 
-
-
-
-
+/* Botones footer mural */
 #footerButtons {
   position: fixed;
-  bottom: 1rem;
-  left: 50%;
+  bottom: 1rem; left: 50%;
   transform: translateX(-50%);
   z-index: 10000;
-  display: flex;
-  gap: 1rem;
-  background: rgba(255, 255, 255, 0.8);
+  display: flex; gap: 1rem;
+  background: rgba(26,26,46,0.9);
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   backdrop-filter: blur(6px);
 }
 
@@ -280,149 +268,50 @@ body {
   padding: 0.5rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
-  background: #4f46e5;
+  background: var(--soul-primary);
   color: #000;
   border: none;
   border-radius: 2rem;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s;
 }
-
 .btn-popover:hover {
   transform: scale(1.05);
 }
 
+/* Popover */
 .popover {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10001; /* superior a todo lo demás */
-  width: 90vw;
-  max-width: 400px;
-  background: #fff;
-  padding: 1.5rem;
+  z-index: 10001;
+  width: 90%; max-width: 400px;
+  background: rgba(255,255,255,0.96);
+  color: #111;
   border-radius: 1rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  padding: 1.5rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-
-.formulario.flotante,
-#misAportes {
-  background: #1a1a1a;
-  color: #f5f5f5;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(6px);
-}
-
-.formulario.flotante input,
-#misAportes input,
-.formulario.flotante select,
-#misAportes select {
-  background: #2a2a2a;
-  color: #f5f5f5;
-  border: 1px solid #555;
-}
-
-.formulario.flotante button,
-#misAportes button {
-  background: #4f46e5;
-  color: #000;
-  font-weight: bold;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 1rem;
-  cursor: pointer;
-}
-
-
-
-.popover {
-  background: rgba(255, 255, 255, 0.96); /* fondo casi blanco, traslúcido */
-  color: #111; /* texto oscuro para contraste */
-  border-radius: 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  padding: 1.5rem;
-  max-width: 400px;
-  margin: auto;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  overflow-y: auto;
   backdrop-filter: blur(4px);
 }
 
-.popover h3 {
-  margin-top: 0;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.popover label,
-.popover input,
-.popover select,
-.popover button {
-  display: block;
-  margin: 0.5rem 0;
-  width: 100%;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-}
-
-.popover input[type="text"],
-.popover select {
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  background: #f9f9f9;
-  color: #111; /* ← cambio aquí */
-}
-
-
-.popover button {
-  background: #ff9a9e;
-  border: none;
-  font-weight: bold;
-  padding: 0.7rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.popover button:hover {
-  background: #ff747b;
-}
-
-#muralContainer {
-  background-color: #000;
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-.popover, #misAportes, .formulario.flotante {
+/* Formularios y mis aportes flotantes */
+.formulario.flotante,
+#misAportes {
   visibility: hidden;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.95);
   pointer-events: none;
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    visibility 0s linear 0.3s;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  z-index: 9999;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
 }
 
-.popover.mostrar, #misAportes.mostrar, .formulario.flotante.mostrar {
+.popover.mostrar,
+#misAportes.mostrar,
+.formulario.flotante.mostrar {
   visibility: visible;
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
@@ -430,46 +319,15 @@ body {
   transition-delay: 0s;
 }
 
-
-#misAportes {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 320px;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  background: #1a1a1a;
-  color: #eee;
-  border-radius: 1rem;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  z-index: 9999;
-  padding: 0;
+@media (max-width: 600px) {
+  .modal, .popover {
+    width: 95%;
+  }
+  .formulario {
+    top: 0.5rem; right: 0.5rem;
+    padding: 1rem;
+  }
+  #toggleUIBtn {
+    display: block;
+  }
 }
-
-#misAportes h3 {
-  position: sticky;
-  top: 0;
-  background: #1a1a1a;
-  padding: 1rem;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-bottom: 1px solid #333;
-  z-index: 2;
-  margin: 0;
-}
-
-/* Scroll interno en la lista de aportes */
-#listaMisAportes {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
