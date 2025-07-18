@@ -203,14 +203,14 @@ h1.page-title {
   font-family: 'Inter', sans-serif;
   border-radius: 0.5rem;
   border: none;
-  background: var(--soul-primary);
+  background: var(--soul-primary); /* Lila */
   color: white;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 #soulprint-actions button:hover {
-  background: #3730a3;
+  background: #3730a3; /* Lila más oscuro */
 }
 
 .edit-btn,
@@ -220,27 +220,35 @@ h1.page-title {
   box-sizing: border-box;
 }
 
+/* Contenedor del botón de compartir por QR */
 .qr-wrapper {
   position: relative;
 }
 
+/* Estilo del menú emergente QR */
 #qr-container {
   display: none;
   position: absolute;
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: white;
-  border: 2px solid var(--soul-primary);
+  padding: 0.75rem 1rem;
+  background: var(--soul-bg-start); /* Fondo oscuro */
+  color: var(--soul-text); /* Texto claro */
+  border: 2px solid var(--soul-primary); /* Borde lila */
   border-radius: 0.5rem;
   z-index: 999;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-size: 0.85rem;
+  max-width: 240px;
+  line-height: 1.4;
 }
 
+/* Mostrar QR al pasar el mouse */
 .qr-wrapper:hover #qr-container {
   display: block;
 }
+
 
 .error {
   text-align: center;
