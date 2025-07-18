@@ -24,7 +24,7 @@
 .floating-upload-form {
   position: fixed;
   top: 80px;
-  left: 200px;
+  left: 300px;
   background: rgba(17, 17, 17, 0.95);
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
