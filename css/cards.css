@@ -14,22 +14,21 @@
 
 /* Tarjeta individual */
 .image-card {
-  position: relative;
-  border-radius: 0.8rem;
-  width: 100%;
-  max-width: 400px;
-  overflow: hidden;
-  background: transparent;
-  transition: transform 0.3s ease;
+  background: #111; /* fondo para rellenar si la imagen no ocupa todo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .image-card img {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 200px;     /* altura máxima */
+  height: 200px;
   object-fit: cover;
+  object-position: center;
 }
+
+
 
 .image-card:hover {
   transform: scale(1.03);
