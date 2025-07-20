@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("user", JSON.stringify(result.user));
           showMessage("Registro exitoso", 'success');
           setTimeout(() => {
-            window.location.href = "upload.html";
+            window.location.href = "mural.html";
           }, 1800);
         } else {
           showMessage(result.error || result.message || "Error al registrarse", 'error');
