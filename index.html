@@ -71,41 +71,65 @@
     text-align: center;
   }
 
-  .butterfly-scene {
-  width: 128px;              /* 8px * escala * ancho del sprite */
-  height: 128px;             /* 8px * escala * alto del sprite */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-  animation: float 3s ease-in-out infinite;
-}
+  .butterfly-container {
+      position: absolute;
+      transition: top 4s ease-in-out, left 4s ease-in-out;
+      animation: float 2s ease-in-out infinite;
+    }
 
-.pixel-butterfly {
-  width: 8px;
-  height: 8px;
-  background: transparent;
-  image-rendering: pixelated;
-  transform: scale(4);
-  transform-origin: top left;
-  box-shadow:
-    /* fila 0: alas superiores */
-     8px   0px  #9b5de5,   24px  0px  #9b5de5,
-    /* fila 1: alas medias */
-     0px   8px  #9b5de5,   32px  8px  #9b5de5,
-    /* fila 2: cuerpo central */
-    16px  16px  #333333,
-    /* fila 3: alas bajas */
-     0px  24px  #9b5de5,   32px 24px  #9b5de5,
-    /* fila 4: alas inferiores */
-     8px  32px  #9b5de5,   24px 32px  #9b5de5;
-}
+    .butterfly {
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      position: relative;
+      animation: flap 0.8s ease-in-out infinite;
+      box-shadow:
+        /* Ala superior izquierda */
+        20px -10px #fff,
+        30px -10px #fff,
+        10px 0px #fff,
+        40px 0px #fff,
+        0px 10px #fff,
+        50px 10px #fff,
+        10px 20px #fff,
+        40px 20px #fff,
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
-}
+        /* Ala inferior izquierda */
+        20px 30px #fff,
+        30px 30px #fff,
+        10px 40px #fff,
+        40px 40px #fff,
+        20px 50px #fff,
+        30px 50px #fff,
 
+        /* Ala superior derecha */
+        -20px -10px #fff,
+        -30px -10px #fff,
+        -10px 0px #fff,
+        -40px 0px #fff,
+        -50px 10px #fff,
+        -10px 20px #fff,
+        -40px 20px #fff,
+        0px 10px #fff,
+
+        /* Ala inferior derecha */
+        -20px 30px #fff,
+        -30px 30px #fff,
+        -10px 40px #fff,
+        -40px 40px #fff,
+        -20px 50px #fff,
+        -30px 50px #fff;
+    }
+
+    @keyframes flap {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.05) rotate(1deg); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
 
   h1 {
     font-size: 2.5rem;
@@ -250,9 +274,9 @@
   <!-- Contenido principal -->
   <div class="content-wrapper">
     <!-- Mariposa animada -->
-    <div class="butterfly-scene">
-  <div class="pixel-butterfly"></div>
-</div>
+    <div class="butterfly-container" id="butterfly">
+    <div class="butterfly"></div>
+  </div>
 
 
   
@@ -321,6 +345,25 @@
       });
     });
 
+
+  const butterfly = document.getElementById("butterfly");
+    const moveButterfly = () => {
+      const maxX = window.innerWidth - 100;
+      const maxY = window.innerHeight - 100;
+
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      butterfly.style.left = `${newX}px`;
+      butterfly.style.top = `${newY}px`;
+    };
+
+    // Mover la mariposa cada 4 segundos
+    setInterval(moveButterfly, 4000);
+
+    // Posición inicial
+    moveButterfly();
+    
     const spinner = document.getElementById("emotionalSpinner");
     if (spinner) spinner.style.display = "none";
   </script>
