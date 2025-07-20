@@ -146,11 +146,12 @@
 (async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(${API_BASE_URL}/api/users/me, {
-      headers: {
-        Authorization: Bearer ${token},
-      },
-    });
+    const res = await fetch(`${API_BASE_URL}/api/users/me`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
 
     if (!res.ok) {
       localStorage.clear(); // Borra cualquier sesión inválida
