@@ -25,22 +25,36 @@
       transition: opacity 0.5s ease-in-out;
     }
 
-    .fade-in {
-      opacity: 1;
-    }
+    .fade-in { opacity: 1; }
+    .fade-out { opacity: 0; }
+    .hidden { display: none; }
 
-    .fade-out {
-      opacity: 0;
-    }
-
-    .hidden {
-      display: none;
+    /* Estilo para botón de cerrar sesión */
+    #logoutBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #ffffff;
+      z-index: 10000;
     }
   </style>
 </head>
 <body>
   <!-- ✅ Banner de bienvenida -->
   <div id="welcome-banner" class="welcome-banner hidden"></div>
+
+  <!-- 🔒 Botón Cerrar sesión -->
+  <button id="logoutBtn" title="Cerrar sesión">
+    <i data-lucide="log-out"></i>
+    <span>Cerrar sesión</span>
+  </button>
 
   <div id="modalOverlay">
     <div id="mensajeInicial" class="modal">
@@ -142,6 +156,22 @@
         setTimeout(() => banner.classList.add("fade-out"), 3000);
         setTimeout(() => banner.remove(), 4000);
       }
+
+      // 🔒 Lógica de Logout
+      const logoutBtn = document.getElementById("logoutBtn");
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          const res = await fetch("/api/auth/logout", { method: "POST" });
+          if (res.ok) {
+            window.location.href = "/login.html";
+          } else {
+            alert("Error al cerrar sesión");
+          }
+        } catch (error) {
+          console.error("Error al cerrar sesión:", error);
+          alert("Ocurrió un error");
+        }
+      });
     });
   </script>
 </body>
