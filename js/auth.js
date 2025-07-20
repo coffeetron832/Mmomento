@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // ✨ Pequeña pausa para mostrar el spinner
         setTimeout(() => {
-          window.location.href = "upload.html";
+          window.location.href = "mural.html";
         }, 700);
       } else {
         showMessage(result.error || result.message || "Error al iniciar sesión", 'error');
