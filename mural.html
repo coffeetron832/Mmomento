@@ -4,67 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Cache-Control" content="no-store" />
-  <title>TheMural — El Mural Efímero</title>
+  <title>El Mural del Momento</title>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/estilos-mural.css" />
   <style>
-    :root {
-      --bg: #000;
-      --text: #eee;
-      --subtle: #888;
-      --accent: #5a9bd8;
-      --panel-bg: #111;
-      --border: #333;
-      --btn-bg: #222;
-      --btn-hover: #444;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    a:hover {
-      opacity: 0.8;
-    }
-
-    /* Banner de bienvenida */
     .welcome-banner {
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--accent);
-      color: var(--bg);
+      background: #4f46e5;
+      color: white;
       padding: 12px 24px;
       border-radius: 12px;
+      font-family: 'Inter', sans-serif;
       font-size: 1rem;
       z-index: 9999;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s ease-in-out;
-      font-weight: 500;
     }
-    .fade-in { opacity: 1 !important; }
-    .fade-out { opacity: 0 !important; }
-    .hidden { display: none !important; }
 
-    /* Botón logout */
+    .fade-in { opacity: 1; }
+    .fade-out { opacity: 0; }
+    .hidden { display: none; }
+
     #logoutBtn {
       position: fixed;
       top: 20px;
@@ -76,229 +41,11 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      color: var(--text);
+      color: #ffffff;
       z-index: 10000;
-      transition: opacity 0.3s ease;
-    }
-    #logoutBtn:hover {
-      opacity: 0.7;
-    }
-
-    /* Overlay modal inicial */
-    #modalOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9000;
-    }
-    #mensajeInicial.modal {
-      background: var(--panel-bg);
-      color: var(--text);
-      padding: 1.5rem;
-      border-radius: 8px;
-      max-width: 90%;
-      font-size: 1rem;
-      line-height: 1.4;
-    }
-    #mensajeInicial.modal label {
-      display: block;
-      margin: 1rem 0 0.5rem;
-      cursor: pointer;
-      font-size: 0.9rem;
-      color: var(--subtle);
-    }
-    #mensajeInicial.modal button {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      background: var(--accent);
-      color: var(--bg);
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    #mensajeInicial.modal button:hover {
-      background: #367bbf;
-    }
-
-    /* Sección de aportes */
-    section.formulario {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background: var(--panel-bg);
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      font-size: 0.95rem;
-      z-index: 8000;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    section.formulario label,
-    section.formulario select,
-    section.formulario input,
-    section.formulario button,
-    .doodle-controls {
-      display: block;
-      width: 100%;
-      margin: 0.5rem 0;
-    }
-    section.formulario select,
-    section.formulario input[type="text"],
-    section.formulario input[type="file"] {
-      padding: 0.5rem;
-      background: #222;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-    }
-    section.formulario button {
-      padding: 0.6rem;
-      background: var(--accent);
-      color: var(--bg);
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    section.formulario button:hover {
-      background: #367bbf;
-    }
-
-    .doodle-controls {
-      display: none;
-      margin-top: 0.5rem;
-    }
-    .doodle-controls input[type="color"] {
-      margin-right: 0.5rem;
-      vertical-align: middle;
-    }
-
-    canvas#canvasDoodle {
-      background: #111;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      display: none;
-      margin: 0.5rem 0;
-    }
-
-    .preview {
-      background: #111;
-      padding: 0.5rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      margin: 0.5rem 0;
-    }
-    .preview img {
-      max-width: 100%;
-      border-radius: 4px;
-    }
-
-    /* Zoom controls */
-    #zoomControls {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      z-index: 8000;
-    }
-    #zoomControls button {
-      width: 36px;
-      height: 36px;
-      background: var(--btn-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    #zoomControls button:hover {
-      background: var(--btn-hover);
-    }
-
-    /* Mural y aportes */
-    #muralContainer {
-      padding: 80px 20px 20px;
-    }
-    section#mural.mural {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 1rem;
-    }
-    section#mural .tile {
-      background: var(--panel-bg);
-      padding: 0.5rem;
-      border-radius: 6px;
-      text-align: center;
-      color: var(--text);
-      word-break: break-word;
-      position: relative;
-    }
-
-    /* Mis aportes popover */
-    #misAportes.popover {
-      position: fixed;
-      top: 80px;
-      left: 20px;
-      background: var(--panel-bg);
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      z-index: 8000;
-      display: none;
-      max-width: 300px;
-      max-height: 70vh;
-      overflow-y: auto;
-      font-size: 0.9rem;
-    }
-    #misAportes h3 {
-      margin-bottom: 0.5rem;
-      color: var(--accent);
-    }
-    #misAportes .item {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* Footer flotante */
-    #footerButtons {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 1rem;
-      z-index: 8000;
-    }
-    .btn-popover {
-      background: var(--btn-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 0.5rem 0.8rem;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: background 0.3s ease;
-    }
-    .btn-popover:hover {
-      background: var(--btn-hover);
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0); }
-      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
-
 <body>
   <div id="welcome-banner" class="welcome-banner hidden"></div>
 
@@ -309,7 +56,7 @@
 
   <div id="modalOverlay">
     <div id="mensajeInicial" class="modal">
-      <p>🧱 TheMural es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
+      <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
       <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
       <br />
       <button onclick="cerrarMensaje()">Cerrar</button>
@@ -321,20 +68,20 @@
     <select id="tipo">
       <option value="frase">✍️ Frase corta</option>
       <option value="emoji">😄 Emoji gigante</option>
-      <option value="imagen">🖼️ Imagen (máx. 400×400px)</option>
+      <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
       <option value="doodle">🎨 Doodle rápido</option>
     </select>
 
     <input type="text" id="contenido" placeholder="Escribe algo..." />
     <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
-    <div class="doodle-controls" id="doodleControls">
+    <div class="doodle-controls" id="doodleControls" style="display:none;">
       <label>Color:</label>
-      <input type="color" id="colorPicker" value="#eee">
+      <input type="color" id="colorPicker" value="#222222">
       <button type="button" onclick="limpiarCanvas()">🧼 Borrar doodle</button>
     </div>
-    <canvas id="canvasDoodle" width="300" height="300"></canvas>
+    <canvas id="canvasDoodle" width="300" height="300" style="display:none;"></canvas>
 
-    <div class="preview" id="preview">
+    <div class="preview" id="preview" style="display: none;">
       <strong>Vista previa:</strong>
       <img id="previewImg" src="" alt="Previsualización" />
     </div>
@@ -372,40 +119,51 @@
     document.addEventListener("DOMContentLoaded", () => {
       const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
 
-      // 🔒 Verificar sesión
-      (async () => {
-        try {
-          const token = localStorage.getItem("token");
-          const res = await fetch(`${API_BASE_URL}/api/users/me`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (!res.ok) {
-            localStorage.clear();
-            window.location.href = "/index.html";
-          }
-        } catch {
-          window.location.href = "/index.html";
-        }
-      })();
+      // 🔒 Verificar si hay sesión activa
+(async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(${API_BASE_URL}/api/users/me, {
+      headers: {
+        Authorization: Bearer ${token},
+      },
+    });
 
-      // ✅ Mensaje de bienvenida
+    if (!res.ok) {
+      localStorage.clear(); // Borra cualquier sesión inválida
+      window.location.href = "/index.html";
+    }
+  } catch (err) {
+    console.error("Error verificando sesión:", err);
+    window.location.href = "/index.html";
+  }
+})();
+
+
+      // ✅ Mostrar mensaje de bienvenida
       const banner = document.getElementById("welcome-banner");
-      const msg = localStorage.getItem("welcomeBackMessage");
-      if (msg && banner) {
-        banner.textContent = msg;
+      const message = localStorage.getItem("welcomeBackMessage");
+
+      if (message && banner) {
+        banner.textContent = message;
         banner.classList.remove("hidden");
         banner.classList.add("fade-in");
+
         localStorage.removeItem("welcomeBackMessage");
+
         setTimeout(() => banner.classList.add("fade-out"), 3000);
         setTimeout(() => banner.remove(), 4000);
       }
 
       // 🔒 Cerrar sesión
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        localStorage.clear();
-        history.replaceState(null, null, "/index.html");
-        window.location.href = "/index.html";
-      });
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.clear();
+          history.replaceState(null, null, "/index.html");
+          window.location.href = "/index.html";
+        });
+      }
     });
   </script>
 </body>
