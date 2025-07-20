@@ -81,54 +81,39 @@
 }
 
 .pixel-butterfly {
-  width: 64px;
-  height: 64px;
   display: grid;
   grid-template-columns: repeat(8, 8px);
   grid-template-rows: repeat(8, 8px);
+  gap: 1px;
   animation: float 3s ease-in-out infinite;
 }
 
 .pixel {
   width: 8px;
   height: 8px;
-  background: transparent;
+  background-color: transparent;
 }
 
-/* Alas izquierda */
-.p1  { background: #9b5de5; grid-column: 2; grid-row: 3; }
-.p2  { background: #9b5de5; grid-column: 2; grid-row: 4; }
-.p3  { background: #9b5de5; grid-column: 1; grid-row: 4; }
-.p4  { background: #9b5de5; grid-column: 1; grid-row: 5; }
-.p5  { background: #9b5de5; grid-column: 2; grid-row: 5; }
+/* Colores de la mariposa */
+.pixel-butterfly .p1, .p2, .p3, .p4, .p5, .p6,
+.p7, .p8, .p9, .p10, .p11, .p12,
+.p13, .p14, .p15, .p16, .p17, .p18, .p19, .p20,
+.p21, .p22, .p23, .p24, .p25, .p26,
+.p27, .p28, .p29, .p30, .p31, .p32,
+.p33, .p34 {
+  background-color: #9b5de5;
+}
 
-/* Cuerpo */
-.p6  { background: #333333; grid-column: 4; grid-row: 3; }
-.p7  { background: #333333; grid-column: 4; grid-row: 4; }
-.p8  { background: #333333; grid-column: 4; grid-row: 5; }
-
-/* Alas derecha */
-.p9  { background: #9b5de5; grid-column: 6; grid-row: 3; }
-.p10 { background: #9b5de5; grid-column: 6; grid-row: 4; }
-.p11 { background: #9b5de5; grid-column: 7; grid-row: 4; }
-.p12 { background: #9b5de5; grid-column: 7; grid-row: 5; }
-.p13 { background: #9b5de5; grid-column: 6; grid-row: 5; }
-
-/* Antenas */
-.p14 { background: #888888; grid-column: 3; grid-row: 2; }
-.p15 { background: #888888; grid-column: 5; grid-row: 2; }
-
-/* Cabeza */
-.p16 { background: #333333; grid-column: 4; grid-row: 2; }
+/* Cuerpo (central oscuro) */
+.p16, .p23, .p28, .p31, .p33 {
+  background-color: #333;
+}
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
 }
+
 
 
   h1 {
@@ -276,24 +261,81 @@
     <!-- Mariposa animada -->
     <div class="butterfly-scene">
   <div class="pixel-butterfly">
+    <!-- Se agregan 64 divs para 8x8 -->
+    <div class="pixel"></div> <!-- fila 1 -->
+    <div class="pixel"></div>
+    <div class="pixel"></div>
     <div class="pixel p1"></div>
     <div class="pixel p2"></div>
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+
+    <div class="pixel"></div> <!-- fila 2 -->
     <div class="pixel p3"></div>
+    <div class="pixel"></div>
     <div class="pixel p4"></div>
     <div class="pixel p5"></div>
+    <div class="pixel"></div>
     <div class="pixel p6"></div>
-    <div class="pixel p7"></div>
+    <div class="pixel"></div>
+
+    <div class="pixel p7"></div> <!-- fila 3 -->
+    <div class="pixel"></div>
     <div class="pixel p8"></div>
     <div class="pixel p9"></div>
     <div class="pixel p10"></div>
     <div class="pixel p11"></div>
+    <div class="pixel"></div>
     <div class="pixel p12"></div>
-    <div class="pixel p13"></div>
+
+    <div class="pixel p13"></div> <!-- fila 4 -->
     <div class="pixel p14"></div>
     <div class="pixel p15"></div>
     <div class="pixel p16"></div>
+    <div class="pixel p17"></div>
+    <div class="pixel p18"></div>
+    <div class="pixel p19"></div>
+    <div class="pixel p20"></div>
+
+    <div class="pixel"></div> <!-- fila 5 -->
+    <div class="pixel p21"></div>
+    <div class="pixel p22"></div>
+    <div class="pixel p23"></div>
+    <div class="pixel p24"></div>
+    <div class="pixel p25"></div>
+    <div class="pixel p26"></div>
+    <div class="pixel"></div>
+
+    <div class="pixel"></div> <!-- fila 6 -->
+    <div class="pixel"></div>
+    <div class="pixel p27"></div>
+    <div class="pixel p28"></div>
+    <div class="pixel p29"></div>
+    <div class="pixel p30"></div>
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+
+    <div class="pixel"></div> <!-- fila 7 -->
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+    <div class="pixel p31"></div>
+    <div class="pixel p32"></div>
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+
+    <div class="pixel"></div> <!-- fila 8 -->
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+    <div class="pixel p33"></div>
+    <div class="pixel p34"></div>
+    <div class="pixel"></div>
+    <div class="pixel"></div>
+    <div class="pixel"></div>
   </div>
 </div>
+
 
     <!-- Frase central -->
     <h1 class="fade-scale">TheMural: el lugar donde lo efímero importa</h1>
