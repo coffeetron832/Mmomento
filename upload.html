@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>¿Qué vas a dejar ir hoy? | Momento</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <!-- 🧱 Estilos base y variables -->
   <link rel="stylesheet" href="/css/base.css" />
 
@@ -153,22 +155,34 @@
   <!-- Notificaciones -->
   <div id="notificationsContainer">
     <button id="notifBtn" class="nav-btn" aria-label="Ver notificaciones">
-      🔔<span id="notifCount">0</span>
+      <i data-lucide="bell"></i>
+      <span id="notifCount">0</span>
     </button>
   </div>
 
   <!-- Navegación rápida -->
-  <a href="mural.html" class="nav-icon-link" title="Ver mural">🎨</a>
+  <a href="mural.html" class="nav-icon-link" title="Ver mural">
+    <i data-lucide="palette"></i>
+  </a>
 
-  <!-- Solo el botón 🌌 -->
-  <button id="exploreBtnMenu" class="nav-icon-link" title="Explorar momentos">🌌</button>
+  <button id="exploreBtnMenu" class="nav-icon-link" title="Explorar momentos">
+    <i data-lucide="galaxy"></i> <!-- alternativa: 'globe' o 'sparkles' -->
+  </button>
 
-  <button id="toggleUploadBtnMenu" class="nav-icon-link" title="Subir imagen">📤</button>
+  <button id="toggleUploadBtnMenu" class="nav-icon-link" title="Subir imagen">
+    <i data-lucide="upload"></i>
+  </button>
 
   <!-- Personales -->
-  <a href="#" id="soulprintMenuBtn" class="nav-icon-link" title="Mi Soulprint">🧬</a>
-  <button id="logoutMenuBtn" class="nav-icon-link" title="Cerrar sesión">🚪</button>
+  <a href="#" id="soulprintMenuBtn" class="nav-icon-link" title="Mi Soulprint">
+    <i data-lucide="dna"></i>
+  </a>
+
+  <button id="logoutMenuBtn" class="nav-icon-link" title="Cerrar sesión">
+    <i data-lucide="log-out"></i>
+  </button>
 </aside>
+
 
 <!-- 🔮 Menú flotante FUERA del aside -->
 <div class="emotion-floating-wrapper" id="emotionFloatingWrapper">
@@ -435,6 +449,8 @@ window.addEventListener('beforeunload', () => {
     keepalive: true
   });
 }); 
+
+     lucide.createIcons();
 </script>
   <script src="js/upload2.js"></script>
   <script src="js/upload.js"></script>
