@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Cache-Control" content="no-store" />
   <title>El Mural del Momento</title>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -30,7 +30,6 @@
     .fade-out { opacity: 0; }
     .hidden { display: none; }
 
-    /* Estilo para botón de cerrar sesión */
     #logoutBtn {
       position: fixed;
       top: 20px;
@@ -48,10 +47,8 @@
   </style>
 </head>
 <body>
-  <!-- ✅ Banner de bienvenida -->
   <div id="welcome-banner" class="welcome-banner hidden"></div>
 
-  <!-- 🔒 Botón Cerrar sesión -->
   <button id="logoutBtn" title="Cerrar sesión">
     <i data-lucide="log-out"></i>
     <span>Cerrar sesión</span>
@@ -65,24 +62,6 @@
       <button onclick="cerrarMensaje()">Cerrar</button>
     </div>
   </div>
-
-  <button id="toggleUIBtn" style="
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
-    z-index: 10000;
-    background: #ff9a9e;
-    color: black;
-    font-weight: bold;
-    border: none;
-    border-radius: 2rem;
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    display: none;
-  ">
-    👁️ Mostrar
-  </button>
 
   <section class="formulario flotante popover">
     <label>¿Qué quieres dejar hoy?</label>
@@ -110,24 +89,20 @@
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
-  <!-- Controles de zoom -->
   <div id="zoomControls">
     <button id="zoomIn">+</button>
     <button id="zoomOut">–</button>
   </div>
 
-  <!-- Contenedor del mural para pan/zoom -->
   <div id="muralContainer">
     <section id="mural" class="mural"></section>
   </div>
 
-  <!-- Panel flotante con aportes del usuario -->
   <div id="misAportes" class="popover">
     <h3>Mis Aportes</h3>
     <div id="listaMisAportes"></div>
   </div>
 
-  <!-- Botones del footer -->
   <div id="footerButtons">
     <button id="btnFormulario" class="btn-popover" title="Aportar al mural">
       <i data-lucide="plus-circle"></i> Aportar
@@ -138,79 +113,63 @@
   </div>
 
   <script src="/js/mural.js"></script>
-<script>
-  lucide.createIcons();
+  <script>
+    lucide.createIcons();
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
+    document.addEventListener("DOMContentLoaded", () => {
+      const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
 
-    // 🔒 Verificar si hay sesión activa con JWT
-(async () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    return window.location.href = "/index.html";
-  }
+      // 🔒 Verificar sesión con JWT
+      (async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          return window.location.href = "/index.html";
+        }
 
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/users/me`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/users/me`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (!res.ok) {
+            localStorage.clear();
+            return window.location.href = "/index.html";
+          }
+        } catch (err) {
+          console.error("Error verificando token:", err);
+          localStorage.clear();
+          window.location.href = "/index.html";
+        }
+      })();
+
+      // ✅ Mostrar mensaje de bienvenida
+      const banner = document.getElementById("welcome-banner");
+      const message = localStorage.getItem("welcomeBackMessage");
+
+      if (message && banner) {
+        banner.textContent = message;
+        banner.classList.remove("hidden");
+        banner.classList.add("fade-in");
+
+        localStorage.removeItem("welcomeBackMessage");
+
+        setTimeout(() => banner.classList.add("fade-out"), 3000);
+        setTimeout(() => banner.remove(), 4000);
+      }
+
+      // 🔒 Cerrar sesión
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.clear();
+          history.replaceState(null, null, "/index.html");
+          window.location.href = "/index.html";
+        });
       }
     });
-
-    if (!res.ok) {
-      localStorage.removeItem('token');
-      return window.location.href = "/index.html";
-    }
-
-    const user = await res.json();
-    console.log("Usuario autenticado:", user.username || user.email);
-  } catch (err) {
-    console.error("Error verificando token:", err);
-    localStorage.removeItem('token');
-    window.location.href = "/index.html";
-  }
-})();
-
-
-    // ✅ Mostrar mensaje de bienvenida
-    const banner = document.getElementById("welcome-banner");
-    const message = localStorage.getItem("welcomeBackMessage");
-
-    if (message && banner) {
-      banner.textContent = message;
-      banner.classList.remove("hidden");
-      banner.classList.add("fade-in");
-
-      localStorage.removeItem("welcomeBackMessage");
-
-      setTimeout(() => banner.classList.add("fade-out"), 3000);
-      setTimeout(() => banner.remove(), 4000);
-    }
-
-    // 🔒 Lógica de Logout
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", async () => {
-        try {
-          localStorage.removeItem("token");
-window.location.href = "/index.html";
-history.pushState(null, null, "/index.html");
-
-          if (res.ok) {
-            window.location.href = "/index.html";
-          } else {
-            showMessage('Error al cerrar sesión', 'error');
-          }
-        } catch (error) {
-          console.error("Error al cerrar sesión:", error);
-          showMessage('Error de red al cerrar sesión', 'error');
-        }
-      });
-    }
-  });
-</script>
+  </script>
 </body>
 </html>
-
