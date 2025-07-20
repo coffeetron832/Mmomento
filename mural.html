@@ -119,31 +119,26 @@
     document.addEventListener("DOMContentLoaded", () => {
       const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
 
-      // 🔒 Verificar sesión con JWT
-      (async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          return window.location.href = "/index.html";
-        }
+      // 🔒 Verificar si hay sesión activa
+(async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${API_BASE_URL}/api/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        try {
-          const res = await fetch(`${API_BASE_URL}/api/users/me`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
+    if (!res.ok) {
+      localStorage.clear(); // Borra cualquier sesión inválida
+      window.location.href = "/index.html";
+    }
+  } catch (err) {
+    console.error("Error verificando sesión:", err);
+    window.location.href = "/index.html";
+  }
+})();
 
-          if (!res.ok) {
-            localStorage.clear();
-            return window.location.href = "/index.html";
-          }
-        } catch (err) {
-          console.error("Error verificando token:", err);
-          localStorage.clear();
-          window.location.href = "/index.html";
-        }
-      })();
 
       // ✅ Mostrar mensaje de bienvenida
       const banner = document.getElementById("welcome-banner");
