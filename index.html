@@ -71,29 +71,40 @@
     text-align: center;
   }
 
-  .butterfly-icon {
-  display: inline-block;
-  line-height: 0;
+  .butterfly-scene {
+  width: 128px;              /* 8px * escala * ancho del sprite */
+  height: 128px;             /* 8px * escala * alto del sprite */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
   animation: float 3s ease-in-out infinite;
 }
 
-.pixel-row {
-  display: flex;
-}
-
-.pix {
+.pixel-butterfly {
   width: 8px;
   height: 8px;
-  background-color: #333;
+  background: transparent;
   image-rendering: pixelated;
+  transform: scale(4);
+  transform-origin: top left;
+  box-shadow:
+    /* fila 0: alas superiores */
+     8px   0px  #9b5de5,   24px  0px  #9b5de5,
+    /* fila 1: alas medias */
+     0px   8px  #9b5de5,   32px  8px  #9b5de5,
+    /* fila 2: cuerpo central */
+    16px  16px  #333333,
+    /* fila 3: alas bajas */
+     0px  24px  #9b5de5,   32px 24px  #9b5de5,
+    /* fila 4: alas inferiores */
+     8px  32px  #9b5de5,   24px 32px  #9b5de5;
 }
 
-/* Animación suave flotando */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  50%      { transform: translateY(-8px); }
 }
-
 
 
   h1 {
@@ -239,32 +250,10 @@
   <!-- Contenido principal -->
   <div class="content-wrapper">
     <!-- Mariposa animada -->
-    <div class="butterfly-icon">
-  <div class="pixel-row">
-    <div></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div></div>
-  </div>
-  <div class="pixel-row">
-    <div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div>
-  </div>
-  <div class="pixel-row">
-    <div class="pix"></div><div></div><div class="pix"></div><div class="pix"></div><div class="pix"></div><div></div><div class="pix"></div>
-  </div>
-  <div class="pixel-row">
-    <div class="pix"></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div class="pix"></div>
-  </div>
-  <div class="pixel-row">
-    <div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div>
-  </div>
-  <div class="pixel-row">
-    <div></div><div></div><div class="pix"></div><div class="pix"></div><div class="pix"></div><div></div><div></div>
-  </div>
-  <div class="pixel-row">
-    <div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div>
-  </div>
-  <div class="pixel-row">
-    <div class="pix"></div><div></div><div></div><div class="pix"></div><div></div><div></div><div class="pix"></div>
-  </div>
+    <div class="butterfly-scene">
+  <div class="pixel-butterfly"></div>
 </div>
+
 
   
 
