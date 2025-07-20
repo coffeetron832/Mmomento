@@ -4,16 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>La gente debería ver esto antes de conocerte | Momento</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos-soulprint.css">
 </head>
 <body>
   <div class="edit-container">
-  <a id="editBtn" class="edit-btn" href="#">Editar Soulprint</a>
+  <a id="editBtn" class="edit-btn" href="#">
+    <i data-lucide="pencil-line"></i> Editar Soulprint
+  </a>
   <div id="soulprint-actions">
-    <button id="download-pdf">Descargar PDF 🖨️</button>
+    <button id="download-pdf">
+      <i data-lucide="printer"></i> Descargar PDF
+    </button>
     <div class="qr-wrapper">
-      <button id="generate-qr">Compartir por QR 📱</button>
+      <button id="generate-qr">
+        <i data-lucide="qrcode"></i> Compartir por QR
+      </button>
       <div id="qr-container"></div>
     </div>
   </div>
@@ -324,6 +331,7 @@ document.getElementById('generate-qr').addEventListener('mouseenter', () => {
   });
 });
 
+  lucide.createIcons();
 
 }); // Cierre del DOMContentLoaded
 </script>
