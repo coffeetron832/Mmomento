@@ -9,42 +9,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/estilos-mural.css" />
   <style>
-    .welcome-banner {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #4f46e5;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease-in-out;
-    }
+  :root {
+    --bg: #000;
+    --text: #eee;
+    --subtle: #aaa;
+    --accent: #5a9bd8;
+    --banner-bg: rgba(90, 155, 216, 0.9);
+  }
 
-    .fade-in { opacity: 1; }
-    .fade-out { opacity: 0; }
-    .hidden { display: none; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+  }
 
-    #logoutBtn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: #ffffff;
-      z-index: 10000;
-    }
-  </style>
+  .welcome-banner {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--banner-bg);
+    color: var(--text);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 1rem;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out, background 0.3s ease;
+  }
+
+  .fade-in {
+    opacity: 1;
+  }
+  .fade-out {
+    opacity: 0;
+  }
+  .hidden {
+    display: none;
+  }
+
+  #logoutBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    z-index: 10000;
+    transition: color 0.2s ease;
+  }
+  #logoutBtn:hover {
+    color: var(--accent);
+  }
+</style>
 </head>
 <body>
   <div id="welcome-banner" class="welcome-banner hidden"></div>
