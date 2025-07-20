@@ -7,35 +7,67 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/estilos-mural.css" />
+  <style>
+    .welcome-banner {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #4f46e5;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .fade-in {
+      opacity: 1;
+    }
+
+    .fade-out {
+      opacity: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
+  <!-- ✅ Banner de bienvenida -->
+  <div id="welcome-banner" class="welcome-banner hidden"></div>
+
   <div id="modalOverlay">
-  <div id="mensajeInicial" class="modal">
-    <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
-    <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
-    <br />
-    <button onclick="cerrarMensaje()">Cerrar</button>
+    <div id="mensajeInicial" class="modal">
+      <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
+      <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
+      <br />
+      <button onclick="cerrarMensaje()">Cerrar</button>
+    </div>
   </div>
-</div>
 
   <button id="toggleUIBtn" style="
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 10000;
-  background: #ff9a9e;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 2rem;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  display: none;
-">
-  👁️ Mostrar
-</button>
-
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 10000;
+    background: #ff9a9e;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: none;
+  ">
+    👁️ Mostrar
+  </button>
 
   <section class="formulario flotante popover">
     <label>¿Qué quieres dejar hoy?</label>
@@ -56,46 +88,61 @@
     <canvas id="canvasDoodle" width="300" height="300" style="display:none;"></canvas>
 
     <div class="preview" id="preview" style="display: none;">
-  <strong>Vista previa:</strong>
-  <img id="previewImg" src="" alt="Previsualización" />
-</div>
-
+      <strong>Vista previa:</strong>
+      <img id="previewImg" src="" alt="Previsualización" />
+    </div>
 
     <button onclick="agregarAlMural()">Compartir en el Mural</button>
   </section>
 
-<!-- Controles de zoom -->
-<div id="zoomControls">
-  <button id="zoomIn">+</button>
-  <button id="zoomOut">–</button>
-</div>
+  <!-- Controles de zoom -->
+  <div id="zoomControls">
+    <button id="zoomIn">+</button>
+    <button id="zoomOut">–</button>
+  </div>
 
-<!-- Contenedor del mural para pan/zoom -->
-<div id="muralContainer">
-  <section id="mural" class="mural"></section>
-</div>
+  <!-- Contenedor del mural para pan/zoom -->
+  <div id="muralContainer">
+    <section id="mural" class="mural"></section>
+  </div>
 
- <!-- Panel flotante con aportes del usuario -->
- <div id="misAportes" class="popover">
+  <!-- Panel flotante con aportes del usuario -->
+  <div id="misAportes" class="popover">
     <h3>Mis Aportes</h3>
     <div id="listaMisAportes"></div>
   </div>
 
-  <!-- Botones fijos tipo footer -->
   <!-- Botones del footer -->
-<div id="footerButtons">
-  <button id="btnFormulario" class="btn-popover" title="Aportar al mural">
-    <i data-lucide="plus-circle"></i> Aportar
-  </button>
-  <button id="btnMisAportes" class="btn-popover" title="Ver mis aportes">
-    <i data-lucide="bookmark"></i> Mis Aportes
-  </button>
-</div>
+  <div id="footerButtons">
+    <button id="btnFormulario" class="btn-popover" title="Aportar al mural">
+      <i data-lucide="plus-circle"></i> Aportar
+    </button>
+    <button id="btnMisAportes" class="btn-popover" title="Ver mis aportes">
+      <i data-lucide="bookmark"></i> Mis Aportes
+    </button>
+  </div>
 
-  
   <script src="/js/mural.js"></script>
   <script>
-  lucide.createIcons();
-</script>
+    lucide.createIcons();
+
+    // ✅ Mostrar mensaje de bienvenida
+    document.addEventListener("DOMContentLoaded", () => {
+      const banner = document.getElementById("welcome-banner");
+      const message = localStorage.getItem("welcomeBackMessage");
+
+      if (message && banner) {
+        banner.textContent = message;
+        banner.classList.remove("hidden");
+        banner.classList.add("fade-in");
+
+        // Quitar después de mostrar
+        localStorage.removeItem("welcomeBackMessage");
+
+        setTimeout(() => banner.classList.add("fade-out"), 3000);
+        setTimeout(() => banner.remove(), 4000);
+      }
+    });
+  </script>
 </body>
 </html>
