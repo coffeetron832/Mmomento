@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <title>El Mural del Momento</title>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,22 +144,35 @@
   document.addEventListener("DOMContentLoaded", () => {
     const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
 
-    // 🔒 Verificar si hay sesión activa
-    (async () => {
-      try {
-        const res = await fetch(`${API_BASE_URL}/api/auth/verify`, {
-          credentials: 'include'
-        });
+    // 🔒 Verificar si hay sesión activa con JWT
+(async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return window.location.href = "/index.html";
+  }
 
-        if (!res.ok) {
-          // Redirige si no hay sesión activa
-          window.location.href = "/index.html";
-        }
-      } catch (err) {
-        console.error("Error verificando sesión:", err);
-        window.location.href = "/index.html";
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/users/me`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
-    })();
+    });
+
+    if (!res.ok) {
+      localStorage.removeItem('token');
+      return window.location.href = "/index.html";
+    }
+
+    const user = await res.json();
+    console.log("Usuario autenticado:", user.username || user.email);
+  } catch (err) {
+    console.error("Error verificando token:", err);
+    localStorage.removeItem('token');
+    window.location.href = "/index.html";
+  }
+})();
+
 
     // ✅ Mostrar mensaje de bienvenida
     const banner = document.getElementById("welcome-banner");
@@ -180,10 +194,10 @@
     if (logoutBtn) {
       logoutBtn.addEventListener("click", async () => {
         try {
-          const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
-            method: "POST",
-            credentials: 'include'
-          });
+          localStorage.removeItem("token");
+window.location.href = "/index.html";
+history.pushState(null, null, "/index.html");
+
           if (res.ok) {
             window.location.href = "/index.html";
           } else {
