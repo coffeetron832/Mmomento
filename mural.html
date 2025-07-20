@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>El Mural del Momento</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/estilos-mural.css" />
 </head>
@@ -81,10 +82,20 @@
   </div>
 
   <!-- Botones fijos tipo footer -->
-  <div id="footerButtons">
-    <button id="btnFormulario" class="btn-popover">Aportar</button>
-    <button id="btnMisAportes" class="btn-popover">Mis Aportes</button>
-  </div>
+  <!-- Botones del footer -->
+<div id="footerButtons">
+  <button id="btnFormulario" class="btn-popover" title="Aportar al mural">
+    <i data-lucide="plus-circle"></i> Aportar
+  </button>
+  <button id="btnMisAportes" class="btn-popover" title="Ver mis aportes">
+    <i data-lucide="bookmark"></i> Mis Aportes
+  </button>
+</div>
+
+  
   <script src="/js/mural.js"></script>
+  <script>
+  lucide.createIcons();
+</script>
 </body>
 </html>
