@@ -137,47 +137,66 @@
   </div>
 
   <script src="/js/mural.js"></script>
-  <script>
-    lucide.createIcons();
+<script>
+  lucide.createIcons();
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // ✅ Mostrar mensaje de bienvenida
-      const banner = document.getElementById("welcome-banner");
-      const message = localStorage.getItem("welcomeBackMessage");
+  document.addEventListener("DOMContentLoaded", () => {
+    const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
 
-      if (message && banner) {
-        banner.textContent = message;
-        banner.classList.remove("hidden");
-        banner.classList.add("fade-in");
-
-        localStorage.removeItem("welcomeBackMessage");
-
-        setTimeout(() => banner.classList.add("fade-out"), 3000);
-        setTimeout(() => banner.remove(), 4000);
-      }
-
-      // 🔒 Lógica de Logout
-      const logoutBtn = document.getElementById("logoutBtn");
-      const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
-      if (logoutBtn) {
-        logoutBtn.addEventListener("click", async () => {
-          try {
-            const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
-              method: "POST",
-              credentials: 'include'
-            });
-            if (res.ok) {
-              window.location.href = "/index.html";
-            } else {
-              showMessage('Error al cerrar sesión', 'error');
-            }
-          } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-            showMessage('Error de red al cerrar sesión', 'error');
-          }
+    // 🔒 Verificar si hay sesión activa
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/auth/verify`, {
+          credentials: 'include'
         });
+
+        if (!res.ok) {
+          // Redirige si no hay sesión activa
+          window.location.href = "/index.html";
+        }
+      } catch (err) {
+        console.error("Error verificando sesión:", err);
+        window.location.href = "/index.html";
       }
-    });
-  </script>
+    })();
+
+    // ✅ Mostrar mensaje de bienvenida
+    const banner = document.getElementById("welcome-banner");
+    const message = localStorage.getItem("welcomeBackMessage");
+
+    if (message && banner) {
+      banner.textContent = message;
+      banner.classList.remove("hidden");
+      banner.classList.add("fade-in");
+
+      localStorage.removeItem("welcomeBackMessage");
+
+      setTimeout(() => banner.classList.add("fade-out"), 3000);
+      setTimeout(() => banner.remove(), 4000);
+    }
+
+    // 🔒 Lógica de Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+            method: "POST",
+            credentials: 'include'
+          });
+          if (res.ok) {
+            window.location.href = "/index.html";
+          } else {
+            showMessage('Error al cerrar sesión', 'error');
+          }
+        } catch (error) {
+          console.error("Error al cerrar sesión:", error);
+          showMessage('Error de red al cerrar sesión', 'error');
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>
+
