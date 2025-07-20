@@ -1,3 +1,5 @@
+Haz los cambios a mi código:
+
 <!DOCTYPE html>
 <html lang="es" class="fade">
 <head>
@@ -9,307 +11,234 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="shortcut icon" href="favicon.ico">
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Unbounded:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Unbounded:wght@400;600&display=swap');
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Unbounded:wght@400;600&family=Rock+Salt&display=swap" rel="stylesheet">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Unbounded:wght@400;600&family=Rock+Salt&display=swap');
 
-    :root {
-      --bg-color: #0f0f1e;
-      --text-color: #ffffff;
-      --text-subtle: #cccccc;
-      --shadow-soft: 0 0 20px rgba(255,255,255,0.05);
-      --btn-bg: rgba(255,255,255,0.05);
-      --btn-hover: rgba(255,255,255,0.15);
-      --btn-text: #fff;
-    }
+:root {
+  --bg-color: #0f0f1e;
+  --text-color: #ffffff;
+  --text-subtle: #cccccc;
+  --shadow-soft: 0 0 20px rgba(255, 255, 255, 0.05);
+  --btn-bg: rgba(255, 255, 255, 0.05);
+  --btn-hover: rgba(255, 255, 255, 0.15);
+  --btn-text: #fff;
+}
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at center, #1a1a2e, var(--bg-color));
-      color: var(--text-color);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      overflow-x: hidden;
-      transition: background 0.5s ease;
-    }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at center, #1a1a2e, var(--bg-color));
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.5s ease;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: radial-gradient(circle at center, #1a1a2e, var(--bg-color));
-      z-index: -1;
-    }
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: radial-gradient(circle at center, #1a1a2e, var(--bg-color));
+  z-index: -1;
+}
 
-    html.fade { opacity: 0; transition: opacity 0.3s ease-in-out; }
-    html.fade-in { opacity: 1; }
+header.global-header {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 40px;
+  background: transparent;
+  z-index: 100;
+}
 
-    header.global-header {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 60px;
-      display: flex; justify-content: flex-end; align-items: center;
-      padding: 0 40px; background: transparent; z-index: 100;
-    }
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 20px 60px;
+  text-align: center;
+  animation: fadeIn 1.5s ease-out;
+}
 
-    .content-wrapper {
-      flex: 1;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      padding: 100px 20px 60px;
-      text-align: center;
-      animation: fadeIn 1.5s ease-out;
-    }
+.main-text h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 3.2rem;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: -1px;
+  text-shadow: var(--shadow-soft);
+}
 
-    .main-text h1 {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 3.2rem; margin: 0;
-      font-weight: 400; letter-spacing: -1px;
-      text-shadow: var(--shadow-soft);
-    }
+.main-text small {
+  margin-top: 12px;
+  color: var(--text-subtle);
+  font-size: 1.1rem;
+  font-weight: 300;
+}
 
-    .main-text small {
-      margin-top: 12px;
-      color: var(--text-subtle);
-      font-size: 1.1rem; font-weight: 300;
-    }
+.buttons-wrapper {
+  margin-top: 24px;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-    .buttons-wrapper {
-      margin-top: 24px;
-      display: flex; gap: 1rem;
-      flex-wrap: wrap; justify-content: center;
-    }
+.join-btn,
+.login-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  backdrop-filter: blur(8px);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
 
-    .btn {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem; border-radius: 8px; border: none;
-      background-color: var(--btn-bg);
-      color: var(--btn-text);
-      backdrop-filter: blur(8px);
-      transition: background-color 0.3s ease;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background-color: var(--btn-hover);
-    }
+.join-btn:hover,
+.login-btn:hover {
+  background-color: var(--btn-hover);
+}
 
-    /* Pared 3D interactiva */
-    .wall-scene {
-      width: 100%; max-width: 600px;
-      perspective: 1000px;
-      margin-bottom: 2rem;
-    }
-    #graffitiCanvas {
-      width: 100%; height: auto;
-      background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
-      border: 2px solid #333;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.03);
-      transform: rotateX(10deg);
-      cursor: crosshair;
-      touch-action: none;
-    }
+/* Wall and graffiti */
+.wall-scene {
+  width: 300px;
+  height: 200px;
+  perspective: 800px;
+  margin-bottom: 2rem;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+.wall {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to right,
+    #3a3a3a 0 20px,
+    #2f2f2f 20px 40px
+  ),
+  linear-gradient(
+    to bottom,
+    #4a4a4a,
+    #2a2a2a
+  );
+  transform: rotateX(15deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: var(--shadow-soft);
+}
 
-    footer.footer-curved {
-      position: fixed;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 100%; max-width: 500px;
-      background: rgba(20,20,30,0.5);
-      backdrop-filter: blur(10px);
-      border-radius: 32px 32px 0 0;
-      padding: 1rem 1.2rem;
-      display: flex; justify-content: center; gap: 1.2rem;
-      z-index: 2000;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.4);
-      text-align: center;
-    }
+.graffiti {
+  font-family: 'Rock Salt', cursive;
+  font-size: 1.8rem;
+  color: var(--btn-hover);
+  text-shadow: 0 0 8px rgba(255, 119, 208, 0.5);
+  transform: rotate(-2deg);
+  animation: sprayIn 1.2s ease-out;
+}
 
-    .footer-link {
-      color: var(--text-subtle);
-      text-decoration: none;
-      font-size: 0.85rem; font-weight: 400;
-      transition: color 0.3s ease;
-    }
-    .footer-link:hover {
-      color: #fff; text-decoration: underline;
-    }
+@keyframes sprayIn {
+  0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-2deg); }
+}
 
-    @media (max-width: 480px) {
-      .main-text h1 { font-size: 2.4rem; }
-      .main-text small { font-size: 1rem; }
-      .buttons-wrapper { flex-direction: column; width: 100%; }
-      .btn { width: 100%; }
-      .wall-scene { max-width: 90%; }
-    }
-  </style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+footer.footer-curved {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  background: rgba(20, 20, 30, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 32px 32px 0 0;
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  z-index: 2000;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.footer-link {
+  color: var(--text-subtle);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .main-text h1 { font-size: 2.4rem; }
+  .main-text small { font-size: 1rem; }
+  .buttons-wrapper { flex-direction: column; width: 100%; }
+  .join-btn, .login-btn { width: 100%; }
+  .wall-scene { width: 90%; height: 150px; }
+}
+</style>
 </head>
 <body>
-  <!-- Spinner emocional -->
-  <div id="emotionalSpinner" style="
-    display: none;
-    position: fixed; top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(4px);
-    z-index: 3000;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    color: #fff; font-family: 'Inter', sans-serif;
-    font-size: 1.1rem; text-align: center;
-  ">
-    <div class="soul-spinner" style="
-      width: 60px; height: 60px;
-      border: 6px solid #4f46e5;
-      border-top: 6px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 1rem;
-    "></div>
-    <span>Viendo si no olvidaste la contraseña otra vez…</span>
-  </div>
-
-  <!-- Mensaje de logout -->
-  <div id="logoutMessageBox" style="
-    display: none;
-    position: fixed; top: 1rem; left: 50%;
-    transform: translateX(-50%);
-    background-color: #4f46e5; color: #fff;
-    padding: 1rem 2rem; border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem; z-index: 9999;
-    opacity: 0; transition: opacity 0.5s ease;
-    max-width: 80%; text-align: center;
-  "></div>
-
+  <!-- Logout spinner/message omitted for brevity -->
   <header class="global-header"></header>
-
   <div class="content-wrapper">
-    <!-- Pared 3D interactiva -->
+
+    <!-- Wall graffiti scene -->
     <div class="wall-scene">
-      <canvas id="graffitiCanvas"></canvas>
+      <div class="wall">
+        <div class="graffiti">Deja tu huella</div>
+      </div>
     </div>
 
     <!-- Texto principal -->
-    <div class="main-text">
-      <h1>TheMural: donde lo efímero cobra vida</h1>
-      <small>Tus trazos se desvanecen en 7 segundos</small>
-    </div>
+    <h1 class="fade-scale" style="font-family: 'Inter', sans-serif; font-size: 2.5rem; margin-bottom: 1rem;">
+      TheMural: donde lo efímero cobra vida
+    </h1>
 
     <!-- Formulario de login -->
-    <form id="loginForm" style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+    <form id="loginForm" style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center;">
       <input type="email" name="email" placeholder="Correo" required autocomplete="email"
-             style="padding:0.6rem 1rem; font-size:1rem; border-radius:8px; border:1px solid #444; background:#111; color:#fff;">
+        style="padding: 0.6rem 1rem; font-size: 1rem; border-radius: 8px; border: 1px solid #444; background-color: #111; color: #fff;">        
       <input type="password" name="password" placeholder="Contraseña" required autocomplete="current-password"
-             style="padding:0.6rem 1rem; font-size:1rem; border-radius:8px; border:1px solid #444; background:#111; color:#fff;">
-      <button type="submit" class="btn">Entrar</button>
+        style="padding: 0.6rem 1rem; font-size: 1rem; border-radius: 8px; border: 1px solid #444; background-color: #111; color: #fff;">
+      <button type="submit"
+        style="padding: 0.6rem 1.2rem; font-size: 1rem; border-radius: 8px; background-color: #4f46e5; color: white; border: none; cursor: pointer; transition: background-color 0.3s ease;">
+        Entrar
+      </button>
     </form>
 
-    <p style="margin-top:1rem; font-size:0.9rem;">
-      ¿No tienes cuenta? <a href="register.html" style="color:#5a9bd8; text-decoration:none;">Únete a nosotros</a>
+    <p class="link" style="margin-top: 1rem; font-size: 0.9rem;">
+      ¿No tienes cuenta? <a href="register.html" style="color: #5a9bd8; text-decoration: none;">Únete a nosotros</a>
     </p>
-  </div>
 
+  </div>
   <footer class="footer-curved">
     <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
     <a href="condiciones.html" class="footer-link">Términos y Condiciones</a>
   </footer>
-
-  <script>
-    // Graffiti interactivo con desvanecimiento a 7s
-    (function() {
-      const canvas = document.getElementById('graffitiCanvas');
-      const ctx = canvas.getContext('2d');
-      let drawing = false;
-
-      function resize() {
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = rect.width * devicePixelRatio;
-        canvas.height = rect.height * devicePixelRatio;
-        ctx.scale(devicePixelRatio, devicePixelRatio);
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      canvas.addEventListener('pointerdown', e => { drawing = true; ctx.beginPath(); draw(e); });
-      canvas.addEventListener('pointermove', e => drawing && draw(e));
-      ['pointerup','pointerleave'].forEach(ev => canvas.addEventListener(ev, () => drawing = false));
-
-      function draw(e) {
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left);
-        const y = (e.clientY - rect.top);
-        ctx.lineTo(x, y);
-        ctx.strokeStyle = '#ff4de8';
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-        scheduleFade(x, y);
-      }
-
-      function scheduleFade(x, y) {
-        setTimeout(() => {
-          const fadeSteps = 10;
-          let step = 0;
-          const fade = setInterval(() => {
-            ctx.fillStyle = `rgba(26,26,26,${1/fadeSteps})`;
-            ctx.beginPath();
-            ctx.arc(x, y, 4, 0, Math.PI*2);
-            ctx.fill();
-            step++;
-            if (step >= fadeSteps) clearInterval(fade);
-          }, 7000 / fadeSteps);
-        }, 7000);
-      }
-    })();
-
-    // Fade entre páginas y logout message
-    document.addEventListener('DOMContentLoaded', () => {
-      const box = document.getElementById('logoutMessageBox');
-      const msg = localStorage.getItem('logoutMessage');
-      if (msg && box) {
-        box.textContent = msg; box.style.display = 'block';
-        setTimeout(() => { box.style.opacity = '1';
-          setTimeout(() => { box.style.opacity = '0';
-            setTimeout(() => box.style.display = 'none', 500);
-          }, 3000);
-        }, 100);
-        localStorage.removeItem('logoutMessage');
-      }
-
-      function applyFadeIn() {
-        document.documentElement.classList.add('fade-in');
-      }
-      window.addEventListener('pageshow', e => e.persisted && applyFadeIn());
-      applyFadeIn();
-
-      document.addEventListener('click', e => {
-        const link = e.target.closest('a');
-        if (!link || link.target || link.href.startsWith('#')) return;
-        e.preventDefault();
-        document.documentElement.classList.remove('fade-in');
-        document.documentElement.classList.add('fade');
-        setTimeout(() => window.location.href = link.href, 300);
-      });
-    });
-
-    // Spinner keyframes
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes spin { 0%{transform:rotate(0)}100%{transform:rotate(360deg)} }
-    `;
-    document.head.appendChild(style);
-  </script>
-
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
 </body>
