@@ -158,10 +158,28 @@
       }
 
       // 🔒 Lógica de Logout
+      // Usa la URL base de tu backend para logout
       const logoutBtn = document.getElementById("logoutBtn");
-      logoutBtn.addEventListener("click", async () => {
-        try {
-          const res = await fetch("/api/auth/logout", { method: "POST" });
+      const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+          try {
+            const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+              method: "POST",
+              credentials: 'include'
+            });
+            if (res.ok) {
+              window.location.href = "/login.html";
+            } else {
+              showMessage('Error al cerrar sesión', 'error');
+            }
+          } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+            showMessage('Error de red al cerrar sesión', 'error');
+          }
+        });
+      }
+    });
           if (res.ok) {
             window.location.href = "/login.html";
           } else {
