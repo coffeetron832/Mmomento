@@ -72,76 +72,64 @@
   }
 
   .butterfly-scene {
-    width: 200px;
-    height: 200px;
-    perspective: 1000px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
 
-  .butterfly {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    animation: float 4s ease-in-out infinite;
-    transform-style: preserve-3d;
-  }
+.pixel-butterfly {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  grid-template-columns: repeat(8, 8px);
+  grid-template-rows: repeat(8, 8px);
+  animation: float 3s ease-in-out infinite;
+}
 
-  .body {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 60px;
-    background: #999;
-    border-radius: 5px;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-  }
+.pixel {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
 
-  .wing {
-    position: absolute;
-    top: 50%;
-    width: 60px;
-    height: 60px;
-    background: radial-gradient(circle at center, #ccc, #666);
-    border-radius: 60% 40% 60% 40%;
-    opacity: 0.9;
-    transform-origin: center right;
-    animation: flap 1s ease-in-out infinite;
-  }
+/* Alas izquierda */
+.p1  { background: #9b5de5; grid-column: 2; grid-row: 3; }
+.p2  { background: #9b5de5; grid-column: 2; grid-row: 4; }
+.p3  { background: #9b5de5; grid-column: 1; grid-row: 4; }
+.p4  { background: #9b5de5; grid-column: 1; grid-row: 5; }
+.p5  { background: #9b5de5; grid-column: 2; grid-row: 5; }
 
-  .left-wing {
-    left: -60px;
-    transform-origin: right center;
-    animation-delay: 0s;
-  }
+/* Cuerpo */
+.p6  { background: #333333; grid-column: 4; grid-row: 3; }
+.p7  { background: #333333; grid-column: 4; grid-row: 4; }
+.p8  { background: #333333; grid-column: 4; grid-row: 5; }
 
-  .right-wing {
-    right: -60px;
-    transform-origin: left center;
-    animation-delay: 0.5s;
-  }
+/* Alas derecha */
+.p9  { background: #9b5de5; grid-column: 6; grid-row: 3; }
+.p10 { background: #9b5de5; grid-column: 6; grid-row: 4; }
+.p11 { background: #9b5de5; grid-column: 7; grid-row: 4; }
+.p12 { background: #9b5de5; grid-column: 7; grid-row: 5; }
+.p13 { background: #9b5de5; grid-column: 6; grid-row: 5; }
 
-  @keyframes flap {
-    0%, 100% {
-      transform: rotateY(0deg);
-    }
-    50% {
-      transform: rotateY(35deg);
-    }
-  }
+/* Antenas */
+.p14 { background: #888888; grid-column: 3; grid-row: 2; }
+.p15 { background: #888888; grid-column: 5; grid-row: 2; }
 
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+/* Cabeza */
+.p16 { background: #333333; grid-column: 4; grid-row: 2; }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
   }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 
   h1 {
     font-size: 2.5rem;
@@ -287,12 +275,25 @@
   <div class="content-wrapper">
     <!-- Mariposa animada -->
     <div class="butterfly-scene">
-      <div class="butterfly">
-        <div class="wing left-wing"></div>
-        <div class="body"></div>
-        <div class="wing right-wing"></div>
-      </div>
-    </div>
+  <div class="pixel-butterfly">
+    <div class="pixel p1"></div>
+    <div class="pixel p2"></div>
+    <div class="pixel p3"></div>
+    <div class="pixel p4"></div>
+    <div class="pixel p5"></div>
+    <div class="pixel p6"></div>
+    <div class="pixel p7"></div>
+    <div class="pixel p8"></div>
+    <div class="pixel p9"></div>
+    <div class="pixel p10"></div>
+    <div class="pixel p11"></div>
+    <div class="pixel p12"></div>
+    <div class="pixel p13"></div>
+    <div class="pixel p14"></div>
+    <div class="pixel p15"></div>
+    <div class="pixel p16"></div>
+  </div>
+</div>
 
     <!-- Frase central -->
     <h1 class="fade-scale">TheMural: el lugar donde lo efímero importa</h1>
