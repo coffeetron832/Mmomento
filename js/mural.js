@@ -537,6 +537,11 @@ window.addEventListener('beforeunload', () => {
 window.addEventListener('DOMContentLoaded', async () => {
   if (!verificarToken()) return;
   usuario = obtenerUsuarioDesdeToken();
+  const btnSoulprint = document.getElementById('btnSoulprint');
+if (btnSoulprint && usuario) {
+  btnSoulprint.href = `soulprint.html?user=${encodeURIComponent(usuario)}`;
+}
+
   console.log('👤 Usuario:', usuario);
 
 
