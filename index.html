@@ -71,47 +71,27 @@
     text-align: center;
   }
 
-  .butterfly-scene {
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.pixel-butterfly {
-  display: grid;
-  grid-template-columns: repeat(8, 8px);
-  grid-template-rows: repeat(8, 8px);
-  gap: 1px;
+  .butterfly-icon {
+  display: inline-block;
+  line-height: 0;
   animation: float 3s ease-in-out infinite;
 }
 
-.pixel {
+.pixel-row {
+  display: flex;
+}
+
+.pix {
   width: 8px;
   height: 8px;
-  background-color: transparent;
-}
-
-/* Colores de la mariposa */
-.pixel-butterfly .p1, .p2, .p3, .p4, .p5, .p6,
-.p7, .p8, .p9, .p10, .p11, .p12,
-.p13, .p14, .p15, .p16, .p17, .p18, .p19, .p20,
-.p21, .p22, .p23, .p24, .p25, .p26,
-.p27, .p28, .p29, .p30, .p31, .p32,
-.p33, .p34 {
-  background-color: #9b5de5;
-}
-
-/* Cuerpo (central oscuro) */
-.p16, .p23, .p28, .p31, .p33 {
   background-color: #333;
+  image-rendering: pixelated;
 }
 
+/* Animación suave flotando */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+  50% { transform: translateY(-4px); }
 }
 
 
@@ -259,82 +239,34 @@
   <!-- Contenido principal -->
   <div class="content-wrapper">
     <!-- Mariposa animada -->
-    <div class="butterfly-scene">
-  <div class="pixel-butterfly">
-    <!-- Se agregan 64 divs para 8x8 -->
-    <div class="pixel"></div> <!-- fila 1 -->
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-    <div class="pixel p1"></div>
-    <div class="pixel p2"></div>
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-
-    <div class="pixel"></div> <!-- fila 2 -->
-    <div class="pixel p3"></div>
-    <div class="pixel"></div>
-    <div class="pixel p4"></div>
-    <div class="pixel p5"></div>
-    <div class="pixel"></div>
-    <div class="pixel p6"></div>
-    <div class="pixel"></div>
-
-    <div class="pixel p7"></div> <!-- fila 3 -->
-    <div class="pixel"></div>
-    <div class="pixel p8"></div>
-    <div class="pixel p9"></div>
-    <div class="pixel p10"></div>
-    <div class="pixel p11"></div>
-    <div class="pixel"></div>
-    <div class="pixel p12"></div>
-
-    <div class="pixel p13"></div> <!-- fila 4 -->
-    <div class="pixel p14"></div>
-    <div class="pixel p15"></div>
-    <div class="pixel p16"></div>
-    <div class="pixel p17"></div>
-    <div class="pixel p18"></div>
-    <div class="pixel p19"></div>
-    <div class="pixel p20"></div>
-
-    <div class="pixel"></div> <!-- fila 5 -->
-    <div class="pixel p21"></div>
-    <div class="pixel p22"></div>
-    <div class="pixel p23"></div>
-    <div class="pixel p24"></div>
-    <div class="pixel p25"></div>
-    <div class="pixel p26"></div>
-    <div class="pixel"></div>
-
-    <div class="pixel"></div> <!-- fila 6 -->
-    <div class="pixel"></div>
-    <div class="pixel p27"></div>
-    <div class="pixel p28"></div>
-    <div class="pixel p29"></div>
-    <div class="pixel p30"></div>
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-
-    <div class="pixel"></div> <!-- fila 7 -->
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-    <div class="pixel p31"></div>
-    <div class="pixel p32"></div>
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-
-    <div class="pixel"></div> <!-- fila 8 -->
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-    <div class="pixel p33"></div>
-    <div class="pixel p34"></div>
-    <div class="pixel"></div>
-    <div class="pixel"></div>
-    <div class="pixel"></div>
+    <div class="butterfly-icon">
+  <div class="pixel-row">
+    <div></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div></div>
+  </div>
+  <div class="pixel-row">
+    <div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div>
+  </div>
+  <div class="pixel-row">
+    <div class="pix"></div><div></div><div class="pix"></div><div class="pix"></div><div class="pix"></div><div></div><div class="pix"></div>
+  </div>
+  <div class="pixel-row">
+    <div class="pix"></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div class="pix"></div>
+  </div>
+  <div class="pixel-row">
+    <div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div>
+  </div>
+  <div class="pixel-row">
+    <div></div><div></div><div class="pix"></div><div class="pix"></div><div class="pix"></div><div></div><div></div>
+  </div>
+  <div class="pixel-row">
+    <div></div><div class="pix"></div><div></div><div class="pix"></div><div></div><div class="pix"></div><div></div>
+  </div>
+  <div class="pixel-row">
+    <div class="pix"></div><div></div><div></div><div class="pix"></div><div></div><div></div><div class="pix"></div>
   </div>
 </div>
+
+  
 
 
     <!-- Frase central -->
