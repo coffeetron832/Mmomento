@@ -125,6 +125,22 @@
   font-size: 1rem;
 }
 
+    .modal-slide {
+  display: none;
+  opacity: 0;
+  transform: translateX(30px); /* Entrada desde la derecha */
+  transition: all 0.5s ease;
+  position: absolute;
+  width: 100%;
+}
+
+.modal-slide.active {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+  position: relative;
+}
+
 
 </style>
 </head>
@@ -245,14 +261,19 @@
     lucide.createIcons();
 
     
-  let slideIndex = 0;
+  let currentSlide = 0;
 const slides = document.querySelectorAll('.modal-slide');
 
-function cambiarSlide(n) {
-  slides[slideIndex].classList.remove('active');
-  slideIndex = (slideIndex + n + slides.length) % slides.length;
-  slides[slideIndex].classList.add('active');
+function cambiarSlide(direccion) {
+  slides[currentSlide].classList.remove('active');
+
+  currentSlide += direccion;
+  if (currentSlide < 0) currentSlide = slides.length - 1;
+  if (currentSlide >= slides.length) currentSlide = 0;
+
+  slides[currentSlide].classList.add('active');
 }
+
     
     document.addEventListener("DOMContentLoaded", () => {
       const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
