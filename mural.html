@@ -68,34 +68,6 @@
     color: var(--accent);
   }
 
-    .modal-slide {
-  display: none;
-  transition: opacity 0.4s ease;
-}
-
-.modal-slide.active {
-  display: block;
-}
-
-.modal-controls {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.modal-controls button {
-  background-color: #333;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.modal-controls button:hover {
-  background-color: #555;
-}
 
     /* Modal container: fondo oscuro, padding y borde sutil */
 #mensajeInicial.modal {
@@ -126,20 +98,24 @@
 }
 
     .modal-slide {
+  /* No usamos display:none para permitir transiciones */
   opacity: 0;
   pointer-events: none;
   position: absolute;
-  transform: translateX(30px);
-  transition: all 0.5s ease;
+  top: 0;
+  left: 0;
   width: 100%;
+  transform: translateX(30px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .modal-slide.active {
   opacity: 1;
   pointer-events: auto;
-  position: relative;
+  position: relative; /* Ahora se “inserta” en el flujo */
   transform: translateX(0);
 }
+
 
 
 
