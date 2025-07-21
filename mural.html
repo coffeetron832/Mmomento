@@ -126,20 +126,21 @@
 }
 
     .modal-slide {
-  display: none;
   opacity: 0;
-  transform: translateX(30px); /* Entrada desde la derecha */
-  transition: all 0.5s ease;
+  pointer-events: none;
   position: absolute;
+  transform: translateX(30px);
+  transition: all 0.5s ease;
   width: 100%;
 }
 
 .modal-slide.active {
-  display: block;
   opacity: 1;
-  transform: translateX(0);
+  pointer-events: auto;
   position: relative;
+  transform: translateX(0);
 }
+
 
 
 </style>
@@ -265,14 +266,17 @@
 const slides = document.querySelectorAll('.modal-slide');
 
 function cambiarSlide(direccion) {
-  slides[currentSlide].classList.remove('active');
+  const slideActual = slides[currentSlide];
+  slideActual.classList.remove('active');
 
   currentSlide += direccion;
   if (currentSlide < 0) currentSlide = slides.length - 1;
   if (currentSlide >= slides.length) currentSlide = 0;
 
-  slides[currentSlide].classList.add('active');
+  const slideNuevo = slides[currentSlide];
+  slideNuevo.classList.add('active');
 }
+
 
     
     document.addEventListener("DOMContentLoaded", () => {
