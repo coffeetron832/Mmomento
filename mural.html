@@ -67,6 +67,36 @@
   #logoutBtn:hover {
     color: var(--accent);
   }
+
+    .modal-slide {
+  display: none;
+  transition: opacity 0.4s ease;
+}
+
+.modal-slide.active {
+  display: block;
+}
+
+.modal-controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-controls button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-controls button:hover {
+  background-color: #555;
+}
+
 </style>
 </head>
 <body>
@@ -78,13 +108,39 @@
   </button>
 
   <div id="modalOverlay">
-    <div id="mensajeInicial" class="modal">
-      <p>🧱 El Mural del Momento es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
-      <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
-      <br />
-      <button onclick="cerrarMensaje()">Cerrar</button>
+  <div id="mensajeInicial" class="modal">
+    
+    <div class="modal-slide active">
+      <p>🧱 <strong>El Mural del Momento</strong> es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
     </div>
+
+    <div class="modal-slide">
+      <p>🎨 <strong>Reglas básicas:</strong><br>
+        • Sé respetuoso y auténtico.<br>
+        • Nada ofensivo, ilegal o violento.<br>
+        • Recuerda: todo lo que subas se borrará a las 12:00 a. m.<br>
+        • No necesitas ser artista, solo ser tú.
+      </p>
+    </div>
+
+    <div class="modal-slide">
+      <p>💡 <strong>¿Por qué efímero?</strong><br>
+        Porque la emoción del momento vale más que la permanencia.<br>
+        Este mural existe solo por hoy.<br>
+        Deja una chispa... y suéltala.
+      </p>
+    </div>
+
+    <div class="modal-controls">
+      <button id="prevBtn" onclick="cambiarSlide(-1)">⬅️</button>
+      <button id="nextBtn" onclick="cambiarSlide(1)">➡️</button>
+    </div>
+
+    <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
+    <br />
+    <button onclick="cerrarMensaje()">Cerrar</button>
   </div>
+</div>
 
   <section class="formulario flotante popover">
     <label>¿Qué quieres dejar hoy?</label>
@@ -168,6 +224,16 @@
     window.location.href = "/index.html";
   }
 })();
+
+
+      let slideIndex = 0;
+const slides = document.querySelectorAll('.modal-slide');
+
+function cambiarSlide(n) {
+  slides[slideIndex].classList.remove('active');
+  slideIndex = (slideIndex + n + slides.length) % slides.length;
+  slides[slideIndex].classList.add('active');
+}
 
 
       // ✅ Mostrar mensaje de bienvenida
