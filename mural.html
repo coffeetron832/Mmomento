@@ -97,6 +97,35 @@
   background-color: #555;
 }
 
+    /* Modal container: fondo oscuro, padding y borde sutil */
+#mensajeInicial.modal {
+  background: #111;                  /* Contraste con el fondo general */
+  padding: 1.5rem;                  /* Espacio interior */
+  border-radius: 8px;               /* Bordes redondeados */
+  border: 1px solid var(--subtle);  /* Borde gris suave */
+  max-width: 500px;                 /* Ancho máximo para no alargar demasiado */
+  margin: 2rem auto;                /* Centrado horizontal y separación vertical */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* Mejora de tipografía dentro del modal */
+.modal-slide p {
+  line-height: 1.6;   /* Más espacio entre líneas */
+  margin-bottom: 1rem;
+  font-size: 1rem;    /* Ajusta según convenga */
+}
+
+/* Botones y controles: un poco más de espaciado */
+.modal-controls {
+  margin-top: 1.5rem;
+}
+
+.modal-controls button {
+  padding: 8px 14px;
+  font-size: 1rem;
+}
+
+
 </style>
 </head>
 <body>
