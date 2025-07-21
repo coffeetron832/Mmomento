@@ -170,34 +170,45 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 10px;
-  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   gap: 10px;
+  background-color: transparent;
 }
 
     #notifList {
   list-style: none;
   padding: 0;
   margin: 0;
+  color: #eee; /* color del texto */
 }
 
     .eliminar-notif {
   background: transparent;
   border: none;
-  color: crimson;
+  color: #ff6b6b;
   font-size: 16px;
   cursor: pointer;
+  transition: color 0.2s;
+}
+
+.eliminar-notif:hover {
+  color: #ff4c4c;
 }
 
 .read {
-  background-color: #f9f9f9;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .unread {
-  background-color: #fffce6;
+  background-color: rgba(255, 255, 255, 0.1);
   font-weight: bold;
 }
 
+.notif-contenido {
+  flex: 1;
+  color: #f0f0f0;
+}
 
 </style>
 </head>
