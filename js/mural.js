@@ -28,8 +28,7 @@ function verificarToken() {
   return true;
 }
 
-// Zoom y pan
-const mural = document.getElementById('mural');
+// Zoom y pan\const mural = document.getElementById('mural');
 const muralContainer = document.getElementById('muralContainer');
 const zoomInBtn = document.getElementById('zoomIn');
 const zoomOutBtn = document.getElementById('zoomOut');
@@ -158,7 +157,8 @@ function mostrarMisAportes(datos) {
   });
 }
 
-// Modal: cerrar y recordar\ nfunction cerrarMensaje() {
+// Modal: cerrar y recordar
+function cerrarMensaje() {
   const noMostrar = document.getElementById('noMostrarCheckbox').checked;
   if (noMostrar) {
     localStorage.setItem('noMostrarModal', 'true');
