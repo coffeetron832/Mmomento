@@ -1,5 +1,6 @@
-/* mural.js - Simplificado solo para aportes de texto */
+/* mural.js - Simplificado solo para aportes de texto, usando API_BASE_URL */
 
+const API_BASE_URL = 'https://momento-backend-production.up.railway.app'; // Cambia según tu entorno
 let usuario;
 const aportesMostrados = new Set();
 
@@ -54,14 +55,12 @@ muralContainer?.addEventListener('mousedown', e => {
   startY = e.clientY - posY;
   muralContainer.style.cursor = 'grabbing';
 });
-
 muralContainer?.addEventListener('mousemove', e => {
   if (!isDragging) return;
   posX = e.clientX - startX;
   posY = e.clientY - startY;
   updateTransform();
 });
-
 ['mouseup', 'mouseleave'].forEach(evt =>
   muralContainer?.addEventListener(evt, () => {
     isDragging = false;
@@ -73,14 +72,15 @@ muralContainer?.addEventListener('mousemove', e => {
 async function agregarAlMural() {
   if (!verificarToken()) return;
 
-  const contenido = document.getElementById('contenido').value.trim();
+  const contenidoElemento = document.getElementById('contenido');
+  const contenido = contenidoElemento.value.trim();
   if (!contenido) {
     alert('Por favor escribe algo antes de compartir.');
     return;
   }
 
   try {
-    const response = await fetch('/api/mural', {
+    const response = await fetch(`${API_BASE_URL}/api/mural`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ async function agregarAlMural() {
     });
 
     if (response.ok) {
-      document.getElementById('contenido').value = '';
+      contenidoElemento.value = '';
       cargarAportes();
     } else {
       const err = await response.json();
@@ -127,13 +127,13 @@ function mostrarAporte({ _id, contenido, usuario: autor }) {
   mural.appendChild(card);
 }
 
-// Cargar aportes
+// Cargar aportes del día
 async function cargarAportes() {
   try {
     mural.innerHTML = '';
     aportesMostrados.clear();
 
-    const res = await fetch('/api/mural/today');
+    const res = await fetch(`${API_BASE_URL}/api/mural/today`);
     if (!res.ok) throw new Error(`Error ${res.status}`);
 
     const datos = await res.json();
@@ -158,8 +158,7 @@ function mostrarMisAportes(datos) {
   });
 }
 
-// Modal: cerrar y recordar
-function cerrarMensaje() {
+// Modal: cerrar y recordar\ nfunction cerrarMensaje() {
   const noMostrar = document.getElementById('noMostrarCheckbox').checked;
   if (noMostrar) {
     localStorage.setItem('noMostrarModal', 'true');
@@ -177,6 +176,6 @@ window.addEventListener('DOMContentLoaded', () => {
   cargarAportes();
 });
 
-// Acceso global
+// Exponer funciones globales
 window.agregarAlMural = agregarAlMural;
 window.cerrarMensaje = cerrarMensaje;
