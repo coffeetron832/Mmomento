@@ -324,11 +324,12 @@ function cambiarSlide(direccion) {
 
       const token = localStorage.getItem("token");
 
+// ===== Notificaciones =====
 async function cargarNotificaciones() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/notifications`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -337,6 +338,8 @@ async function cargarNotificaciones() {
     const data = await res.json();
     const notifList = document.getElementById("notifList");
     const notifBadge = document.getElementById("notifBadge");
+
+    if (!notifList || !notifBadge) return; // Verifica que existan
 
     notifList.innerHTML = "";
 
@@ -358,13 +361,22 @@ async function cargarNotificaciones() {
 }
 
 // Alternar panel
-document.getElementById("notifBtn").addEventListener("click", () => {
+function configurarPanelNotificaciones() {
+  const btn = document.getElementById("notifBtn");
   const panel = document.getElementById("notifPanel");
-  panel.classList.toggle("hidden");
-});
 
-// Cargar notificaciones al inicio
-cargarNotificaciones();
+  if (!btn || !panel) return;
+
+  btn.addEventListener("click", () => {
+    panel.classList.toggle("hidden");
+
+    // Si lo deseas, limpiar el badge al abrirlo (marcar como leído visualmente)
+    if (!panel.classList.contains("hidden")) {
+      const badge = document.getElementById("notifBadge");
+      if (badge) badge.textContent = "";
+    }
+  });
+}
 
 
       // ✅ Mostrar mensaje de bienvenida
