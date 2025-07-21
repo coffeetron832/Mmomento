@@ -1,7 +1,12 @@
-  function obtenerUsuarioDesdeToken() {
+/* mural.js - Simplified for text-only aportes */
+
+// Global variables\let usuario;
+const aportesMostrados = new Set();
+
+// Helpers
+function obtenerUsuarioDesdeToken() {
   const token = localStorage.getItem('token');
   if (!token) return null;
-
   try {
     const payloadBase64 = token.split('.')[1];
     const payloadDecoded = atob(payloadBase64);
@@ -13,621 +18,156 @@
   }
 }
 
-
-
-    // ✅ Definimos usuario como variable global al inicio
-let usuario; // ✅ Declaración vacía global
-// ✅ Declarar este Set al inicio del archivo, antes de usarlo
-const aportesMostrados = new Set();
-
-
 function verificarToken() {
   const token = localStorage.getItem('token');
-
   if (!token) {
     alert('Debes iniciar sesión para usar el mural.');
-    window.location.href = '/index.html'; // o la ruta que uses para login
+    window.location.href = '/index.html';
     return false;
   }
   return true;
 }
 
+// Zoom & Pan for mural
+const mural = document.getElementById('mural');
+const muralContainer = document.getElementById('muralContainer');
+const zoomInBtn = document.getElementById('zoomIn');
+const zoomOutBtn = document.getElementById('zoomOut');
+let scale = 1, posX = 0, posY = 0;
+let isDragging = false, startX, startY;
 
+function updateTransform() {
+  mural.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+}
 
-const toggleBtn = document.getElementById('toggleUIBtn');
-const formulario = document.querySelector('.formulario');
-const misAportes = document.getElementById('misAportes');
-
-let uiVisible = true;
-
-
-
-    // 🕛 Borrar mural si es un nuevo día
-    const hoy = new Date().toDateString();
-    const ultimaVisita = localStorage.getItem('muralFecha');
-    if (ultimaVisita !== hoy) {
-      localStorage.setItem('muralFecha', hoy);
-      document.getElementById('mural').innerHTML = '';
-    }
-
-    const tipo = document.getElementById('tipo');
-    const contenido = document.getElementById('contenido');
-    const imagenInput = document.getElementById('imagenInput');
-    const mural = document.getElementById('mural');
-    const preview = document.getElementById('preview');
-    const previewImg = document.getElementById('previewImg');
-    const canvas = document.getElementById('canvasDoodle');
-    const ctx = canvas.getContext('2d');
-    const colorPicker = document.getElementById('colorPicker');
-    const doodleControls = document.getElementById('doodleControls');
-
-   let scale = 1, posX = 0, posY = 0;
-let isDragging = false;
-let isPinching = false;
-let startX, startY;
-let initialDistance = null;
-let initialScale = scale;
-
-
-
-  const muralContainer = document.getElementById('muralContainer');
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn = document.getElementById('zoomOut');
-
-  function updateTransform() {
-    mural.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-  }
-
-  zoomInBtn.addEventListener('click', () => {
-    scale = Math.min(2, scale + 0.1);
-    updateTransform();
-  });
-
-  zoomOutBtn.addEventListener('click', () => {
-    scale = Math.max(0.4, scale - 0.1);
-    updateTransform();
-  });
-
-  muralContainer.addEventListener('mousedown', e => {
-    isDragging = true;
-    startX = e.clientX - posX;
-    startY = e.clientY - posY;
-    muralContainer.style.cursor = 'grabbing';
-  });
-
-  muralContainer.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    posX = e.clientX - startX;
-    posY = e.clientY - startY;
-    updateTransform();
-  });
-
-  muralContainer.addEventListener('mouseup', () => {
-    isDragging = false;
-    muralContainer.style.cursor = 'grab';
-  });
-
-  muralContainer.addEventListener('mouseleave', () => {
-    isDragging = false;
-    muralContainer.style.cursor = 'grab';
-  });
-
-    let drawing = false;
-
-    tipo.addEventListener('change', () => {
-      const tipoVal = tipo.value;
-      contenido.style.display = tipoVal === 'imagen' || tipoVal === 'doodle' ? 'none' : 'block';
-      imagenInput.style.display = tipoVal === 'imagen' ? 'block' : 'none';
-      canvas.style.display = tipoVal === 'doodle' ? 'block' : 'none';
-      doodleControls.style.display = tipoVal === 'doodle' ? 'flex' : 'none';
-      preview.style.display = tipoVal === 'imagen' ? 'block' : 'none';
-    });
-
-    imagenInput.addEventListener('change', () => {
-      const archivo = imagenInput.files[0];
-      if (!archivo) return;
-      const img = new Image();
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        img.onload = function() {
-          if (img.width > 400 || img.height > 400) {
-            alert('La imagen supera los 400x400px. Por favor, súbela más pequeña.');
-            imagenInput.value = '';
-            previewImg.src = '';
-            return;
-          }
-          previewImg.src = e.target.result;
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(archivo);
-    });
-
-    canvas.addEventListener('mousedown', () => drawing = true);
-    canvas.addEventListener('mouseup', () => drawing = false);
-    canvas.addEventListener('mouseleave', () => drawing = false);
-    canvas.addEventListener('mousemove', e => {
-      if (!drawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.fillStyle = colorPicker.value;
-      ctx.beginPath();
-      ctx.arc(x, y, 2, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-
-muralContainer.addEventListener('touchstart', e => {
-  if (e.touches.length === 1) {
-    // Empieza desplazamiento con un dedo
-    isDragging = true;
-    const touch = e.touches[0];
-    startX = touch.clientX - posX;
-    startY = touch.clientY - posY;
-    muralContainer.style.cursor = 'grabbing';
-  } else if (e.touches.length === 2) {
-    // Empieza gesto de zoom con dos dedos
-    isDragging = false;
-    isPinching = true;
-    initialDistance = getDistance(e.touches[0], e.touches[1]);
-    initialScale = scale;
-  }
-}, { passive: false });
-
-muralContainer.addEventListener('touchmove', e => {
-  if (isDragging && e.touches.length === 1) {
-    const touch = e.touches[0];
-    posX = touch.clientX - startX;
-    posY = touch.clientY - startY;
-    updateTransform();
-  } else if (isPinching && e.touches.length === 2) {
-    e.preventDefault();
-    const newDistance = getDistance(e.touches[0], e.touches[1]);
-    const scaleChange = newDistance / initialDistance;
-    scale = Math.min(2, Math.max(0.4, initialScale * scaleChange));
-    updateTransform();
-  }
-}, { passive: false });
-
-muralContainer.addEventListener('touchend', e => {
-  if (e.touches.length < 2) {
-    isDragging = false;
-    isPinching = false;
-    muralContainer.style.cursor = 'grab';
-  }
+zoomInBtn.addEventListener('click', () => {
+  scale = Math.min(2, scale + 0.1);
+  updateTransform();
+});
+zoomOutBtn.addEventListener('click', () => {
+  scale = Math.max(0.4, scale - 0.1);
+  updateTransform();
 });
 
+muralContainer.addEventListener('mousedown', e => {
+  isDragging = true;
+  startX = e.clientX - posX;
+  startY = e.clientY - posY;
+  muralContainer.style.cursor = 'grabbing';
+});
 
+muralContainer.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  posX = e.clientX - startX;
+  posY = e.clientY - startY;
+  updateTransform();
+});
 
-    function limpiarCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+muralContainer.addEventListener('mouseup', () => {
+  isDragging = false;
+  muralContainer.style.cursor = 'grab';
+});
+muralContainer.addEventListener('mouseleave', () => {
+  isDragging = false;
+  muralContainer.style.cursor = 'grab';
+});
 
-    async function agregarAlMural() {
-  const contenido = document.getElementById("contenido").value.trim();
+// Function to add a new aporte
+async function agregarAlMural() {
+  if (!verificarToken()) return;
 
+  const contenido = document.getElementById('contenido').value.trim();
   if (!contenido) {
-    alert("Por favor escribe algo antes de compartir.");
+    alert('Por favor escribe algo antes de compartir.');
     return;
   }
 
   try {
-    const response = await fetch("/api/mural", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ tipo: "texto", contenido })
-    });
-
-    if (response.ok) {
-      document.getElementById("contenido").value = "";
-      obtenerMural(); // Vuelve a cargar el mural
-    } else {
-      const err = await response.json();
-      alert(err.error || "Error al subir el aporte.");
-    }
-  } catch (error) {
-    console.error("Error al subir el aporte:", error);
-    alert("Error al subir el aporte.");
-  }
-}
-
-
-
-  async function enviarAlBackend(tipo, contenido) {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Debes iniciar sesión para usar el mural.');
-    throw new Error('Token no encontrado');
-  }
-
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural', {
+    const response = await fetch('/api/mural', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
-      body: JSON.stringify({ tipo, contenido })
+      body: JSON.stringify({ contenido })
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      // muestro siempre el mensaje que venga del backend (403 o 400)
-      alert(data.message || 'Error al crear aporte');
-      return;
+    if (response.ok) {
+      document.getElementById('contenido').value = '';
+      cargarAportes();
+    } else {
+      const err = await response.json();
+      alert(err.message || 'Error al subir el aporte.');
     }
-
-    mostrarAporte(data.data);
-  } catch (err) {
-    console.error('Error guardando en el mural:', err);
-    alert('Error de conexión al crear aporte.');
+  } catch (error) {
+    console.error('Error al subir el aporte:', error);
+    alert('Error al subir el aporte.');
   }
 }
 
+// Display a single aporte on the mural
+function mostrarAporte({ _id, contenido, usuario: autor }) {
+  if (aportesMostrados.has(_id)) return;
+  aportesMostrados.add(_id);
 
-function mostrarAporte({ _id, tipo, contenido, usuario }) {
-  if (aportesMostrados.has(_id)) return; // ✅ Evita duplicados
+  const card = document.createElement('div');
+  card.classList.add('mural-item');
+  card.id = `aporte-${_id}`;
+  card.title = `Aporte de: ${autor}`;
 
-  aportesMostrados.add(_id); // ✅ Marca este aporte como ya mostrado
-
-  const nuevo = document.createElement('div');
-  nuevo.classList.add('mural-item');
-  nuevo.id = `aporte-${_id}`;
-
+  // Random placement
   const { offsetWidth: w, offsetHeight: h } = mural;
-  const x = Math.floor(Math.random() * (w - 200));
-  const y = Math.floor(Math.random() * (h - 200));
-  const rot = `${Math.floor(Math.random() * 10 - 5)}deg`;
-  const scale = `${0.95 + Math.random() * 0.1}`;
-  nuevo.style.left = `${x}px`;
-  nuevo.style.top = `${y}px`;
-  nuevo.style.setProperty('--rot', rot);
-  nuevo.style.setProperty('--scale', scale);
-  nuevo.title = `Aporte de: ${usuario}`;
+  const x = Math.random() * (w - 200);
+  const y = Math.random() * (h - 200);
+  card.style.left = `${x}px`;
+  card.style.top = `${y}px`;
+  card.style.setProperty('--rot', `${Math.random() * 10 - 5}deg`);
+  card.style.setProperty('--scale', `${0.95 + Math.random() * 0.1}`);
 
-  if (tipo === 'frase') {
-    nuevo.classList.add('frase');
-    nuevo.textContent = contenido;
-  } else if (tipo === 'emoji') {
-    nuevo.classList.add('emoji');
-    nuevo.textContent = contenido;
-  } else if (tipo === 'imagen' || tipo === 'doodle') {
-    const img = new Image();
-    img.src = contenido;
-    img.onload = () => mural.appendChild(nuevo);
-    nuevo.appendChild(img);
-  }
+  // Content
+  const p = document.createElement('p');
+  p.textContent = contenido;
+  card.appendChild(p);
 
-  mural.appendChild(nuevo);
+  mural.appendChild(card);
 }
 
-
-
-cargarAportes();
-
-// Reemplazar esta parte en cargarAportes()
+// Load today's aportes
 async function cargarAportes() {
   try {
     mural.innerHTML = '';
-    aportesMostrados.clear(); // ✅ También limpiamos el Set
-    
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
+    aportesMostrados.clear();
+
+    const res = await fetch('/api/mural/today');
     const datos = await res.json();
 
-console.log('🧩 Aportes recibidos:', datos); // ← Agrega esto
-    console.log('👤 Usuario localStorage:', usuario);
-
-    datos.forEach(aporte => mostrarAporte(aporte));
-    mostrarMisAportes(datos); // ← NUEVO
+    datos.forEach(a => mostrarAporte(a));
+    mostrarMisAportes(datos);
   } catch (err) {
     console.error('Error al cargar el mural:', err);
   }
 }
 
-
-
-function cerrarMensaje() {
-  const noMostrar = document.getElementById('noMostrarCheckbox').checked;
-  if (noMostrar) {
-    localStorage.setItem('noMostrarMensajeMural', 'true');
-  }
-  document.getElementById('modalOverlay').style.display = 'none';
-}
-
-// 🧠 Palabras prohibidas
-const palabrasProhibidas = ['odio', 'muerte', 'estúpido', 'imbécil'];
-const tiempoSuspension = 30 * 60 * 1000; // 30 minutos
-
-function contienePalabraProhibida(texto) {
-  const palabras = texto.toLowerCase().split(/\s+/);
-  return palabrasProhibidas.some(prohibida => palabras.includes(prohibida));
-}
-
-function estaSuspendido() {
-  const finSuspension = localStorage.getItem('momentoSuspension');
-  return finSuspension && new Date().getTime() < parseInt(finSuspension);
-}
-
-// Mostrar aportes del usuario y sus tiempos restantes
+// Show user's aportes panel
 function mostrarMisAportes(datos) {
-  const contenedor = document.getElementById('listaMisAportes');
-  contenedor.innerHTML = '';
+  const cont = document.getElementById('listaMisAportes');
+  cont.innerHTML = '';
 
-  const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
-
-  const ahora = new Date();
-
-  datos
-    .filter(aporte => aporte.usuario === usuario)
-    .forEach(aporte => {
+  datos.filter(a => a.usuario === usuario)
+    .forEach(a => {
       const div = document.createElement('div');
       div.className = 'aporte-propio';
-
-      const span = document.createElement('span');
-      span.textContent = `• ${aporte.tipo}`;
-
-      const tiempoRestante = document.createElement('div');
-      tiempoRestante.className = 'tiempo-restante';
-      const creado = new Date(aporte.fechaCreacion);
-      const expiracion = new Date(creado.getTime() + 6 * 60 * 60 * 1000);
-      const msRestantes = expiracion - ahora;
-
-if (msRestantes <= 0) {
-  tiempoRestante.textContent = '✅ Expirado';
-} else {
-  const minutos = Math.floor(msRestantes / 60000);
-  const horas = Math.floor(minutos / 60);
-  const mins = minutos % 60;
-
-  if (horas > 0) {
-    tiempoRestante.textContent = `⏳ Quedan ${horas}h ${mins}min`;
-  } else if (minutos > 5) {
-    tiempoRestante.textContent = `⏳ Quedan ${minutos} min`;
-  } else {
-    tiempoRestante.textContent = '⏳ Últimos minutos';
-  }
-}
-
-      const btnBorrar = document.createElement('button');
-      btnBorrar.textContent = '✖';
-      btnBorrar.className = 'borrar-aporte';
-      btnBorrar.onclick = async () => {
-  if (!confirm('¿Eliminar este aporte?')) return;
-
-  const token = localStorage.getItem('token');
-const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${aporte._id}`, {
-  method: 'DELETE',
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    alert(data.message || 'Error al eliminar.');
-    return;
-  }
-
-  div.remove();
-};
-
-
-      div.appendChild(span);
-      div.appendChild(btnBorrar);
-      div.appendChild(tiempoRestante);
-      contenedor.appendChild(div);
+      div.textContent = a.contenido;
+      cont.appendChild(div);
     });
 }
 
-async function cargarMisAportes() {
-const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
-
-  const lista = document.getElementById('listaAportesUsuario');
-  lista.innerHTML = '';
-
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/today');
-    const datos = await res.json();
-    const mios = datos.filter(a => a.usuario === usuario);
-
-    mios.forEach(aporte => {
-      const div = document.createElement('div');
-      div.classList.add('aporte-usuario');
-
-      const tipo = aporte.tipo === 'emoji' ? 'Emoji' :
-                   aporte.tipo === 'frase' ? 'Frase' :
-                   aporte.tipo === 'imagen' ? 'Imagen' : 'Doodle';
-
-      const creado = new Date(aporte.fechaCreacion);
-      const restante = 86400 - Math.floor((Date.now() - creado.getTime()) / 1000);
-      const minutosRestantes = Math.floor(restante / 60);
-
-      div.innerHTML = `
-        <strong>${tipo}</strong><br/>
-        ${aporte.tipo === 'frase' || aporte.tipo === 'emoji' ? aporte.contenido : ''}
-        <div class="tiempo-restante">⏳ Quedan ${minutosRestantes} min</div>
-        <button onclick="borrarAporte('${aporte._id}')">🗑 Eliminar</button>
-      `;
-
-      lista.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error('Error cargando aportes del usuario:', err);
-  }
-}
-
-async function eliminarAporte(id, divElemento) {
-  const token = localStorage.getItem('token');
-if (!token) {
-  alert('Debes iniciar sesión para usar el mural.');
-  throw new Error('Token no encontrado');
-}
-
-
-
-  const confirmacion = confirm('¿Estás seguro de eliminar este aporte?');
-  if (!confirmacion) return;
-
-  try {
-    const res = await fetch(`https://momento-backend-production.up.railway.app/api/mural/${id}`, {
-      method: 'DELETE',
-      headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message || 'Error al eliminar');
-
-    // Eliminar visualmente el aporte del DOM
-    divElemento.remove();
-  } catch (err) {
-    alert(err.message);
-    console.error(err);
-  }
-}
-
-window.addEventListener('beforeunload', () => {
-  const token = localStorage.getItem('tokenMomento');
-  if (!token) return;
-
-  fetch('/api/ping', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}` },
-    keepalive: true
-  });
-});
-
+// Initialization on load
 window.addEventListener('DOMContentLoaded', async () => {
   if (!verificarToken()) return;
   usuario = obtenerUsuarioDesdeToken();
-  const btnSoulprint = document.getElementById('btnSoulprint');
-if (btnSoulprint && usuario) {
-  btnSoulprint.href = `soulprint.html?user=${encodeURIComponent(usuario)}`;
-}
-
-  console.log('👤 Usuario:', usuario);
-
-
-  
-    const suspension = await consultarSuspension();
-  const btnFormulario   = document.getElementById('btnFormulario');
-const btnMisAportes   = document.getElementById('btnMisAportes');
-const panelFormulario = document.querySelector('.formulario.flotante');
-const panelMisAportes = document.getElementById('misAportes');
-
-  
-function cerrarTodosLosPopovers() {
-  panelFormulario.classList.remove('mostrar');
-  panelMisAportes.classList.remove('mostrar');
-}
-
-function togglePanel(panel) {
-  if (panel.classList.contains('mostrar')) {
-    panel.classList.remove('mostrar');
-  } else {
-    // Forzar reflow para que sí ocurra la transición
-    panel.classList.remove('mostrar');
-    void panel.offsetWidth; // <- Esto reinicia el estilo del DOM
-    panel.classList.add('mostrar');
-  }
-}
-
-
-btnFormulario.addEventListener('click', e => {
-  e.stopPropagation();
-  togglePanel(panelFormulario);
-});
-
-btnMisAportes.addEventListener('click', e => {
-  e.stopPropagation();
-  togglePanel(panelMisAportes);
-});
-
-document.addEventListener('click', e => {
-  if (
-    !e.target.closest('.formulario.flotante') &&
-    !e.target.closest('#misAportes') &&
-    !e.target.closest('#footerButtons')
-  ) cerrarTodosLosPopovers();
-});
-
-
-  document.addEventListener('click', e => {
-    if (
-      !e.target.closest('.formulario.flotante') &&
-      !e.target.closest('#misAportes') &&
-      !e.target.closest('#footerButtons')
-    ) cerrarTodosLosPopovers();
-  });
-
-  // 👇 Este bloque ya cubre lo que estaba en el DOMContentLoaded duplicado
-  if (window.innerWidth <= 600) {
-    document.getElementById('toggleUIBtn').style.display = 'block';
-  }
-  if (!localStorage.getItem('noMostrarMensajeMural')) {
-    document.getElementById('mensajeInicial').style.display = 'block';
-  }
-
-
-  if (suspension && suspension.suspendido) {
-    alert(`Estás suspendido por lenguaje inapropiado hasta ${new Date(suspension.suspensionHasta).toLocaleTimeString()}. No podrás publicar.`);
-    formulario.style.display = 'none';
-
-    // Guardar suspensión actualizada en localStorage
-    localStorage.setItem('momentoSuspension', new Date(suspension.suspensionHasta).getTime().toString());
-
-  } else {
-    formulario.style.display = 'block';
-    localStorage.removeItem('momentoSuspension'); // Quitar suspensión si ya pasó
-  }
-
-  // ✅ Finalmente, carga los aportes
   cargarAportes();
 });
 
-
-async function consultarSuspension() {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
-
-  try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/users/suspension', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
-    if (!res.ok) {
-      console.error('Error al consultar suspensión:', await res.text());
-      return null;
-    }
-
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error('Error en consulta suspensión:', err);
-    return null;
-  }
-}
-
-
-
-
-
+// Make agregarAlMural available globally
+window.agregarAlMural = agregarAlMural;
