@@ -1,9 +1,8 @@
-/* mural.js - Simplified for text-only aportes */
+/* mural.js - Simplificado solo para aportes de texto */
 
-// Global variables\let usuario;
+let usuario;
 const aportesMostrados = new Set();
 
-// Helpers
 function obtenerUsuarioDesdeToken() {
   const token = localStorage.getItem('token');
   if (!token) return null;
@@ -28,7 +27,7 @@ function verificarToken() {
   return true;
 }
 
-// Zoom & Pan for mural
+// Zoom y pan
 const mural = document.getElementById('mural');
 const muralContainer = document.getElementById('muralContainer');
 const zoomInBtn = document.getElementById('zoomIn');
@@ -40,39 +39,37 @@ function updateTransform() {
   mural.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
 }
 
-zoomInBtn.addEventListener('click', () => {
+zoomInBtn?.addEventListener('click', () => {
   scale = Math.min(2, scale + 0.1);
   updateTransform();
 });
-zoomOutBtn.addEventListener('click', () => {
+zoomOutBtn?.addEventListener('click', () => {
   scale = Math.max(0.4, scale - 0.1);
   updateTransform();
 });
 
-muralContainer.addEventListener('mousedown', e => {
+muralContainer?.addEventListener('mousedown', e => {
   isDragging = true;
   startX = e.clientX - posX;
   startY = e.clientY - posY;
   muralContainer.style.cursor = 'grabbing';
 });
 
-muralContainer.addEventListener('mousemove', e => {
+muralContainer?.addEventListener('mousemove', e => {
   if (!isDragging) return;
   posX = e.clientX - startX;
   posY = e.clientY - startY;
   updateTransform();
 });
 
-muralContainer.addEventListener('mouseup', () => {
-  isDragging = false;
-  muralContainer.style.cursor = 'grab';
-});
-muralContainer.addEventListener('mouseleave', () => {
-  isDragging = false;
-  muralContainer.style.cursor = 'grab';
-});
+['mouseup', 'mouseleave'].forEach(evt =>
+  muralContainer?.addEventListener(evt, () => {
+    isDragging = false;
+    muralContainer.style.cursor = 'grab';
+  })
+);
 
-// Function to add a new aporte
+// Agregar nuevo aporte
 async function agregarAlMural() {
   if (!verificarToken()) return;
 
@@ -105,7 +102,7 @@ async function agregarAlMural() {
   }
 }
 
-// Display a single aporte on the mural
+// Mostrar un aporte
 function mostrarAporte({ _id, contenido, usuario: autor }) {
   if (aportesMostrados.has(_id)) return;
   aportesMostrados.add(_id);
@@ -115,7 +112,6 @@ function mostrarAporte({ _id, contenido, usuario: autor }) {
   card.id = `aporte-${_id}`;
   card.title = `Aporte de: ${autor}`;
 
-  // Random placement
   const { offsetWidth: w, offsetHeight: h } = mural;
   const x = Math.random() * (w - 200);
   const y = Math.random() * (h - 200);
@@ -124,7 +120,6 @@ function mostrarAporte({ _id, contenido, usuario: autor }) {
   card.style.setProperty('--rot', `${Math.random() * 10 - 5}deg`);
   card.style.setProperty('--scale', `${0.95 + Math.random() * 0.1}`);
 
-  // Content
   const p = document.createElement('p');
   p.textContent = contenido;
   card.appendChild(p);
@@ -132,42 +127,56 @@ function mostrarAporte({ _id, contenido, usuario: autor }) {
   mural.appendChild(card);
 }
 
-// Load today's aportes
+// Cargar aportes
 async function cargarAportes() {
   try {
     mural.innerHTML = '';
     aportesMostrados.clear();
 
     const res = await fetch('/api/mural/today');
-    const datos = await res.json();
+    if (!res.ok) throw new Error(`Error ${res.status}`);
 
-    datos.forEach(a => mostrarAporte(a));
+    const datos = await res.json();
+    datos.forEach(mostrarAporte);
     mostrarMisAportes(datos);
   } catch (err) {
     console.error('Error al cargar el mural:', err);
   }
 }
 
-// Show user's aportes panel
+// Mostrar aportes del usuario
 function mostrarMisAportes(datos) {
   const cont = document.getElementById('listaMisAportes');
-  cont.innerHTML = '';
+  if (!cont) return;
 
-  datos.filter(a => a.usuario === usuario)
-    .forEach(a => {
-      const div = document.createElement('div');
-      div.className = 'aporte-propio';
-      div.textContent = a.contenido;
-      cont.appendChild(div);
-    });
+  cont.innerHTML = '';
+  datos.filter(a => a.usuario === usuario).forEach(a => {
+    const div = document.createElement('div');
+    div.className = 'aporte-propio';
+    div.textContent = a.contenido;
+    cont.appendChild(div);
+  });
 }
 
-// Initialization on load
-window.addEventListener('DOMContentLoaded', async () => {
+// Modal: cerrar y recordar
+function cerrarMensaje() {
+  const noMostrar = document.getElementById('noMostrarCheckbox').checked;
+  if (noMostrar) {
+    localStorage.setItem('noMostrarModal', 'true');
+  }
+  document.getElementById('modalOverlay').style.display = 'none';
+}
+
+// Inicialización
+window.addEventListener('DOMContentLoaded', () => {
   if (!verificarToken()) return;
   usuario = obtenerUsuarioDesdeToken();
+  if (localStorage.getItem('noMostrarModal') === 'true') {
+    document.getElementById('modalOverlay').style.display = 'none';
+  }
   cargarAportes();
 });
 
-// Make agregarAlMural available globally
+// Acceso global
 window.agregarAlMural = agregarAlMural;
+window.cerrarMensaje = cerrarMensaje;
