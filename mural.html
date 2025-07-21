@@ -188,7 +188,6 @@
   <span>Notificaciones</span>
   <span id="notifBadge" style="color: red; margin-left: 4px;"></span>
 </button>
-
   
   <div id="modalOverlay">
   <div id="mensajeInicial" class="modal">
@@ -271,10 +270,16 @@
   <i data-lucide="user"></i>
   <span>Mi Soulprint</span>
 </a>
-
-
   </div>
 
+<!-- 🔔 Panel de Notificaciones -->
+<div id="notifPanel" class="hidden">
+  <h3>Notificaciones</h3>
+  <ul id="notifList"></ul>
+</div>
+
+
+  
   <script src="/js/mural.js"></script>
   <script>
     lucide.createIcons();
