@@ -260,62 +260,79 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Cargar y mostrar notificaciones
   async function cargarNotificaciones() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/notifications`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error();
-      const notis = await res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/notifications`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error();
+    const notis = await res.json();
 
-      notifList.innerHTML = '';
-      // Contador de no leídas
-      const pendientes = notis.filter(n => !n.isRead).length;
-      notifBadge.textContent = pendientes > 0 ? `(${pendientes})` : '';
+    notifList.innerHTML = '';
+    const pendientes = notis.filter(n => !n.isRead).length;
+    notifBadge.textContent = pendientes > 0 ? `(${pendientes})` : '';
 
-      if (notis.length === 0) {
-        notifList.innerHTML = '<li>No hay notificaciones</li>';
-        return;
-      }
+    if (notis.length === 0) {
+      notifList.innerHTML = '<li>No hay notificaciones</li>';
+      return;
+    }
 
-      notis.forEach(n => {
-        const li = document.createElement('li');
-        li.className = n.isRead ? 'read' : 'unread';
-        li.innerHTML = `
+    notis.forEach(n => {
+      const li = document.createElement('li');
+      li.className = n.isRead ? 'read' : 'unread';
+      li.innerHTML = `
+        <div class="notif-contenido">
           <strong>${n.sender.username}</strong>: ${n.message}
           <div style="font-size:0.8rem;color:var(--subtle)">
             ${new Date(n.createdAt).toLocaleString()}
-          </div>`;
-        li.addEventListener('click', async () => {
-          // Marcar esta notificación como leída
-          await fetch(`${API_BASE_URL}/api/notifications/${n._id}/read`, {
-            method: 'PATCH',
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          li.className = 'read';
-          notifBadge.textContent = ''; // O recarga el conteo con cargarNotificaciones()
+          </div>
+        </div>
+        <button class="eliminar-notif" data-id="${n._id}" title="Eliminar notificación">✖</button>
+      `;
+
+      // Marcar como leída al hacer click en el contenido (no en el botón)
+      li.querySelector('.notif-contenido').addEventListener('click', async () => {
+        await fetch(`${API_BASE_URL}/api/notifications/${n._id}/read`, {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${token}` }
         });
-        notifList.appendChild(li);
+        li.className = 'read';
+        await cargarNotificaciones(); // Recargar para actualizar el contador
       });
-    } catch (err) {
-      console.error('Error cargando notificaciones:', err);
-      notifList.innerHTML = '<li>Error cargando notificaciones</li>';
-    }
+
+      // Eliminar notificación
+      li.querySelector('.eliminar-notif').addEventListener('click', async (e) => {
+        e.stopPropagation(); // Prevenir que se marque como leída al borrar
+        await fetch(`${API_BASE_URL}/api/notifications/${n._id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        await cargarNotificaciones(); // Recargar la lista
+      });
+
+      notifList.appendChild(li);
+    });
+
+  } catch (err) {
+    console.error('Error cargando notificaciones:', err);
+    notifList.innerHTML = '<li>Error cargando notificaciones</li>';
   }
+}
 
-  // Abrir/cerrar panel
-  notifBtn.addEventListener('click', async e => {
-    e.stopPropagation();
-    if (notifPanel.classList.contains('hidden')) {
-      await cargarNotificaciones();
-    }
-    notifPanel.classList.toggle('hidden');
-  });
+// Abrir/cerrar panel
+notifBtn.addEventListener('click', async e => {
+  e.stopPropagation();
+  if (notifPanel.classList.contains('hidden')) {
+    await cargarNotificaciones();
+  }
+  notifPanel.classList.toggle('hidden');
+});
 
-  // Cerrar al click fuera
-  document.addEventListener('click', e => {
-    if (!e.target.closest('#notifPanel') && !e.target.closest('#notifBtn')) {
-      notifPanel.classList.add('hidden');
-    }
-  });
+// Cerrar al click fuera
+document.addEventListener('click', e => {
+  if (!e.target.closest('#notifPanel') && !e.target.closest('#notifBtn')) {
+    notifPanel.classList.add('hidden');
+  }
+});
+
 });
 
