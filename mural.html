@@ -200,30 +200,11 @@
 </div>
 
   <section class="formulario flotante popover">
-    <label>¿Qué quieres dejar hoy?</label>
-    <select id="tipo">
-      <option value="frase">✍️ Frase corta</option>
-      <option value="emoji">😄 Emoji gigante</option>
-      <option value="imagen">🖼️ Imagen (máx. 400x400px)</option>
-      <option value="doodle">🎨 Doodle rápido</option>
-    </select>
+  <label for="contenido">¿Qué estás sintiendo hoy?</label>
+  <textarea id="contenido" placeholder="Escribe tu aporte emocional..." rows="4" style="width: 100%; resize: vertical;"></textarea>
+  <button onclick="agregarAlMural()">Compartir en el Mural</button>
+</section>
 
-    <input type="text" id="contenido" placeholder="Escribe algo..." />
-    <input type="file" id="imagenInput" accept="image/*" style="display:none;" />
-    <div class="doodle-controls" id="doodleControls" style="display:none;">
-      <label>Color:</label>
-      <input type="color" id="colorPicker" value="#222222">
-      <button type="button" onclick="limpiarCanvas()">🧼 Borrar doodle</button>
-    </div>
-    <canvas id="canvasDoodle" width="300" height="300" style="display:none;"></canvas>
-
-    <div class="preview" id="preview" style="display: none;">
-      <strong>Vista previa:</strong>
-      <img id="previewImg" src="" alt="Previsualización" />
-    </div>
-
-    <button onclick="agregarAlMural()">Compartir en el Mural</button>
-  </section>
 
   <div id="zoomControls">
     <button id="zoomIn">+</button>
