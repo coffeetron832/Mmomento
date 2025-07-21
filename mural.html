@@ -111,29 +111,43 @@
   <div id="mensajeInicial" class="modal">
     
     <div class="modal-slide active">
-      <p>🧱 <strong>El Mural del Momento</strong> es un lienzo efímero donde puedes dejar tu huella emocional del día: frases, emojis, imágenes o dibujos. Todo desaparece a medianoche.</p>
+      <p>🎉 <strong>Bienvenido a TheMural</strong><br>
+      Este espacio no es para aparentar. Es para soltar.  
+      ¿Un pensamiento que no cabe en WhatsApp? ¿Un dibujo hecho con el dedo? ¿Una frase que te salvó el día? Suéltala acá.  
+      TheMural es como un lienzo público, pero sin postureo.</p>
     </div>
 
     <div class="modal-slide">
-      <p>🎨 <strong>Reglas básicas:</strong><br>
-        • Sé respetuoso y auténtico.<br>
-        • Nada ofensivo, ilegal o violento.<br>
-        • Recuerda: todo lo que subas se borrará a las 12:00 a. m.<br>
-        • No necesitas ser artista, solo ser tú.
-      </p>
+      <p>📏 <strong>Normas básicas (porque siempre hay uno que se pasa)</strong><br>
+      • No se permiten mensajes de odio, violencia o “humor negro” con complejo de víctima.<br>
+      • Nada de autopromoción. Si quieres vender algo, este no es tu lugar.<br>
+      • Lo que publiques debe tener alma, no likes.<br>
+      • No ofendas. Aunque sea con indirectas pasivo-agresivas.</p>
     </div>
 
     <div class="modal-slide">
-      <p>💡 <strong>¿Por qué efímero?</strong><br>
-        Porque la emoción del momento vale más que la permanencia.<br>
-        Este mural existe solo por hoy.<br>
-        Deja una chispa... y suéltala.
-      </p>
+      <p>🧠 <strong>¿Por qué existe TheMural?</strong><br>
+      Porque a veces uno necesita decir algo y ya. Sin explicarlo.  
+      Sin esperar respuestas. Sin filtro.<br>
+      Esto es un espacio para expresarte sin pedir permiso.  
+      No hay algoritmo, ni jueces, ni etiquetas.</p>
+    </div>
+
+    <div class="modal-slide">
+      <p>🖍️ <strong>Consejos útiles (y cero cursilerías)</strong><br>
+      • Escribe lo que de verdad sientes, no lo que suena bonito.<br>
+      • Comparte algo solo si te nace. No hay obligación de “ser profundo”.<br>
+      • Si no tienes nada que decir... observa. Eso también vale.<br>
+      • Vuelve cuando quieras. Esto no es una cita, es un desahogo.</p>
     </div>
 
     <div class="modal-controls">
-      <button id="prevBtn" onclick="cambiarSlide(-1)">⬅️</button>
-      <button id="nextBtn" onclick="cambiarSlide(1)">➡️</button>
+      <button id="prevBtn" onclick="cambiarSlide(-1)">
+        <i data-lucide="arrow-left-circle"></i>
+      </button>
+      <button id="nextBtn" onclick="cambiarSlide(1)">
+        <i data-lucide="arrow-right-circle"></i>
+      </button>
     </div>
 
     <label><input type="checkbox" id="noMostrarCheckbox"> No volver a mostrar</label>
