@@ -242,16 +242,16 @@
 const slides = document.querySelectorAll('.modal-slide');
 
 function cambiarSlide(direccion) {
-  const slideActual = slides[currentSlide];
-  slideActual.classList.remove('active');
+  // Quita la clase active: dispara animación de salida
+  slides[currentSlide].classList.remove('active');
 
-  currentSlide += direccion;
-  if (currentSlide < 0) currentSlide = slides.length - 1;
-  if (currentSlide >= slides.length) currentSlide = 0;
+  // Calcula nueva posición
+  currentSlide = (currentSlide + direccion + slides.length) % slides.length;
 
-  const slideNuevo = slides[currentSlide];
-  slideNuevo.classList.add('active');
+  // Añade la clase active: dispara animación de entrada
+  slides[currentSlide].classList.add('active');
 }
+
 
 
     
