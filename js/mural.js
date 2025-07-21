@@ -205,51 +205,33 @@ muralContainer.addEventListener('touchend', e => {
     }
 
     async function agregarAlMural() {
-  if (!verificarToken()) return;
+  const contenido = document.getElementById("contenido").value.trim();
 
-  const tipoSeleccionado = tipo.value;
-  let contenidoFinal = '';
-
-  if (tipoSeleccionado === 'frase' || tipoSeleccionado === 'emoji') {
-    if (!contenido.value.trim()) {
-      return alert('Escribe algo primero.');
-    }
-    contenidoFinal = contenido.value.trim();
-    contenido.value = '';
-  }
-  else if (tipoSeleccionado === 'imagen') {
-    // Lógica de subida de imagen permanece igual:
-    const archivo = imagenInput.files[0];
-    if (!archivo) return alert('Selecciona una imagen.');
-
-    const formData = new FormData();
-    formData.append('imagen', archivo);
-
-    try {
-      const res = await fetch('https://momento-backend-production.up.railway.app/api/mural/image', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        body: formData
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Error subiendo imagen.');
-      mostrarAporte(data.data);
-      imagenInput.value = '';
-      previewImg.src = '';
-      preview.style.display = 'none';
-    } catch (err) {
-      console.error('Error al subir imagen:', err);
-      alert(err.message || 'La imagen fue rechazada o hubo un error.');
-    }
+  if (!contenido) {
+    alert("Por favor escribe algo antes de compartir.");
     return;
   }
-  else if (tipoSeleccionado === 'doodle') {
-    contenidoFinal = canvas.toDataURL();
-    limpiarCanvas();
-  }
 
-  // Llamada unificada al backend (aquí el backend decide suspensión o publicación)
-  await enviarAlBackend(tipoSeleccionado, contenidoFinal);
+  try {
+    const response = await fetch("/api/mural", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: "texto", contenido })
+    });
+
+    if (response.ok) {
+      document.getElementById("contenido").value = "";
+      obtenerMural(); // Vuelve a cargar el mural
+    } else {
+      const err = await response.json();
+      alert(err.error || "Error al subir el aporte.");
+    }
+  } catch (error) {
+    console.error("Error al subir el aporte:", error);
+    alert("Error al subir el aporte.");
+  }
 }
 
 
