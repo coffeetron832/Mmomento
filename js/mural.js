@@ -74,14 +74,34 @@ async function cargarMisAportes() {
           });
           const body = await res2.json();
           if (res2.ok) {
-            btn.parentElement.remove();
-            alert('Aporte eliminado con éxito.');
-          } else {
-            alert(body.message || 'Error al eliminar el aporte.');
-          }
+  btn.parentElement.remove();
+  Toastify({
+    text: 'Aporte eliminado con éxito.',
+    duration: 3000,
+    gravity: 'top',
+    position: 'center',
+    style: { background: '#4caf50' }
+  }).showToast();
+} else {
+  Toastify({
+    text: body.message || 'Error al eliminar el aporte.',
+    duration: 4000,
+    gravity: 'top',
+    position: 'center',
+    style: { background: '#f44336' }
+  }).showToast();
+}
+
         } catch (err) {
           console.error('Error al eliminar aporte:', err);
-          alert('Ocurrió un error al eliminar el aporte.');
+          Toastify({
+  text: 'Ocurrió un error al eliminar el aporte.',
+  duration: 4000,
+  gravity: 'top',
+  position: 'center',
+  style: { background: '#f44336' }
+}).showToast();
+
         }
       });
     });
@@ -162,17 +182,58 @@ async function agregarAlMural() {
   if (!verificarToken()) return;
   const contenidoElem = document.getElementById('contenido');
   const contenido = contenidoElem.value.trim();
-  if (!contenido) { alert('Por favor escribe algo antes de compartir.'); return; }
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/mural`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-      body: JSON.stringify({ contenido })
-    });
-    if (res.ok) { contenidoElem.value = ''; cargarAportes(); }
-    else { const err = await res.json(); alert(err.message || 'Error al subir el aporte.'); }
-  } catch (err) { console.error('Error al subir el aporte:', err); alert('Error al subir el aporte.'); }
+  if (!contenido) {
+  Toastify({
+    text: 'Por favor escribe algo antes de compartir.',
+    duration: 3000,
+    gravity: 'top',
+    position: 'center',
+    style: { background: '#f44336' }
+  }).showToast();
+  return;
 }
+
+ try {
+  const res = await fetch(`${API_BASE_URL}/api/mural`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({ contenido })
+  });
+
+  if (res.ok) {
+    contenidoElem.value = '';
+    cargarAportes();
+    Toastify({
+      text: '✨ Aporte publicado exitosamente.',
+      duration: 3000,
+      gravity: 'top',
+      position: 'center',
+      style: { background: '#4caf50' } // verde
+    }).showToast();
+  } else {
+    const err = await res.json();
+    Toastify({
+      text: err.message || '⚠️ Error al subir el aporte.',
+      duration: 4000,
+      gravity: 'top',
+      position: 'center',
+      style: { background: '#f44336' } // rojo
+    }).showToast();
+  }
+} catch (err) {
+  console.error('Error al subir el aporte:', err);
+  Toastify({
+    text: '❌ Error de red al subir el aporte.',
+    duration: 4000,
+    gravity: 'top',
+    position: 'center',
+    style: { background: '#f44336' }
+  }).showToast();
+}
+
 window.agregarAlMural = agregarAlMural;
 
 // ===== Mostrar Aporte con acciones =====
