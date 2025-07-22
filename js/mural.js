@@ -233,7 +233,7 @@ async function agregarAlMural() {
     style: { background: '#f44336' }
   }).showToast();
 }
-
+}
 window.agregarAlMural = agregarAlMural;
 
 // ===== Mostrar Aporte con acciones =====
