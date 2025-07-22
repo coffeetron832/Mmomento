@@ -281,39 +281,34 @@
 }    
 
 
-/* ——— OVERLAY GENERAL PARA MODALES ——— */
+/* ——— TODOS los modales centrados ——— */
 .modal {
-  display: none;              /* Se mostrará desde JS quitando "hidden" o cambiando display */
-  position: fixed;
-  inset: 0;                   /* top:0; right:0; bottom:0; left:0; */
-  background: rgba(0,0,0,0.6);
-  z-index: 10000;
-
-  /* Flexbox para centrar el contenido */
   display: flex !important;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;          /* Para pantallas pequeñas */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  overflow: auto;
 }
 
-/* ——— CONTENIDO INTERNO DE CADA MODAL ——— */
 .modal-contenido {
   background: #111;
-  color: #eee;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid var(--subtle, #444);
   max-width: 500px;
   width: 90%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
   position: relative;
-  margin: 0;                  /* Se centra por flexbox */
+  margin: 0;
 }
 
-/* Si necesitaras ocultar un modal concreto, usa la clase "hidden" */
-.hidden {
-  display: none !important;
-}
 
 
 
@@ -425,13 +420,15 @@
   <ul id="notifList"></ul>
 </div>
 
-<div id="modalRespuestas" class="modal">
+<!-- Modal de respuestas: siempre oculto al inicio -->
+<div id="modalRespuestas" class="modal hidden">
   <div class="modal-contenido">
     <span class="cerrar" onclick="cerrarModalRespuestas()">×</span>
     <h3>Respuestas al aporte</h3>
     <div id="modalContenido"></div>
   </div>
 </div>
+
 
   
   <script src="/js/mural.js"></script>
