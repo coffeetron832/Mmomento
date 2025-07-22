@@ -281,33 +281,38 @@
 }    
 
 
-/* ——— CENTRAR TODOS LOS MODALES ——— */
+/* ——— OVERLAY GENERAL PARA MODALES ——— */
 .modal {
-  /* convierto el overlay en un Flexbox */
-  display: flex !important;
-  justify-content: center;  /* centra horizontal */
-  align-items: center;      /* centra vertical */
+  display: none;              /* Se activa desde JS */
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw;  /* ocupa toda la pantalla */
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  overflow: auto; /* para pantallas pequeñas */
+  inset: 0;                   /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0,0,0,0.6);
+  z-index: 10000;
+
+  /* FLEXBOX PARA CENTRAR INTERIOR */
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;          /* Para pantallas muy pequeñas */
 }
 
-/* el contenedor interior ya no necesita márgenes */
+/* ——— CONTENIDO DE CADA MODAL ——— */
 .modal-contenido {
   background: #111;
-  padding: 1.5rem;
+  color: #eee;
+  padding: 2rem;
   border-radius: 8px;
-  border: 1px solid var(--subtle, #444);
+  border: 1px solid var(--subtle);
   max-width: 500px;
   width: 90%;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   position: relative;
-  margin: 0;         /* quita cualquier margin auto */
-  overflow: hidden;
+  margin: 0;                  /* Ya centrado por flexbox */
+}
+
+/* Oculta el modal de bienvenida si tiene la clase .hidden */
+#modalOverlay.hidden {
+  display: none !important;
 }
 
 
