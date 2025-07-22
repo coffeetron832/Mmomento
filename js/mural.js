@@ -29,6 +29,46 @@ function verificarToken() {
   return true;
 }
 
+
+async function cargarMisAportes() {
+  const contenedor = document.getElementById('listaMisAportes');
+  contenedor.innerHTML = '<p>Cargando...</p>';
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/mural/mios`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!res.ok) throw new Error('Error al obtener aportes');
+
+    const datos = await res.json();
+    if (datos.length === 0) {
+      contenedor.innerHTML = '<p>No has hecho aportes aún.</p>';
+      return;
+    }
+
+    contenedor.innerHTML = '';
+    datos.forEach(aporte => {
+      const d = document.createElement('div');
+      d.className = 'aporte-propio';
+      d.innerHTML = `
+        <p>${aporte.contenido}</p>
+        <small>${new Date(aporte.createdAt).toLocaleString()}</small>
+      `;
+      contenedor.appendChild(d);
+    });
+  } catch (err) {
+    console.error('Error al cargar mis aportes:', err);
+    contenedor.innerHTML = '<p>Error al cargar tus aportes.</p>';
+  }
+}
+
+
+
+
+
+
+
 // ===== Zoom & Pan =====
 const mural = document.getElementById('mural');
 const muralContainer = document.getElementById('muralContainer');
@@ -262,10 +302,14 @@ function togglePopovers() {
   });
 
   btnMisAportes?.addEventListener('click', e => {
-    e.stopPropagation();
-    misPanel.classList.toggle('mostrar');
-    formPanel.classList.remove('mostrar');
-  });
+  e.stopPropagation();
+  misPanel.classList.toggle('mostrar');
+  formPanel.classList.remove('mostrar');
+  if (misPanel.classList.contains('mostrar')) {
+    cargarMisAportes();
+  }
+});
+
 
   document.addEventListener('click', e => {
     if (!e.target.closest('.formulario') && !e.target.closest('#btnFormulario')) {
