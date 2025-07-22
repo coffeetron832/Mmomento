@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const API_URL = 'https://momento-backend-production.up.railway.app/api';
+  const API_URL = 'https://themural-backend-production.up.railway.app/api';
   const notifList = document.getElementById('notifList');
   const notifBadge = document.getElementById('notifBadge'); // opcional
 
