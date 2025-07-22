@@ -125,15 +125,14 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   card.appendChild(actions);
 
   // Lista de comentarios
-  const lista = document.createElement('div');
-  lista.className = 'comentarios-lista';
-  respuestas.forEach(r => {
-    const d = document.createElement('div');
-    d.className = 'comentario';
-    d.innerHTML = `<strong>${r.autor}</strong>: ${r.contenido}`;
-    lista.appendChild(d);
-  });
-  card.appendChild(lista);
+  // Botón de tres puntos para abrir modal con respuestas
+const btnModal = document.createElement('button');
+btnModal.textContent = '⋯';
+btnModal.title = 'Ver respuestas';
+btnModal.className = 'btn-tres-puntos';
+btnModal.addEventListener('click', () => mostrarModalRespuestas(_id, respuestas));
+actions.appendChild(btnModal);
+
 
   // Formulario de comentario
   const form = document.createElement('div');
@@ -358,25 +357,28 @@ document.addEventListener('click', e => {
 
 
 // ===== Modal de respuestas por aporte =====
-function mostrarModalRespuestas(aporte) {
-  const modal = document.createElement('div');
-  modal.className = 'modal-respuestas-overlay';
-  modal.innerHTML = `
-    <div class="modal-respuestas">
-      <h3>Respuestas al aporte de ${aporte.usuario}</h3>
-      <div class="modal-respuestas-lista">
-        ${
-          aporte.respuestas.length > 0
-            ? aporte.respuestas.map(r => `<div><strong>${r.autor}</strong>: ${r.contenido}</div>`).join('')
-            : '<em>Este aporte no tiene respuestas aún.</em>'
-        }
-      </div>
-      <button class="cerrar-modal-respuestas">Cerrar</button>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  modal.querySelector('.cerrar-modal-respuestas').addEventListener('click', () => modal.remove());
+// Mostrar modal con respuestas
+function mostrarModalRespuestas(aporteId, respuestas) {
+  const modal = document.getElementById('modalRespuestas');
+  const contenedor = document.getElementById('modalContenido');
+  contenedor.innerHTML = '';
+
+  if (respuestas.length === 0) {
+    contenedor.innerHTML = '<p>No hay respuestas aún.</p>';
+  } else {
+    respuestas.forEach(r => {
+      const d = document.createElement('div');
+      d.className = 'comentario-modal';
+      d.innerHTML = `<strong>${r.autor}</strong>: ${r.contenido}`;
+      contenedor.appendChild(d);
+    });
+  }
+
+  modal.style.display = 'block';
 }
+window.cerrarModalRespuestas = () => {
+  document.getElementById('modalRespuestas').style.display = 'none';
+};
 
 
 
