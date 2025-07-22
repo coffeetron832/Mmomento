@@ -283,37 +283,38 @@
 
 /* ——— OVERLAY GENERAL PARA MODALES ——— */
 .modal {
-  display: none;              /* Se activa desde JS */
+  display: none;              /* Se mostrará desde JS quitando "hidden" o cambiando display */
   position: fixed;
   inset: 0;                   /* top:0; right:0; bottom:0; left:0; */
   background: rgba(0,0,0,0.6);
   z-index: 10000;
 
-  /* FLEXBOX PARA CENTRAR INTERIOR */
+  /* Flexbox para centrar el contenido */
   display: flex !important;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;          /* Para pantallas muy pequeñas */
+  overflow-y: auto;          /* Para pantallas pequeñas */
 }
 
-/* ——— CONTENIDO DE CADA MODAL ——— */
+/* ——— CONTENIDO INTERNO DE CADA MODAL ——— */
 .modal-contenido {
   background: #111;
   color: #eee;
   padding: 2rem;
   border-radius: 8px;
-  border: 1px solid var(--subtle);
+  border: 1px solid var(--subtle, #444);
   max-width: 500px;
   width: 90%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   position: relative;
-  margin: 0;                  /* Ya centrado por flexbox */
+  margin: 0;                  /* Se centra por flexbox */
 }
 
-/* Oculta el modal de bienvenida si tiene la clase .hidden */
-#modalOverlay.hidden {
+/* Si necesitaras ocultar un modal concreto, usa la clase "hidden" */
+.hidden {
   display: none !important;
 }
+
 
 
     
