@@ -274,6 +274,38 @@
 }
 
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-contenido {
+  background: white;
+  margin: 10% auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.cerrar {
+  position: absolute;
+  right: 1rem;
+  top: 0.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.comentario-modal {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
 
 
 
@@ -384,6 +416,13 @@
   <ul id="notifList"></ul>
 </div>
 
+<div id="modalRespuestas" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar" onclick="cerrarModalRespuestas()">×</span>
+    <h3>Respuestas al aporte</h3>
+    <div id="modalContenido"></div>
+  </div>
+</div>
 
   
   <script src="/js/mural.js"></script>
