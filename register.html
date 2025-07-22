@@ -293,7 +293,7 @@ form#registerForm button[type="submit"]:hover::after {
   const userData = { username, email, password };
 
   try {
-    const res = await fetch('https://momento-backend-production.up.railway.app/api/users/register', {
+    const res = await fetch('https://themural-backend-production.up.railway.app/api/users/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
