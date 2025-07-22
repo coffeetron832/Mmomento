@@ -210,6 +210,75 @@
   color: #f0f0f0;
 }
 
+
+.respuesta-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed #ccc;
+}
+
+.btn-ver-respuestas {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 6px;
+  color: #555;
+}
+
+.modal-respuestas-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-respuestas {
+  background: #fff;
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-respuestas h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.modal-respuestas-lista div {
+  margin-bottom: 8px;
+}
+
+.cerrar-modal-respuestas {
+  margin-top: 15px;
+  background: #d33;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+
+
+
+
+    
 </style>
 </head>
 <body>
