@@ -52,9 +52,13 @@ async function cargarMisAportes() {
       const d = document.createElement('div');
       d.className = 'aporte-propio';
       d.innerHTML = `
-        <p>${aporte.contenido}</p>
-        <small>${new Date(aporte.createdAt).toLocaleString()}</small>
-      `;
+  <div class="contenido-aporte">
+    <p>${aporte.contenido}</p>
+    <small>${new Date(aporte.createdAt).toLocaleString()}</small>
+  </div>
+  <button class="btn-eliminar-aporte" data-id="${aporte._id}">Eliminar</button>
+`;
+
       contenedor.appendChild(d);
     });
   } catch (err) {
