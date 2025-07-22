@@ -1,5 +1,5 @@
 /* mural.js - Simplificado para aportes de texto con respuestas y cierre de hilos */
-const API_BASE_URL = 'themural-backend-production.up.railway.app';
+const API_BASE_URL = 'https://themural-backend-production.up.railway.app/';
 let usuario;
 const aportesMostrados = new Set();
 
