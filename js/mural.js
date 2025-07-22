@@ -284,11 +284,25 @@ async function comentarAporte(id, texto) {
       },
       body: JSON.stringify({ contenido: texto })
     });
-    if (!res.ok) throw new Error();
-  } catch {
-    alert('No se pudo comentar.');
+
+    // Parseamos siempre el JSON
+    const data = await res.json();
+
+    if (!res.ok) {
+      // Mostramos el mensaje que vino del servidor (p.ej. "Has sido suspendido…")
+      alert(data.message || 'No se pudo comentar.');
+      return;
+    }
+
+    // En caso de éxito, también podemos usar el mensaje del servidor
+    alert(data.message || 'Comentario agregado.');
+    // Aquí podrías, por ejemplo, limpiar el input o recargar los comentarios
+  } catch (err) {
+    // Captura errores de red o JSON inválido
+    alert(err.message || 'No se pudo comentar por un error de red.');
   }
 }
+
 
 // ===== Cerrar Aporte =====
 async function cerrarAporte(id, card) {
