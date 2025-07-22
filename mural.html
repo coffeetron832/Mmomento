@@ -46,7 +46,7 @@
     opacity: 0;
   }
   .hidden {
-    display: none;
+    display: none !important;
   }
 
   #logoutBtn {
@@ -327,7 +327,7 @@
   <span id="notifBadge" style="color: red; margin-left: 4px;"></span>
 </button>
   
-  <div id="modalOverlay">
+  <div id="modalOverlay" class="hidden">
   <div id="mensajeInicial" class="modal">
     
     <div class="modal-slide active">
