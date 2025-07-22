@@ -252,6 +252,15 @@ function cerrarMensaje() {
 }
 window.cerrarMensaje = cerrarMensaje;
 
+// ——— Pulsar fuera del modal de bienvenida para cerrarlo ———
+document.getElementById('modalOverlay')
+  .addEventListener('click', e => {
+    if (e.target.id === 'modalOverlay') {
+      cerrarMensaje();
+    }
+  });
+
+
 
 // ===== Popovers =====
 function togglePopovers() {
