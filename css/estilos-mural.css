@@ -329,16 +329,18 @@
   }
 
   @media (max-width: 600px) {
-    .modal, .popover {
-      width: 95%;
-    }
-    .formulario {
-      top: 0.5rem;
-      right: 0.5rem;
-      padding: 1rem;
-    }
-    #toggleUIBtn {
-      display: block;
-    }
+  .modal,
+  .popover,
+  .formulario,
+  .formulario.flotante {
+    width: 95%;
+    padding: 1rem;
+    max-width: 90vw;
   }
+
+  #toggleUIBtn {
+    display: block;
+  }
+}
+
 </style>
