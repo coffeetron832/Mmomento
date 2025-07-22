@@ -159,6 +159,15 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
 }
 
 
+const overlay = document.getElementById('modalOverlay');
+const noMostrar = localStorage.getItem('noMostrarModal') === 'true';
+
+if (!noMostrar) {
+  // Mostrar el modal de bienvenida
+  overlay.classList.remove('hidden');
+}
+
+
 // ===== Cargar Aportes =====
 async function cargarAportes() {
   try {
