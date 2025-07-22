@@ -158,16 +158,6 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   mural.appendChild(card);
 }
 
-
-const overlay = document.getElementById('modalOverlay');
-const noMostrar = localStorage.getItem('noMostrarModal') === 'true';
-
-if (!noMostrar) {
-  // Mostrar el modal de bienvenida
-  overlay.classList.remove('hidden');
-}
-
-
 // ===== Cargar Aportes =====
 async function cargarAportes() {
   try {
@@ -263,8 +253,14 @@ function togglePopovers() {
 window.addEventListener('DOMContentLoaded', () => {
   if (!verificarToken()) return;
   usuario = obtenerUsuarioDesdeToken();
-  if (localStorage.getItem('noMostrarModal') === 'true') {
-    document.getElementById('modalOverlay').style.display = 'none';
+
+  // ——— Overlay de bienvenida ———
+  const overlay = document.getElementById('modalOverlay');
+  const noMostrar = localStorage.getItem('noMostrarModal') === 'true';
+  if (noMostrar) {
+    overlay.classList.add('hidden');
+  } else {
+    overlay.classList.remove('hidden');
   }
   cargarAportes();
   togglePopovers();
