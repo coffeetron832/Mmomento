@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://momento-backend-production.up.railway.app';
+const API_BASE_URL = 'https://themural-backend-production.up.railway.app';
 
 // Función para peticiones con fetch
 async function apiRequest(endpoint, method = 'GET', body = null) {
