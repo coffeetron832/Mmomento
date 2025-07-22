@@ -71,7 +71,6 @@
 
     /* Modal container: fondo oscuro, padding y borde sutil */
 #mensajeInicial.modal {
-  position: relative; /* <-- CLAVE para contener los slides animados */
   background: #111;
   padding: 1.5rem;
   border-radius: 8px;
@@ -274,17 +273,16 @@
 
 
 .modal {
-  display: none; /* Se activa con JS cuando se abre */
+  display: flex; /* CENTRA el contenido */
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
+
 
 .modal-contenido {
   background: #111;
@@ -313,6 +311,17 @@
 }
 
 
+#mensajeInicial.overlay-emocional {
+  position: relative;
+  background: #111;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--subtle);
+  max-width: 500px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
 
 
     
@@ -333,7 +342,8 @@
 </button>
   
   <div id="modalOverlay" class="modal hidden">
-  <div id="mensajeInicial" class="modal-contenido">
+<div id="mensajeInicial" class="overlay-emocional">
+
     
     <div class="modal-slide active">
       <p>🎉 <strong>Bienvenido a TheMural</strong><br>
