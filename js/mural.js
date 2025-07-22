@@ -214,11 +214,14 @@ async function cerrarAporte(id, card) {
 
 // ===== Modal =====
 function cerrarMensaje() {
-  const noMostrar = document.getElementById('noMostrarCheckbox')?.checked;
-  if (noMostrar) localStorage.setItem('noMostrarModal','true');
-  document.getElementById('modalOverlay').style.display = 'none';
+  const checkbox = document.getElementById('noMostrarCheckbox');
+  if (checkbox?.checked) {
+    localStorage.setItem('noMostrarModal', 'true');
+  }
+  document.getElementById('modalOverlay').classList.add('hidden');
 }
 window.cerrarMensaje = cerrarMensaje;
+
 
 // ===== Popovers =====
 function togglePopovers() {
@@ -375,12 +378,5 @@ window.cerrarModalRespuestas = () => {
 };
 
 
-
-
-
-
-
-
-  
 });
 
