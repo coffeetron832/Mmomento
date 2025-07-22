@@ -242,15 +242,15 @@ window.cerrarModalRespuestas = () => {
   document.getElementById('modalRespuestas').classList.add('hidden');
 };
 
-function cerrarMensaje() {
+window.cerrarMensaje = function () {
   const overlay = document.getElementById('modalOverlay');
   const checkbox = document.getElementById('noMostrarCheckbox');
   if (checkbox?.checked) {
     localStorage.setItem('noMostrarModal', 'true');
   }
   overlay.classList.add('hidden');
-}
-window.cerrarMensaje = cerrarMensaje;
+};
+
 
 
 
@@ -306,20 +306,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const notifList  = document.getElementById('notifList');
   const notifBadge = document.getElementById('notifBadge');
   const token      = localStorage.getItem('token');
-
-
-// Dentro del window.addEventListener('DOMContentLoaded', ...)
-const overlay = document.getElementById('modalOverlay');
-if (overlay) {
-  overlay.addEventListener('click', e => {
-    if (e.target.id === 'modalOverlay') {
-      cerrarMensaje();
-    }
-  });
-}
-
-
-
   
   // Cargar y mostrar notificaciones
   async function cargarNotificaciones() {
