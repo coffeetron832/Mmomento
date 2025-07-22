@@ -31,41 +31,72 @@ function verificarToken() {
 
 
 async function cargarMisAportes() {
-  const contenedor = document.getElementById('listaMisAportes');
-  contenedor.innerHTML = '<p>Cargando...</p>';
+  const contenedor = document.getElementById('mis-aportes');
+  contenedor.innerHTML = '<p>Cargando tus aportes...</p>';
+
   try {
     const res = await fetch(`${API_BASE_URL}/api/mural/mios`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
-    if (!res.ok) throw new Error('Error al obtener aportes');
 
-    const datos = await res.json();
-    if (datos.length === 0) {
-      contenedor.innerHTML = '<p>No has hecho aportes aún.</p>';
+    const aportes = await res.json();
+    contenedor.innerHTML = '';
+
+    if (!aportes.length) {
+      contenedor.innerHTML = '<p>No has hecho ningún aporte aún.</p>';
       return;
     }
 
-    contenedor.innerHTML = '';
-    datos.forEach(aporte => {
+    aportes.forEach(aporte => {
       const d = document.createElement('div');
-      d.className = 'aporte-propio';
+      d.classList.add('aporte-mio');
       d.innerHTML = `
-  <div class="contenido-aporte">
-    <p>${aporte.contenido}</p>
-    <small>${new Date(aporte.createdAt).toLocaleString()}</small>
-  </div>
-  <button class="btn-eliminar-aporte" data-id="${aporte._id}">Eliminar</button>
-`;
-
+        <div class="contenido-aporte">
+          <p>${aporte.contenido}</p>
+          <small>${new Date(aporte.createdAt).toLocaleString()}</small>
+        </div>
+        <button class="btn-eliminar-aporte" data-id="${aporte._id}">🗑️ Eliminar</button>
+      `;
       contenedor.appendChild(d);
     });
-  } catch (err) {
-    console.error('Error al cargar mis aportes:', err);
+
+    // Agregar listeners a los botones de eliminar
+    contenedor.querySelectorAll('.btn-eliminar-aporte').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        const confirmar = confirm('¿Seguro que deseas eliminar este aporte?');
+        if (!confirmar) return;
+
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/mural/cerrar/${id}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            btn.parentElement.remove();
+            alert('Aporte eliminado con éxito.');
+          } else {
+            alert(data.message || 'Error al eliminar el aporte.');
+          }
+        } catch (err) {
+          console.error('❌ Error al eliminar aporte:', err);
+          alert('Ocurrió un error al eliminar el aporte.');
+        }
+      });
+    });
+
+  } catch (error) {
+    console.error('❌ Error al cargar mis aportes:', error);
     contenedor.innerHTML = '<p>Error al cargar tus aportes.</p>';
   }
 }
+
 
 
 
