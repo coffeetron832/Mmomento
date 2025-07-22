@@ -252,13 +252,6 @@ function cerrarMensaje() {
 }
 window.cerrarMensaje = cerrarMensaje;
 
-// ——— Pulsar fuera del modal de bienvenida para cerrarlo ———
-document.getElementById('modalOverlay')
-  .addEventListener('click', e => {
-    if (e.target.id === 'modalOverlay') {
-      cerrarMensaje();
-    }
-  });
 
 
 
@@ -314,6 +307,20 @@ window.addEventListener('DOMContentLoaded', () => {
   const notifBadge = document.getElementById('notifBadge');
   const token      = localStorage.getItem('token');
 
+
+// Dentro del window.addEventListener('DOMContentLoaded', ...)
+const overlay = document.getElementById('modalOverlay');
+if (overlay) {
+  overlay.addEventListener('click', e => {
+    if (e.target.id === 'modalOverlay') {
+      cerrarMensaje();
+    }
+  });
+}
+
+
+
+  
   // Cargar y mostrar notificaciones
   async function cargarNotificaciones() {
   try {
