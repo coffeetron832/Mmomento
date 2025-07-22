@@ -18,6 +18,7 @@ function obtenerUsuarioDesdeToken() {
   }
 }
 
+
 function verificarToken() {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -60,6 +61,31 @@ zoomOutBtn?.addEventListener('click', () => { scale = Math.max(0.4, scale - 0.1)
     }
   });
 });
+
+
+// Mostrar modal con respuestas
+function mostrarModalRespuestas(aporteId, respuestas) {
+  const modal = document.getElementById('modalRespuestas');
+  const contenedor = document.getElementById('modalContenido');
+  contenedor.innerHTML = '';
+
+  if (respuestas.length === 0) {
+    contenedor.innerHTML = '<p>No hay respuestas aún.</p>';
+  } else {
+    respuestas.forEach(r => {
+      const d = document.createElement('div');
+      d.className = 'comentario-modal';
+      d.innerHTML = `<strong>${r.autor}</strong>: ${r.contenido}`;
+      contenedor.appendChild(d);
+    });
+  }
+
+  modal.style.display = 'block';
+}
+// Exponerla globalmente
+window.mostrarModalRespuestas = mostrarModalRespuestas;
+
+
 
 // ===== Aportes =====
 async function agregarAlMural() {
@@ -354,25 +380,7 @@ document.addEventListener('click', e => {
 
 
 // ===== Modal de respuestas por aporte =====
-// Mostrar modal con respuestas
-function mostrarModalRespuestas(aporteId, respuestas) {
-  const modal = document.getElementById('modalRespuestas');
-  const contenedor = document.getElementById('modalContenido');
-  contenedor.innerHTML = '';
 
-  if (respuestas.length === 0) {
-    contenedor.innerHTML = '<p>No hay respuestas aún.</p>';
-  } else {
-    respuestas.forEach(r => {
-      const d = document.createElement('div');
-      d.className = 'comentario-modal';
-      d.innerHTML = `<strong>${r.autor}</strong>: ${r.contenido}`;
-      contenedor.appendChild(d);
-    });
-  }
-
-  modal.style.display = 'block';
-}
 window.cerrarModalRespuestas = () => {
   document.getElementById('modalRespuestas').style.display = 'none';
 };
