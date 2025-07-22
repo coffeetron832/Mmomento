@@ -284,24 +284,36 @@ async function comentarAporte(id, texto) {
       },
       body: JSON.stringify({ contenido: texto })
     });
-
-    // Parseamos siempre el JSON
     const data = await res.json();
 
     if (!res.ok) {
-      // Mostramos el mensaje que vino del servidor (p.ej. "Has sido suspendido…")
-      alert(data.message || 'No se pudo comentar.');
-      return;
+      return Toastify({
+        text: data.message || 'No se pudo comentar.',
+        duration: 4000,
+        gravity: 'top',
+        position: 'center',
+      }).showToast();
     }
 
-    // En caso de éxito, también podemos usar el mensaje del servidor
-    alert(data.message || 'Comentario agregado.');
-    // Aquí podrías, por ejemplo, limpiar el input o recargar los comentarios
+    Toastify({
+      text: data.message || 'Comentario agregado.',
+      duration: 3000,
+      gravity: 'top',
+      position: 'center',
+    }).showToast();
+
+    // Aquí limpias el input o refrescas la lista de comentarios…
+
   } catch (err) {
-    // Captura errores de red o JSON inválido
-    alert(err.message || 'No se pudo comentar por un error de red.');
+    Toastify({
+      text: err.message || 'Error de red al comentar.',
+      duration: 4000,
+      gravity: 'top',
+      position: 'center',
+    }).showToast();
   }
 }
+
 
 
 // ===== Cerrar Aporte =====
