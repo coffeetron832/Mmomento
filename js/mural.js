@@ -242,14 +242,7 @@ window.cerrarModalRespuestas = () => {
   document.getElementById('modalRespuestas').classList.add('hidden');
 };
 
-window.cerrarMensaje = function () {
-  const overlay = document.getElementById('modalOverlay');
-  const checkbox = document.getElementById('noMostrarCheckbox');
-  if (checkbox?.checked) {
-    localStorage.setItem('noMostrarModal', 'true');
-  }
-  overlay.classList.add('hidden');
-};
+
 
 
 
@@ -289,14 +282,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (!verificarToken()) return;
   usuario = obtenerUsuarioDesdeToken();
 
-  // ——— Overlay de bienvenida ———
-  const overlay = document.getElementById('modalOverlay');
-  const noMostrar = localStorage.getItem('noMostrarModal') === 'true';
-  if (noMostrar) {
-    overlay.classList.add('hidden');
-  } else {
-    overlay.classList.remove('hidden');
-  }
+  
   cargarAportes();
   togglePopovers();
 
