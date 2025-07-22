@@ -518,6 +518,17 @@ async function cargarNotificaciones() {
   }
 }
 
+
+
+function cerrarMensaje() {
+  const overlay = document.getElementById("modalOverlay");
+  if (overlay) {
+    overlay.classList.add("hidden");
+  }
+}
+
+      
+
 // Alternar panel
 function configurarPanelNotificaciones() {
   const btn = document.getElementById("notifBtn");
