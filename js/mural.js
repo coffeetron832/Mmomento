@@ -63,7 +63,7 @@ zoomOutBtn?.addEventListener('click', () => { scale = Math.max(0.4, scale - 0.1)
 });
 
 
-// Mostrar modal con respuestas
+// ===== Modal de respuestas por aporte =====
 function mostrarModalRespuestas(aporteId, respuestas) {
   const modal = document.getElementById('modalRespuestas');
   const contenedor = document.getElementById('modalContenido');
@@ -80,11 +80,10 @@ function mostrarModalRespuestas(aporteId, respuestas) {
     });
   }
 
-  modal.style.display = 'block';
+  // quita la clase hidden para mostrarlo
+  modal.classList.remove('hidden');
 }
-// Exponerla globalmente
 window.mostrarModalRespuestas = mostrarModalRespuestas;
-
 
 
 // ===== Aportes =====
@@ -238,13 +237,18 @@ async function cerrarAporte(id, card) {
   }
 }
 
-// ===== Modal =====
+// ===== Cerrar modales =====
+window.cerrarModalRespuestas = () => {
+  document.getElementById('modalRespuestas').classList.add('hidden');
+};
+
 function cerrarMensaje() {
+  const overlay = document.getElementById('modalOverlay');
   const checkbox = document.getElementById('noMostrarCheckbox');
   if (checkbox?.checked) {
     localStorage.setItem('noMostrarModal', 'true');
   }
-  document.getElementById('modalOverlay').classList.add('hidden');
+  overlay.classList.add('hidden');
 }
 window.cerrarMensaje = cerrarMensaje;
 
@@ -379,11 +383,8 @@ document.addEventListener('click', e => {
 
 
 
-// ===== Modal de respuestas por aporte =====
 
-window.cerrarModalRespuestas = () => {
-  document.getElementById('modalRespuestas').style.display = 'none';
-};
+
 
 
 });
