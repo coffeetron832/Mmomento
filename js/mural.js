@@ -92,21 +92,20 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
 
   // Posición aleatoria
   const { offsetWidth: w, offsetHeight: h } = mural;
-  card.style.left = `${Math.random()*(w-200)}px`;
-  card.style.top = `${Math.random()*(h-200)}px`;
-  card.style.setProperty('--rot', `${Math.random()*10-5}deg`);
-  card.style.setProperty('--scale', `${0.95+Math.random()*0.1}`);
+  card.style.left = `${Math.random() * (w - 200)}px`;
+  card.style.top = `${Math.random() * (h - 200)}px`;
+  card.style.setProperty('--rot', `${Math.random() * 10 - 5}deg`);
+  card.style.setProperty('--scale', `${0.95 + Math.random() * 0.1}`);
 
   // Contenido
   const p = document.createElement('p');
   p.textContent = contenido;
   card.appendChild(p);
 
-  // Acciones
+  // Acciones (Responder / Cerrar)
   const actions = document.createElement('div');
   actions.className = 'mural-actions';
 
-  // Solo usuarios distintos al autor pueden responder
   if (!esAutor) {
     const btnResponder = document.createElement('button');
     btnResponder.textContent = 'Responder';
@@ -114,7 +113,6 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
     actions.appendChild(btnResponder);
   }
 
-  // El autor ve botón de cerrar
   if (esAutor) {
     const btnCerrar = document.createElement('button');
     btnCerrar.textContent = 'Cerrar aporte';
@@ -124,20 +122,13 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
 
   card.appendChild(actions);
 
-  // Lista de comentarios
-  // Botón de tres puntos para abrir modal con respuestas
-const btnModal = document.createElement('button');
-btnModal.textContent = '⋯';
-btnModal.title = 'Ver respuestas';
-btnModal.className = 'btn-tres-puntos';
-btnModal.addEventListener('click', () => mostrarModalRespuestas(_id, respuestas));
-actions.appendChild(btnModal);
-
-
-  // Formulario de comentario
+  // Formulario de comentario (oculto por defecto)
   const form = document.createElement('div');
   form.className = 'form-comentario hidden';
-  form.innerHTML = `<textarea rows="2" placeholder="Escribe tu comentario..."></textarea><button>Enviar</button>`;
+  form.innerHTML = `
+    <textarea rows="2" placeholder="Escribe tu comentario..."></textarea>
+    <button>Enviar</button>
+  `;
   form.querySelector('button').addEventListener('click', async () => {
     const text = form.querySelector('textarea').value.trim();
     if (!text) return alert('Escribe algo antes de comentar.');
@@ -146,8 +137,8 @@ actions.appendChild(btnModal);
   });
   card.appendChild(form);
 
-
-  // Mostrar número de respuestas y botón de más opciones
+  // ===== Aquí reemplazamos la "Lista de comentarios" inline por:
+  // número de respuestas + botón de tres puntos que abre el modal
   const info = document.createElement('div');
   info.className = 'respuesta-info';
 
@@ -157,18 +148,16 @@ actions.appendChild(btnModal);
   const btnVer = document.createElement('button');
   btnVer.className = 'btn-ver-respuestas';
   btnVer.innerHTML = '⋯';
-  btnVer.title = 'Ver todas las respuestas';
-  btnVer.addEventListener('click', () => mostrarModalRespuestas({ _id, usuario: autor, respuestas }));
+  btnVer.title = 'Ver respuestas';
+  btnVer.addEventListener('click', () => mostrarModalRespuestas(_id, respuestas));
 
   info.appendChild(num);
   info.appendChild(btnVer);
   card.appendChild(info);
 
-
-  
-
   mural.appendChild(card);
 }
+
 
 // ===== Cargar Aportes =====
 async function cargarAportes() {
