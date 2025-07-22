@@ -147,6 +147,27 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   });
   card.appendChild(form);
 
+
+  // Mostrar número de respuestas y botón de más opciones
+  const info = document.createElement('div');
+  info.className = 'respuesta-info';
+
+  const num = document.createElement('span');
+  num.textContent = `${respuestas.length} usuario${respuestas.length === 1 ? '' : 's'} ha${respuestas.length === 1 ? '' : 'n'} respondido`;
+
+  const btnVer = document.createElement('button');
+  btnVer.className = 'btn-ver-respuestas';
+  btnVer.innerHTML = '⋯';
+  btnVer.title = 'Ver todas las respuestas';
+  btnVer.addEventListener('click', () => mostrarModalRespuestas({ _id, usuario: autor, respuestas }));
+
+  info.appendChild(num);
+  info.appendChild(btnVer);
+  card.appendChild(info);
+
+
+  
+
   mural.appendChild(card);
 }
 
@@ -334,5 +355,36 @@ document.addEventListener('click', e => {
   }
 });
 
+
+
+// ===== Modal de respuestas por aporte =====
+function mostrarModalRespuestas(aporte) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-respuestas-overlay';
+  modal.innerHTML = `
+    <div class="modal-respuestas">
+      <h3>Respuestas al aporte de ${aporte.usuario}</h3>
+      <div class="modal-respuestas-lista">
+        ${
+          aporte.respuestas.length > 0
+            ? aporte.respuestas.map(r => `<div><strong>${r.autor}</strong>: ${r.contenido}</div>`).join('')
+            : '<em>Este aporte no tiene respuestas aún.</em>'
+        }
+      </div>
+      <button class="cerrar-modal-respuestas">Cerrar</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.querySelector('.cerrar-modal-respuestas').addEventListener('click', () => modal.remove());
+}
+
+
+
+
+
+
+
+
+  
 });
 
