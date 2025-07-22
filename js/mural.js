@@ -31,7 +31,8 @@ function verificarToken() {
 
 
 async function cargarMisAportes() {
-  const contenedor = document.getElementById('mis-aportes');
+  // apunta al contenedor correcto
+  const contenedor = document.getElementById('listaMisAportes');
   contenedor.innerHTML = '<p>Cargando tus aportes...</p>';
 
   try {
@@ -40,7 +41,6 @@ async function cargarMisAportes() {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
-
     const aportes = await res.json();
     contenedor.innerHTML = '';
 
@@ -62,40 +62,36 @@ async function cargarMisAportes() {
       contenedor.appendChild(d);
     });
 
-    // Agregar listeners a los botones de eliminar
+    // listeners para eliminar
     contenedor.querySelectorAll('.btn-eliminar-aporte').forEach(btn => {
       btn.addEventListener('click', async () => {
+        if (!confirm('¿Seguro que deseas eliminar este aporte?')) return;
         const id = btn.dataset.id;
-        const confirmar = confirm('¿Seguro que deseas eliminar este aporte?');
-        if (!confirmar) return;
-
         try {
-          const res = await fetch(`${API_BASE_URL}/api/mural/cerrar/${id}`, {
+          const res2 = await fetch(`${API_BASE_URL}/api/mural/cerrar/${id}`, {
             method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
           });
-
-          const data = await res.json();
-          if (res.ok) {
+          const body = await res2.json();
+          if (res2.ok) {
             btn.parentElement.remove();
             alert('Aporte eliminado con éxito.');
           } else {
-            alert(data.message || 'Error al eliminar el aporte.');
+            alert(body.message || 'Error al eliminar el aporte.');
           }
         } catch (err) {
-          console.error('❌ Error al eliminar aporte:', err);
+          console.error('Error al eliminar aporte:', err);
           alert('Ocurrió un error al eliminar el aporte.');
         }
       });
     });
 
   } catch (error) {
-    console.error('❌ Error al cargar mis aportes:', error);
+    console.error('Error cargando mis aportes:', error);
     contenedor.innerHTML = '<p>Error al cargar tus aportes.</p>';
   }
 }
+
 
 
 
