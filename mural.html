@@ -452,6 +452,12 @@ function cambiarSlide(direccion) {
 }
 
 
+function cerrarMensaje() {
+  const overlay = document.getElementById("modalOverlay");
+  if (overlay) {
+    overlay.classList.add("hidden");
+  }
+}
 
     
     document.addEventListener("DOMContentLoaded", () => {
@@ -517,18 +523,7 @@ async function cargarNotificaciones() {
     console.error("Error al cargar notificaciones:", err);
   }
 }
-
-
-
-function cerrarMensaje() {
-  const overlay = document.getElementById("modalOverlay");
-  if (overlay) {
-    overlay.classList.add("hidden");
-  }
-}
-
       
-
 // Alternar panel
 function configurarPanelNotificaciones() {
   const btn = document.getElementById("notifBtn");
