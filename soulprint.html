@@ -12,7 +12,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
       margin: 0;
       padding: 2rem;
@@ -23,10 +23,12 @@
       font-size: 2rem;
     }
 
-    .grid {
+    /* Contenedor para centrar la mariposa */
+    #butterfly-container {
       position: relative;
       width: 144px;
       height: 144px;
+      margin: 0 auto;
     }
 
     .pixel {
@@ -37,9 +39,9 @@
       border: 1px solid #222;
     }
 
-    .btn {
+    .edit-btn {
       display: inline-block;
-      margin-top: 2rem;
+      margin-top: 3rem;
       padding: 0.6rem 1.4rem;
       background-color: #444cf7;
       color: white;
@@ -49,20 +51,20 @@
       transition: background-color 0.3s ease;
     }
 
-    .btn:hover {
+    .edit-btn:hover {
       background-color: #2f3fc0;
     }
   </style>
 </head>
 <body>
   <h1>Tu Mariposa Soulprint</h1>
-  <div class="grid" id="pixelGrid"></div>
 
-  <a class="btn" href="editor-mariposa.html">Editar mariposa</a>
-  <a class="btn" href="mural.html" style="margin-top: 1rem;">Volver al mural</a>
+  <div id="butterfly-container"></div>
+
+  <a class="edit-btn" href="editor-mariposa.html">Editar mariposa</a>
 
   <script>
-    const pixelGrid = document.getElementById('pixelGrid');
+    const container = document.getElementById('butterfly-container');
     const butterflyPixelPositions = [
       [12, -6], [18, -6], [6, 0], [24, 0], [0, 6], [30, 6], [6, 12], [24, 12],
       [12, 18], [18, 18], [6, 24], [24, 24], [12, 30], [18, 30],
@@ -74,42 +76,36 @@
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         return payload.username;
-      } catch (err) {
-        console.error('Token inválido:', err);
+      } catch {
         return null;
       }
     }
 
     async function cargarMariposa() {
       const token = localStorage.getItem('token');
-      if (!token) return;
-
       const username = getUsernameFromToken(token);
-      if (!username) return;
+      if (!token || !username) return;
 
       try {
-        const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        const data = await response.json();
-
-        if (response.ok && Array.isArray(data.butterflyColors)) {
+        const res = await fetch(
+          `https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const data = await res.json();
+        if (res.ok && Array.isArray(data.butterflyColors)) {
           const scale = 16;
-          data.butterflyColors.forEach((color, index) => {
+          data.butterflyColors.forEach((color, i) => {
             const pixel = document.createElement('div');
-            pixel.classList.add('pixel');
-            const [x, y] = butterflyPixelPositions[index];
-            pixel.style.left = `${(x + 36) * (scale / 6)}px`;
-            pixel.style.top = `${(y + 36) * (scale / 6)}px`;
-            pixel.style.backgroundColor = color || '#ffffff';
-            pixelGrid.appendChild(pixel);
+            pixel.className = 'pixel';
+            const [x, y] = butterflyPixelPositions[i];
+            pixel.style.left = `${(x + 36) * (scale/6)}px`;
+            pixel.style.top  = `${(y + 36) * (scale/6)}px`;
+            pixel.style.backgroundColor = color || '#fff';
+            container.appendChild(pixel);
           });
         }
-      } catch (err) {
-        console.error('Error al cargar la mariposa:', err);
+      } catch (e) {
+        console.error('Error cargando mariposa', e);
       }
     }
 
