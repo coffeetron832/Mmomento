@@ -20,16 +20,16 @@
     }
 
     .grid {
-      display: grid;
-      grid-template-columns: repeat(6, 20px);
-      grid-template-rows: repeat(6, 20px);
-      gap: 4px;
+      position: relative;
+      width: 72px;
+      height: 72px;
       margin-bottom: 1.5rem;
     }
 
     .pixel {
-      width: 20px;
-      height: 20px;
+      width: 6px;
+      height: 6px;
+      position: absolute;
       background-color: #ffffff;
       border: 1px solid #ccc;
       cursor: pointer;
@@ -37,7 +37,8 @@
     }
 
     .pixel:hover {
-      transform: scale(1.2);
+      transform: scale(1.5);
+      z-index: 2;
     }
 
     .color-picker {
@@ -71,72 +72,81 @@
   <button onclick="guardarMariposa()">Guardar mariposa</button>
 
   <script>
-  const gridSize = 6;
-  const totalPixels = gridSize * gridSize;
-  const pixelGrid = document.getElementById('pixelGrid');
-  const colorPicker = document.getElementById('colorPicker');
-  const butterflyColors = new Array(totalPixels).fill('#ffffff');
+    const pixelGrid = document.getElementById('pixelGrid');
+    const colorPicker = document.getElementById('colorPicker');
 
-  // Crear grid
-  for (let i = 0; i < totalPixels; i++) {
-    const pixel = document.createElement('div');
-    pixel.classList.add('pixel');
-    pixel.dataset.index = i;
+    // Coordenadas relativas para cada pixel (30 total)
+    const butterflyPixelPositions = [
+      [12, -6], [18, -6], [6, 0], [24, 0], [0, 6], [30, 6], [6, 12], [24, 12],
+      [12, 18], [18, 18], [6, 24], [24, 24], [12, 30], [18, 30],
+      [-12, -6], [-18, -6], [-6, 0], [-24, 0], [-30, 6], [-6, 12], [-24, 12], [0, 6],
+      [-12, 18], [-18, 18], [-6, 24], [-24, 24], [-12, 30], [-18, 30]
+    ];
 
-    pixel.addEventListener('click', () => {
-      const selectedColor = colorPicker.value;
-      pixel.style.backgroundColor = selectedColor;
-      butterflyColors[i] = selectedColor;
-    });
+    const butterflyColors = new Array(butterflyPixelPositions.length).fill('#ffffff');
 
-    pixelGrid.appendChild(pixel);
-  }
+    // Crear píxeles
+    butterflyPixelPositions.forEach(([x, y], index) => {
+      const pixel = document.createElement('div');
+      pixel.classList.add('pixel');
+      pixel.dataset.index = index;
+      pixel.style.left = `${x + 36}px`; // offset center
+      pixel.style.top = `${y + 36}px`;  // offset center
 
-  function getUsernameFromToken(token) {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.username;
-    } catch (err) {
-      console.error('Token inválido:', err);
-      return null;
-    }
-  }
-
-  async function guardarMariposa() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('No hay sesión activa');
-      return;
-    }
-
-    const username = getUsernameFromToken(token);
-    if (!username) {
-      alert('No se pudo extraer el nombre de usuario.');
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ butterflyColors }),
+      pixel.addEventListener('click', () => {
+        const selectedColor = colorPicker.value;
+        pixel.style.backgroundColor = selectedColor;
+        butterflyColors[index] = selectedColor;
       });
 
-      const data = await response.json();
+      pixelGrid.appendChild(pixel);
+    });
 
-      if (response.ok) {
-        alert('¡Mariposa guardada con éxito!');
-      } else {
-        alert(data.message || 'Error al guardar la mariposa');
+    function getUsernameFromToken(token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.username;
+      } catch (err) {
+        console.error('Token inválido:', err);
+        return null;
       }
-    } catch (error) {
-      console.error(error);
-      alert('Error al conectar con el servidor');
     }
-  }
-</script>
+
+    async function guardarMariposa() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('No hay sesión activa');
+        return;
+      }
+
+      const username = getUsernameFromToken(token);
+      if (!username) {
+        alert('No se pudo extraer el nombre de usuario.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ butterflyColors }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('¡Mariposa guardada con éxito!');
+        } else {
+          alert(data.message || 'Error al guardar la mariposa');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Error al conectar con el servidor');
+      }
+    }
+  </script>
 </body>
 </html>
