@@ -111,7 +111,7 @@
     }
 
     async function loadButterfly() {
-      const res = await fetch('https://themural-backend-production.up.railway.app/api/user/mariposa', {
+      const res = await fetch(`https://themural-backend-production.up.railway.app/api/users/mariposa/${usuario.username}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -119,7 +119,7 @@
     }
 
     async function loadLegacy() {
-      const res = await fetch('https://themural-backend-production.up.railway.app/api/user/aportes', {
+      const res = await fetch(`https://themural-backend-production.up.railway.app/api/users/aportes/${usuario.username}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const list = document.getElementById('legacyList');
