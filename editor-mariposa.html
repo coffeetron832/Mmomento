@@ -20,23 +20,21 @@
     }
 
     .grid {
-  position: relative;
-  width: 144px;
-  height: 144px;
-  margin-bottom: 1.5rem;
-}
-
+      position: relative;
+      width: 72px;
+      height: 72px;
+      margin-bottom: 1.5rem;
+    }
 
     .pixel {
-  width: 12px;
-  height: 12px;
-  position: absolute;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
+      width: 6px;
+      height: 6px;
+      position: absolute;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
 
     .pixel:hover {
       transform: scale(1.5);
@@ -77,164 +75,159 @@
 
 
   <script>
-    const pixelGrid = document.getElementById('pixelGrid');
-    const colorPicker = document.getElementById('colorPicker');
+  const pixelGrid = document.getElementById('pixelGrid');
+  const colorPicker = document.getElementById('colorPicker');
 
-    const butterflyMask = [
-      // 12 columnas por fila, usa null para espacios vacíos
-      [null,null,null, 1 , 1 ,null, null, 1 , 1 ,null,null,null],
-      [null,null, 1 ,null,null, 1 , 1 ,null,null, 1 ,null,null],
-      [null, 1 ,null,null,null,null,null,null,null,null, 1 ,null],
-      [ 1 ,null,null,null,null,null,null,null,null,null,null, 1 ],
-      [ 1 ,null,null,null,null,null,null,null,null,null,null, 1 ],
-      [null, 1 ,null,null,null,null,null,null,null,null, 1 ,null],
-      [null,null, 1 ,null,null,null,null,null,null, 1 ,null,null],
-      [null,null,null, 1 ,null,null,null,null, 1 ,null,null,null],
-      [null,null,null,null, 1 ,null,null, 1 ,null,null,null,null]
-    ];
+  const butterflyPixelPositions = [
+    [12, -6], [18, -6], [6, 0], [24, 0], [0, 6], [30, 6], [6, 12], [24, 12],
+    [12, 18], [18, 18], [6, 24], [24, 24], [12, 30], [18, 30],
+    [-12, -6], [-18, -6], [-6, 0], [-24, 0], [-30, 6], [-6, 12], [-24, 12], [0, 6],
+    [-12, 18], [-18, 18], [-6, 24], [-24, 24], [-12, 30], [-18, 30]
+  ];
 
-    const butterflyColors = [];
+  const butterflyColors = new Array(butterflyPixelPositions.length).fill('#ffffff');
 
-    // Render pixels from the butterfly mask
-    butterflyMask.forEach((row, rowIndex) => {
-      row.forEach((cell, colIndex) => {
-        const index = butterflyColors.length;
-        const pixel = document.createElement('div');
-        pixel.classList.add('pixel');
-        if (cell === 1) {
-          pixel.dataset.index = index;
-          pixel.addEventListener('click', () => {
-            const selectedColor = colorPicker.value;
-            pixel.style.backgroundColor = selectedColor;
-            butterflyColors[index] = selectedColor;
-          });
-        } else {
-          pixel.style.visibility = 'hidden';
-        }
-
-        butterflyColors.push('#ffffff');
-        pixelGrid.appendChild(pixel);
-      });
-    });
-
-    function getUsernameFromToken(token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.username;
-      } catch (err) {
-        console.error('Token inválido:', err);
-        return null;
-      }
+  function getUsernameFromToken(token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.username;
+    } catch (err) {
+      console.error('Token inválido:', err);
+      return null;
     }
+  }
 
-    async function cargarMariposa() {
-      const token = localStorage.getItem('token');
-      if (!token) return;
+  async function cargarMariposa() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
 
-      const username = getUsernameFromToken(token);
-      if (!username) return;
+    const username = getUsernameFromToken(token);
+    if (!username) return;
 
-      try {
-        const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+    try {
+      const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+      if (response.ok && Array.isArray(data.butterflyColors)) {
+        data.butterflyColors.forEach((color, index) => {
+          if (color && pixelGrid.children[index]) {
+            pixelGrid.children[index].style.backgroundColor = color;
+            butterflyColors[index] = color;
           }
         });
-
-        const data = await response.json();
-        if (response.ok && Array.isArray(data.butterflyColors)) {
-          data.butterflyColors.forEach((color, index) => {
-            if (color && pixelGrid.children[index]) {
-              pixelGrid.children[index].style.backgroundColor = color;
-              butterflyColors[index] = color;
-            }
-          });
-        }
-      } catch (err) {
-        console.error('Error al cargar la mariposa:', err);
       }
+    } catch (err) {
+      console.error('Error al cargar la mariposa:', err);
+    }
+  }
+
+  async function guardarMariposa() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('No hay sesión activa');
+      return;
     }
 
-    async function guardarMariposa() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('No hay sesión activa');
-        return;
-      }
-
-      const username = getUsernameFromToken(token);
-      if (!username) {
-        alert('No se pudo extraer el nombre de usuario.');
-        return;
-      }
-
-      try {
-        const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ butterflyColors }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          alert('¡Mariposa guardada con éxito!');
-        } else {
-          alert(data.message || 'Error al guardar la mariposa');
-        }
-      } catch (error) {
-        console.error(error);
-        alert('Error al conectar con el servidor');
-      }
+    const username = getUsernameFromToken(token);
+    if (!username) {
+      alert('No se pudo extraer el nombre de usuario.');
+      return;
     }
+
+    try {
+      const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ butterflyColors }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('¡Mariposa guardada con éxito!');
+      } else {
+        alert(data.message || 'Error al guardar la mariposa');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error al conectar con el servidor');
+    }
+  }
+
+
 
     async function restablecerMariposa() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('No hay sesión activa');
-        return;
-      }
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('No hay sesión activa');
+    return;
+  }
 
-      const username = getUsernameFromToken(token);
-      if (!username) {
-        alert('No se pudo extraer el nombre de usuario.');
-        return;
-      }
+  const username = getUsernameFromToken(token);
+  if (!username) {
+    alert('No se pudo extraer el nombre de usuario.');
+    return;
+  }
 
-      for (let i = 0; i < butterflyColors.length; i++) {
-        butterflyColors[i] = '#ffffff';
-        if (pixelGrid.children[i] && pixelGrid.children[i].style.visibility !== 'hidden') {
-          pixelGrid.children[i].style.backgroundColor = '#ffffff';
-        }
-      }
-
-      try {
-        const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ butterflyColors }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          alert('Mariposa restablecida con éxito');
-        } else {
-          alert(data.message || 'Error al restablecer la mariposa');
-        }
-      } catch (error) {
-        console.error(error);
-        alert('Error al conectar con el servidor');
-      }
+  // Vaciar colores en el frontend
+  for (let i = 0; i < butterflyColors.length; i++) {
+    butterflyColors[i] = '#ffffff';
+    if (pixelGrid.children[i]) {
+      pixelGrid.children[i].style.backgroundColor = '#ffffff';
     }
+  }
 
-    window.addEventListener('DOMContentLoaded', cargarMariposa);
-  </script>
+  // Enviar colores al backend
+  try {
+    const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ butterflyColors }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert('Mariposa restablecida con éxito');
+    } else {
+      alert(data.message || 'Error al restablecer la mariposa');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('Error al conectar con el servidor');
+  }
+}
+
+
+  // Crear píxeles
+  butterflyPixelPositions.forEach(([x, y], index) => {
+    const pixel = document.createElement('div');
+    pixel.classList.add('pixel');
+    pixel.dataset.index = index;
+    pixel.style.left = `${x + 36}px`;
+    pixel.style.top = `${y + 36}px`;
+
+    pixel.addEventListener('click', () => {
+      const selectedColor = colorPicker.value;
+      pixel.style.backgroundColor = selectedColor;
+      butterflyColors[index] = selectedColor;
+    });
+
+    pixelGrid.appendChild(pixel);
+  });
+
+  // Cargar colores existentes al cargar la página
+  window.addEventListener('DOMContentLoaded', cargarMariposa);
+</script>
 </body>
 </html>
