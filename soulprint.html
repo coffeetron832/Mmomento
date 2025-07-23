@@ -6,22 +6,26 @@
   <title>Tu Soulprint</title>
   <style>
     body {
-      background-color: #f8f9fa;
+      background-color: #000;
       font-family: 'Segoe UI', sans-serif;
+      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
       padding: 2rem;
     }
 
     h1 {
-      margin-bottom: 1.5rem;
-      color: #333;
+      margin-bottom: 2rem;
+      font-size: 2rem;
     }
 
     .grid {
       position: relative;
-      width: 144px; /* 72px original * (16/6) */
+      width: 144px;
       height: 144px;
     }
 
@@ -30,13 +34,13 @@
       height: 16px;
       position: absolute;
       background-color: #ffffff;
-      border: 1px solid #ccc;
+      border: 1px solid #222;
     }
 
-    .edit-btn {
+    .btn {
       display: inline-block;
-      margin-top: 1rem;
-      padding: 0.5rem 1.2rem;
+      margin-top: 2rem;
+      padding: 0.6rem 1.4rem;
       background-color: #444cf7;
       color: white;
       text-decoration: none;
@@ -45,7 +49,7 @@
       transition: background-color 0.3s ease;
     }
 
-    .edit-btn:hover {
+    .btn:hover {
       background-color: #2f3fc0;
     }
   </style>
@@ -53,7 +57,9 @@
 <body>
   <h1>Tu Mariposa Soulprint</h1>
   <div class="grid" id="pixelGrid"></div>
-  <a class="edit-btn" href="editor-mariposa.html">Editar mariposa</a>
+
+  <a class="btn" href="editor-mariposa.html">Editar mariposa</a>
+  <a class="btn" href="mural.html" style="margin-top: 1rem;">Volver al mural</a>
 
   <script>
     const pixelGrid = document.getElementById('pixelGrid');
@@ -91,13 +97,11 @@
         const data = await response.json();
 
         if (response.ok && Array.isArray(data.butterflyColors)) {
-          const scale = 16; // nuevo tamaño del píxel
+          const scale = 16;
           data.butterflyColors.forEach((color, index) => {
             const pixel = document.createElement('div');
             pixel.classList.add('pixel');
             const [x, y] = butterflyPixelPositions[index];
-            pixel.style.left = `${x + 36}px`;
-            pixel.style.top = `${y + 36}px`;
             pixel.style.left = `${(x + 36) * (scale / 6)}px`;
             pixel.style.top = `${(y + 36) * (scale / 6)}px`;
             pixel.style.backgroundColor = color || '#ffffff';
