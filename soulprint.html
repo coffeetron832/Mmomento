@@ -108,6 +108,8 @@
       [-12, 18], [-18, 18], [-6, 24], [-24, 24], [-12, 30], [-18, 30]
     ];
 
+lucide.createIcons(); // inicializa los íconos Lucide
+       
     function getUsernameFromToken(token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
