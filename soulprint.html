@@ -133,7 +133,7 @@
         const entry = document.createElement('div');
         entry.classList.add('legacy-entry');
         entry.innerHTML = `
-          <div class="legacy-title">${aporte.titulo || 'Aporte sin título'}</div>
+          <div class="legacy-title">${aporte.tipo.toUpperCase()}</div>
           <div class="legacy-text">${aporte.texto}</div>
         `;
         list.appendChild(entry);
