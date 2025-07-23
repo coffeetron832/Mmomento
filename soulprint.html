@@ -32,11 +32,31 @@
       background-color: #ffffff;
       border: 1px solid #ccc;
     }
+
+
+    .edit-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1.2rem;
+    background-color: #444cf7;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .edit-btn:hover {
+    background-color: #2f3fc0;
+  }
   </style>
 </head>
 <body>
   <h1>Tu Mariposa Soulprint</h1>
   <div class="grid" id="pixelGrid"></div>
+
+  <a class="edit-btn" href="editor-mariposa.html">Editar mariposa</a>
+
 
   <script>
     const pixelGrid = document.getElementById('pixelGrid');
