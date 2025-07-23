@@ -4,29 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tu Soulprint</title>
+
+  <!-- Fuente Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
     body {
       background-color: #000;
-      font-family: 'Segoe UI', sans-serif;
       color: #fff;
+      font-family: 'Inter', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
       padding: 2rem;
+      min-height: 100vh;
     }
 
     h1 {
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
       font-size: 2rem;
+      font-weight: 600;
+    }
+
+    p.description {
+      font-size: 1rem;
+      color: #ccc;
+      text-align: center;
+      max-width: 400px;
+      margin-bottom: 2rem;
     }
 
     .grid {
       position: relative;
       width: 144px;
       height: 144px;
+      margin-bottom: 2.5rem;
     }
 
     .pixel {
@@ -34,32 +49,54 @@
       height: 16px;
       position: absolute;
       background-color: #ffffff;
-      border: 1px solid #222;
+      border: 1px solid #333;
     }
 
-    .btn {
-      display: inline-block;
-      margin-top: 4rem;
-      padding: 0.6rem 1.4rem;
+    .btn-container {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.2rem;
       background-color: #444cf7;
       color: white;
       text-decoration: none;
       border-radius: 8px;
-      font-weight: bold;
+      font-weight: 600;
       transition: background-color 0.3s ease;
     }
 
-    .btn:hover {
+    .edit-btn:hover {
       background-color: #2f3fc0;
+    }
+
+    .edit-btn i {
+      width: 18px;
+      height: 18px;
     }
   </style>
 </head>
 <body>
-  <h1>Tu Mariposa Soulprint</h1>
+  <h1>Tu Mariposa</h1>
+  <p class="description">
+    Esta mariposa es tu sello visual en el mural. Cada color representa un fragmento de lo que compartes. No es perfecta, es tuya.
+  </p>
+
   <div class="grid" id="pixelGrid"></div>
 
-  <a class="btn" href="editor-mariposa.html" style="margin-top: 3rem;">Editar mariposa</a>
-<a class="btn" href="mural.html" style="margin-top: 1rem;">Volver al mural</a>
+  <div class="btn-container">
+    <a class="edit-btn" href="editor-mariposa.html">
+      <i data-lucide="edit-3"></i> Editar mariposa
+    </a>
+    <a class="edit-btn" href="mural.html">
+      <i data-lucide="arrow-left"></i> Volver al mural
+    </a>
+  </div>
 
 
   <script>
