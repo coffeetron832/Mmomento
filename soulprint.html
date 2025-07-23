@@ -3,342 +3,157 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>La gente debería ver esto antes de conocerte | Momento</title>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/estilos-soulprint.css">
+  <title>Tu legado emocional | TheMural</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos-soulprint.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fefefe;
+      color: #333;
+      margin: 0;
+      padding: 1rem;
+    }
+    .container {
+      max-width: 720px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .butterfly {
+      width: 6px;
+      height: 6px;
+      background: transparent;
+      position: relative;
+      margin: 2rem auto;
+      animation: flap 0.8s ease-in-out infinite;
+    }
+    .edit-btn {
+      display: block;
+      margin: auto;
+      margin-top: 1rem;
+      background: #4f46e5;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      width: max-content;
+    }
+
+    .legacy-entry {
+      border-left: 3px solid #4f46e5;
+      padding-left: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .legacy-title {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .qr-wrapper {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    @keyframes flap {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(3deg); }
+    }
+  </style>
 </head>
 <body>
-  <div class="edit-container">
-  <a id="editBtn" class="edit-btn" href="#">
-    <i data-lucide="pencil-line"></i> Editar Soulprint
-  </a>
-  <div id="soulprint-actions">
-    <button id="download-pdf">
-      <i data-lucide="printer"></i> Descargar PDF
-    </button>
+  <div class="container">
+    <h1>🦋 Tu legado emocional</h1>
+
+    <div class="butterfly" id="butterflyRender"></div>
+    <a class="edit-btn" href="editor-mariposa.html">Editar mariposa</a>
+
+    <div id="legacyList">
+      <p>Cargando aportes...</p>
+    </div>
+
     <div class="qr-wrapper">
-      <button id="generate-qr">
-        <i data-lucide="qrcode"></i> Compartir por QR
-      </button>
+      <p>Comparte tu legado:</p>
       <div id="qr-container"></div>
     </div>
   </div>
-</div>
 
-
-
-<div id="qr-container" style="display: none; margin-bottom: 2rem;"></div>
-
-<!-- CONTENEDOR PARA PDF -->
-<div id="pdf-container" style="max-width: 700px; margin: auto;">
-
-  <div id="soulprint-intro" style="display:none; background: #fefcfb; border: 2px solid #eee; border-radius: 1rem; padding: 1.5rem; max-width: 600px; margin: auto; box-shadow: 0 8px 20px rgba(0,0,0,0.08); font-size: 0.95rem; line-height: 1.6; color: #333; text-align: center; margin-bottom: 2rem; font-family: 'Inter', sans-serif;">
-  <div style="font-size: 2rem; margin-bottom: 1rem;">🦋</div>
-  <h2 style="font-family:'Playfair Display',serif; color:#4f46e5; font-style:italic; font-size: 1.6rem; margin-bottom: 1rem;">Tu Soulprint</h2>
-
-  <p><strong>¿Qué estás viendo?</strong> Esto no es una hoja de vida ni un perfil cualquiera. Es una forma diferente de mostrar quién eres... de verdad.</p>
-  <p>Aquí no hay máscaras ni poses. Solo tú, con tu esencia, tus colores, tus frases, y esos momentos que te hacen vibrar.</p>
-
-  <p style="margin-top: 1rem;"><strong>¿Para qué sirve?</strong></p>
-  <ul style="list-style: disc; padding-left: 1.2rem; text-align: left; display: inline-block;">
-    <li>Para presentarte de forma auténtica.</li>
-    <li>Para guardar lo que te mueve por dentro.</li>
-    <li>Para compartir lo que realmente importa.</li>
-  </ul>
-
-  <p style="margin-top: 1rem;"><strong>Úsalo como quieras:</strong></p>
-  <ul style="list-style: disc; padding-left: 1.2rem; text-align: left; display: inline-block;">
-    <li>Déjalo en tu cuarto, tu perfil o tu diario.</li>
-    <li>Conecta con personas que sienten como tú.</li>
-    <li>Recuerda que tu historia vale la pena ser contada.</li>
-  </ul>
-
-  <p style="margin-top: 1rem; font-style: italic;">Tu Soulprint no es fijo. Cambia contigo. Hoy es uno, mañana puede ser otro, y eso está bien.</p>
-
-  <p style="margin-top: 2rem; color: #999; font-size: 0.9rem;"><em>Creado con 💜 en Momento</em></p>
-</div>
-
-
-<!-- Contenido oculto solo para el PDF -->
-<div id="soulprint-pdf-clone" style="display: none;">
-  <div class="soulprint-card" style="width: 85%; max-width: 440px; margin: 2rem auto;">
-
-    <div class="banner-container">
-      <img id="pdfBannerImage" class="banner-img" src="" alt="Banner del Soulprint PDF" />
-    </div>
-
-    <div class="profile-wrapper">
-      <img id="pdfProfileImage" class="profile-img-colored" src="https://via.placeholder.com/80" alt="Foto de perfil PDF" />
-    </div>
-
-    <div class="username-emoji" style="display: flex; justify-content: center; align-items: center; gap: 0.4rem; margin-bottom: 0;">
-      <div class="username" id="pdfUsername">@usuario</div>
-    </div>
-
-    <div class="phrase" id="pdfSoulPhrase" style="text-align:center; margin-top: 0;">"Frase del alma..."</div>
-
-    <hr class="separator" />
-
-    <div class="details" style="align-items: flex-start; text-align: left;">
-      <div class="soulrole" id="pdfNationality">Nacionalidad</div>
-      <div class="soulcolor-info">
-        <div class="soulcolor-circle" id="pdfSoulColorCircle"></div>
-        <span id="pdfSoulColorName">Color del alma</span>
-      </div>
-      <div class="birthdate">Mi primer latido: <span id="pdfBirthdate">--</span></div>
-    </div>  <!-- Cierre de .details -->
-
-  </div>  <!-- Cierre de .soulprint-card -->
-</div>    <!-- Cierre de #soulprint-pdf-clone -->
-
-
-
-  
-  <div id="soulprint" class="soulprint-card" style="display:none;">
-
-  <div class="banner-container">
-    <img id="bannerImage" class="banner-img" src="" alt="Banner del Soulprint" />
-  </div>
-
-  <div class="profile-wrapper">
-    <img id="profileImage" class="profile-img-colored" src="https://via.placeholder.com/80" alt="Foto de perfil" />
-  </div>
-
-  <div class="profile-spacer"></div>
-
-  <div class="username-emoji" style="display: flex; justify-content: center; align-items: center; gap: 0.4rem; margin-top: 30px; margin-bottom: 0rem;">
-    <div style="text-align: center; margin-top: 0.5rem;">
-      <div class="username" id="usernameDisplay">@usuario</div>
-      <div class="phrase" id="soulPhraseDisplay">"Frase del alma..."</div>
-    </div>
-  </div>
-
-  <hr class="separator" />
-
-  <div class="details" style="align-items: flex-start; text-align: left;">
-    <div class="soulrole" id="nationalityDisplay">Nacionalidad</div>
-    <div class="soulcolor-info">
-      <div class="soulcolor-circle" id="soulcolorCircle"></div>
-      <span id="soulcolorName">Color del alma</span>
-    </div>
-    <div class="birthdate">Mi primer latido: <span id="birthdate">--</span></div>
-  </div>  <!-- Cierre de .details -->
-
-</div>  <!-- Cierre de #soulprint -->
-
-
-<div id="loading-bar" style="display: none;">
-  <div class="loading-text">Generando tu Soulprint...</div>
-  <div class="loading-progress"></div>
-</div>
-
-
-
-  <div id="errorMessage" class="error" style="display:none;">
-    Soulprint no encontrado 😢
-  </div>
-
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const user = new URLSearchParams(window.location.search).get('user');
-  const token = localStorage.getItem('token');
-  const stored = localStorage.getItem('user');
-  let logged = null;
-  if (stored && stored !== 'undefined') {
-    try { logged = JSON.parse(stored).username; } catch {}
-  }
-
-  const soulprint = document.getElementById('soulprint');
-soulprint.style.display = 'block';
-soulprint.classList.add('fade-in');
-
-  
-  const soulEl = document.getElementById('soulprint');
-  const errorEl = document.getElementById('errorMessage');
-  const editBtn = document.getElementById('editBtn');
-  const colorCircle = document.getElementById('soulcolorCircle');
-  const soulcolorName = document.getElementById('soulcolorName');
-  const profileImage = document.getElementById('profileImage');
-  const emojiEl = document.getElementById('emojiAlma');
-  const actions  = document.getElementById('soulprint-actions');
-  const qrCont   = document.getElementById('qr-container');
-
-  if (!user) {
-    errorEl.textContent = 'Falta usuario en la URL';
-    errorEl.style.display = 'block';
-    return;
-  }
-
-  // Si hay token, lo usamos; si no, usamos fetch sin headers
-    const fetchOptions = token
-    ? {
-        headers: { 'Authorization': `Bearer ${token}` },
-        cache: 'no-store'
-      }
-    : { cache: 'no-store' };
-
-  function loadSoulprint() {
-    fetch(`https://momento-backend-production.up.railway.app/api/users/soulprint/${encodeURIComponent(user)}`, fetchOptions)
-      .then(res => res.json().then(body => ({ status: res.status, body })))
-      .then(({ status, body }) => {
-        const isOwner = logged === user;
-
-        if (status !== 200 || !body.soulprint || (!body.soulprint.public && !isOwner)) {
-          errorEl.textContent = body.message || 'Soulprint no encontrado o privado 😢';
-          errorEl.style.display = 'block';
-          return;
-        }
-
-        const { username, soulprint } = body;
-        document.getElementById('usernameDisplay').innerText = '@' + username;
-        document.getElementById('nationalityDisplay').innerText = soulprint.nationality || '--';
-        document.getElementById('soulPhraseDisplay').innerText = `"${soulprint.soulPhrase || ''}"`;
-        
-
-        if (soulprint.birthdate) {
-          const d = new Date(soulprint.birthdate);
-          document.getElementById('birthdate').innerText = d.toLocaleDateString('es-ES', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
-        }
-
-        soulcolorName.innerText = soulprint.soulColorName || 'Color del alma';
-        colorCircle.style.backgroundColor = soulprint.soulColor || '#aaa';
-        soulEl.style.setProperty('--soulcolor', soulprint.soulColor || '#4f46e5');
-
-        if (soulprint.profileImage) profileImage.src = soulprint.profileImage;
-        if (soulprint.bannerImage) {
-          const banner = document.querySelector('#soulprint .banner-img');
-          banner.src = soulprint.bannerImage;
-        }
-
-        soulEl.style.display = 'flex';
-
-        if (isOwner) {
-          editBtn.style.display = 'inline-block';
-          editBtn.href = `edit-soulprint.html?user=${encodeURIComponent(username)}`;
-          actions.style.display = 'flex';
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        errorEl.textContent = 'Error al obtener Soulprint';
-        errorEl.style.display = 'block';
-      });
-  }
-
-  // 🔁 Ejecuta carga inicial
-  loadSoulprint();
-
-  // 🦋 Si se da una mariposa desde otra parte del sitio:
-  // Justo después de definir loadSoulprint():
-window.addEventListener('storage', e => {
-  if (e.key === 'butterfly-given') {
-    console.log('🦋 Soulprint recargado tras storage event');
-    loadSoulprint();
-  }
-});
-
-
-
-  // Listener PDF
-  document.getElementById('download-pdf').addEventListener('click', () => {
-  const target = document.getElementById('soulprint');
-  const profileImg = document.getElementById('profileImage');
-
-  if (profileImg && !profileImg.complete) {
-    profileImg.onload = () => generatePDF(target);
-  } else {
-    generatePDF(target);
-  }
-});
-
-function generatePDF() {
-  const loading = document.getElementById('loading-bar');
-  loading.style.display = 'flex'; // Mostrar barra
-
-  const intro = document.getElementById('soulprint-intro');
-  const originalSoulprint = document.getElementById('soulprint');
-
-  intro.style.display = 'block';
-  const introClone = intro.cloneNode(true);
-  intro.style.display = 'none';
-
-  const soulprintClone = originalSoulprint.cloneNode(true);
-
-  // 🔴 Eliminar o esconder elementos no deseados del PDF:
-  soulprintClone.querySelector('.edit-container')?.remove();
-  soulprintClone.querySelector('#soulprint-actions')?.remove();
-
-  // 🟢 Ocultar barra de carga en el clon si llegara a existir
-  const loadingBar = soulprintClone.querySelector('#loading-bar');
-  if (loadingBar) loadingBar.remove(); // o loadingBar.style.display = 'none';
-
-  const bannerImg = soulprintClone.querySelector('.banner-img');
-  if (bannerImg) {
-    bannerImg.style.objectFit = 'cover';
-    bannerImg.style.width = '100%';
-    bannerImg.style.height = '120px';
-  }
-
-  soulprintClone.style.margin = '2rem auto';
-  soulprintClone.style.border = '1px solid #ccc';
-  soulprintClone.style.borderRadius = '1rem';
-  soulprintClone.style.boxShadow = 'none';
-
-  const container = document.createElement('div');
-  container.appendChild(introClone);
-
-  const pageBreak = document.createElement('div');
-  pageBreak.style.pageBreakBefore = 'always';
-  pageBreak.style.breakBefore = 'page';
-  container.appendChild(pageBreak);
-
-  container.appendChild(soulprintClone);
-
-  html2pdf().from(container).set({
-    margin: 0.5,
-    filename: 'mi-soulprint.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-  }).save().then(() => {
-    loading.style.display = 'none'; // Ocultar barra al terminar
-  });
-}
-
-
-
-
-
-
-
-
-
-  // Listener QR
-document.getElementById('generate-qr').addEventListener('mouseenter', () => {
-  qrCont.innerHTML = '';
-  new QRCode(qrCont, {
-    text: `https://momentto.netlify.app/soulprint.html?user=${encodeURIComponent(user)}`,
-    width: 160,
-    height: 160,
-    colorDark: "#000000",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H
-  });
-});
-
-  lucide.createIcons();
-
-}); // Cierre del DOMContentLoaded
-</script>
-  <!-- Librerías externas -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const token = localStorage.getItem('token');
+    const usuario = JSON.parse(localStorage.getItem('user') || '{}');
+
+    const butterflyColors = []; // Será llenado con los colores desde el backend
+
+    const shadowMap = [
+      [12, -6], [18, -6], [6, 0], [24, 0], [0, 6], [30, 6], [6, 12], [24, 12],
+      [12, 18], [18, 18], [6, 24], [24, 24], [12, 30], [18, 30],
+      [-12, -6], [-18, -6], [-6, 0], [-24, 0], [-30, 6], [-6, 12], [-24, 12], [0, 6],
+      [-12, 18], [-18, 18], [-6, 24], [-24, 24], [-12, 30], [-18, 30]
+    ];
+
+    function renderButterfly(colors) {
+      const butterfly = document.getElementById('butterflyRender');
+      let boxShadow = '';
+      for (let i = 0; i < shadowMap.length; i++) {
+        const [x, y] = shadowMap[i];
+        const color = colors[i] || '#ccc';
+        boxShadow += `${x}px ${y}px ${color}${i < shadowMap.length - 1 ? ',' : ''}`;
+      }
+      butterfly.style.boxShadow = boxShadow;
+    }
+
+    async function loadButterfly() {
+      const res = await fetch('https://themural-backend-production.up.railway.app/api/user/mariposa', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (Array.isArray(data.colors)) renderButterfly(data.colors);
+    }
+
+    async function loadLegacy() {
+      const res = await fetch('https://themural-backend-production.up.railway.app/api/user/aportes', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const list = document.getElementById('legacyList');
+      const data = await res.json();
+      list.innerHTML = '';
+      if (!data.length) {
+        list.innerHTML = '<p>Aún no has dejado ningún aporte.</p>';
+        return;
+      }
+      data.forEach(aporte => {
+        const entry = document.createElement('div');
+        entry.classList.add('legacy-entry');
+        entry.innerHTML = `
+          <div class="legacy-title">${aporte.titulo || 'Aporte sin título'}</div>
+          <div class="legacy-text">${aporte.texto}</div>
+        `;
+        list.appendChild(entry);
+      });
+    }
+
+    function generateQR() {
+      new QRCode(document.getElementById('qr-container'), {
+        text: `https://momentto.netlify.app/soulprint.html?user=${usuario.username}`,
+        width: 160,
+        height: 160,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    loadButterfly();
+    loadLegacy();
+    generateQR();
+  </script>
 </body>
 </html>
-
-
