@@ -287,24 +287,25 @@
 
 
 #notifBtn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text);
-    z-index: 10000;
-    transition: color 0.2s ease;
-  }
+  position: fixed;
+  top: 20px;
+  left: 20px; /* ← Aquí está el cambio */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  z-index: 10000;
+  transition: color 0.2s ease;
+}
 
-  #notifBtn:hover {
-    color: var(--accent);
-  }
+#notifBtn:hover {
+  color: var(--accent);
+}
+
 
 
   /* Popover */
