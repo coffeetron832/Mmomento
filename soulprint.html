@@ -2,129 +2,94 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tu legado emocional | TheMural</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/estilos-soulprint.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tu Soulprint</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: #fefefe;
-      color: #333;
-      margin: 0;
-      padding: 1rem;
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
     }
-    .container {
-      max-width: 720px;
-      margin: auto;
-    }
+
     h1 {
-      text-align: center;
-      font-size: 1.8rem;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #333;
     }
-    .butterfly {
+
+    .grid {
+      position: relative;
+      width: 72px;
+      height: 72px;
+    }
+
+    .pixel {
       width: 6px;
       height: 6px;
-      background: #fff;        /* color central */
-      position: relative;
-      margin: 2rem auto;
-      animation: flap 0.8s ease-in-out infinite;
-    }
-    .edit-btn {
-      display: block;
-      margin: auto;
-      margin-top: 1rem;
-      background: #4f46e5;
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      width: max-content;
-    }
-    .qr-wrapper {
-      text-align: center;
-      margin-top: 2rem;
-    }
-    @keyframes flap {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(3deg); }
+      position: absolute;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🦋 Tu legado emocional</h1>
+  <h1>Tu Mariposa Soulprint</h1>
+  <div class="grid" id="pixelGrid"></div>
 
-    <div class="butterfly" id="butterflyRender"></div>
-    <a class="edit-btn" href="editor-mariposa.html">Editar mariposa</a>
-
-    <div class="qr-wrapper">
-      <p>Comparte tu mariposa:</p>
-      <div id="qr-container"></div>
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    const token = localStorage.getItem('token');
-    const usuario = JSON.parse(localStorage.getItem('user') || '{}');
-
-    const shadowMap = [
-      // 28 sombras en orden, igual que en el editor
+    const pixelGrid = document.getElementById('pixelGrid');
+    const butterflyPixelPositions = [
       [12, -6], [18, -6], [6, 0], [24, 0], [0, 6], [30, 6], [6, 12], [24, 12],
       [12, 18], [18, 18], [6, 24], [24, 24], [12, 30], [18, 30],
       [-12, -6], [-18, -6], [-6, 0], [-24, 0], [-30, 6], [-6, 12], [-24, 12], [0, 6],
       [-12, 18], [-18, 18], [-6, 24], [-24, 24], [-12, 30], [-18, 30]
     ];
 
-    function renderButterfly(colors) {
-      const butterfly = document.getElementById('butterflyRender');
-      // primer color es el central
-      butterfly.style.background = colors[0] || '#fff';
-
-      // sombras para los demás
-      const boxShadow = shadowMap
-        .map(([x, y], i) => `${x}px ${y}px ${colors[i + 1] || '#ccc'}`)
-        .join(', ');
-      butterfly.style.boxShadow = boxShadow;
+    function getUsernameFromToken(token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.username;
+      } catch (err) {
+        console.error('Token inválido:', err);
+        return null;
+      }
     }
 
-    async function loadButterfly() {
-      if (!token || !usuario.username) return;
+    async function cargarMariposa() {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const username = getUsernameFromToken(token);
+      if (!username) return;
+
       try {
-        const res = await fetch(
-          `https://themural-backend-production.up.railway.app/api/users/butterfly/${usuario.username}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const data = await res.json();
-        // asegúrate de usar el mismo nombre que devuelve tu backend:
-        // { butterflyColors: [...] }
-        if (Array.isArray(data.butterflyColors)) {
-          renderButterfly(data.butterflyColors);
+        const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok && Array.isArray(data.butterflyColors)) {
+          data.butterflyColors.forEach((color, index) => {
+            const pixel = document.createElement('div');
+            pixel.classList.add('pixel');
+            const [x, y] = butterflyPixelPositions[index];
+            pixel.style.left = `${x + 36}px`;
+            pixel.style.top = `${y + 36}px`;
+            pixel.style.backgroundColor = color || '#ffffff';
+            pixelGrid.appendChild(pixel);
+          });
         }
       } catch (err) {
         console.error('Error al cargar la mariposa:', err);
       }
     }
 
-    function generateQR() {
-      new QRCode(document.getElementById('qr-container'), {
-        text: `https://momentto.netlify.app/soulprint.html?user=${usuario.username}`,
-        width: 160,
-        height: 160,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-      });
-    }
-
-    // Ejecutar al arrancar
-    loadButterfly();
-    generateQR();
+    window.addEventListener('DOMContentLoaded', cargarMariposa);
   </script>
 </body>
 </html>
