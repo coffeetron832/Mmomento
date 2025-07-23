@@ -45,23 +45,10 @@
       text-decoration: none;
       width: max-content;
     }
-
-    .legacy-entry {
-      border-left: 3px solid #4f46e5;
-      padding-left: 1rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .legacy-title {
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-
     .qr-wrapper {
       text-align: center;
       margin-top: 2rem;
     }
-
     @keyframes flap {
       0%, 100% { transform: rotate(0deg); }
       50% { transform: rotate(3deg); }
@@ -75,12 +62,8 @@
     <div class="butterfly" id="butterflyRender"></div>
     <a class="edit-btn" href="editor-mariposa.html">Editar mariposa</a>
 
-    <div id="legacyList">
-      <p>Cargando aportes...</p>
-    </div>
-
     <div class="qr-wrapper">
-      <p>Comparte tu legado:</p>
+      <p>Comparte tu mariposa:</p>
       <div id="qr-container"></div>
     </div>
   </div>
@@ -89,8 +72,6 @@
   <script>
     const token = localStorage.getItem('token');
     const usuario = JSON.parse(localStorage.getItem('user') || '{}');
-
-    const butterflyColors = []; // Será llenado con los colores desde el backend
 
     const shadowMap = [
       [12, -6], [18, -6], [6, 0], [24, 0], [0, 6], [30, 6], [6, 12], [24, 12],
@@ -118,28 +99,6 @@
       if (Array.isArray(data.colors)) renderButterfly(data.colors);
     }
 
-    async function loadLegacy() {
-      const res = await fetch(`https://themural-backend-production.up.railway.app/api/users/aportes/${usuario.username}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const list = document.getElementById('legacyList');
-      const data = await res.json();
-      list.innerHTML = '';
-      if (!data.length) {
-        list.innerHTML = '<p>Aún no has dejado ningún aporte.</p>';
-        return;
-      }
-      data.forEach(aporte => {
-        const entry = document.createElement('div');
-        entry.classList.add('legacy-entry');
-        entry.innerHTML = `
-          <div class="legacy-title">${aporte.tipo.toUpperCase()}</div>
-          <div class="legacy-text">${aporte.texto}</div>
-        `;
-        list.appendChild(entry);
-      });
-    }
-
     function generateQR() {
       new QRCode(document.getElementById('qr-container'), {
         text: `https://momentto.netlify.app/soulprint.html?user=${usuario.username}`,
@@ -152,7 +111,6 @@
     }
 
     loadButterfly();
-    loadLegacy();
     generateQR();
   </script>
 </body>
