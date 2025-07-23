@@ -111,7 +111,7 @@
     }
 
     async function loadButterfly() {
-      const res = await fetch(`https://themural-backend-production.up.railway.app/api/users/mariposa/${usuario.username}`, {
+      const res = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${usuario.username}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
