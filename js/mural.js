@@ -279,6 +279,15 @@ async function mostrarModalRespuestas(aporteId) {
 }
 window.mostrarModalRespuestas = mostrarModalRespuestas;
 
+// ===== Función para cerrar el modal =====
+function cerrarModal() {
+  const modal = document.getElementById('modal-respuestas');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+
+
 
 
 
