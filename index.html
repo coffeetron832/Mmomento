@@ -234,17 +234,6 @@
   .footer-divider {
     font-size: 0.9rem;
   }
-
-.split {
-  flex-direction: column;
-  height: auto;
-}
-
-.left-side, .right-side {
-  padding: 1.5rem 1rem;
-}
-
-
     
 }
 
@@ -332,33 +321,25 @@
   50% { border-color: transparent }
 }
 
-.split {
-  flex-direction: row;
-  height: 80vh;
-  padding: 0;
-}
 
-.left-side, .right-side {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+
+.vertical {
+  flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  text-align: center;
-}
-
-.left-side h1 {
-  font-size: 2rem;
-  font-weight: 500;
-  color: var(--text);
+  justify-content: start;
+  padding: 4rem 1rem;
+  gap: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .bienvenida-texto {
   font-size: 1.1rem;
-  max-width: 500px;
-  color: var(--subtle);
   line-height: 1.6;
+  color: var(--subtle);
+  text-align: center;
 }
+
 
 
     
@@ -422,26 +403,24 @@
   <header class="global-header"></header>
 
   <!-- Contenido principal -->
-  <div class="content-wrapper split">
-  <div class="left-side">
-    <div>
-      <!-- Mariposa animada -->
-      <div class="butterfly-container" id="butterfly">
-        <div class="butterfly"></div>
-      </div>
-      <!-- Frase central -->
-      <h1 class="fade-scale">TheMural</h1>
-    </div>
+ <div class="content-wrapper vertical">
+  <!-- Mariposa animada -->
+  <div class="butterfly-container" id="butterfly">
+    <div class="butterfly"></div>
   </div>
-  <div class="right-side">
-    <p class="bienvenida-texto fade-in">
-  Bienvenido a <strong>TheMural</strong>, un espacio donde puedes desahogarte de forma auténtica y respetuosa. <br><br>
-  Comparte lo que sientes públicamente y permite que otros te escuchen, te comprendan y, si lo deseas, te respondan con empatía y soluciones reales. <br><br>
-  Aquí creemos que expresar lo que llevas dentro —sin juicios ni máscaras— es el primer paso para sanar. <br><br>
-  ¿Listo para abrir tu mundo emocional y ayudar a otros a hacer lo mismo?
-</p>
-  </div>
+
+  <!-- Frase principal -->
+  <h1 class="fade-scale">TheMural: Exprésate sanamente.</h1>
+
+  <!-- Texto de bienvenida extendido -->
+  <p class="bienvenida-texto fade-in">
+    Bienvenido a <strong>TheMural</strong>, un espacio donde puedes desahogarte de forma auténtica y respetuosa.<br><br>
+    Comparte lo que sientes públicamente y permite que otros te escuchen, te comprendan y, si lo deseas, te respondan con empatía y soluciones reales.<br><br>
+    Aquí creemos que expresar lo que llevas dentro —sin juicios ni máscaras— es el primer paso para sanar.<br><br>
+    ¿Listo para abrir tu mundo emocional y ayudar a otros a hacer lo mismo?
+  </p>
 </div>
+
 
 
   <!-- Footer -->
