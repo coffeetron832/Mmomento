@@ -197,26 +197,72 @@ zoomOutBtn?.addEventListener('click', () => { scale = Math.max(0.4, scale - 0.1)
 
 
 // ===== Modal de respuestas por aporte =====
-function mostrarModalRespuestas(aporteId, respuestas) {
-  const modal = document.getElementById('modalRespuestas');
+async function mostrarModalRespuestas(aporteId) {
+  const modal = document.getElementById('modal-respuestas');
   const contenedor = document.getElementById('modalContenido');
-  contenedor.innerHTML = '';
+  contenedor.innerHTML = ''; // limpia contenido previo
 
-  if (respuestas.length === 0) {
-    contenedor.innerHTML = '<p>No hay respuestas aún.</p>';
-  } else {
-    respuestas.forEach(r => {
-      const d = document.createElement('div');
-      d.className = 'comentario-modal';
-      d.innerHTML = `<strong>${r.autor}</strong>: ${r.contenido}`;
-      contenedor.appendChild(d);
-    });
+  // 1) Traer el aporte con sus respuestas desde el servidor
+  const res = await fetch(`${API_BASE_URL}/api/mural/today`);
+  const datos = await res.json();
+  const aporte = datos.find(a => a._id === aporteId);
+  if (!aporte) {
+    contenedor.innerHTML = '<p>Aporte no encontrado.</p>';
+    modal.classList.remove('hidden');
+    return;
   }
 
-  // quita la clase hidden para mostrarlo
+  // 2) Para cada comentario, renderiza autor, contenido y fecha
+  aporte.respuestas.forEach((r, idx) => {
+    const bloque = document.createElement('div');
+    bloque.className = 'comentario-modal';
+    bloque.innerHTML = `
+      <p><strong>@${r.autor}</strong>: ${r.contenido}</p>
+      <small>${new Date(r.fecha || r.createdAt).toLocaleString()}</small>
+    `;
+
+    // 3) Solo pongo “Responder” si NO soy el autor del comentario
+    if (r.autor !== usuario) {
+      const btn = document.createElement('button');
+      btn.textContent = 'Responder';
+      btn.className = 'btn-subresponder';
+      btn.addEventListener('click', () => {
+        if (bloque.querySelector('.form-subrespuesta')) return;
+        const form = document.createElement('div');
+        form.className = 'form-subrespuesta';
+        form.innerHTML = `
+          <textarea rows="2" placeholder="Tu respuesta..."></textarea>
+          <button>Enviar</button>
+        `;
+        form.querySelector('button').addEventListener('click', async () => {
+          const txt = form.querySelector('textarea').value.trim();
+          if (!txt) return alert('Escribe algo primero.');
+          await fetch(
+            `${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              },
+              body: JSON.stringify({ contenido: txt }),
+            }
+          );
+          mostrarModalRespuestas(aporteId); // recargo el modal
+        });
+        bloque.appendChild(form);
+      });
+      bloque.appendChild(btn);
+    }
+
+    contenedor.appendChild(bloque);
+  });
+
+  // 4) Muestro el modal
   modal.classList.remove('hidden');
 }
 window.mostrarModalRespuestas = mostrarModalRespuestas;
+
 
 
 // ===== Aportes =====
