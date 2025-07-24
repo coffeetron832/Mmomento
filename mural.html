@@ -164,17 +164,25 @@
 }
 
 .modal-respuestas {
-  position: relative; /* ← ESTE es el que faltaba */
+  position: relative;
   background: #111;
   color: #eee;
-  padding: 20px;
-  max-width: 400px;
+  padding: 16px 20px;
+  max-width: 360px;
   width: 90%;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+  max-height: 75vh;
   overflow-y: auto;
   border: 1px solid var(--subtle);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-respuestas-overlay:not(.hidden) .modal-respuestas {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 
