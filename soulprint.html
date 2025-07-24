@@ -120,12 +120,20 @@ lucide.createIcons(); // inicializa los íconos Lucide
       }
     }
 
+  const params = new URLSearchParams(window.location.search);
+const userFromURL = params.get('user');
+
+    
     async function cargarMariposa() {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const username = getUsernameFromToken(token);
-if (!username) return;
+      const username = userFromURL || getUsernameFromToken(token);
+if (!username) {
+  console.error('No se encontró el nombre de usuario.');
+  return;
+}
+
 
 const titulo = document.getElementById('tituloMariposa');
 if (titulo) {
