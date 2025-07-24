@@ -1,5 +1,15 @@
 /* mural.js - Simplificado para aportes de texto con respuestas y cierre de hilos */
 const API_BASE_URL = 'https://themural-backend-production.up.railway.app';
+
+// Posiciones de cada “pixel” en la mariposa (mismo array que en soulprint.html)
+const butterflyPixelPositions = [
+  [12, -6], [18, -6], [6, 0], [24, 0], [0, 6], [30, 6], [6, 12], [24, 12],
+  [12, 18], [18, 18], [6, 24], [24, 24], [12, 30], [18, 30],
+  [-12, -6], [-18, -6], [-6, 0], [-24, 0], [-30, 6], [-6, 12], [-24, 12], [0, 6],
+  [-12, 18], [-18, 18], [-6, 24], [-24, 24], [-12, 30], [-18, 30]
+];
+
+
 let usuario;
 const aportesMostrados = new Set();
 
