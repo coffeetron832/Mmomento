@@ -35,8 +35,11 @@ function verificarToken() {
 
 // ——— Helper para renderizar la mariposa en el tooltip ———
 function renderButterflyTooltip(container, colors) {
-  container.innerHTML = '';           // limpia cualquier contenido previo
-  const scale = 8;                    // la mitad de 16px (ajústalo si cambias CSS)
+  // elimina sólo cualquier grid previo, no todo el contenido
+  const prevGrid = container.querySelector('.grid-tooltip');
+  if (prevGrid) prevGrid.remove();
+
+  const scale = 8;
   const tooltipGrid = document.createElement('div');
   tooltipGrid.className = 'grid-tooltip';
   colors.forEach((color, i) => {
@@ -50,6 +53,7 @@ function renderButterflyTooltip(container, colors) {
   });
   container.appendChild(tooltipGrid);
 }
+
 
 
 
