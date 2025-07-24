@@ -30,6 +30,32 @@ function verificarToken() {
 }
 
 
+
+
+
+// ——— Helper para renderizar la mariposa en el tooltip ———
+function renderButterflyTooltip(container, colors) {
+  container.innerHTML = '';           // limpia cualquier contenido previo
+  const scale = 8;                    // la mitad de 16px (ajústalo si cambias CSS)
+  const tooltipGrid = document.createElement('div');
+  tooltipGrid.className = 'grid-tooltip';
+  colors.forEach((color, i) => {
+    const [x, y] = butterflyPixelPositions[i];
+    const pixel = document.createElement('div');
+    pixel.className = 'pixel-tooltip';
+    pixel.style.left = `${(x + 36) * (scale / 6)}px`;
+    pixel.style.top  = `${(y + 36) * (scale / 6)}px`;
+    pixel.style.backgroundColor = color || '#ffffff';
+    tooltipGrid.appendChild(pixel);
+  });
+  container.appendChild(tooltipGrid);
+}
+
+
+
+
+
+
 async function cargarMisAportes() {
   // apunta al contenedor correcto
   const contenedor = document.getElementById('listaMisAportes');
@@ -329,37 +355,38 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   info.appendChild(btnVer);
   card.appendChild(info);
 
-  let hoverTimeout;
-let tooltip;
+  let hoverTimeout, tooltipEl;
 
 card.addEventListener('mouseenter', () => {
   hoverTimeout = setTimeout(async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/users/butterfly/${autor}`);
       const data = await res.json();
+      const colors = data.butterflyColors || [];
 
-      tooltip = document.createElement('div');
-      tooltip.className = 'tooltip-usuario';
-      tooltip.innerHTML = `
-        <strong>@${autor}</strong><br/>
-        <pre style="font-size:12px">${data.butterfly || '🦋'}</pre>
-      `;
-      document.body.appendChild(tooltip);
+      // crea tooltip y pinta mariposa
+      tooltipEl = document.createElement('div');
+      tooltipEl.className = 'tooltip-usuario';
+      tooltipEl.innerHTML = `<strong>@${autor}</strong>`;
+      renderButterflyTooltip(tooltipEl, colors);
 
+      document.body.appendChild(tooltipEl);
+
+      // posiciona tooltip junto al card
       const rect = card.getBoundingClientRect();
-      tooltip.style.left = `${rect.left + window.scrollX + 10}px`;
-      tooltip.style.top = `${rect.top + window.scrollY - 10}px`;
+      tooltipEl.style.left = `${rect.right + 10 + window.scrollX}px`;
+      tooltipEl.style.top  = `${rect.top + window.scrollY}px`;
     } catch (err) {
-      console.error('Error obteniendo mariposa:', err);
+      console.error('Error cargando mariposa tooltip:', err);
     }
   }, 3000);
 });
 
 card.addEventListener('mouseleave', () => {
   clearTimeout(hoverTimeout);
-  if (tooltip) {
-    tooltip.remove();
-    tooltip = null;
+  if (tooltipEl) {
+    tooltipEl.remove();
+    tooltipEl = null;
   }
 });
 
