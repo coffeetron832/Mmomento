@@ -316,7 +316,7 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   p.textContent = contenido;
   card.appendChild(p);
 
-  // Acciones (Responder / Cerrar)
+  // Acciones (Responder / Cerrar aporte)
   const actions = document.createElement('div');
   actions.className = 'mural-actions';
 
@@ -336,7 +336,7 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
 
   card.appendChild(actions);
 
-  // Formulario de comentario (oculto por defecto)
+  // Formulario de comentario en el aporte (oculto)
   const form = document.createElement('div');
   form.className = 'form-comentario hidden';
   form.innerHTML = `
@@ -351,62 +351,113 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   });
   card.appendChild(form);
 
-  // ===== Aquí reemplazamos la "Lista de comentarios" inline por:
-  // número de respuestas + botón de tres puntos que abre el modal
+  // Información de respuestas
   const info = document.createElement('div');
   info.className = 'respuesta-info';
-
   const num = document.createElement('span');
   num.textContent = `${respuestas.length} usuario${respuestas.length === 1 ? '' : 's'} ha${respuestas.length === 1 ? '' : 'n'} respondido`;
-
   const btnVer = document.createElement('button');
   btnVer.className = 'btn-ver-respuestas';
   btnVer.innerHTML = '⋯';
   btnVer.title = 'Ver respuestas';
   btnVer.addEventListener('click', () => mostrarModalRespuestas(_id, respuestas));
-
   info.appendChild(num);
   info.appendChild(btnVer);
   card.appendChild(info);
 
+  // ===== Mostrar respuestas y subrespuestas inline =====
+  const respuestasContainer = document.createElement('div');
+  respuestasContainer.className = 'respuestas-container';
+
+  respuestas.forEach((respuesta, i) => {
+    // División de cada respuesta
+    const respuestaDiv = document.createElement('div');
+    respuestaDiv.className = 'respuesta-div';
+
+    // Texto de la respuesta
+    const autorEl = document.createElement('strong');
+    autorEl.textContent = `${respuesta.autor}: `;
+    const contenidoEl = document.createElement('span');
+    contenidoEl.textContent = respuesta.contenido;
+    respuestaDiv.appendChild(autorEl);
+    respuestaDiv.appendChild(contenidoEl);
+
+    // Botón para subresponder
+    const btnSubresponder = document.createElement('button');
+    btnSubresponder.textContent = 'Responder';
+    btnSubresponder.className = 'btn-subresponder';
+    btnSubresponder.addEventListener('click', () => {
+      // Evitar múltiples inputs
+      if (respuestaDiv.querySelector('.subrespuesta-form')) return;
+
+      const subForm = document.createElement('div');
+      subForm.className = 'subrespuesta-form';
+      subForm.innerHTML = `
+        <input type="text" placeholder="Escribe tu respuesta..." />
+        <button>Enviar</button>
+      `;
+      const input = subForm.querySelector('input');
+      subForm.querySelector('button').addEventListener('click', async () => {
+        const texto = input.value.trim();
+        if (!texto) return;
+        const token = localStorage.getItem('token');
+        await fetch(`${API_BASE_URL}/api/mural/${_id}/responder/${i}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ contenido: texto })
+        });
+        cargarAportes();
+      });
+
+      respuestaDiv.appendChild(subForm);
+    });
+    respuestaDiv.appendChild(btnSubresponder);
+
+    // Contenedor de subrespuestas
+    const subContainer = document.createElement('div');
+    subContainer.className = 'subrespuestas';
+    (respuesta.subrespuestas || []).forEach(sub => {
+      const subEl = document.createElement('div');
+      subEl.className = 'subrespuesta';
+      subEl.textContent = `${sub.autor}: ${sub.contenido}`;
+      subContainer.appendChild(subEl);
+    });
+    respuestaDiv.appendChild(subContainer);
+
+    respuestasContainer.appendChild(respuestaDiv);
+  });
+
+  card.appendChild(respuestasContainer);
+
+  // Tooltip de mariposa (igual que antes)
   let hoverTimeout, tooltipEl;
+  card.addEventListener('mouseenter', () => {
+    hoverTimeout = setTimeout(async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/users/butterfly/${autor}`);
+        const data = await res.json();
+        const colors = data.butterflyColors || [];
+        tooltipEl = document.createElement('div');
+        tooltipEl.className = 'tooltip-usuario';
+        tooltipEl.innerHTML = `<strong>@${autor}</strong>`;
+        renderButterflyTooltip(tooltipEl, colors);
+        document.body.appendChild(tooltipEl);
+        const rect = card.getBoundingClientRect();
+        tooltipEl.style.left = `${rect.right + 10 + window.scrollX}px`;
+        tooltipEl.style.top  = `${rect.top + window.scrollY}px`;
+      } catch (err) {
+        console.error('Error cargando mariposa tooltip:', err);
+      }
+    }, 3000);
+  });
+  card.addEventListener('mouseleave', () => {
+    clearTimeout(hoverTimeout);
+    if (tooltipEl) tooltipEl.remove();
+  });
 
-card.addEventListener('mouseenter', () => {
-  hoverTimeout = setTimeout(async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/users/butterfly/${autor}`);
-      const data = await res.json();
-      const colors = data.butterflyColors || [];
-
-      // crea tooltip y pinta mariposa
-      tooltipEl = document.createElement('div');
-      tooltipEl.className = 'tooltip-usuario';
-      tooltipEl.innerHTML = `<strong>@${autor}</strong>`;
-      renderButterflyTooltip(tooltipEl, colors);
-
-      document.body.appendChild(tooltipEl);
-
-      // posiciona tooltip junto al card
-      const rect = card.getBoundingClientRect();
-      tooltipEl.style.left = `${rect.right + 10 + window.scrollX}px`;
-      tooltipEl.style.top  = `${rect.top + window.scrollY}px`;
-    } catch (err) {
-      console.error('Error cargando mariposa tooltip:', err);
-    }
-  }, 3000);
-});
-
-card.addEventListener('mouseleave', () => {
-  clearTimeout(hoverTimeout);
-  if (tooltipEl) {
-    tooltipEl.remove();
-    tooltipEl = null;
-  }
-});
-
-
-
-  
   mural.appendChild(card);
 }
 
