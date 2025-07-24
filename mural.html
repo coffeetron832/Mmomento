@@ -239,19 +239,35 @@
     color: var(--accent);
   }
 
+/* En estilos-mural.css */
+
 .tooltip-usuario {
   position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ccc;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  border: 1px solid #555;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  padding: 8px 12px;
-  font-size: 14px;
-  z-index: 9999;
+  padding: 8px;
+  z-index: 10000;
   pointer-events: none;
-  transition: opacity 0.3s ease;
-  white-space: pre-wrap;
+  font-size: 0.85rem;
+  text-align: center;
 }
+
+.tooltip-usuario .grid-tooltip {
+  position: relative;
+  width: 80px;    /* 5 pixels de escala × ancho de grid */
+  height: 80px;   /* 5 pixels de escala × alto de grid */
+  margin: 4px auto 0;
+}
+
+.tooltip-usuario .pixel-tooltip {
+  position: absolute;
+  width: 8px;    /* escala reducida */
+  height: 8px;
+  border: 1px solid #222;
+}
+
 
 
     
