@@ -204,7 +204,7 @@ async function mostrarModalRespuestas(aporteId) {
     console.error('No se encontró el modal o su contenedor en el DOM');
     return;
   }
-  contenedor.innerHTML = ''; // limpia contenido previo
+  contenedor.innerHTML = '';
 
   try {
     const res = await fetch(`${API_BASE_URL}/api/mural/today`);
@@ -217,6 +217,7 @@ async function mostrarModalRespuestas(aporteId) {
       return;
     }
 
+    // Mostrar cada respuesta
     aporte.respuestas.forEach((r, idx) => {
       const bloque = document.createElement('div');
       bloque.className = 'comentario-modal';
@@ -225,32 +226,29 @@ async function mostrarModalRespuestas(aporteId) {
         <small>${new Date(r.fecha || r.createdAt).toLocaleString()}</small>
       `;
 
-      // Mostrar subrespuestas si existen
-      if (Array.isArray(r.subrespuestas) && r.subrespuestas.length > 0) {
-        const subContainer = document.createElement('div');
-        subContainer.className = 'subrespuestas-container';
-
+      // Subrespuestas (si las hay)
+      if (r.subrespuestas?.length) {
+        const lista = document.createElement('div');
+        lista.className = 'subrespuestas';
         r.subrespuestas.forEach(sub => {
-          const subDiv = document.createElement('div');
-          subDiv.className = 'subrespuesta';
-          subDiv.innerHTML = `
+          const s = document.createElement('div');
+          s.className = 'subrespuesta';
+          s.innerHTML = `
             <p><strong>@${sub.autor}</strong>: ${sub.contenido}</p>
-            <small>${new Date(sub.fecha).toLocaleString()}</small>
+            <small>${new Date(sub.fecha || sub.createdAt).toLocaleString()}</small>
           `;
-          subContainer.appendChild(subDiv);
+          lista.appendChild(s);
         });
-
-        bloque.appendChild(subContainer);
+        bloque.appendChild(lista);
       }
 
-      // Solo muestro “Responder” si NO soy el autor del comentario
+      // Botón para responder si NO soy el autor original
       if (r.autor !== usuario) {
         const btn = document.createElement('button');
         btn.textContent = 'Responder';
         btn.className = 'btn-subresponder';
         btn.addEventListener('click', () => {
           if (bloque.querySelector('textarea')) return;
-
           const form = document.createElement('div');
           form.className = 'form-subrespuesta';
           form.innerHTML = `
@@ -260,6 +258,7 @@ async function mostrarModalRespuestas(aporteId) {
           form.querySelector('button').addEventListener('click', async () => {
             const txt = form.querySelector('textarea').value.trim();
             if (!txt) return alert('Escribe algo primero.');
+
             await fetch(
               `${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`,
               {
@@ -271,7 +270,16 @@ async function mostrarModalRespuestas(aporteId) {
                 body: JSON.stringify({ contenido: txt }),
               }
             );
-            mostrarModalRespuestas(aporteId); // recarga el modal
+
+            // Recargar modal
+            await mostrarModalRespuestas(aporteId);
+
+            // ✅ Actualizar contador visible de respuestas en el mural
+            const contador = document.querySelector(`[data-contador-id="${aporteId}"]`);
+            if (contador) {
+              const total = aporte.respuestas.reduce((acc, r) => acc + 1 + (r.subrespuestas?.length || 0), 0) + 1;
+              contador.textContent = `${total} respuesta${total > 1 ? 's' : ''}`;
+            }
           });
           bloque.appendChild(form);
         });
@@ -282,22 +290,19 @@ async function mostrarModalRespuestas(aporteId) {
     });
 
     modal.classList.remove('hidden');
-
   } catch (err) {
     console.error('Error cargando respuestas:', err);
     contenedor.innerHTML = '<p>Error al cargar las respuestas.</p>';
     modal.classList.remove('hidden');
   }
 }
-window.mostrarModalRespuestas = mostrarModalRespuestas;
 
-// ===== Función para cerrar el modal =====
 function cerrarModal() {
   const modal = document.getElementById('modal-respuestas');
-  if (modal) {
-    modal.classList.add('hidden');
-  }
+  if (modal) modal.classList.add('hidden');
 }
+
+window.mostrarModalRespuestas = mostrarModalRespuestas;
 
 
 
