@@ -82,7 +82,7 @@
   </style>
 </head>
 <body>
-  <h1>Tu Mariposa</h1>
+  <h1 id="tituloMariposa">Tu Mariposa</h1>
   <p class="description">
     Esta mariposa es tu sello visual en el mural. Cada color representa un fragmento de lo que compartes. No es perfecta, es tuya.
   </p>
@@ -125,7 +125,13 @@ lucide.createIcons(); // inicializa los íconos Lucide
       if (!token) return;
 
       const username = getUsernameFromToken(token);
-      if (!username) return;
+if (!username) return;
+
+const titulo = document.getElementById('tituloMariposa');
+if (titulo) {
+  titulo.textContent = `Tu Mariposa (${username})`;
+}
+
 
       try {
         const response = await fetch(`https://themural-backend-production.up.railway.app/api/users/butterfly/${username}`, {
