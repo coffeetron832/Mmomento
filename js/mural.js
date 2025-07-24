@@ -95,7 +95,9 @@ async function cargarMisAportes() {
       d.innerHTML = `
         <div class="contenido-aporte">
           <p>${aporte.contenido}</p>
-          <small>${new Date(aporte.createdAt).toLocaleString()}</small>
+<small>${new Date(aporte.createdAt).toLocaleString()}</small>
+<small>💬 ${aporte.respuestas?.length || 0} respuesta(s)</small>
+
         </div>
         <button class="btn-eliminar-aporte" data-id="${aporte._id}">🗑️ Eliminar</button>
       `;
