@@ -390,27 +390,24 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   p.textContent = contenido;
   card.appendChild(p);
 
-  // Acciones (Responder / Cerrar aporte)
+  // Acciones (Responder / Cerrar)
   const actions = document.createElement('div');
   actions.className = 'mural-actions';
-
   if (!esAutor) {
     const btnResponder = document.createElement('button');
     btnResponder.textContent = 'Responder';
     btnResponder.addEventListener('click', () => abrirFormularioComentario(_id));
     actions.appendChild(btnResponder);
   }
-
   if (esAutor) {
     const btnCerrar = document.createElement('button');
     btnCerrar.textContent = 'Cerrar aporte';
     btnCerrar.addEventListener('click', () => cerrarAporte(_id, card));
     actions.appendChild(btnCerrar);
   }
-
   card.appendChild(actions);
 
-  // Formulario de comentario en el aporte (oculto)
+  // Formulario inline de comentario (oculto)
   const form = document.createElement('div');
   form.className = 'form-comentario hidden';
   form.innerHTML = `
@@ -425,88 +422,23 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   });
   card.appendChild(form);
 
-  // Información de respuestas
+  // Información de respuestas y botón modal
   const info = document.createElement('div');
   info.className = 'respuesta-info';
   const num = document.createElement('span');
-  num.textContent = `${respuestas.length} usuario${respuestas.length === 1 ? '' : 's'} ha${respuestas.length === 1 ? '' : 'n'} respondido`;
+  num.textContent = `${respuestas.length} respuesta${respuestas.length === 1 ? '' : 's'}`;
   const btnVer = document.createElement('button');
   btnVer.className = 'btn-ver-respuestas';
   btnVer.innerHTML = '⋯';
   btnVer.title = 'Ver respuestas';
-  btnVer.addEventListener('click', () => mostrarModalRespuestas(_id, respuestas));
+  btnVer.addEventListener('click', () => mostrarModalRespuestas(_id));
   info.appendChild(num);
   info.appendChild(btnVer);
   card.appendChild(info);
 
-  // ===== Mostrar respuestas y subrespuestas inline =====
-  const respuestasContainer = document.createElement('div');
-  respuestasContainer.className = 'respuestas-container';
+  // (¡No más bloque de respuestas inline!)
 
-  respuestas.forEach((respuesta, i) => {
-    // División de cada respuesta
-    const respuestaDiv = document.createElement('div');
-    respuestaDiv.className = 'respuesta-div';
-
-    // Texto de la respuesta
-    const autorEl = document.createElement('strong');
-    autorEl.textContent = `${respuesta.autor}: `;
-    const contenidoEl = document.createElement('span');
-    contenidoEl.textContent = respuesta.contenido;
-    respuestaDiv.appendChild(autorEl);
-    respuestaDiv.appendChild(contenidoEl);
-
-    // Botón para subresponder
-    const btnSubresponder = document.createElement('button');
-    btnSubresponder.textContent = 'Responder';
-    btnSubresponder.className = 'btn-subresponder';
-    btnSubresponder.addEventListener('click', () => {
-      // Evitar múltiples inputs
-      if (respuestaDiv.querySelector('.subrespuesta-form')) return;
-
-      const subForm = document.createElement('div');
-      subForm.className = 'subrespuesta-form';
-      subForm.innerHTML = `
-        <input type="text" placeholder="Escribe tu respuesta..." />
-        <button>Enviar</button>
-      `;
-      const input = subForm.querySelector('input');
-      subForm.querySelector('button').addEventListener('click', async () => {
-        const texto = input.value.trim();
-        if (!texto) return;
-        const token = localStorage.getItem('token');
-        await fetch(`${API_BASE_URL}/api/mural/${_id}/responder/${i}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ contenido: texto })
-        });
-        cargarAportes();
-      });
-
-      respuestaDiv.appendChild(subForm);
-    });
-    respuestaDiv.appendChild(btnSubresponder);
-
-    // Contenedor de subrespuestas
-    const subContainer = document.createElement('div');
-    subContainer.className = 'subrespuestas';
-    (respuesta.subrespuestas || []).forEach(sub => {
-      const subEl = document.createElement('div');
-      subEl.className = 'subrespuesta';
-      subEl.textContent = `${sub.autor}: ${sub.contenido}`;
-      subContainer.appendChild(subEl);
-    });
-    respuestaDiv.appendChild(subContainer);
-
-    respuestasContainer.appendChild(respuestaDiv);
-  });
-
-  card.appendChild(respuestasContainer);
-
-  // Tooltip de mariposa (igual que antes)
+  // Tooltip de mariposa
   let hoverTimeout, tooltipEl;
   card.addEventListener('mouseenter', () => {
     hoverTimeout = setTimeout(async () => {
@@ -534,6 +466,7 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
 
   mural.appendChild(card);
 }
+
 
 // ===== Cargar Aportes =====
 async function cargarAportes() {
