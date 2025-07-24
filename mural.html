@@ -167,18 +167,19 @@
   position: relative;
   background: #111;
   color: #eee;
-  padding: 16px 20px;
-  max-width: 360px;
+  padding: 14px 16px;
+  max-width: 340px;
   width: 90%;
   border-radius: 10px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-  max-height: 75vh;
+  max-height: 70vh;
   overflow-y: auto;
   border: 1px solid var(--subtle);
   opacity: 0;
   transform: translateY(-20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
 
 .modal-respuestas-overlay:not(.hidden) .modal-respuestas {
   opacity: 1;
@@ -286,6 +287,28 @@
   display: block;
   font-size: 0.8em;
   color: #777;
+}
+
+
+    @media (max-width: 480px) {
+  .modal-respuestas {
+    max-width: 300px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .modal-respuestas .comentario-modal p {
+    font-size: 14px;
+  }
+
+  .modal-respuestas textarea {
+    font-size: 14px;
+  }
+
+  .modal-respuestas button {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
 }
 
 </style>
