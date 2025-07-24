@@ -206,15 +206,27 @@ async function agregarAlMural() {
     const data = await res.json();
 
     if (!res.ok) {
-      Toastify({
-        text: data.message || '⚠️ Error al subir el aporte.',
-        duration: 4000,
-        gravity: 'top',
-        position: 'center',
-        style: { background: '#f44336' }
-      }).showToast();
-      return; // ⛔ Evita ejecutar cargarAportes si fue rechazado
-    }
+  let mensaje = data.message || '⚠️ Error al subir el aporte.';
+
+  // Si incluye la palabra "suspendido hasta", convertir la hora a local (Colombia)
+  const match = mensaje.match(/suspendido hasta (.+?) por/);
+  if (match) {
+    const utcTime = new Date(match[1]);
+    const opciones = { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Bogota' };
+    const horaColombia = utcTime.toLocaleTimeString('es-CO', opciones);
+    mensaje = mensaje.replace(match[1], `${horaColombia} (hora Colombia)`);
+  }
+
+  Toastify({
+    text: mensaje,
+    duration: 6000,
+    gravity: 'top',
+    position: 'center',
+    style: { background: '#f44336' }
+  }).showToast();
+  return;
+}
+
 
     // ✅ Sólo si el backend lo acepta
     contenidoElem.value = '';
