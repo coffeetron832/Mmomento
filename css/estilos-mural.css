@@ -285,6 +285,36 @@
 }
 
 
+/* En estilos-mural.css */
+
+.tooltip-usuario {
+  position: absolute;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 8px;
+  z-index: 10000;
+  pointer-events: none;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.grid-tooltip {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 4px auto 0;
+}
+
+.pixel-tooltip {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #222;
+}
+
+
 
 #notifBtn {
   position: fixed;
