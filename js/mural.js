@@ -229,10 +229,10 @@ async function mostrarModalRespuestas(aporteId) {
       `;
 
       // 2a) Subrespuestas
+      const lista = document.createElement('div');
+      lista.className = 'subrespuestas';
       if (r.subrespuestas?.length) {
-        const lista = document.createElement('div');
-        lista.className = 'subrespuestas';
-        r.subrespuestas.forEach(sub => {
+        r.subrespuestas.forEach((sub) => {
           const subDiv = document.createElement('div');
           subDiv.className = 'subrespuesta';
           subDiv.innerHTML = `
@@ -241,66 +241,63 @@ async function mostrarModalRespuestas(aporteId) {
           `;
           lista.appendChild(subDiv);
         });
-        bloque.appendChild(lista);
       }
+      bloque.appendChild(lista);
 
-      // 2b) Botón para responder a esta respuesta principal
-      if (r.autor !== usuario) {
-        const btn = document.createElement('button');
-        btn.textContent = 'Responder';
-        btn.className = 'btn-subresponder';
-        btn.addEventListener('click', () => {
-          if (bloque.querySelector('textarea')) return;
-          const form = document.createElement('div');
-          form.className = 'form-subrespuesta';
-          form.innerHTML = `
-            <textarea rows="2" placeholder="Tu respuesta..."></textarea>
-            <button>Enviar</button>
-          `;
-          form.querySelector('button').addEventListener('click', async () => {
-            const txt = form.querySelector('textarea').value.trim();
-            if (!txt) return alert('Escribe algo primero.');
+      // 2b) Botón para responder a esta respuesta
+      const btn = document.createElement('button');
+      btn.textContent = 'Responder';
+      btn.className = 'btn-subresponder';
+      btn.addEventListener('click', () => {
+        if (bloque.querySelector('.form-subrespuesta')) return; // evitar duplicados
 
-            // 3) POST de la subrespuesta al índice idx
-            await fetch(
-              `${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify({ contenido: txt }),
-              }
-            );
+        const form = document.createElement('div');
+        form.className = 'form-subrespuesta';
+        form.innerHTML = `
+          <textarea rows="2" placeholder="Tu respuesta..."></textarea>
+          <button>Enviar</button>
+        `;
+        form.querySelector('button').addEventListener('click', async () => {
+          const txt = form.querySelector('textarea').value.trim();
+          if (!txt) return alert('Escribe algo primero.');
 
-            // 4) Insertar en DOM
-            const nuevaSub = document.createElement('div');
-            nuevaSub.className = 'subrespuesta';
-            nuevaSub.innerHTML = `
-              <p><strong>@${usuario}</strong>: ${txt}</p>
-              <small>${new Date().toLocaleString()}</small>
-            `;
-            let lista = bloque.querySelector('.subrespuestas');
-            if (!lista) {
-              lista = document.createElement('div');
-              lista.className = 'subrespuestas';
-              bloque.appendChild(lista);
+          // POST de la subrespuesta
+          const resp = await fetch(
+            `${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              },
+              body: JSON.stringify({ contenido: txt }),
             }
-            lista.appendChild(nuevaSub);
+          );
 
-            // 5) Actualizar contador global
-            actualizarContador(aporteId);
-          });
-          bloque.appendChild(form);
+          if (!resp.ok) {
+            alert('Error al enviar la respuesta');
+            return;
+          }
+
+          // Insertar la nueva subrespuesta
+          const nuevaSub = document.createElement('div');
+          nuevaSub.className = 'subrespuesta';
+          nuevaSub.innerHTML = `
+            <p><strong>@${usuario}</strong>: ${txt}</p>
+            <small>${new Date().toLocaleString()}</small>
+          `;
+          lista.appendChild(nuevaSub);
+          form.remove();
+          actualizarContador(aporteId);
         });
-        bloque.appendChild(btn);
-      }
 
+        bloque.appendChild(form);
+      });
+      bloque.appendChild(btn);
       contenedor.appendChild(bloque);
     });
 
-    // 6) Mostrar el modal
+    // 3) Mostrar el modal
     modal.classList.remove('hidden');
   } catch (err) {
     console.error('Error cargando respuestas:', err);
@@ -313,22 +310,17 @@ async function actualizarContador(aporteId) {
   const span = document.querySelector(`[data-contador-id="${aporteId}"]`);
   if (!span) return;
   try {
-    // Traer de nuevo y recalcular totales
     const res = await fetch(`${API_BASE_URL}/api/mural/today`);
     if (!res.ok) throw new Error();
     const datos = await res.json();
     const aporte = datos.find(a => a._id === aporteId);
-    const total = aporte.respuestas.reduce(
-      (acc, r) => acc + 1 + (r.subrespuestas?.length || 0),
-      0
-    );
+    const total = aporte.respuestas.reduce((acc, r) => acc + 1 + (r.subrespuestas?.length || 0), 0);
     span.textContent = `${total} respuesta${total !== 1 ? 's' : ''}`;
   } catch (e) {
     console.error('No se pudo actualizar el contador:', e);
   }
 }
 
-// Función para cerrar el modal
 function cerrarModal() {
   const modal = document.getElementById('modal-respuestas');
   if (modal) modal.classList.add('hidden');
