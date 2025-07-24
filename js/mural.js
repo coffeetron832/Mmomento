@@ -232,7 +232,7 @@ async function mostrarModalRespuestas(aporteId) {
       if (r.subrespuestas?.length) {
         const lista = document.createElement('div');
         lista.className = 'subrespuestas';
-        r.subrespuestas.forEach((sub, subIdx) => {
+        r.subrespuestas.forEach(sub => {
           const subDiv = document.createElement('div');
           subDiv.className = 'subrespuesta';
           subDiv.innerHTML = `
@@ -244,7 +244,7 @@ async function mostrarModalRespuestas(aporteId) {
         bloque.appendChild(lista);
       }
 
-      // 2b) Botón para responder a esta respuesta
+      // 2b) Botón para responder a esta respuesta principal
       if (r.autor !== usuario) {
         const btn = document.createElement('button');
         btn.textContent = 'Responder';
@@ -261,7 +261,7 @@ async function mostrarModalRespuestas(aporteId) {
             const txt = form.querySelector('textarea').value.trim();
             if (!txt) return alert('Escribe algo primero.');
 
-            // 3) POST de la subrespuesta
+            // 3) POST de la subrespuesta al índice idx
             await fetch(
               `${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`,
               {
@@ -274,7 +274,7 @@ async function mostrarModalRespuestas(aporteId) {
               }
             );
 
-            // 4) Insertar la nueva subrespuesta justo debajo de este bloque
+            // 4) Insertar en DOM
             const nuevaSub = document.createElement('div');
             nuevaSub.className = 'subrespuesta';
             nuevaSub.innerHTML = `
@@ -289,7 +289,7 @@ async function mostrarModalRespuestas(aporteId) {
             }
             lista.appendChild(nuevaSub);
 
-            // 5) Actualizar el contador general
+            // 5) Actualizar contador global
             actualizarContador(aporteId);
           });
           bloque.appendChild(form);
@@ -313,12 +313,15 @@ async function actualizarContador(aporteId) {
   const span = document.querySelector(`[data-contador-id="${aporteId}"]`);
   if (!span) return;
   try {
-    // Vuelvo a traer todos los aportes y recalculo
+    // Traer de nuevo y recalcular totales
     const res = await fetch(`${API_BASE_URL}/api/mural/today`);
     if (!res.ok) throw new Error();
     const datos = await res.json();
     const aporte = datos.find(a => a._id === aporteId);
-    const total = aporte.respuestas.reduce((acc, r) => acc + 1 + (r.subrespuestas?.length || 0), 0);
+    const total = aporte.respuestas.reduce(
+      (acc, r) => acc + 1 + (r.subrespuestas?.length || 0),
+      0
+    );
     span.textContent = `${total} respuesta${total !== 1 ? 's' : ''}`;
   } catch (e) {
     console.error('No se pudo actualizar el contador:', e);
