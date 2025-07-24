@@ -217,7 +217,6 @@ async function mostrarModalRespuestas(aporteId) {
       return;
     }
 
-    // Mostrar cada respuesta
     aporte.respuestas.forEach((r, idx) => {
       const bloque = document.createElement('div');
       bloque.className = 'comentario-modal';
@@ -230,25 +229,75 @@ async function mostrarModalRespuestas(aporteId) {
       if (r.subrespuestas?.length) {
         const lista = document.createElement('div');
         lista.className = 'subrespuestas';
-        r.subrespuestas.forEach(sub => {
-          const s = document.createElement('div');
-          s.className = 'subrespuesta';
-          s.innerHTML = `
+
+        r.subrespuestas.forEach((sub, subIdx) => {
+          const subDiv = document.createElement('div');
+          subDiv.className = 'subrespuesta';
+          subDiv.innerHTML = `
             <p><strong>@${sub.autor}</strong>: ${sub.contenido}</p>
             <small>${new Date(sub.fecha || sub.createdAt).toLocaleString()}</small>
           `;
-          lista.appendChild(s);
+
+          // Botón para responder a una subrespuesta (si NO soy el autor)
+          if (sub.autor !== usuario) {
+            const btnSub = document.createElement('button');
+            btnSub.textContent = 'Responder';
+            btnSub.className = 'btn-subresponder';
+            btnSub.addEventListener('click', () => {
+              if (subDiv.querySelector('textarea')) return;
+
+              const formSub = document.createElement('div');
+              formSub.className = 'form-subrespuesta';
+              formSub.innerHTML = `
+                <textarea rows="2" placeholder="Tu respuesta..."></textarea>
+                <button>Enviar</button>
+              `;
+              formSub.querySelector('button').addEventListener('click', async () => {
+                const txt = formSub.querySelector('textarea').value.trim();
+                if (!txt) return alert('Escribe algo primero.');
+
+                await fetch(`${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  },
+                  body: JSON.stringify({ contenido: txt }),
+                });
+
+                await mostrarModalRespuestas(aporteId);
+
+                // Actualiza contador
+                const contador = document.querySelector(`[data-contador-id="${aporteId}"]`);
+                if (contador) {
+                  const nuevoRes = await fetch(`${API_BASE_URL}/api/mural/today`);
+                  const nuevosDatos = await nuevoRes.json();
+                  const actualizado = nuevosDatos.find(a => a._id === aporteId);
+                  const total = actualizado.respuestas.reduce((acc, r) => acc + 1 + (r.subrespuestas?.length || 0), 0);
+                  contador.textContent = `${total} respuesta${total !== 1 ? 's' : ''}`;
+                }
+              });
+
+              subDiv.appendChild(formSub);
+            });
+
+            subDiv.appendChild(btnSub);
+          }
+
+          lista.appendChild(subDiv);
         });
+
         bloque.appendChild(lista);
       }
 
-      // Botón para responder si NO soy el autor original
+      // Botón para responder al comentario principal
       if (r.autor !== usuario) {
         const btn = document.createElement('button');
         btn.textContent = 'Responder';
         btn.className = 'btn-subresponder';
         btn.addEventListener('click', () => {
           if (bloque.querySelector('textarea')) return;
+
           const form = document.createElement('div');
           form.className = 'form-subrespuesta';
           form.innerHTML = `
@@ -259,30 +308,31 @@ async function mostrarModalRespuestas(aporteId) {
             const txt = form.querySelector('textarea').value.trim();
             if (!txt) return alert('Escribe algo primero.');
 
-            await fetch(
-              `${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify({ contenido: txt }),
-              }
-            );
+            await fetch(`${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              },
+              body: JSON.stringify({ contenido: txt }),
+            });
 
-            // Recargar modal
             await mostrarModalRespuestas(aporteId);
 
-            // ✅ Actualizar contador visible de respuestas en el mural
+            // Actualiza contador
             const contador = document.querySelector(`[data-contador-id="${aporteId}"]`);
             if (contador) {
-              const total = aporte.respuestas.reduce((acc, r) => acc + 1 + (r.subrespuestas?.length || 0), 0) + 1;
-              contador.textContent = `${total} respuesta${total > 1 ? 's' : ''}`;
+              const nuevoRes = await fetch(`${API_BASE_URL}/api/mural/today`);
+              const nuevosDatos = await nuevoRes.json();
+              const actualizado = nuevosDatos.find(a => a._id === aporteId);
+              const total = actualizado.respuestas.reduce((acc, r) => acc + 1 + (r.subrespuestas?.length || 0), 0);
+              contador.textContent = `${total} respuesta${total !== 1 ? 's' : ''}`;
             }
           });
+
           bloque.appendChild(form);
         });
+
         bloque.appendChild(btn);
       }
 
@@ -297,12 +347,6 @@ async function mostrarModalRespuestas(aporteId) {
   }
 }
 
-function cerrarModal() {
-  const modal = document.getElementById('modal-respuestas');
-  if (modal) modal.classList.add('hidden');
-}
-
-window.mostrarModalRespuestas = mostrarModalRespuestas;
 
 
 
