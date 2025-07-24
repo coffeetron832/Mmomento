@@ -329,6 +329,43 @@ function mostrarAporte({ _id, contenido, usuario: autor, respuestas = [] }) {
   info.appendChild(btnVer);
   card.appendChild(info);
 
+  let hoverTimeout;
+let tooltip;
+
+card.addEventListener('mouseenter', () => {
+  hoverTimeout = setTimeout(async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/users/butterfly/${autor}`);
+      const data = await res.json();
+
+      tooltip = document.createElement('div');
+      tooltip.className = 'tooltip-usuario';
+      tooltip.innerHTML = `
+        <strong>@${autor}</strong><br/>
+        <pre style="font-size:12px">${data.butterfly || '🦋'}</pre>
+      `;
+      document.body.appendChild(tooltip);
+
+      const rect = card.getBoundingClientRect();
+      tooltip.style.left = `${rect.left + window.scrollX + 10}px`;
+      tooltip.style.top = `${rect.top + window.scrollY - 10}px`;
+    } catch (err) {
+      console.error('Error obteniendo mariposa:', err);
+    }
+  }, 3000);
+});
+
+card.addEventListener('mouseleave', () => {
+  clearTimeout(hoverTimeout);
+  if (tooltip) {
+    tooltip.remove();
+    tooltip = null;
+  }
+});
+
+
+
+  
   mural.appendChild(card);
 }
 
