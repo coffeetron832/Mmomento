@@ -246,6 +246,34 @@
 .subrespuesta-form { display: flex; gap: 4px; margin-top: 4px; }
 .subrespuesta-form input { flex: 1; }
 
+
+  .modal-respuestas-overlay.hidden {
+  display: none;
+}
+
+.form-subrespuesta {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #555;
+}
+.form-subrespuesta textarea {
+  width: 100%;
+  background: #222;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 6px;
+}
+.form-subrespuesta button {
+  margin-top: 6px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
     
 </style>
 </head>
@@ -306,13 +334,16 @@
 </div>
 
 <!-- Modal de respuestas: siempre oculto al inicio -->
-<div id="modalRespuestas" class="modal-respuestas-overlay hidden">
+<!-- Modal de respuestas: corregido -->
+<div id="modal-respuestas" class="modal-respuestas-overlay hidden">
   <div class="modal-respuestas">
-    <span class="cerrar" onclick="cerrarModalRespuestas()">×</span>
+    <span class="cerrar" onclick="cerrarModal()">×</span>
     <h3>Respuestas al aporte</h3>
-    <div id="modalContenido"></div>
+    <div class="contenido-respuestas"></div>
+    <button class="cerrar-modal-respuestas" onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
+
   
   <script src="/js/mural.js"></script>
   <script src="/js/mural2.js"></script>
