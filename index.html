@@ -234,6 +234,18 @@
   .footer-divider {
     font-size: 0.9rem;
   }
+
+.split {
+  flex-direction: column;
+  height: auto;
+}
+
+.left-side, .right-side {
+  padding: 1.5rem 1rem;
+}
+
+
+    
 }
 
 
@@ -320,7 +332,36 @@
   50% { border-color: transparent }
 }
 
+.split {
+  flex-direction: row;
+  height: 80vh;
+  padding: 0;
+}
 
+.left-side, .right-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.left-side h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.bienvenida-texto {
+  font-size: 1.1rem;
+  max-width: 500px;
+  color: var(--subtle);
+  line-height: 1.6;
+}
+
+
+    
 
 </style>
 </head>
@@ -381,14 +422,27 @@
   <header class="global-header"></header>
 
   <!-- Contenido principal -->
-  <div class="content-wrapper">
-    <!-- Mariposa animada -->
-    <div class="butterfly-container" id="butterfly">
-    <div class="butterfly"></div>
-  </div>
-    <!-- Frase central -->
-    <h1 class="fade-scale">TheMural: Exprésate sanamente.</h1>
+  <div class="content-wrapper split">
+  <div class="left-side">
+    <div>
+      <!-- Mariposa animada -->
+      <div class="butterfly-container" id="butterfly">
+        <div class="butterfly"></div>
+      </div>
+      <!-- Frase central -->
+      <h1 class="fade-scale">TheMural: Exprésate sanamente.</h1>
     </div>
+  </div>
+  <div class="right-side">
+    <p class="bienvenida-texto fade-in">
+      Bienvenido a <strong>TheMural</strong>, un lugar para liberar lo que sientes sin filtros ni juicios.<br><br>
+      Aquí no hay presión, ni algoritmos, ni apariencias.<br>
+      Solo tu voz, tu trazo o tu idea en el instante en que nace.<br><br>
+      ¿Listo para dejar tu huella emocional?
+    </p>
+  </div>
+</div>
+
 
   <!-- Footer -->
   <footer class="footer-horizontal">
