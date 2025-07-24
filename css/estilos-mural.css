@@ -436,6 +436,11 @@
   }
 }
 
+@media (max-width: 768px) {
+  .tooltip-usuario {
+    display: none !important;
+  }
+}
 
 
 </style>
