@@ -198,7 +198,6 @@ zoomOutBtn?.addEventListener('click', () => { scale = Math.max(0.4, scale - 0.1)
 
 // ===== Modal de respuestas por aporte =====
 async function mostrarModalRespuestas(aporteId) {
-  // 1) Referencias al modal y a su contenedor (ajustado a tu HTML)
   const modal = document.getElementById('modal-respuestas');
   const contenedor = modal.querySelector('.contenido-respuestas');
   if (!modal || !contenedor) {
@@ -208,7 +207,6 @@ async function mostrarModalRespuestas(aporteId) {
   contenedor.innerHTML = ''; // limpia contenido previo
 
   try {
-    // 2) Cargo los aportes del día y filtro el que me interesa
     const res = await fetch(`${API_BASE_URL}/api/mural/today`);
     const datos = await res.json();
     const aporte = datos.find(a => a._id === aporteId);
@@ -219,7 +217,6 @@ async function mostrarModalRespuestas(aporteId) {
       return;
     }
 
-    // 3) Por cada comentario en el aporte, creo su bloque
     aporte.respuestas.forEach((r, idx) => {
       const bloque = document.createElement('div');
       bloque.className = 'comentario-modal';
@@ -228,13 +225,30 @@ async function mostrarModalRespuestas(aporteId) {
         <small>${new Date(r.fecha || r.createdAt).toLocaleString()}</small>
       `;
 
-      // 4) Solo muestro “Responder” si NO soy el autor del comentario
+      // Mostrar subrespuestas si existen
+      if (Array.isArray(r.subrespuestas) && r.subrespuestas.length > 0) {
+        const subContainer = document.createElement('div');
+        subContainer.className = 'subrespuestas-container';
+
+        r.subrespuestas.forEach(sub => {
+          const subDiv = document.createElement('div');
+          subDiv.className = 'subrespuesta';
+          subDiv.innerHTML = `
+            <p><strong>@${sub.autor}</strong>: ${sub.contenido}</p>
+            <small>${new Date(sub.fecha).toLocaleString()}</small>
+          `;
+          subContainer.appendChild(subDiv);
+        });
+
+        bloque.appendChild(subContainer);
+      }
+
+      // Solo muestro “Responder” si NO soy el autor del comentario
       if (r.autor !== usuario) {
         const btn = document.createElement('button');
         btn.textContent = 'Responder';
         btn.className = 'btn-subresponder';
         btn.addEventListener('click', () => {
-          // Evito duplicar el formulario
           if (bloque.querySelector('textarea')) return;
 
           const form = document.createElement('div');
@@ -257,8 +271,7 @@ async function mostrarModalRespuestas(aporteId) {
                 body: JSON.stringify({ contenido: txt }),
               }
             );
-            // recargo el modal para reflejar la nueva subrespuesta
-            mostrarModalRespuestas(aporteId);
+            mostrarModalRespuestas(aporteId); // recarga el modal
           });
           bloque.appendChild(form);
         });
@@ -268,7 +281,6 @@ async function mostrarModalRespuestas(aporteId) {
       contenedor.appendChild(bloque);
     });
 
-    // 5) Abro el modal
     modal.classList.remove('hidden');
 
   } catch (err) {
@@ -286,6 +298,7 @@ function cerrarModal() {
     modal.classList.add('hidden');
   }
 }
+
 
 
 
