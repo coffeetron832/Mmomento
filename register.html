@@ -260,72 +260,68 @@ form#registerForm button[type="submit"]:hover::after {
   </footer>
 
   <script>
-    // Testimonios con transición fade
-    const testimonials = [
-      "“Me encanta la sensación de urgencia y autenticidad en cada foto.”",
-      "“Compartir instantes nunca fue tan fácil y divertido.”",
-      "“He conectado con amigos de una manera más genuina.”",
-      "“El diseño es limpio y la experiencia muy intuitiva.”",
-      "“Cada momento desaparece, pero el recuerdo queda.”"
-    ];
-    let idx = 0;
-    const testEl = document.getElementById('testimonial');
-    setInterval(() => {
-      testEl.classList.remove('visible');
-      setTimeout(() => {
-        idx = (idx + 1) % testimonials.length;
-        testEl.textContent = testimonials[idx];
-        testEl.classList.add('visible');
-      }, 500);
-    }, 7000);
+  // Testimonios con transición fade
+  const testimonials = [
+    "“Me encanta la sensación de urgencia y autenticidad en cada foto.”",
+    "“Compartir instantes nunca fue tan fácil y divertido.”",
+    "“He conectado con amigos de una manera más genuina.”",
+    "“El diseño es limpio y la experiencia muy intuitiva.”",
+    "“Cada momento desaparece, pero el recuerdo queda.”"
+  ];
+  let idx = 0;
+  const testEl = document.getElementById('testimonial');
+  setInterval(() => {
+    testEl.classList.remove('visible');
+    setTimeout(() => {
+      idx = (idx + 1) % testimonials.length;
+      testEl.textContent = testimonials[idx];
+      testEl.classList.add('visible');
+    }, 500);
+  }, 7000);
 
+  // Manejo del registro
+  document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
 
-    
+    const userData = { username, email, password };
 
-    // Manejo del registro con emoji
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const username = document.getElementById('username').value.trim();
-  const email    = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+    try {
+      const res = await fetch('https://themural-backend-production.up.railway.app/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
 
-  // 👇 CAMBIO AQUÍ (se usa "username" en vez de "name")
-  const userData = { username, email, password };
+      const data = await res.json();
+      const msgBox = document.getElementById('messageBox');
 
-  try {
-    const res = await fetch('https://themural-backend-production.up.railway.app/api/users/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
-    });
+      if (res.ok && data.user?.username) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', data.user.username);
 
-    const data = await res.json();
-    const msgBox = document.getElementById('messageBox');
+        msgBox.textContent = 'Registro exitoso 🎉';
+        msgBox.className = 'success';
+        msgBox.style.display = 'block';
 
-    if (res.ok && data.user?.username) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.user.username);
-
-      msgBox.textContent = 'Registro exitoso 🎉';
-      msgBox.className = 'success';
-      msgBox.style.display = 'block';
-
-      setTimeout(() => {
-        window.location.href = `edit-soulprint.html?user=${encodeURIComponent(data.user.username)}&bienvenida=1`;
-      }, 1500);
-    } else {
-      msgBox.textContent = data.error || 'Error en el registro';
+        setTimeout(() => {
+          window.location.href = `soulprint.html?user=${encodeURIComponent(data.user.username)}`;
+        }, 1500);
+      } else {
+        msgBox.textContent = data.error || 'Error en el registro';
+        msgBox.className = 'error';
+        msgBox.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('Error al registrar:', err);
+      const msgBox = document.getElementById('messageBox');
+      msgBox.textContent = '❌ Error inesperado';
       msgBox.className = 'error';
       msgBox.style.display = 'block';
     }
-  } catch (err) {
-    console.error('Error al registrar:', err);
-    const msgBox = document.getElementById('messageBox');
-    msgBox.textContent = '❌ Error inesperado';
-    msgBox.className = 'error';
-    msgBox.style.display = 'block';
-  }
-});
-  </script>
+  });
+</script>
 </body>
 </html>
