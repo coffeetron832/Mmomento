@@ -293,18 +293,20 @@
   color: #fff;
   border: 1px solid #555;
   border-radius: 6px;
-  padding: 8px;
+  padding: 12px 16px;       /* Aumenta el padding */
   z-index: 10000;
   pointer-events: none;
-  font-size: 0.85rem;
+  font-size: 0.9rem;        /* Un pelín más grande */
   text-align: center;
+  max-width: 200px;         /* Máximo ancho mayor */
+  min-width: 150px;         /* Ancho mínimo */
 }
 
 .grid-tooltip {
   position: relative;
-  width: 80px;
-  height: 80px;
-  margin: 4px auto 0;
+  width: 100px;    /* aumenta de 80px a 100px */
+  height: 100px;   /* aumenta de 80px a 100px */
+  margin: 6px auto 0; /* más separación superior */
 }
 
 .pixel-tooltip {
