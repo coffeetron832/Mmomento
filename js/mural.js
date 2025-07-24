@@ -198,17 +198,17 @@ zoomOutBtn?.addEventListener('click', () => { scale = Math.max(0.4, scale - 0.1)
 
 // ===== Modal de respuestas por aporte =====
 async function mostrarModalRespuestas(aporteId) {
-  // Referencias al modal y al contenedor interior
+  // 1) Referencias al modal y a su contenedor (ajustado a tu HTML)
   const modal = document.getElementById('modal-respuestas');
-  const contenedor = document.getElementById('modalContenido');
+  const contenedor = modal.querySelector('.contenido-respuestas');
   if (!modal || !contenedor) {
     console.error('No se encontró el modal o su contenedor en el DOM');
     return;
   }
-  contenedor.innerHTML = '';  // Limpia contenido previo
+  contenedor.innerHTML = ''; // limpia contenido previo
 
   try {
-    // 1) Traer todos los aportes del día y encontrar el que corresponde
+    // 2) Cargo los aportes del día y filtro el que me interesa
     const res = await fetch(`${API_BASE_URL}/api/mural/today`);
     const datos = await res.json();
     const aporte = datos.find(a => a._id === aporteId);
@@ -219,7 +219,7 @@ async function mostrarModalRespuestas(aporteId) {
       return;
     }
 
-    // 2) Por cada comentario, renderiza autor, contenido y fecha
+    // 3) Por cada comentario en el aporte, creo su bloque
     aporte.respuestas.forEach((r, idx) => {
       const bloque = document.createElement('div');
       bloque.className = 'comentario-modal';
@@ -228,13 +228,13 @@ async function mostrarModalRespuestas(aporteId) {
         <small>${new Date(r.fecha || r.createdAt).toLocaleString()}</small>
       `;
 
-      // 3) Sólo muestro “Responder” si NO soy el autor del comentario
+      // 4) Solo muestro “Responder” si NO soy el autor del comentario
       if (r.autor !== usuario) {
         const btn = document.createElement('button');
         btn.textContent = 'Responder';
         btn.className = 'btn-subresponder';
         btn.addEventListener('click', () => {
-          // Evitar duplicar el formulario
+          // Evito duplicar el formulario
           if (bloque.querySelector('textarea')) return;
 
           const form = document.createElement('div');
@@ -257,7 +257,7 @@ async function mostrarModalRespuestas(aporteId) {
                 body: JSON.stringify({ contenido: txt }),
               }
             );
-            // Recargo el modal para incluir la nueva subrespuesta
+            // recargo el modal para reflejar la nueva subrespuesta
             mostrarModalRespuestas(aporteId);
           });
           bloque.appendChild(form);
@@ -268,7 +268,7 @@ async function mostrarModalRespuestas(aporteId) {
       contenedor.appendChild(bloque);
     });
 
-    // 4) Muestro el modal
+    // 5) Abro el modal
     modal.classList.remove('hidden');
 
   } catch (err) {
