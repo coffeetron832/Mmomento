@@ -183,27 +183,40 @@ async function agregarAlMural() {
   const contenidoElem = document.getElementById('contenido');
   const contenido = contenidoElem.value.trim();
   if (!contenido) {
-  Toastify({
-    text: 'Por favor escribe algo antes de compartir.',
-    duration: 3000,
-    gravity: 'top',
-    position: 'center',
-    style: { background: '#f44336' }
-  }).showToast();
-  return;
-}
+    Toastify({
+      text: 'Por favor escribe algo antes de compartir.',
+      duration: 3000,
+      gravity: 'top',
+      position: 'center',
+      style: { background: '#f44336' }
+    }).showToast();
+    return;
+  }
 
- try {
-  const res = await fetch(`${API_BASE_URL}/api/mural`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    },
-    body: JSON.stringify({ contenido })
-  });
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/mural`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({ contenido })
+    });
 
-  if (res.ok) {
+    const data = await res.json();
+
+    if (!res.ok) {
+      Toastify({
+        text: data.message || '⚠️ Error al subir el aporte.',
+        duration: 4000,
+        gravity: 'top',
+        position: 'center',
+        style: { background: '#f44336' }
+      }).showToast();
+      return; // ⛔ Evita ejecutar cargarAportes si fue rechazado
+    }
+
+    // ✅ Sólo si el backend lo acepta
     contenidoElem.value = '';
     cargarAportes();
     Toastify({
@@ -211,29 +224,21 @@ async function agregarAlMural() {
       duration: 3000,
       gravity: 'top',
       position: 'center',
-      style: { background: '#4caf50' } // verde
+      style: { background: '#4caf50' }
     }).showToast();
-  } else {
-    const err = await res.json();
+
+  } catch (err) {
+    console.error('Error al subir el aporte:', err);
     Toastify({
-      text: err.message || '⚠️ Error al subir el aporte.',
+      text: '❌ Error de red al subir el aporte.',
       duration: 4000,
       gravity: 'top',
       position: 'center',
-      style: { background: '#f44336' } // rojo
+      style: { background: '#f44336' }
     }).showToast();
   }
-} catch (err) {
-  console.error('Error al subir el aporte:', err);
-  Toastify({
-    text: '❌ Error de red al subir el aporte.',
-    duration: 4000,
-    gravity: 'top',
-    position: 'center',
-    style: { background: '#f44336' }
-  }).showToast();
 }
-}
+
 window.agregarAlMural = agregarAlMural;
 
 // ===== Mostrar Aporte con acciones =====
