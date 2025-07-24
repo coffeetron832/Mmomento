@@ -207,10 +207,11 @@ async function mostrarModalRespuestas(aporteId) {
   contenedor.innerHTML = ''; // limpia contenido previo
 
   try {
-    // 1) Traer solo este aporte con sus respuestas actualizadas
-    const res = await fetch(`${API_BASE_URL}/api/mural/${aporteId}`);
-    if (!res.ok) throw new Error('No se pudo cargar el aporte');
-    const aporte = await res.json();
+    // 1) Traer todos los aportes de hoy y filtrar el que interesa
+    const res = await fetch(`${API_BASE_URL}/api/mural/today`);
+    if (!res.ok) throw new Error('No se pudo cargar los aportes de hoy');
+    const datos = await res.json();
+    const aporte = datos.find(a => a._id === aporteId);
 
     if (!aporte) {
       contenedor.innerHTML = '<p>Aporte no encontrado.</p>';
@@ -218,7 +219,7 @@ async function mostrarModalRespuestas(aporteId) {
       return;
     }
 
-    // 2) Renderizar cada respuesta y sus subrespuestas
+    // 2) Por cada respuesta, renderizo su bloque
     aporte.respuestas.forEach((r, idx) => {
       const bloque = document.createElement('div');
       bloque.className = 'comentario-modal';
@@ -231,7 +232,6 @@ async function mostrarModalRespuestas(aporteId) {
       if (r.subrespuestas?.length) {
         const lista = document.createElement('div');
         lista.className = 'subrespuestas';
-
         r.subrespuestas.forEach((sub, subIdx) => {
           const subDiv = document.createElement('div');
           subDiv.className = 'subrespuesta';
@@ -239,51 +239,12 @@ async function mostrarModalRespuestas(aporteId) {
             <p><strong>@${sub.autor}</strong>: ${sub.contenido}</p>
             <small>${new Date(sub.fecha || sub.createdAt).toLocaleString()}</small>
           `;
-
-          // Botón para responder a esta subrespuesta (si no soy su autor)
-          if (sub.autor !== usuario) {
-            const btnSub = document.createElement('button');
-            btnSub.textContent = 'Responder';
-            btnSub.className = 'btn-subresponder';
-            btnSub.addEventListener('click', () => {
-              if (subDiv.querySelector('textarea')) return;
-              const formSub = document.createElement('div');
-              formSub.className = 'form-subrespuesta';
-              formSub.innerHTML = `
-                <textarea rows="2" placeholder="Tu respuesta..."></textarea>
-                <button>Enviar</button>
-              `;
-              formSub.querySelector('button').addEventListener('click', async () => {
-                const txt = formSub.querySelector('textarea').value.trim();
-                if (!txt) return alert('Escribe algo primero.');
-
-                // Responder reutiliza el endpoint de índice de la respuesta padre
-                await fetch(`${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-                  body: JSON.stringify({ contenido: txt }),
-                });
-
-                // Recargo el modal
-                await mostrarModalRespuestas(aporteId);
-                // Actualizo contador
-                actualizarContador(aporteId);
-              });
-              subDiv.appendChild(formSub);
-            });
-            subDiv.appendChild(btnSub);
-          }
-
           lista.appendChild(subDiv);
         });
-
         bloque.appendChild(lista);
       }
 
-      // 2b) Botón para responder a la respuesta principal
+      // 2b) Botón para responder a esta respuesta
       if (r.autor !== usuario) {
         const btn = document.createElement('button');
         btn.textContent = 'Responder';
@@ -300,16 +261,35 @@ async function mostrarModalRespuestas(aporteId) {
             const txt = form.querySelector('textarea').value.trim();
             if (!txt) return alert('Escribe algo primero.');
 
-            await fetch(`${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-              },
-              body: JSON.stringify({ contenido: txt }),
-            });
+            // 3) POST de la subrespuesta
+            await fetch(
+              `${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({ contenido: txt }),
+              }
+            );
 
-            await mostrarModalRespuestas(aporteId);
+            // 4) Insertar la nueva subrespuesta justo debajo de este bloque
+            const nuevaSub = document.createElement('div');
+            nuevaSub.className = 'subrespuesta';
+            nuevaSub.innerHTML = `
+              <p><strong>@${usuario}</strong>: ${txt}</p>
+              <small>${new Date().toLocaleString()}</small>
+            `;
+            let lista = bloque.querySelector('.subrespuestas');
+            if (!lista) {
+              lista = document.createElement('div');
+              lista.className = 'subrespuestas';
+              bloque.appendChild(lista);
+            }
+            lista.appendChild(nuevaSub);
+
+            // 5) Actualizar el contador general
             actualizarContador(aporteId);
           });
           bloque.appendChild(form);
@@ -320,7 +300,7 @@ async function mostrarModalRespuestas(aporteId) {
       contenedor.appendChild(bloque);
     });
 
-    // 3) Muestro el modal
+    // 6) Mostrar el modal
     modal.classList.remove('hidden');
   } catch (err) {
     console.error('Error cargando respuestas:', err);
@@ -329,13 +309,15 @@ async function mostrarModalRespuestas(aporteId) {
   }
 }
 
-// Función auxiliar para actualizar el contador en el mural
 async function actualizarContador(aporteId) {
   const span = document.querySelector(`[data-contador-id="${aporteId}"]`);
   if (!span) return;
   try {
-    const res = await fetch(`${API_BASE_URL}/api/mural/${aporteId}`);
-    const aporte = await res.json();
+    // Vuelvo a traer todos los aportes y recalculo
+    const res = await fetch(`${API_BASE_URL}/api/mural/today`);
+    if (!res.ok) throw new Error();
+    const datos = await res.json();
+    const aporte = datos.find(a => a._id === aporteId);
     const total = aporte.respuestas.reduce((acc, r) => acc + 1 + (r.subrespuestas?.length || 0), 0);
     span.textContent = `${total} respuesta${total !== 1 ? 's' : ''}`;
   } catch (e) {
@@ -343,13 +325,14 @@ async function actualizarContador(aporteId) {
   }
 }
 
-// Cerrar el modal
+// Función para cerrar el modal
 function cerrarModal() {
   const modal = document.getElementById('modal-respuestas');
   if (modal) modal.classList.add('hidden');
 }
 
 window.mostrarModalRespuestas = mostrarModalRespuestas;
+
 
 
 
