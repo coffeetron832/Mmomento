@@ -23,14 +23,47 @@
   }
 
   body {
-font-family: 'Inter', sans-serif;
-background: var(--bg);
-color: var(--text);
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg); /* Fallback color */
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* Efecto de aurora boreal */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, #00ffc8aa, #006aff22, transparent 70%),
+              radial-gradient(circle at 30% 70%, #ff00ff55, transparent 60%),
+              radial-gradient(circle at 70% 30%, #00ffff33, transparent 60%);
+  animation: aurora 20s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4; /* Sutil */
+  filter: blur(80px);
+}
+
+@keyframes aurora {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
   }
+  50% {
+    transform: rotate(180deg) translate(50px, -50px);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, 0);
+  }
+}
+
 
 
   a {
