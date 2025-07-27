@@ -40,7 +40,7 @@ async function cargarMisAportes() {
   contenedor.innerHTML = '<p>Cargando tus aportes...</p>';
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/mural/mios`, {
+    const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(usuario)}`, {
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
   }
