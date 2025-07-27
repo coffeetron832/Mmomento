@@ -4,28 +4,29 @@ let currentSlide = 0;
 const slides = document.querySelectorAll('.modal-slide');
 
 function cambiarSlide(direccion) {
-  // Quita la clase active: dispara animación de salida
   slides[currentSlide].classList.remove('active');
-
-  // Calcula nueva posición
   currentSlide = (currentSlide + direccion + slides.length) % slides.length;
-
-  // Añade la clase active: dispara animación de entrada
   slides[currentSlide].classList.add('active');
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE_URL = 'https://themural-backend-production.up.railway.app';
 
-  // ✅ Verificar que haya username
-  if (!window.currentUsername) {
+  // ✅ Verificar que haya username y token
+  const username = localStorage.getItem('username');
+  const token = localStorage.getItem('authToken');
+  if (!username || !token) {
     return window.location.href = '/index.html';
   }
 
   // ===== Notificaciones =====
   async function cargarNotificaciones() {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/notifications?user=${encodeURIComponent(window.currentUsername)}`);
+      const res = await fetch(`${API_BASE_URL}/api/notifications`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
       if (!res.ok) return;
 
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => banner.remove(), 4000);
   }
 
-  // 🔓 Cerrar sesión simple (borra solo username si quieres)
+  // 🔓 Cerrar sesión simple
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
