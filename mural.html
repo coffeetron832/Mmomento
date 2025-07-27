@@ -380,6 +380,30 @@
     <button class="cerrar-modal-respuestas" onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
+<script>
+  // Verificamos si hay un username guardado
+  const username = localStorage.getItem('username');
+
+  if (!username) {
+    // Si no hay, redirigimos al inicio
+    window.location.href = 'index.html';
+  } else {
+    // Mostrar mensaje de bienvenida
+    const banner = document.getElementById('welcome-banner');
+    banner.textContent = `Hola ${username}, bienvenido al Mural 🧠`;
+    banner.classList.remove('hidden');
+    banner.classList.add('fade-in');
+
+    // Ocultarlo después de unos segundos
+    setTimeout(() => {
+      banner.classList.remove('fade-in');
+      banner.classList.add('fade-out');
+    }, 4000);
+  }
+
+  // Lo exportamos para que mural.js pueda usarlo
+  window.currentUsername = username;
+</script>
 
   
   <script src="/js/mural.js"></script>
