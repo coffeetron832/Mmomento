@@ -9,15 +9,37 @@ function cambiarSlide(direccion) {
   slides[currentSlide].classList.add('active');
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const API_BASE_URL = 'https://themural-backend-production.up.railway.app';
 
-  // ✅ Verificar que haya username y token
-  const username = localStorage.getItem('username');
-  const token = localStorage.getItem('authToken');
+  let username = localStorage.getItem('username');
+  let token = localStorage.getItem('authToken');
 
-  if (!username || !token) {
+  // ✅ Si no hay username, redirige
+  if (!username) {
     return window.location.href = '/index.html';
+  }
+
+  // ✅ Si no hay token, intenta generarlo
+  if (!token) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/token/generate-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username })
+      });
+
+      if (!res.ok) throw new Error("Error generando token");
+
+      const data = await res.json();
+      token = data.token;
+      localStorage.setItem('authToken', token);
+    } catch (err) {
+      console.error("❌ Error generando token:", err);
+      return window.location.href = '/index.html';
+    }
   }
 
   // ===== Notificaciones =====
@@ -50,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       data.forEach((notif) => {
         const li = document.createElement("li");
-        li.innerHTML = `<strong>${notif.sender.username}:</strong> ${notif.message}`;
+        li.innerHTML = `<strong>${notif.sender?.username || "Usuario"}:</strong> ${notif.message}`;
         notifList.appendChild(li);
       });
 
