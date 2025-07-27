@@ -333,3 +333,33 @@ window.addEventListener('DOMContentLoaded', () => {
   togglePopovers();
 });
 
+
+(async () => {
+  let token = localStorage.getItem('authToken');
+  let username = localStorage.getItem('username');
+
+  if (!username) {
+    username = prompt('¿Cómo te llamas?');
+    if (!username) {
+      return alert('Debes ingresar un nombre.');
+    }
+    localStorage.setItem('username', username);
+  }
+
+  if (!token) {
+    const res = await fetch('/api/token/generate-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username }),
+    });
+
+    const data = await res.json();
+    if (data.token) {
+      localStorage.setItem('authToken', data.token);
+    } else {
+      alert('No se pudo generar el token.');
+    }
+  }
+
+  window.currentUsername = username;
+})();
