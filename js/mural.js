@@ -40,7 +40,11 @@ async function cargarMisAportes() {
   contenedor.innerHTML = '<p>Cargando tus aportes...</p>';
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(usuario)}`);
+    const res = await fetch(`${API_BASE_URL}/api/mural/mios`, {
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  }
+});
     const aportes = await res.json();
     contenedor.innerHTML = '';
 
@@ -70,10 +74,12 @@ async function cargarMisAportes() {
         const id = btn.dataset.id;
         try {
           const res2 = await fetch(`${API_BASE_URL}/api/mural/cerrar/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: usuario })
-          });
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  }
+});
           if (res2.ok) {
             btn.parentElement.remove();
             Toastify({ text: 'Aporte eliminado.', duration: 3000, gravity: 'top', position: 'center', style: { background: '#4caf50' } }).showToast();
@@ -153,11 +159,14 @@ function abrirFormularioSubrespuesta(bloque, aporteId, idx, lista) {
     if (!txt) return alert('Escribe algo primero.');
 
     // Enviar subrespuesta
-    await fetch(`${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`, {
-      method: 'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ contenido: txt, autor: usuario })
-    });
+await fetch(`${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  },
+  body: JSON.stringify({ contenido: txt })
+});
 
     // Insertar subrespuesta en UI
     const nuevaSub = document.createElement('div');
@@ -179,10 +188,14 @@ async function agregarAlMural() {
   }
 
   await fetch(`${API_BASE_URL}/api/mural`, {
-    method: 'POST',
-    headers: { 'Content-Type':'application/json' },
-    body: JSON.stringify({ contenido: texto, autor: usuario })
-  });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  },
+  body: JSON.stringify({ contenido: texto })
+});
+
 
   contenidoElem.value = '';
   cargarAportes();
@@ -290,10 +303,14 @@ function abrirFormularioComentario(id) {
 // ===== Comentar aporte =====
 async function comentarAporte(id, texto) {
   await fetch(`${API_BASE_URL}/api/mural/${id}/comentar`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ contenido: texto, autor: usuario })
-  });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  },
+  body: JSON.stringify({ contenido: texto })
+});
+
   Toastify({ text: 'Comentario agregado.', duration:2000, gravity:'top', position:'center' }).showToast();
   cargarAportes();
 }
@@ -302,10 +319,13 @@ async function comentarAporte(id, texto) {
 async function cerrarAporte(id, card) {
   if (!confirm('Cerrar este aporte?')) return;
   await fetch(`${API_BASE_URL}/api/mural/${id}/cerrar`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ user: usuario })
-  });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  }
+});
+
   card.remove();
 }
 
