@@ -402,12 +402,13 @@
   body: JSON.stringify({ username })
 });
 
-      if (!res.ok) {
-        alert('Error generando token.');
-        return;
-      }
+if (!response.ok) {
+  alert('Error generando token.');
+  return;
+}
 
-      const data = await res.json();
+const data = await response.json();
+
       if (data.token) {
         localStorage.setItem('authToken', data.token);
         window.token = data.token;
