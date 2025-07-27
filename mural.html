@@ -396,11 +396,11 @@
 
     let storedToken = localStorage.getItem('authToken');
     if (!storedToken) {
-      const res = await fetch('/api/token/generate-token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username })
-      });
+      const response = await fetch('https://themural-backend-production.up.railway.app/api/token/generate-token', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ username })
+});
 
       if (!res.ok) {
         alert('Error generando token.');
