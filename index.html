@@ -341,6 +341,84 @@
   <!-- JS -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+
+const emailForm = document.getElementById("email-form");
+    const codeForm = document.getElementById("codigo-form");
+    const enviarCodigoBtn = document.getElementById("enviarCodigo");
+    const verificarCodigoBtn = document.getElementById("verificarCodigo");
+    const correoInput = document.getElementById("correo");
+    const codigoInput = document.getElementById("codigo");
+
+    let generatedCode = null;
+
+    // Función para enviar el código de verificación al correo
+    async function enviarCodigoDeVerificacion(correo) {
+      try {
+        const response = await fetch("/api/send-verification-code", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ correo }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al enviar el código.");
+        }
+
+        const data = await response.json();
+        generatedCode = data.code; // Guardamos el código generado para comparación
+        console.log("Código enviado al correo:", generatedCode); // Para depuración
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Hubo un problema al enviar el código. Intenta de nuevo.");
+      }
+    }
+
+    // Función para verificar el código ingresado por el usuario
+    function verificarCodigoIngresado(codigo) {
+      if (codigo === generatedCode) {
+        localStorage.setItem("username", correoInput.value); // Guardar el correo como username
+        window.location.href = "mural.html"; // Redirigir al mural
+      } else {
+        alert("El código es incorrecto.");
+      }
+    }
+
+    // Enviar el código cuando el usuario ingresa su correo
+    enviarCodigoBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const correo = correoInput.value.trim();
+      if (!correo || !/\S+@\S+\.\S+/.test(correo)) {
+        alert("Por favor, ingresa un correo válido.");
+        return;
+      }
+
+      // Enviar el código de verificación
+      enviarCodigoDeVerificacion(correo);
+
+      // Ocultar el formulario de correo y mostrar el formulario de código
+      emailForm.style.display = "none";
+      codeForm.style.display = "block";
+    });
+
+    // Verificar el código cuando el usuario lo ingresa
+    verificarCodigoBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const codigo = codigoInput.value.trim();
+      if (!codigo) {
+        alert("Por favor, ingresa el código.");
+        return;
+      }
+
+      // Verificar el código ingresado
+      verificarCodigoIngresado(codigo);
+    });
+
+
+      
       const logoutMsg = localStorage.getItem('logoutMessage');
       const box = document.getElementById('logoutMessageBox');
       if (logoutMsg && box) {
