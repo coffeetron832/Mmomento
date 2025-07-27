@@ -14,10 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Verificar que haya username y token
   const username = localStorage.getItem('username');
-  const token = localStorage.getItem('authToken');
-  if (!username || !token) {
-    return window.location.href = '/index.html';
-  }
+if (!username) {
+  return window.location.href = '/index.html';
+}
 
   // ===== Notificaciones =====
   async function cargarNotificaciones() {
