@@ -403,60 +403,6 @@
     if (spinner) spinner.style.display = "none";
 
 
-document.getElementById('enviarCodigo').addEventListener('click', async () => {
-  const correo = document.getElementById('correo').value;
-
-  if (!correo) {
-    alert('Por favor, ingresa un correo electrónico válido');
-    return;
-  }
-
-  try {
-    const res = await fetch('/api/send-verification-code', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ correo })
-    });
-
-    const data = await res.json();
-    alert(data.message);
-    document.getElementById('verificacion').style.display = 'none';
-    document.getElementById('codigo-verificacion').style.display = 'block';
-
-  } catch (error) {
-    console.error(error);
-    alert('Error al enviar el código');
-  }
-});
-
-document.getElementById('verificarCodigo').addEventListener('click', async () => {
-  const correo = document.getElementById('correo').value;
-  const codigoIngresado = document.getElementById('codigo').value;
-
-  try {
-    const res = await fetch('/api/verify-code', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ correo, codigoIngresado })
-    });
-
-    const data = await res.json();
-    alert(data.message);
-
-    // Si el código es correcto, redirigir al mural
-    if (data.token) {
-      localStorage.setItem('authToken', data.token);
-      window.location.href = '/mural.html'; // Redirige al mural después de la verificación
-    }
-  } catch (error) {
-    console.error(error);
-    alert('Código incorrecto o expirado');
-  }
-});
 
 
 
