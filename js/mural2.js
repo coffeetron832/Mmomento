@@ -29,7 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      if (!res.ok) return;
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Error al obtener notificaciones: ${res.status} - ${text}`);
+      }
 
       const data = await res.json();
       const notifList = document.getElementById("notifList");
