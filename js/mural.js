@@ -182,24 +182,59 @@ await fetch(`${API_BASE_URL}/api/mural/${aporteId}/responder/${idx}`, {
 async function agregarAlMural() {
   const contenidoElem = document.getElementById('contenido');
   const texto = contenidoElem.value.trim();
+
   if (!texto) {
-    Toastify({ text: 'Escribe algo primero.', duration: 3000, gravity:'top', position:'center', style:{background:'#f44336'} }).showToast();
+    Toastify({
+      text: 'Escribe algo primero.',
+      duration: 3000,
+      gravity: 'top',
+      position: 'center',
+      style: { background: '#f44336' }
+    }).showToast();
     return;
   }
 
-  await fetch(`${API_BASE_URL}/api/mural`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-  },
-  body: JSON.stringify({ contenido: texto })
-});
+  const token = localStorage.getItem('authToken');
 
+  if (!token) {
+    alert('No tienes un token válido. Refresca la página o vuelve a ingresar.');
+    return;
+  }
 
-  contenidoElem.value = '';
-  cargarAportes();
-  Toastify({ text: 'Aporte publicado.', duration:3000, gravity:'top', position:'center', style:{background:'#4caf50'} }).showToast();
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/mural`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ contenido: texto })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || 'Error al publicar.');
+    }
+
+    contenidoElem.value = '';
+    cargarAportes();
+    Toastify({
+      text: 'Aporte publicado.',
+      duration: 3000,
+      gravity: 'top',
+      position: 'center',
+      style: { background: '#4caf50' }
+    }).showToast();
+  } catch (err) {
+    console.error('❌ Error publicando aporte:', err);
+    Toastify({
+      text: err.message || 'Error desconocido',
+      duration: 3000,
+      gravity: 'top',
+      position: 'center',
+      style: { background: '#f44336' }
+    }).showToast();
+  }
 }
 
 window.agregarAlMural = agregarAlMural;
