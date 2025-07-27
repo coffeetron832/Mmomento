@@ -13,34 +13,6 @@ const butterflyPixelPositions = [
 let usuario;
 const aportesMostrados = new Set();
 
-// ===== Helpers =====
-function obtenerUsuarioDesdeToken() {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
-  try {
-    const payloadBase64 = token.split('.')[1];
-    const payloadDecoded = atob(payloadBase64);
-    const payload = JSON.parse(payloadDecoded);
-    return payload.username;
-  } catch (err) {
-    console.error('Error decodificando token:', err);
-    return null;
-  }
-}
-
-
-function verificarToken() {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Debes iniciar sesión para usar el mural.');
-    window.location.href = '/index.html';
-    return false;
-  }
-  return true;
-}
-
-
-
 
 
 // ——— Helper para renderizar la mariposa en el tooltip ———
@@ -337,29 +309,13 @@ window.mostrarModalRespuestas = mostrarModalRespuestas;
 
 
 // ===== Aportes =====
-async function agregarAlMural() {
-  if (!verificarToken()) return;
-  const contenidoElem = document.getElementById('contenido');
-  const contenido = contenidoElem.value.trim();
-  if (!contenido) {
-    Toastify({
-      text: 'Por favor escribe algo antes de compartir.',
-      duration: 3000,
-      gravity: 'top',
-      position: 'center',
-      style: { background: '#f44336' }
-    }).showToast();
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/mural`, {
+const res = await fetch(`${API_BASE_URL}/api/mural`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify({ contenido })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contenido,
+        autor: window.currentUsername
+      })
     });
 
     const data = await res.json();
@@ -640,95 +596,24 @@ function togglePopovers() {
 
 // ===== Init =====
 window.addEventListener('DOMContentLoaded', () => {
-  if (!verificarToken()) return;
-  usuario = obtenerUsuarioDesdeToken();
+  // Obtener el nombre guardado en index.html
+  usuario = window.currentUsername;
 
-  
+  // Si por alguna razón no existe, regresamos al inicio
+  if (!usuario) {
+    return window.location.href = 'index.html';
+  }
+
+  // Mostrar mural y popovers
   cargarAportes();
   togglePopovers();
 
-  // ===== Notificaciones =====
-  const notifBtn   = document.getElementById('notifBtn');
-  const notifPanel = document.getElementById('notifPanel');
-  const notifList  = document.getElementById('notifList');
-  const notifBadge = document.getElementById('notifBadge');
-  const token      = localStorage.getItem('token');
-  
-  // Cargar y mostrar notificaciones
-  async function cargarNotificaciones() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/notifications`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error();
-    const notis = await res.json();
-
-    notifList.innerHTML = '';
-    const pendientes = notis.filter(n => !n.isRead).length;
-    notifBadge.textContent = pendientes > 0 ? `(${pendientes})` : '';
-
-    if (notis.length === 0) {
-      notifList.innerHTML = '<li>No hay notificaciones</li>';
-      return;
-    }
-
-    notis.forEach(n => {
-      const li = document.createElement('li');
-      li.className = n.isRead ? 'read' : 'unread';
-      li.innerHTML = `
-        <div class="notif-contenido">
-          <strong>${n.sender.username}</strong>: ${n.message}
-          <div style="font-size:0.8rem;color:var(--subtle)">
-            ${new Date(n.createdAt).toLocaleString()}
-          </div>
-        </div>
-        <button class="eliminar-notif" data-id="${n._id}" title="Eliminar notificación">✖</button>
-      `;
-
-      // Marcar como leída al hacer click en el contenido (no en el botón)
-      li.querySelector('.notif-contenido').addEventListener('click', async () => {
-        await fetch(`${API_BASE_URL}/api/notifications/${n._id}/read`, {
-          method: 'PATCH',
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        li.className = 'read';
-        await cargarNotificaciones(); // Recargar para actualizar el contador
-      });
-
-      // Eliminar notificación
-      li.querySelector('.eliminar-notif').addEventListener('click', async (e) => {
-        e.stopPropagation(); // Prevenir que se marque como leída al borrar
-        await fetch(`${API_BASE_URL}/api/notifications/${n._id}`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        await cargarNotificaciones(); // Recargar la lista
-      });
-
-      notifList.appendChild(li);
-    });
-
-  } catch (err) {
-    console.error('Error cargando notificaciones:', err);
-    notifList.innerHTML = '<li>Error cargando notificaciones</li>';
-  }
-}
-
-// Abrir/cerrar panel
-notifBtn.addEventListener('click', async e => {
-  e.stopPropagation();
-  if (notifPanel.classList.contains('hidden')) {
-    await cargarNotificaciones();
-  }
-  notifPanel.classList.toggle('hidden');
-});
-
-// Cerrar al click fuera
-document.addEventListener('click', e => {
-  if (!e.target.closest('#notifPanel') && !e.target.closest('#notifBtn')) {
-    notifPanel.classList.add('hidden');
+  // Inicializar notificaciones si aún las usas
+  if (typeof initNotificaciones === 'function') {
+    initNotificaciones();
   }
 });
+
 
 
 
