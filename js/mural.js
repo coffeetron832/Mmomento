@@ -367,13 +367,20 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   if (!token) {
-    const res = await fetch('/api/token/generate-token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username }),
-    });
+    const res = await fetch(`${API_BASE_URL}/api/token/generate-token`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ username }),
+});
 
-    const data = await res.json();
+if (!res.ok) {
+  const errorText = await res.text();
+  console.error('Error al generar token:', errorText);
+  return alert('No se pudo generar el token.');
+}
+
+const data = await res.json();
+
     if (data.token) {
       localStorage.setItem('authToken', data.token);
     } else {
