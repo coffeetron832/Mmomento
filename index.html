@@ -352,56 +352,6 @@
 </head>
 <body>
 
-  <!-- Spinner emocional -->
-  <div id="emotionalSpinner" style="
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(4px);
-    z-index: 3000;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
-    text-align: center;
-  ">
-    <div class="soul-spinner" style="
-      width: 60px;
-      height: 60px;
-      border: 6px solid #4f46e5;
-      border-top: 6px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 1rem;
-    "></div>
-    <span>Viendo si no olvidaste la contraseña otra vez…</span>
-  </div>
-
-  <!-- Mensaje de logout -->
-  <div id="logoutMessageBox" style="
-    display: none;
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #4f46e5;
-    color: #fff;
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    max-width: 80%;
-    text-align: center;
-  "></div>
 
   <!-- Header vacío -->
   <header class="global-header"></header>
@@ -430,16 +380,9 @@
   <!-- Footer -->
   <footer class="footer-horizontal">
   <form id="loginForm" class="footer-login-form">
-    <input type="email" name="email" placeholder="Correo" required autocomplete="email" />
-    <input type="password" name="password" placeholder="Contraseña" required autocomplete="current-password" />
-    <button type="submit">Entrar</button>
+    <input type="text" name="username" placeholder="Tu nombre o apodo" required />
+<button type="submit">Entrar al Mural</button>
   </form>
-
-  <div class="footer-divider">|</div>
-
-  <a href="register.html" class="footer-link">Únete a nosotros</a>
-
-  <div class="footer-divider">|</div>
 
   <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
 
@@ -512,8 +455,18 @@
     
     const spinner = document.getElementById("emotionalSpinner");
     if (spinner) spinner.style.display = "none";
+
+// Captura el envío del formulario
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const username = this.username.value.trim();
+  if (username) {
+    localStorage.setItem('username', username);
+    window.location.href = 'mural.html';
+  }
+});
+
+                                            
   </script>
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
 </body>
 </html>
