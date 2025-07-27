@@ -380,6 +380,7 @@
     <button class="cerrar-modal-respuestas" onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
+<!-- 👇 SOLO PARTE FINAL EDITADA PARA MOSTRAR CAMBIOS -->
 <script>
   // Verificamos si hay un username guardado
   const username = localStorage.getItem('username');
@@ -401,9 +402,21 @@
     }, 4000);
   }
 
-  // Lo exportamos para que mural.js pueda usarlo
+  // Exportar para usar en otros scripts
   window.currentUsername = username;
+
+  // Lógica del botón de cerrar sesión
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      const storedUsername = localStorage.getItem('username');
+      localStorage.clear();
+      if (storedUsername) localStorage.setItem('username', storedUsername);
+      window.location.href = 'index.html';
+    });
+  }
 </script>
+
 
   
   <script src="/js/mural.js"></script>
