@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ===== Notificaciones =====
   async function cargarNotificaciones() {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/notifications?user=${encodeURIComponent(username)}`, {
+      const res = await fetch(`${API_BASE_URL}/api/notifications`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
