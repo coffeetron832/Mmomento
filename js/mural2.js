@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username })
+        body: JSON.stringify({ correo: username })
       });
 
       if (!res.ok) throw new Error("Error generando token");
