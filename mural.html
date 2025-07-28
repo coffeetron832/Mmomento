@@ -4,12 +4,61 @@
   <meta charset="UTF-8">
   <title>Mural Anónimo</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #username { font-weight: bold; color: #4B0082; }
-    .aporte { margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
-    .aporte strong { color: #555; }
-    #logoutBtn { margin-top: 20px; }
-  </style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f6f6f6;
+  }
+
+  #username {
+    font-weight: bold;
+    color: #4B0082;
+  }
+
+  #aporteForm {
+    margin-bottom: 30px;
+  }
+
+  .aporte {
+    background: white;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .aporte:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .aporte .autor {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .aporte .fecha {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+  }
+
+  #logoutBtn {
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #4B0082;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #logoutBtn:hover {
+    background-color: #360065;
+  }
+</style>
 </head>
 <body>
   <h2>Bienvenido al Mural, <span id="username"></span> 🎨</h2>
