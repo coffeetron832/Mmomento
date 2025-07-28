@@ -84,7 +84,11 @@ const lienzo = document.getElementById('lienzo');
 const container = document.getElementById('aportesContainer');
 
 let isDragging = false;
-let startX, startY, scrollLeft, scrollTop;
+let startX, startY;
+
+// Posición inicial
+let offsetX = 0;
+let offsetY = 0;
 
 lienzo.addEventListener('mousedown', (e) => {
   isDragging = true;
@@ -102,19 +106,21 @@ document.addEventListener('mousemove', (e) => {
   if (!isDragging) return;
   const dx = e.clientX - startX;
   const dy = e.clientY - startY;
-  container.style.left = `${parseInt(container.style.left || 0) + dx}px`;
-  container.style.top = `${parseInt(container.style.top || 0) + dy}px`;
+
+  offsetX += dx;
+  offsetY += dy;
+
+  container.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoomLevel})`;
   startX = e.clientX;
   startY = e.clientY;
 });
 
 let zoomLevel = 1;
-// Detectar scroll con la rueda del mouse (Ctrl + rueda o solo rueda)
-container.addEventListener('wheel', (e) => {
-  // Prevenir el scroll de la página si es Ctrl o está sobre el lienzo
-  e.preventDefault();
+const zoomStep = 0.1;
 
-  // e.deltaY > 0: scroll hacia abajo => alejar
+lienzo.addEventListener('wheel', (e) => {
+  e.preventDefault(); // Bloquea el scroll del body
+
   if (e.deltaY > 0) {
     zoomLevel = Math.max(zoomLevel - zoomStep, 0.3);
   } else {
@@ -122,21 +128,20 @@ container.addEventListener('wheel', (e) => {
   }
 
   applyZoom();
-}, { passive: false }); // importante para que funcione preventDefault()
-
-const zoomStep = 0.1;
+}, { passive: false });
 
 function applyZoom() {
-  container.style.transform = `scale(${zoomLevel})`;
+  container.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoomLevel})`;
   container.style.transformOrigin = 'top left';
 }
 
+// Botones de zoom
 function zoomIn() {
-  zoomLevel = Math.min(zoomLevel + zoomStep, 3); // máximo 300%
+  zoomLevel = Math.min(zoomLevel + zoomStep, 3);
   applyZoom();
 }
 
 function zoomOut() {
-  zoomLevel = Math.max(zoomLevel - zoomStep, 0.3); // mínimo 30%
+  zoomLevel = Math.max(zoomLevel - zoomStep, 0.3);
   applyZoom();
 }
