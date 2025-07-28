@@ -106,3 +106,21 @@ document.addEventListener('mousemove', (e) => {
   startX = e.clientX;
   startY = e.clientY;
 });
+
+let zoomLevel = 1;
+const zoomStep = 0.1;
+
+function applyZoom() {
+  container.style.transform = `scale(${zoomLevel})`;
+  container.style.transformOrigin = 'top left';
+}
+
+function zoomIn() {
+  zoomLevel = Math.min(zoomLevel + zoomStep, 3); // máximo 300%
+  applyZoom();
+}
+
+function zoomOut() {
+  zoomLevel = Math.max(zoomLevel - zoomStep, 0.3); // mínimo 30%
+  applyZoom();
+}
