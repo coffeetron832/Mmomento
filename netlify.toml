@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/soulprint/*"
-  to   = "/soulprint.html"
-  status = 200
-  force  = true
