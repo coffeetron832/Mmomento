@@ -5,6 +5,11 @@ if (!token || !username) {
   window.location.href = 'index.html';
 }
 
+const bienvenidaEl = document.getElementById('bienvenida');
+if (bienvenidaEl && username) {
+  bienvenidaEl.textContent = `👋 Bienvenido, ${username}`;
+}
+
 
 // Manejar envío del formulario
 document.getElementById('aporteForm').addEventListener('submit', async (e) => {
