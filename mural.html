@@ -5,157 +5,114 @@
   <title>Mural Anónimo</title>
   <style>
     * {
-      box-sizing: border-box;
-    }
+  box-sizing: border-box;
+}
 
-    body, html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background-color: #f6f6f6;
-      height: 100vh;
-      width: 100vw;
-    }
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  height: 100vh;
+  width: 100vw;
+  color: #f0f0f0;
+}
 
-    #lienzo {
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      overflow: hidden;
-      position: relative;
-      cursor: grab;
-      background-color: #fff;
-    }
+#lienzo {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  background-color: #111;
+  background-image: linear-gradient(#222 1px, transparent 1px),
+                    linear-gradient(90deg, #222 1px, transparent 1px);
+  background-size: 40px 40px;
+}
 
-    #lienzo:active {
-      cursor: grabbing;
-    }
+#lienzo:active {
+  cursor: grabbing;
+}
 
-    #aportesContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform-origin: top left;
-      transition: transform 0.3s ease;
-    }
+#aportesContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  transition: transform 0.3s ease;
+}
 
-    .aporte {
-      position: absolute;
-      width: 200px;
-      padding: 12px;
-      background: #fefefe;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease;
-    }
+.aporte {
+  position: absolute;
+  width: 200px;
+  padding: 12px;
+  background: #1e1e1e;
+  border: 1px solid #555;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+  color: #f0f0f0;
+}
 
-    .aporte:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    }
+.aporte:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.05);
+}
 
-    .aporte .autor {
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 4px;
-    }
+.aporte .autor {
+  font-weight: bold;
+  color: #e0e0ff;
+  margin-bottom: 4px;
+}
 
-    .aporte .fecha {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 10px;
-    }
+.aporte .fecha {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
 
-    #formularioFlotante {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background-color: #ffffffdd;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      z-index: 10;
-    }
+#formularioFlotante,
+#formContainer {
+  position: fixed;
+  top: 60px;
+  left: 10px;
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255,255,255,0.05);
+  z-index: 10;
+  display: none;
+}
 
-    #formularioFlotante textarea {
-      width: 250px;
-      resize: none;
-    }
+#formularioFlotante textarea,
+#formContainer textarea {
+  width: 250px;
+  resize: none;
+  background: #111;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px;
+}
 
-    #formularioFlotante button {
-      margin-top: 10px;
-      background-color: #4B0082;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #formularioFlotante button:hover {
-      background-color: #360065;
-    }
-
-    #logoutBtn {
-  /* position: fixed; ❌ Esto causa el problema */
-  /* top: 20px;       ❌ */
-  /* right: 20px;     ❌ */
-  padding: 8px 16px;
+#formularioFlotante button,
+#formContainer button {
+  margin-top: 10px;
   background-color: #4B0082;
   color: white;
   border: none;
+  padding: 6px 12px;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 10;
 }
 
-#logoutBtn:hover {
+#formularioFlotante button:hover,
+#formContainer button:hover {
   background-color: #360065;
 }
-    
-    #zoomControls {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 10;
-    }
 
-    #zoomControls button {
-      font-size: 24px;
-      padding: 8px 12px;
-      border: none;
-      background-color: #4B0082;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      transition: transform 0.2s ease;
-    }
-
-    #zoomControls button:hover {
-      transform: scale(1.1);
-    }
-
-    #username {
-      font-weight: bold;
-      color: #4B0082;
-    }
-
-    #toolbar {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  display: flex;
-  gap: 10px;
-  z-index: 10;
-}
-
-#toggleFormBtn, #logoutBtn {
+#logoutBtn, #toggleFormBtn {
   padding: 8px 14px;
   background-color: #4B0082;
   color: white;
@@ -164,30 +121,39 @@
   cursor: pointer;
 }
 
-#toggleFormBtn:hover {
+#logoutBtn:hover, #toggleFormBtn:hover {
   background-color: #5e2b91;
 }
 
-#formContainer {
+#zoomControls {
   position: fixed;
-  top: 60px;
-  left: 10px;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   z-index: 10;
-  background-color: #fff;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  display: none;
 }
 
-#lienzo {
-  width: 100vw;
-  height: 100vh;
-  border: 2px dashed #ccc;
-  overflow: hidden;
-  position: relative;
-  cursor: grab;
-  background-color: #fff;
+#zoomControls button {
+  font-size: 24px;
+  padding: 8px 12px;
+  border: none;
+  background-color: #4B0082;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(255,255,255,0.1);
+  transition: transform 0.2s ease;
+}
+
+#zoomControls button:hover {
+  transform: scale(1.1);
+}
+
+#username {
+  font-weight: bold;
+  color: #f0f0f0;
 }
 
 #toolbar {
@@ -195,9 +161,9 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: #fefefe;
+  background: #1e1e1e;
   padding: 10px 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(255,255,255,0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -206,7 +172,7 @@
 
 #bienvenida {
   font-weight: bold;
-  color: #4B0082;
+  color: #a682ff;
   font-size: 16px;
 }
 
@@ -234,12 +200,13 @@
     align-items: flex-start;
   }
 
-  .toolbar-buttons {
+  #toolbar-buttons {
     width: 100%;
     justify-content: flex-start;
     flex-wrap: wrap;
   }
 }
+
 
       
   </style>
