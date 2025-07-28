@@ -380,6 +380,7 @@ async function enviarCodigoDeVerificacion(correo, username) {
     // Función para verificar el código ingresado por el usuario
     function verificarCodigoIngresado(codigo) {
   if (codigo === generatedCode) {
+    localStorage.setItem("correo", correoInput.value.trim());
     // Mostrar el campo de nombre de usuario
     const loginForm = document.getElementById('loginForm');
     loginForm.style.display = 'flex';
