@@ -200,20 +200,32 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
   z-index: 100;
 }
 
 #bienvenida {
   font-weight: bold;
   color: #4B0082;
-  margin-right: auto;
+  font-size: 16px;
 }
 
-    .toolbar-buttons {
+#toolbar-buttons {
   display: flex;
   gap: 10px;
-  align-items: center;
+}
+
+#toolbar-buttons button {
+  padding: 8px 14px;
+  background-color: #4B0082;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#toolbar-buttons button:hover {
+  background-color: #5e2b91;
 }
 
 @media (max-width: 600px) {
