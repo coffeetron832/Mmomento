@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ✅ Cargar aportes del usuario y mostrarlos
   async function cargarMisAportes() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(username)}`);
+    const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(username.toLowerCase())}`);
     if (!res.ok) throw new Error("No se pudieron cargar tus aportes.");
 
     const result = await res.json();
