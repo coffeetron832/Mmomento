@@ -131,35 +131,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ✅ Cargar aportes del usuario y mostrarlos
   async function cargarMisAportes() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(username)}`);
-      if (!res.ok) throw new Error("No se pudieron cargar tus aportes.");
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(username)}`);
+    if (!res.ok) throw new Error("No se pudieron cargar tus aportes.");
 
-      const aportes = await res.json();
-      const container = document.getElementById("misAportesContainer");
-      if (!container) return;
+    const aportes = await res.json();
+    const container = document.getElementById("listaMisAportes");
+    if (!container) return;
 
-      container.innerHTML = "";
+    container.innerHTML = "";
 
-      if (aportes.length === 0) {
-        container.innerHTML = "<p>No has hecho ningún aporte aún.</p>";
-        return;
-      }
-
-      aportes.forEach((aporte) => {
-        const div = document.createElement("div");
-        div.className = "aporte-item";
-        div.innerHTML = `
-          <div><strong>Tipo:</strong> ${aporte.tipo}</div>
-          <div><strong>Contenido:</strong> ${aporte.contenido}</div>
-          <div><small>${new Date(aporte.fechaCreacion).toLocaleString()}</small></div>
-        `;
-        container.appendChild(div);
-      });
-    } catch (err) {
-      console.error("❌ Error mostrando tus aportes:", err);
+    if (aportes.length === 0) {
+      container.innerHTML = "<p>No has hecho ningún aporte aún.</p>";
+      return;
     }
+
+    aportes.forEach((aporte) => {
+      const div = document.createElement("div");
+      div.className = "aporte-item p-2 border-b border-gray-300";
+      div.innerHTML = `
+        <p><strong>Tipo:</strong> ${aporte.tipo}</p>
+        <p><strong>Contenido:</strong> ${aporte.contenido}</p>
+        <p><small>${new Date(aporte.fechaCreacion).toLocaleString()}</small></p>
+      `;
+      container.appendChild(div);
+    });
+  } catch (err) {
+    console.error("❌ Error mostrando tus aportes:", err);
   }
+}
+
 
   // 🔄 Llamar la función al cargar la página
   cargarMisAportes();
