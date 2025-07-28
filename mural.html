@@ -99,22 +99,22 @@
     }
 
     #logoutBtn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 8px 16px;
-      background-color: #4B0082;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 10;
-    }
+  /* position: fixed; ❌ Esto causa el problema */
+  /* top: 20px;       ❌ */
+  /* right: 20px;     ❌ */
+  padding: 8px 16px;
+  background-color: #4B0082;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+}
 
-    #logoutBtn:hover {
-      background-color: #360065;
-    }
-
+#logoutBtn:hover {
+  background-color: #360065;
+}
+    
     #zoomControls {
       position: fixed;
       bottom: 20px;
