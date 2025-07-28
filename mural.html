@@ -4,136 +4,169 @@
   <meta charset="UTF-8">
   <title>Mural Anónimo</title>
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f6f6f6;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  #username {
-    font-weight: bold;
-    color: #4B0082;
-  }
-
-  #aporteForm {
-    margin-bottom: 30px;
-  }
-
-  .aporte {
-  position: absolute;
-  width: 200px;
-  padding: 12px;
-  background: #fefefe;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-}
-
-
-  .aporte:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  .aporte .autor {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 4px;
-  }
-
-  .aporte .fecha {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 10px;
-  }
-
-  #logoutBtn {
-    margin-top: 20px;
-    padding: 8px 16px;
-    background-color: #4B0082;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  #logoutBtn:hover {
-    background-color: #360065;
-  }
-
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+      height: 100vh;
+      width: 100vw;
+    }
 
     #lienzo {
-  width: 100vw;
-  height: 80vh;
-  border: 2px dashed #ccc;
-  overflow: hidden;
-  position: relative;
-  cursor: grab;
-  background-color: #fff;
-}
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+      background-color: #fff;
+    }
 
-#lienzo:active {
-  cursor: grabbing;
-}
+    #lienzo:active {
+      cursor: grabbing;
+    }
 
-#aportesContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: top left;
-  transition: transform 0.3s ease; /* 👈 suaviza el zoom */
-}
+    #aportesContainer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: top left;
+      transition: transform 0.3s ease;
+    }
 
+    .aporte {
+      position: absolute;
+      width: 200px;
+      padding: 12px;
+      background: #fefefe;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .aporte:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .aporte .autor {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .aporte .fecha {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    #formularioFlotante {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #ffffffdd;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    #formularioFlotante textarea {
+      width: 250px;
+      resize: none;
+    }
+
+    #formularioFlotante button {
+      margin-top: 10px;
+      background-color: #4B0082;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #formularioFlotante button:hover {
+      background-color: #360065;
+    }
+
+    #logoutBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background-color: #4B0082;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    #logoutBtn:hover {
+      background-color: #360065;
+    }
 
     #zoomControls {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10;
+    }
 
-#zoomControls button {
-  font-size: 24px;
-  padding: 8px 12px;
-  border: none;
-  background-color: #4B0082;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: transform 0.2s ease;
-}
+    #zoomControls button {
+      font-size: 24px;
+      padding: 8px 12px;
+      border: none;
+      background-color: #4B0082;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;
+    }
 
-#zoomControls button:hover {
-  transform: scale(1.1);
-}
+    #zoomControls button:hover {
+      transform: scale(1.1);
+    }
 
-    
-</style>
+    #username {
+      font-weight: bold;
+      color: #4B0082;
+    }
+  </style>
 </head>
 <body>
-  <h2>Bienvenido al Mural, <span id="username"></span> 🎨</h2>
 
-  <form id="aporteForm">
-    <textarea id="textoAporte" rows="3" cols="50" placeholder="Escribe tu aporte..." required></textarea><br>
-    <button type="submit">Publicar</button>
-  </form>
-
-  <div id="lienzo" style="width:100%; height:80vh; overflow:hidden; border:1px solid #ccc; cursor:grab; position:relative;">
-  <div id="aportesContainer" style="position:absolute;"></div>
-</div>
-
+  <div id="formularioFlotante">
+    <div>Bienvenido, <span id="username"></span> 🎨</div>
+    <form id="aporteForm">
+      <textarea id="textoAporte" rows="3" placeholder="Escribe tu aporte..." required></textarea><br>
+      <button type="submit">Publicar</button>
+    </form>
+  </div>
 
   <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
 
   <div id="zoomControls">
-  <button onclick="zoomIn()">➕</button>
-  <button onclick="zoomOut()">➖</button>
-</div>
+    <button onclick="zoomIn()">➕</button>
+    <button onclick="zoomOut()">➖</button>
+  </div>
 
+  <div id="lienzo">
+    <div id="aportesContainer"></div>
+  </div>
 
   <script src="js/mural.js"></script>
 </body>
