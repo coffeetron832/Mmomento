@@ -135,7 +135,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(username)}`);
     if (!res.ok) throw new Error("No se pudieron cargar tus aportes.");
 
-    const aportes = await res.json();
+    const result = await res.json();
+    const aportes = result.data || []; // ← Extraemos el array del objeto
+
     const container = document.getElementById("listaMisAportes");
     if (!container) return;
 
@@ -150,9 +152,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const div = document.createElement("div");
       div.className = "aporte-item p-2 border-b border-gray-300";
       div.innerHTML = `
-        <p><strong>Tipo:</strong> ${aporte.tipo}</p>
+        <p><strong>Tipo:</strong> ${aporte.tipo || 'Texto'}</p>
         <p><strong>Contenido:</strong> ${aporte.contenido}</p>
-        <p><small>${new Date(aporte.fechaCreacion).toLocaleString()}</small></p>
+        <p><small>${new Date(aporte.createdAt).toLocaleString()}</small></p>
       `;
       container.appendChild(div);
     });
