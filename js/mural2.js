@@ -128,4 +128,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Cargar y configurar notificaciones
   cargarNotificaciones();
   configurarPanelNotificaciones();
+
+  // ✅ Cargar aportes del usuario y mostrarlos
+  async function cargarMisAportes() {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/mural/mios?user=${encodeURIComponent(username)}`);
+      if (!res.ok) throw new Error("No se pudieron cargar tus aportes.");
+
+      const aportes = await res.json();
+      const container = document.getElementById("misAportesContainer");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      if (aportes.length === 0) {
+        container.innerHTML = "<p>No has hecho ningún aporte aún.</p>";
+        return;
+      }
+
+      aportes.forEach((aporte) => {
+        const div = document.createElement("div");
+        div.className = "aporte-item";
+        div.innerHTML = `
+          <div><strong>Tipo:</strong> ${aporte.tipo}</div>
+          <div><strong>Contenido:</strong> ${aporte.contenido}</div>
+          <div><small>${new Date(aporte.fechaCreacion).toLocaleString()}</small></div>
+        `;
+        container.appendChild(div);
+      });
+    } catch (err) {
+      console.error("❌ Error mostrando tus aportes:", err);
+    }
+  }
+
+  // 🔄 Llamar la función al cargar la página
+  cargarMisAportes();
 });
