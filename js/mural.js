@@ -38,22 +38,29 @@ async function cargarAportes() {
   container.innerHTML = '';
 
   data.forEach(aporte => {
-    const div = document.createElement('div');
-    div.className = 'aporte';
+  const div = document.createElement('div');
+  div.className = 'aporte';
 
-const fecha = new Date(aporte.createdAt).toLocaleString('es-CO', {
-  dateStyle: 'medium',
-  timeStyle: 'short'
+  const fecha = new Date(aporte.createdAt).toLocaleString('es-CO', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  });
+
+  div.innerHTML = `
+    <div class="autor">${aporte.username}</div>
+    <div class="fecha">${fecha}</div>
+    <div class="contenido">${aporte.texto}</div>
+  `;
+
+  // Posición aleatoria dentro del lienzo
+  const x = Math.floor(Math.random() * 2000);
+  const y = Math.floor(Math.random() * 2000);
+  div.style.left = `${x}px`;
+  div.style.top = `${y}px`;
+
+  container.appendChild(div);
 });
 
-div.innerHTML = `
-  <div class="autor">${aporte.username}</div>
-  <div class="fecha">${fecha}</div>
-  <div class="contenido">${aporte.texto}</div>
-`;
-
-    container.appendChild(div);
-  });
 }
 
 cargarAportes();
@@ -70,3 +77,32 @@ async function logout() {
   localStorage.clear();
   window.location.href = 'index.html';
 }
+
+
+const lienzo = document.getElementById('lienzo');
+const container = document.getElementById('aportesContainer');
+
+let isDragging = false;
+let startX, startY, scrollLeft, scrollTop;
+
+lienzo.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
+  lienzo.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+  lienzo.style.cursor = 'grab';
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
+  container.style.left = `${parseInt(container.style.left || 0) + dx}px`;
+  container.style.top = `${parseInt(container.style.top || 0) + dy}px`;
+  startX = e.clientX;
+  startY = e.clientY;
+});
