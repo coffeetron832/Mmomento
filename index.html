@@ -340,174 +340,150 @@
 
   <!-- JS -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-document.getElementById('loginForm').style.display = 'none';
-
-const emailForm = document.getElementById("email-form");
+  document.addEventListener('DOMContentLoaded', () => {
+    const emailForm = document.getElementById("email-form");
     const codeForm = document.getElementById("codigo-form");
+    const loginForm = document.getElementById("loginForm");
     const enviarCodigoBtn = document.getElementById("enviarCodigo");
     const verificarCodigoBtn = document.getElementById("verificarCodigo");
     const correoInput = document.getElementById("correo");
     const codigoInput = document.getElementById("codigo");
+    const butterfly = document.getElementById("butterfly");
+    const spinner = document.getElementById("emotionalSpinner");
+
+    loginForm.style.display = 'none';
+    if (spinner) spinner.style.display = "none";
 
     let generatedCode = null;
 
-   // Función para enviar el código de verificación al correo
-async function enviarCodigoDeVerificacion(correo, username) {
-  try {
-    const response = await fetch("https://themural-backend-production.up.railway.app/api/send-verification-code", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ correo, username }),
-    });
+    async function enviarCodigoDeVerificacion(correo) {
+      try {
+        const response = await fetch("https://themural-backend-production.up.railway.app/api/send-verification-code", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ correo, username: correo }) // usamos el correo como username temporalmente
+        });
 
-    if (!response.ok) {
-      throw new Error("Error al enviar el código.");
+        if (!response.ok) {
+          throw new Error("Error al enviar el código.");
+        }
+
+        const data = await response.json();
+        generatedCode = data.code;
+        console.log("Código enviado al correo:", generatedCode);
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Hubo un problema al enviar el código. Intenta de nuevo.");
+      }
     }
 
-    const data = await response.json();
-    generatedCode = data.code; // Guardamos el código generado para comparación
-    console.log("Código enviado al correo:", generatedCode); // Para depuración
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Hubo un problema al enviar el código. Intenta de nuevo.");
-  }
-}
-
-
-    // Función para verificar el código ingresado por el usuario
     function verificarCodigoIngresado(codigo) {
-  if (codigo === generatedCode) {
-    localStorage.setItem("correo", correoInput.value.trim());
-    // Mostrar el campo de nombre de usuario
-    const loginForm = document.getElementById('loginForm');
-    loginForm.style.display = 'flex';
+      if (codigo === generatedCode) {
+        localStorage.setItem("correo", correoInput.value.trim());
 
-    // Ocultar el formulario de código
-    codeForm.style.display = 'none';
+        codeForm.style.display = 'none';
+        loginForm.style.display = 'flex';
 
-    // Mensaje opcional
-    alert("Código verificado correctamente. Ahora ingresa tu nombre para continuar.");
-  } else {
-    alert("El código es incorrecto.");
-  }
-}
+        alert("Código verificado correctamente. Ahora ingresa tu nombre para continuar.");
+      } else {
+        alert("El código es incorrecto.");
+      }
+    }
 
-
-    // Enviar el código cuando el usuario ingresa su correo
     enviarCodigoBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  const correo = correoInput.value.trim();
-  const username = correoInput.value.trim(); // Puedes usar el mismo correo como username o permitir que el usuario ingrese uno diferente
-  if (!correo || !/\S+@\S+\.\S+/.test(correo)) {
-    alert("Por favor, ingresa un correo válido.");
-    return;
-  }
-
-  // Enviar el código de verificación
-  enviarCodigoDeVerificacion(correo, username);
-
-  // Ocultar el formulario de correo y mostrar el formulario de código
-  emailForm.style.display = "none";
-  codeForm.style.display = "block";
-});
-
-    // Verificar el código cuando el usuario lo ingresa
-    verificarCodigoBtn.addEventListener("click", (e) => {
       e.preventDefault();
 
+      const correo = correoInput.value.trim();
+      if (!correo || !/\S+@\S+\.\S+/.test(correo)) {
+        alert("Por favor, ingresa un correo válido.");
+        return;
+      }
+
+      enviarCodigoDeVerificacion(correo);
+      emailForm.style.display = "none";
+      codeForm.style.display = "block";
+    });
+
+    verificarCodigoBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       const codigo = codigoInput.value.trim();
       if (!codigo) {
         alert("Por favor, ingresa el código.");
         return;
       }
-
-      // Verificar el código ingresado
       verificarCodigoIngresado(codigo);
     });
 
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = this.username.value.trim();
+      const correo = localStorage.getItem('correo');
 
-      
-      const logoutMsg = localStorage.getItem('logoutMessage');
-      const box = document.getElementById('logoutMessageBox');
-      if (logoutMsg && box) {
-        box.textContent = logoutMsg;
-        box.style.display = 'block';
-        setTimeout(() => {
-          box.style.opacity = '1';
-          setTimeout(() => {
-            box.style.opacity = '0';
-            setTimeout(() => {
-              box.style.display = 'none';
-            }, 500);
-          }, 3000);
-        }, 100);
-        localStorage.removeItem('logoutMessage');
+      if (!correo) {
+        alert("Tu sesión ha expirado. Vuelve a iniciar.");
+        window.location.href = 'index.html';
+        return;
       }
 
-      function applyFadeIn() {
-        document.documentElement.classList.add('fade-in');
+      if (username) {
+        localStorage.setItem('username', username);
+        window.location.href = 'mural.html';
       }
-
-      window.addEventListener('DOMContentLoaded', applyFadeIn);
-      window.addEventListener('pageshow', event => {
-        if (event.persisted) applyFadeIn();
-      });
-
-      document.addEventListener('click', e => {
-        const link = e.target.closest('a');
-        if (!link) return;
-        const href = link.getAttribute('href');
-        if (href && !href.startsWith('#') && !link.target) {
-          e.preventDefault();
-          document.documentElement.classList.remove('fade-in');
-          document.documentElement.classList.add('fade');
-          setTimeout(() => window.location.href = href, 300);
-        }
-      });
     });
 
+    const logoutMsg = localStorage.getItem('logoutMessage');
+    const box = document.getElementById('logoutMessageBox');
+    if (logoutMsg && box) {
+      box.textContent = logoutMsg;
+      box.style.display = 'block';
+      setTimeout(() => {
+        box.style.opacity = '1';
+        setTimeout(() => {
+          box.style.opacity = '0';
+          setTimeout(() => {
+            box.style.display = 'none';
+          }, 500);
+        }, 3000);
+      }, 100);
+      localStorage.removeItem('logoutMessage');
+    }
 
-  const butterfly = document.getElementById("butterfly");
+    function applyFadeIn() {
+      document.documentElement.classList.add('fade-in');
+    }
+
+    window.addEventListener('DOMContentLoaded', applyFadeIn);
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) applyFadeIn();
+    });
+
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (href && !href.startsWith('#') && !link.target) {
+        e.preventDefault();
+        document.documentElement.classList.remove('fade-in');
+        document.documentElement.classList.add('fade');
+        setTimeout(() => window.location.href = href, 300);
+      }
+    });
+
     const moveButterfly = () => {
       const maxX = window.innerWidth - 100;
       const maxY = window.innerHeight - 100;
-
       const newX = Math.random() * maxX;
       const newY = Math.random() * maxY;
-
       butterfly.style.left = `${newX}px`;
       butterfly.style.top = `${newY}px`;
     };
 
-    // Mover la mariposa cada 4 segundos
     setInterval(moveButterfly, 4000);
-
-    // Posición inicial
     moveButterfly();
-    
-    const spinner = document.getElementById("emotionalSpinner");
-    if (spinner) spinner.style.display = "none";
+  });
+</script>
 
-
-
-
-
-    
-// Captura el envío del formulario
-document.getElementById('loginForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const username = this.username.value.trim();
-  if (username) {
-    localStorage.setItem('username', username);
-    window.location.href = 'mural.html';
-  }
-});
-
-                                            
-  </script>
 </body>
 </html>
