@@ -43,3 +43,18 @@ async function verifyCode() {
     alert(data.message || 'Código incorrecto');
   }
 }
+
+async function logout() {
+  const token = localStorage.getItem('userToken');
+
+  await fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  localStorage.clear();
+  window.location.href = 'index.html';
+}
+
