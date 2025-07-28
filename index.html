@@ -326,10 +326,10 @@
 
   <!-- Footer -->
   <footer class="footer-horizontal">
-    <form id="loginForm" class="footer-login-form">
-      <input type="text" name="username" placeholder="Tu nombre o apodo" required />
-      <button type="submit">Entrar al Mural</button>
-    </form>
+    <div id="loginForm" class="footer-login-form">
+  <p>Tu usuario generado: <strong id="usernameDisplay"></strong></p>
+  <button id="entrarBtn">Entrar al Mural</button>
+</div>
 
     <a href="privacidad.html" class="footer-link">Política de Privacidad</a>
 
@@ -355,6 +355,7 @@
     if (spinner) spinner.style.display = "none";
 
     let generatedCode = null;
+    let generatedUsername = null;
 
     async function enviarCodigoDeVerificacion(correo) {
       try {
@@ -363,16 +364,17 @@
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ correo, username: correo }) // usamos el correo como username temporalmente
+          body: JSON.stringify({ correo, username: correo }) // temporalmente correo como username
         });
 
-        if (!response.ok) {
-          throw new Error("Error al enviar el código.");
-        }
+        if (!response.ok) throw new Error("Error al enviar el código.");
 
         const data = await response.json();
         generatedCode = data.code;
-        console.log("Código enviado al correo:", generatedCode);
+        generatedUsername = data.username;
+
+        localStorage.setItem("generatedUsername", generatedUsername);
+        console.log("Código enviado:", generatedCode, " | Username generado:", generatedUsername);
       } catch (error) {
         console.error("Error:", error);
         alert("Hubo un problema al enviar el código. Intenta de nuevo.");
@@ -386,7 +388,12 @@
         codeForm.style.display = 'none';
         loginForm.style.display = 'flex';
 
-        alert("Código verificado correctamente. Ahora ingresa tu nombre para continuar.");
+        const display = document.getElementById("usernameDisplay");
+        if (display && generatedUsername) {
+          display.textContent = generatedUsername;
+        }
+
+        alert("Código verificado. Tu nombre de usuario ha sido generado.");
       } else {
         alert("El código es incorrecto.");
       }
@@ -416,21 +423,18 @@
       verificarCodigoIngresado(codigo);
     });
 
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const username = this.username.value.trim();
+    document.getElementById('entrarBtn').addEventListener('click', function () {
+      const username = localStorage.getItem('generatedUsername');
       const correo = localStorage.getItem('correo');
 
-      if (!correo) {
+      if (!correo || !username) {
         alert("Tu sesión ha expirado. Vuelve a iniciar.");
         window.location.href = 'index.html';
         return;
       }
 
-      if (username) {
-        localStorage.setItem('username', username);
-        window.location.href = 'mural.html';
-      }
+      localStorage.setItem('username', username);
+      window.location.href = 'mural.html';
     });
 
     const logoutMsg = localStorage.getItem('logoutMessage');
