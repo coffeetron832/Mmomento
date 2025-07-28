@@ -1,13 +1,5 @@
 lucide.createIcons();
 
-window.cerrarModal = function () {
-  const modal = document.getElementById("modalRespuestas");
-  if (modal) {
-    modal.classList.add("hidden");
-  }
-}
-
-
 
 document.addEventListener("DOMContentLoaded", async () => {
   const API_BASE_URL = 'https://themural-backend-production.up.railway.app';
