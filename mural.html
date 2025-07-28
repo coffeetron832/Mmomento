@@ -145,6 +145,51 @@
       font-weight: bold;
       color: #4B0082;
     }
+
+    #toolbar {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+#toggleFormBtn, #logoutBtn {
+  padding: 8px 14px;
+  background-color: #4B0082;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#toggleFormBtn:hover {
+  background-color: #5e2b91;
+}
+
+#formContainer {
+  position: fixed;
+  top: 60px;
+  left: 10px;
+  z-index: 10;
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  display: none;
+}
+
+#lienzo {
+  width: 100vw;
+  height: 100vh;
+  border: 2px dashed #ccc;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  background-color: #fff;
+}
+
   </style>
 </head>
 <body>
