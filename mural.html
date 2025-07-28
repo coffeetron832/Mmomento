@@ -81,7 +81,10 @@
   position: absolute;
   top: 0;
   left: 0;
+  transform-origin: top left;
+  transition: transform 0.3s ease; /* 👈 suaviza el zoom */
 }
+
 
     #zoomControls {
   position: fixed;
@@ -107,12 +110,6 @@
 #zoomControls button:hover {
   transform: scale(1.1);
 }
-
-#aportesContainer {
-  position: absolute;
-  transform-origin: top left;
-}
-
 
     
 </style>
