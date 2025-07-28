@@ -392,6 +392,7 @@ window.addEventListener('DOMContentLoaded', () => {
 (async () => {
   let token = localStorage.getItem('authToken');
   let username = localStorage.getItem('username');
+  let correo = localStorage.getItem('correo');
 
   if (!username) {
     username = prompt('¿Cómo te llamas?');
@@ -403,19 +404,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (!token) {
     const res = await fetch(`${API_BASE_URL}/api/token/generate-token`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ username }),
-});
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, correo }),
+    });
 
-if (!res.ok) {
-  const errorText = await res.text();
-  console.error('Error al generar token:', errorText);
-  return alert('No se pudo generar el token.');
-}
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('Error al generar token:', errorText);
+      return alert('No se pudo generar el token.');
+    }
 
-const data = await res.json();
-
+    const data = await res.json();
     if (data.token) {
       localStorage.setItem('authToken', data.token);
     } else {
@@ -425,3 +425,4 @@ const data = await res.json();
 
   window.currentUsername = username;
 })();
+
