@@ -20,13 +20,16 @@
   }
 
   .aporte {
-    background: white;
-    margin: 15px 0;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
+  position: absolute;
+  width: 200px;
+  padding: 12px;
+  background: #fefefe;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
 
   .aporte:hover {
     transform: translateY(-4px);
@@ -58,6 +61,28 @@
   #logoutBtn:hover {
     background-color: #360065;
   }
+
+
+    #lienzo {
+  width: 100vw;
+  height: 80vh;
+  border: 2px dashed #ccc;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  background-color: #fff;
+}
+
+#lienzo:active {
+  cursor: grabbing;
+}
+
+#aportesContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 </style>
 </head>
 <body>
@@ -68,7 +93,10 @@
     <button type="submit">Publicar</button>
   </form>
 
+  <div id="lienzo">
   <div id="aportesContainer"></div>
+</div>
+
 
   <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
 
