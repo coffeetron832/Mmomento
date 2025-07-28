@@ -113,10 +113,10 @@ document.addEventListener('mousemove', (e) => {
   startX = e.clientX;
   startY = e.clientY;
 
-  applyTransform(); // Actualiza posición + zoom
+  applyTransform();
 });
 
-// ZOOM suave
+// ZOOM
 let zoomLevel = 1;
 let targetZoomLevel = 1;
 const zoomStep = 0.1;
@@ -144,26 +144,46 @@ function applyZoomSmooth() {
   requestAnimationFrame(animateZoom);
 }
 
-// Rueda del mouse para hacer zoom
+// Calcula y ajusta el zoom centrado en el cursor
+function zoomAtCursor(e, delta) {
+  const rect = lienzo.getBoundingClientRect();
+  const cursorX = e.clientX - rect.left;
+  const cursorY = e.clientY - rect.top;
+
+  const prevZoom = targetZoomLevel;
+  targetZoomLevel = Math.min(Math.max(targetZoomLevel + delta, zoomMin), zoomMax);
+
+  // Calcular factor de cambio
+  const zoomFactor = targetZoomLevel / prevZoom;
+
+  // Ajustar offset para que el punto bajo el cursor se mantenga estable
+  offsetX = cursorX - (cursorX - offsetX) * zoomFactor;
+  offsetY = cursorY - (cursorY - offsetY) * zoomFactor;
+
+  applyZoomSmooth();
+}
+
+// Zoom con la rueda del mouse
 lienzo.addEventListener('wheel', (e) => {
   e.preventDefault();
-
-  if (e.deltaY > 0) {
-    targetZoomLevel = Math.max(targetZoomLevel - zoomStep, zoomMin);
-  } else {
-    targetZoomLevel = Math.min(targetZoomLevel + zoomStep, zoomMax);
-  }
-
-  applyZoomSmooth();
+  const delta = e.deltaY > 0 ? -zoomStep : zoomStep;
+  zoomAtCursor(e, delta);
 }, { passive: false });
 
-// Botones de zoom
+// Botones de zoom (centrado en el centro del lienzo)
 function zoomIn() {
-  targetZoomLevel = Math.min(targetZoomLevel + zoomStep, zoomMax);
-  applyZoomSmooth();
+  const center = {
+    clientX: lienzo.clientWidth / 2,
+    clientY: lienzo.clientHeight / 2
+  };
+  zoomAtCursor(center, zoomStep);
 }
 
 function zoomOut() {
-  targetZoomLevel = Math.max(targetZoomLevel - zoomStep, zoomMin);
-  applyZoomSmooth();
+  const center = {
+    clientX: lienzo.clientWidth / 2,
+    clientY: lienzo.clientHeight / 2
+  };
+  zoomAtCursor(center, -zoomStep);
 }
+
