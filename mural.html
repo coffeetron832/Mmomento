@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mural Anónimo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #username { font-weight: bold; color: #4B0082; }
+    .aporte { margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+    .aporte strong { color: #555; }
+    #logoutBtn { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Bienvenido al Mural, <span id="username"></span> 🎨</h2>
+
+  <form id="aporteForm">
+    <textarea id="textoAporte" rows="3" cols="50" placeholder="Escribe tu aporte..." required></textarea><br>
+    <button type="submit">Publicar</button>
+  </form>
+
+  <div id="aportesContainer"></div>
+
+  <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+
+  <script src="js/mural.js"></script>
+</body>
+</html>
