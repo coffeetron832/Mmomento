@@ -1,13 +1,13 @@
 lucide.createIcons();
 
-let currentSlide = 0;
-const slides = document.querySelectorAll('.modal-slide');
-
-function cambiarSlide(direccion) {
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide + direccion + slides.length) % slides.length;
-  slides[currentSlide].classList.add('active');
+window.cerrarModal = function () {
+  const modal = document.getElementById("modalRespuestas");
+  if (modal) {
+    modal.classList.add("hidden");
+  }
 }
+
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   const API_BASE_URL = 'https://themural-backend-production.up.railway.app';
