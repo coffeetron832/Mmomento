@@ -443,12 +443,13 @@ const data = await response.json();
       }, 4000);
     }
 
-window.cerrarModal = function () {
+function cerrarModal() {
   const modal = document.getElementById("modalRespuestas");
   if (modal) {
     modal.classList.add("hidden");
   }
 }
+
 
     
     const logoutBtn = document.getElementById("logoutBtn");
