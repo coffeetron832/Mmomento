@@ -29,6 +29,9 @@ document.getElementById('aporteForm').addEventListener('submit', async (e) => {
   }
 });
 
+let container;
+
+
 // Cargar aportes
 async function cargarAportes() {
   const res = await fetch('https://themural-backend-production.up.railway.app/api/aportes');
@@ -108,6 +111,21 @@ document.addEventListener('mousemove', (e) => {
 });
 
 let zoomLevel = 1;
+// Detectar scroll con la rueda del mouse (Ctrl + rueda o solo rueda)
+container.addEventListener('wheel', (e) => {
+  // Prevenir el scroll de la página si es Ctrl o está sobre el lienzo
+  e.preventDefault();
+
+  // e.deltaY > 0: scroll hacia abajo => alejar
+  if (e.deltaY > 0) {
+    zoomLevel = Math.max(zoomLevel - zoomStep, 0.3);
+  } else {
+    zoomLevel = Math.min(zoomLevel + zoomStep, 3);
+  }
+
+  applyZoom();
+}, { passive: false }); // importante para que funcione preventDefault()
+
 const zoomStep = 0.1;
 
 function applyZoom() {
