@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido a TheMural</title>
+</head>
+<body>
+  <h2>Ingresa tu correo para acceder al mural</h2>
+  
+  <div id="step1">
+    <input type="email" id="emailInput" placeholder="Correo electrónico" required>
+    <button onclick="sendVerificationCode()">Enviar código</button>
+  </div>
+
+  <div id="step2" style="display:none;">
+    <input type="text" id="codeInput" placeholder="Código recibido" required>
+    <button onclick="verifyCode()">Validar código</button>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
