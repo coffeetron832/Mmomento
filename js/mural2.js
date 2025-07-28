@@ -152,10 +152,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       const div = document.createElement("div");
       div.className = "aporte-item p-2 border-b border-gray-300";
       div.innerHTML = `
-        <p><strong>Tipo:</strong> ${aporte.tipo || 'Texto'}</p>
-        <p><strong>Contenido:</strong> ${aporte.contenido}</p>
-        <p><small>${new Date(aporte.createdAt).toLocaleString()}</small></p>
-      `;
+  <p><strong>Contenido:</strong> ${aporte.contenido}</p>
+  <p><strong>Estado:</strong> ${aporte.estado}</p>
+  <p><small>${new Date(aporte.createdAt).toLocaleString()}</small></p>
+`;
+
       container.appendChild(div);
     });
   } catch (err) {
