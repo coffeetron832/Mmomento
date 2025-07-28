@@ -29,8 +29,6 @@ document.getElementById('aporteForm').addEventListener('submit', async (e) => {
   }
 });
 
-let container;
-
 
 // Cargar aportes
 async function cargarAportes() {
