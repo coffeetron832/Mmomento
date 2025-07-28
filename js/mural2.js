@@ -156,6 +156,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 }
 
+window.cerrarModal = function () {
+  const modal = document.getElementById("modalRespuestas");
+  if (modal) {
+    modal.classList.add("hidden");
+  }
+}
 
   // 🔄 Llamar la función al cargar la página
   cargarMisAportes();
