@@ -148,24 +148,25 @@
   </style>
 </head>
 <body>
+  <div id="toolbar">
+    <button id="toggleFormBtn">✏️ Aportar</button>
+    <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+  </div>
 
-  <div id="formularioFlotante">
-    <div>Bienvenido, <span id="username"></span> 🎨</div>
+  <div id="formContainer">
     <form id="aporteForm">
-      <textarea id="textoAporte" rows="3" placeholder="Escribe tu aporte..." required></textarea><br>
+      <textarea id="textoAporte" rows="3" cols="50" placeholder="Escribe tu aporte..." required></textarea><br>
       <button type="submit">Publicar</button>
     </form>
   </div>
 
-  <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
-
-  <div id="zoomControls">
-    <button onclick="zoomIn()">➕</button>
-    <button onclick="zoomOut()">➖</button>
-  </div>
-
   <div id="lienzo">
     <div id="aportesContainer"></div>
+  </div>
+
+  <div id="zoomControls">
+    <button onclick="zoomIn()">+</button>
+    <button onclick="zoomOut()">-</button>
   </div>
 
   <script src="js/mural.js"></script>
