@@ -110,38 +110,60 @@ document.addEventListener('mousemove', (e) => {
   offsetX += dx;
   offsetY += dy;
 
-  container.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoomLevel})`;
   startX = e.clientX;
   startY = e.clientY;
+
+  applyTransform(); // Actualiza posición + zoom
 });
 
+// ZOOM suave
 let zoomLevel = 1;
+let targetZoomLevel = 1;
 const zoomStep = 0.1;
+const zoomMin = 0.3;
+const zoomMax = 3;
 
-lienzo.addEventListener('wheel', (e) => {
-  e.preventDefault(); // Bloquea el scroll del body
-
-  if (e.deltaY > 0) {
-    zoomLevel = Math.max(zoomLevel - zoomStep, 0.3);
-  } else {
-    zoomLevel = Math.min(zoomLevel + zoomStep, 3);
-  }
-
-  applyZoom();
-}, { passive: false });
-
-function applyZoom() {
+function applyTransform() {
   container.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoomLevel})`;
   container.style.transformOrigin = 'top left';
 }
 
+function animateZoom() {
+  if (Math.abs(zoomLevel - targetZoomLevel) < 0.001) {
+    zoomLevel = targetZoomLevel;
+    applyTransform();
+    return;
+  }
+
+  zoomLevel += (targetZoomLevel - zoomLevel) * 0.1;
+  applyTransform();
+  requestAnimationFrame(animateZoom);
+}
+
+function applyZoomSmooth() {
+  requestAnimationFrame(animateZoom);
+}
+
+// Rueda del mouse para hacer zoom
+lienzo.addEventListener('wheel', (e) => {
+  e.preventDefault();
+
+  if (e.deltaY > 0) {
+    targetZoomLevel = Math.max(targetZoomLevel - zoomStep, zoomMin);
+  } else {
+    targetZoomLevel = Math.min(targetZoomLevel + zoomStep, zoomMax);
+  }
+
+  applyZoomSmooth();
+}, { passive: false });
+
 // Botones de zoom
 function zoomIn() {
-  zoomLevel = Math.min(zoomLevel + zoomStep, 3);
-  applyZoom();
+  targetZoomLevel = Math.min(targetZoomLevel + zoomStep, zoomMax);
+  applyZoomSmooth();
 }
 
 function zoomOut() {
-  zoomLevel = Math.max(zoomLevel - zoomStep, 0.3);
-  applyZoom();
+  targetZoomLevel = Math.max(targetZoomLevel - zoomStep, zoomMin);
+  applyZoomSmooth();
 }
