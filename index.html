@@ -354,7 +354,7 @@ const emailForm = document.getElementById("email-form");
     // Función para enviar el código de verificación al correo
     async function enviarCodigoDeVerificacion(correo) {
       try {
-        const response = await fetch("/api/send-verification-code", {
+        const response = await fetch("https://themural-backend-production.up.railway.app/api/send-verification-code", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
