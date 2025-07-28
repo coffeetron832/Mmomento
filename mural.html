@@ -210,14 +210,35 @@
   margin-right: auto;
 }
 
+    .toolbar-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  #toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .toolbar-buttons {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
       
   </style>
 </head>
 <body>
   <div id="toolbar">
-  <span id="bienvenida"></span>
-  <button id="toggleFormBtn">✏️ Aportar</button>
-  <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+  <span id="bienvenida">👋 Bienvenido</span>
+  <div class="toolbar-buttons">
+    <button id="toggleFormBtn">✏️ Aportar</button>
+    <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+  </div>
 </div>
 
 
