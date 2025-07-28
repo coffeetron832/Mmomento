@@ -35,14 +35,22 @@ async function verifyCode() {
   const data = await res.json();
 
   if (res.ok) {
+    const username = data.username;
     userToken = data.token;
+
     localStorage.setItem('userToken', userToken);
-    localStorage.setItem('username', data.username);
-    window.location.href = 'mural.html';
+    localStorage.setItem('username', username);
+
+    // Mostrar el nombre generado
+    document.getElementById('step2').innerHTML = `
+      <p>¡Bienvenido, <strong>${username}</strong>!</p>
+      <button onclick="goToMural()">Entrar al mural</button>
+    `;
   } else {
     alert(data.message || 'Código incorrecto');
   }
 }
+
 
 async function logout() {
   const token = localStorage.getItem('userToken');
@@ -56,5 +64,9 @@ async function logout() {
 
   localStorage.clear();
   window.location.href = 'index.html';
+}
+
+function goToMural() {
+  window.location.href = 'mural.html';
 }
 
