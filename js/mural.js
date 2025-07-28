@@ -5,7 +5,6 @@ if (!token || !username) {
   window.location.href = 'index.html';
 }
 
-document.getElementById('username').textContent = username;
 
 // Manejar envío del formulario
 document.getElementById('aporteForm').addEventListener('submit', async (e) => {
