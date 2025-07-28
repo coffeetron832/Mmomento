@@ -187,3 +187,12 @@ function zoomOut() {
   zoomAtCursor(center, -zoomStep);
 }
 
+
+// Mostrar/Ocultar formulario de aportes
+const toggleBtn = document.getElementById('toggleFormBtn');
+const formContainer = document.getElementById('formContainer');
+
+toggleBtn.addEventListener('click', () => {
+  formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+});
+
