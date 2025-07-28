@@ -381,23 +381,47 @@
       }
     }
 
-    function verificarCodigoIngresado(codigo) {
-      if (codigo === generatedCode) {
-        localStorage.setItem("correo", correoInput.value.trim());
+    async function verificarCodigoIngresado(codigo) {
+  const correo = correoInput.value.trim();
 
-        codeForm.style.display = 'none';
-        loginForm.style.display = 'flex';
+  try {
+    const response = await fetch("https://themural-backend-production.up.railway.app/api/verify-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ correo, codigoIngresado: codigo }),
+    });
 
-        const display = document.getElementById("usernameDisplay");
-        if (display && generatedUsername) {
-          display.textContent = generatedUsername;
-        }
+    const data = await response.json();
 
-        alert("Código verificado. Tu nombre de usuario ha sido generado.");
-      } else {
-        alert("El código es incorrecto.");
-      }
+    if (!response.ok) {
+      alert(data.error || "Código incorrecto");
+      return;
     }
+
+    // ✅ Guardar token y username del backend
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("correo", correo);
+    localStorage.setItem("username", data.username); // <-- Este se usará en mural.js
+
+    // ✅ Mostrar username en el botón
+    const display = document.getElementById("usernameDisplay");
+    if (display && data.username) {
+      display.textContent = data.username;
+    }
+
+    // ✅ Mostrar el formulario de acceso al mural
+    codeForm.style.display = 'none';
+    loginForm.style.display = 'flex';
+
+    alert("Código verificado. Bienvenido al Mural.");
+  } catch (error) {
+    console.error("Error verificando código:", error);
+    alert("Hubo un problema con la verificación.");
+  }
+}
+
 
     enviarCodigoBtn.addEventListener("click", (e) => {
       e.preventDefault();
