@@ -40,7 +40,18 @@ async function cargarAportes() {
   data.forEach(aporte => {
     const div = document.createElement('div');
     div.className = 'aporte';
-    div.innerHTML = `<strong>${aporte.username}</strong>: ${aporte.texto}`;
+
+const fecha = new Date(aporte.createdAt).toLocaleString('es-CO', {
+  dateStyle: 'medium',
+  timeStyle: 'short'
+});
+
+div.innerHTML = `
+  <div class="autor">${aporte.username}</div>
+  <div class="fecha">${fecha}</div>
+  <div class="contenido">${aporte.texto}</div>
+`;
+
     container.appendChild(div);
   });
 }
