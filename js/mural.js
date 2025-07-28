@@ -184,13 +184,7 @@ async function agregarAlMural() {
   const texto = contenidoElem.value.trim();
 
   if (!texto) {
-    Toastify({
-      text: 'Escribe algo primero.',
-      duration: 3000,
-      gravity: 'top',
-      position: 'center',
-      style: { background: '#f44336' }
-    }).showToast();
+    Toastify({ text: 'Escribe algo primero.', duration: 3000, gravity: 'top', position: 'center', style: { background: '#f44336' } }).showToast();
     return;
   }
 
@@ -217,7 +211,8 @@ async function agregarAlMural() {
     }
 
     contenidoElem.value = '';
-    cargarAportes();
+    cargarAportes();        // ✅ Actualiza el mural principal
+    cargarMisAportes();     // ✅ ACTUALIZA MIS APORTES AQUÍ
     Toastify({
       text: 'Aporte publicado.',
       duration: 3000,
@@ -236,6 +231,7 @@ async function agregarAlMural() {
     }).showToast();
   }
 }
+
 
 window.agregarAlMural = agregarAlMural;
 
