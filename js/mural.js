@@ -193,7 +193,7 @@ cargarAportes();
 
 // Logout
 async function logout() {
-  const token = localStorage.getItem('token'); // ✅ Trae el token desde localStorage
+  const token = localStorage.getItem('userToken'); // ✅ Trae el token desde localStorage
 
   if (!token) {
     console.warn('⚠️ No hay token, ya estás desconectado');
