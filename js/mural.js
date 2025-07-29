@@ -171,7 +171,19 @@ async function cargarAportes() {
       }
     });
 
-    container.appendChild(div);
+    // Asignar posición aleatoria dentro del lienzo
+const muralWidth = lienzo.clientWidth * 2;
+const muralHeight = lienzo.clientHeight * 2;
+
+const randomX = Math.floor(Math.random() * muralWidth) - lienzo.clientWidth / 2;
+const randomY = Math.floor(Math.random() * muralHeight) - lienzo.clientHeight / 2;
+
+div.style.position = 'absolute';
+div.style.left = `${randomX}px`;
+div.style.top = `${randomY}px`;
+
+container.appendChild(div);
+
   });
 }
 
