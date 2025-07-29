@@ -163,45 +163,43 @@ async function cargarMisAportes() {
 
 
         // Botón para mostrar formulario de respuesta
-    const form = div.querySelector('.form-respuesta');
-    const btnResponder = document.createElement('button');
-    btnResponder.textContent = '💬 Responder';
-    btnResponder.className = 'btn-responder';
-    btnResponder.style.marginTop = '6px';
+const form = div.querySelector('.form-respuesta');
+const btnResponder = document.createElement('button');
+btnResponder.textContent = '💬 Responder';
+btnResponder.className = 'btn-responder';
+btnResponder.style.marginTop = '6px';
 
-    btnResponder.addEventListener('click', () => {
-      form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    });
+btnResponder.addEventListener('click', () => {
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+});
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const textarea = form.querySelector('textarea');
-      const texto = textarea.value.trim();
-      if (!texto) return;
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const textarea = form.querySelector('textarea');
+  const texto = textarea.value.trim();
+  if (!texto) return;
 
-      const res = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ texto })
-      });
-
-      if (res.ok) {
-        textarea.value = '';
-        form.style.display = 'none';
-        cargarAportes();
-        cargarMisAportes(); // actualizar también el panel
-      } else {
-        alert('Error enviando respuesta.');
-      }
-    });
-
-    div.appendChild(btnResponder);
-    container.appendChild(div);
+  const res = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ texto })
   });
-}
+
+  if (res.ok) {
+    textarea.value = '';
+    form.style.display = 'none';
+    cargarAportes();
+    cargarMisAportes(); // actualizar también el panel
+  } else {
+    alert('Error enviando respuesta.');
+  }
+});
+
+div.appendChild(btnResponder);
+container.appendChild(div);
 
 
 cargarAportes();
