@@ -2,87 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bienvenido a TheMural</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #061000;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    h1 {
-      color: #4B0082;
-      margin-bottom: 0.5rem;
-    }
-
-    h2 {
-      color: #328200;
-      margin-bottom: 2rem;
-    }
-
-    input {
-      padding: 0.8rem 1rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 8px;
-      width: 250px;
-      font-size: 1rem;
-    }
-
-    button {
-      padding: 0.8rem 1.2rem;
-      background-color: #328200;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #2a6d00;
-    }
-
-    #step2 {
-      margin-top: 1rem;
-    }
-
-    .intro {
-      max-width: 600px;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-  </style>
 </head>
 <body>
-  <h1>✨ Bienvenido a TheMural ✨</h1>
-  <div class="intro">
-    <p><strong>TheMural</strong> es un espacio colaborativo donde personas de todo el mundo pueden dejar pensamientos, ideas y reflexiones. Es simple, anónimo y temporal. No necesitas crear una cuenta ni dar tu nombre real.</p>
-    <p>Ingresa tu correo para recibir un código de acceso temporal. Así podrás dejar tu aporte o leer los de otros.</p>
-  </div>
-
-  <h2>Accede al mural</h2>
+  <h2>Ingresa tu correo para acceder al mural</h2>
   
   <div id="step1">
     <input type="email" id="emailInput" placeholder="Correo electrónico" required>
-    <br>
     <button onclick="sendVerificationCode()">Enviar código</button>
   </div>
 
   <div id="step2" style="display:none;">
     <input type="text" id="codeInput" placeholder="Código recibido" required>
-    <br>
     <button onclick="verifyCode()">Validar código</button>
   </div>
 
