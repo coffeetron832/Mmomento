@@ -1,5 +1,3 @@
-js/mural.js:
-
 import {
   sanitize,
   formatearFecha,
