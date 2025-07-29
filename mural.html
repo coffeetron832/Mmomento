@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Mural Anónimo</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -272,15 +273,28 @@ body, html {
   </style>
 </head>
 <body>
-  <!-- Toolbar -->
+ <!-- Toolbar -->
 <div id="toolbar">
-  <span id="bienvenida">👋 Bienvenido</span>
+  <span id="bienvenida">
+    <i data-lucide="hand" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+    Bienvenido
+  </span>
   <div id="toolbar-buttons">
-    <button id="toggleFormBtn">✏️ Aportar</button>
-    <button id="toggleMisAportesBtn">📋 Mis aportes</button>
-    <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+    <button id="toggleFormBtn">
+      <i data-lucide="pencil" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+      Aportar
+    </button>
+    <button id="toggleMisAportesBtn">
+      <i data-lucide="list" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+      Mis aportes
+    </button>
+    <button id="logoutBtn" onclick="logout()">
+      <i data-lucide="log-out" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+      Cerrar sesión
+    </button>
   </div>
 </div>
+
 
 <!-- Panel de Mis aportes (oculto inicialmente) -->
 <div id="misAportesPanel">
@@ -307,5 +321,8 @@ body, html {
   </div>
 
   <script type="module" src="js/mural.js"></script>
+  <script>
+  lucide.createIcons();
+</script>
 </body>
 </html>
