@@ -75,7 +75,6 @@ async function cargarMisAportes() {
       <div class="respuestasMis" style="margin-top: 10px; padding-left: 10px;"></div>
     `;
 
-    // Borrar aporte
     li.querySelector('button').addEventListener('click', async (e) => {
       const id = e.currentTarget.dataset.id;
       if (!confirm('¿Eliminar este aporte?')) return;
@@ -85,13 +84,12 @@ async function cargarMisAportes() {
       });
       if (delRes.ok) {
         cargarMisAportes();
-        cargarAportes(); // refrescar mural
+        cargarAportes();
       } else {
         alert('No se pudo eliminar.');
       }
     });
 
-    // Mostrar respuestas del usuario (si las hay)
     const respuestasMisDiv = li.querySelector('.respuestasMis');
 
     if (a.respuestas && a.respuestas.length > 0) {
@@ -132,7 +130,7 @@ async function cargarMisAportes() {
             }).then(r => {
               if (r.ok) {
                 cargarMisAportes();
-                cargarAportes(); // actualizar mural también
+                cargarAportes();
               } else {
                 alert('Error editando respuesta.');
               }
@@ -161,6 +159,7 @@ async function cargarMisAportes() {
     misList.appendChild(li);
   });
 }
+
 
 
     // Enviar respuesta
