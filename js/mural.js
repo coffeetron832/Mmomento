@@ -9,7 +9,8 @@ import {
 
 
 const username = localStorage.getItem('username');
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('userToken');
+
 
 if (!token || !username) {
   window.location.href = 'index.html';
