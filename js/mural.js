@@ -345,6 +345,39 @@ function zoomOut() {
 }
 
 
+
+// Soporte táctil para arrastrar el mural con los dedos
+lienzo.addEventListener('touchstart', (e) => {
+  if (e.touches.length !== 1) return; // Ignora pinch/zoom
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+});
+
+lienzo.addEventListener('touchmove', (e) => {
+  if (!isDragging || e.touches.length !== 1) return;
+  const touch = e.touches[0];
+  const dx = touch.clientX - startX;
+  const dy = touch.clientY - startY;
+
+  offsetX += dx;
+  offsetY += dy;
+
+  startX = touch.clientX;
+  startY = touch.clientY;
+
+  applyTransform();
+}, { passive: false });
+
+lienzo.addEventListener('touchend', () => {
+  isDragging = false;
+});
+
+
+
+
+
+
 // Mostrar/Ocultar formulario de aportes
 const toggleBtn = document.getElementById('toggleFormBtn');
 const formContainer = document.getElementById('formContainer');
