@@ -82,16 +82,31 @@ cargarAportes();
 
 // Logout
 async function logout() {
-  await fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
+  const token = localStorage.getItem('token'); // ✅ Trae el token desde localStorage
+
+  if (!token) {
+    console.warn('⚠️ No hay token, ya estás desconectado');
+    localStorage.clear();
+    window.location.href = 'index.html';
+    return;
+  }
+
+  try {
+    await fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+  } catch (err) {
+    console.error('❌ Error al cerrar sesión:', err);
+  }
 
   localStorage.clear();
   window.location.href = 'index.html';
 }
+
+window.logout = logout;
 
 
 const lienzo = document.getElementById('lienzo');
