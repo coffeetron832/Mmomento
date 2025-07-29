@@ -44,123 +44,35 @@ document.getElementById('aporteForm').addEventListener('submit', async (e) => {
 });
 
 
-// Cargar aportes
-async function cargarMisAportes() {
+// Cargar todos los aportes
+async function cargarAportes() {
   const res = await fetch('https://themural-backend-production.up.railway.app/api/aportes');
   const data = await res.json();
 
-  const tuyos = data.filter(a => a.username === username);
-  misList.innerHTML = '';
+  container.innerHTML = '';
 
-  if (tuyos.length === 0) {
-    misList.innerHTML = '<li>No tienes aportes.</li>';
-    return;
-  }
+  data.forEach(aporte => {
+    const div = document.createElement('div');
+    div.className = 'aporte';
+    div.style.border = '1px solid #ccc';
+    div.style.padding = '10px';
+    div.style.marginBottom = '10px';
+    div.style.backgroundColor = '#fefefe';
 
-  tuyos.forEach(a => {
-    const li = document.createElement('li');
-    li.style.marginBottom = '12px';
-    li.style.borderBottom = '1px solid #333';
-    li.style.paddingBottom = '8px';
-
-    const fecha = new Date(a.createdAt).toLocaleString('es-CO', {
+    const fecha = new Date(aporte.createdAt).toLocaleString('es-CO', {
       dateStyle: 'short',
       timeStyle: 'short'
     });
 
-    li.innerHTML = `
-      <div><strong>${a.texto}</strong></div>
-      <div style="font-size: 12px; color: gray;">${fecha}</div>
-      <button data-id="${a._id}" title="Eliminar" style="margin-top:4px;">🗑️ Eliminar</button>
-      <div class="respuestasMis" style="margin-top: 10px; padding-left: 10px;"></div>
+    div.innerHTML = `
+      <p><strong>${sanitize(aporte.texto)}</strong></p>
+      <p style="font-size: 12px; color: gray;">${fecha} – ${aporte.username}</p>
+      <div class="form-respuesta" style="display: none;">
+        <textarea style="width: 100%; margin-top: 6px;"></textarea>
+        <button type="submit">Enviar respuesta</button>
+      </div>
+      <button class="btn-responder" style="margin-top: 4px;">💬 Responder</button>
     `;
-
-    li.querySelector('button').addEventListener('click', async (e) => {
-      const id = e.currentTarget.dataset.id;
-      if (!confirm('¿Eliminar este aporte?')) return;
-      const delRes = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (delRes.ok) {
-        cargarMisAportes();
-        cargarAportes();
-      } else {
-        alert('No se pudo eliminar.');
-      }
-    });
-
-    const respuestasMisDiv = li.querySelector('.respuestasMis');
-
-    if (a.respuestas && a.respuestas.length > 0) {
-      a.respuestas
-        .filter(r => r.username === username)
-        .forEach(respuesta => {
-          const r = document.createElement('div');
-          r.style.marginTop = '6px';
-          r.style.paddingLeft = '8px';
-          r.style.borderLeft = '2px solid #555';
-          r.style.fontSize = '13px';
-
-          const rFecha = new Date(respuesta.createdAt).toLocaleString('es-CO', {
-            dateStyle: 'short',
-            timeStyle: 'short'
-          });
-
-          r.innerHTML = `
-            <div><strong>${respuesta.username}</strong> <span style="color:#aaa;">${rFecha}</span></div>
-            <div class="texto-respuesta">${respuesta.texto}</div>
-            <button class="btnEditarRespuesta">✏️ Editar</button>
-            <button class="btnEliminarRespuesta">🗑️ Eliminar</button>
-          `;
-
-          const btnEditar = r.querySelector('.btnEditarRespuesta');
-          const btnEliminar = r.querySelector('.btnEliminarRespuesta');
-
-          btnEditar.addEventListener('click', () => {
-            const nuevoTexto = prompt('Editar respuesta:', respuesta.texto);
-            if (!nuevoTexto) return;
-            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${a._id}/respuestas/${respuesta._id}`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({ texto: nuevoTexto })
-            }).then(r => {
-              if (r.ok) {
-                cargarMisAportes();
-                cargarAportes();
-              } else {
-                alert('Error editando respuesta.');
-              }
-            });
-          });
-
-          btnEliminar.addEventListener('click', () => {
-            if (!confirm('¿Eliminar esta respuesta?')) return;
-            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${a._id}/respuestas/${respuesta._id}`, {
-              method: 'DELETE',
-              headers: { 'Authorization': `Bearer ${token}` }
-            }).then(r => {
-              if (r.ok) {
-                cargarMisAportes();
-                cargarAportes();
-              } else {
-                alert('Error eliminando respuesta.');
-              }
-            });
-          });
-
-          respuestasMisDiv.appendChild(r);
-        });
-    }
-
-    misList.appendChild(li);
-  });
-}
-
-
 
     // Enviar respuesta
     const form = div.querySelector('.form-respuesta');
@@ -189,6 +101,7 @@ async function cargarMisAportes() {
         textarea.value = '';
         form.style.display = 'none';
         cargarAportes();
+        cargarMisAportes();
       } else {
         alert('Error enviando respuesta.');
       }
@@ -197,6 +110,7 @@ async function cargarMisAportes() {
     container.appendChild(div);
   });
 }
+
 
 
 cargarAportes();
