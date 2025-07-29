@@ -7,14 +7,31 @@ import {
 } from './utils.js';
 
 
+function tokenExpirado(token) {
+  if (!token) return true;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const ahora = Math.floor(Date.now() / 1000);
+    return payload.exp < ahora;
+  } catch (err) {
+    console.warn('Token inválido o corrupto');
+    return true;
+  }
+}
+
+
 
 const username = localStorage.getItem('username');
 const token = localStorage.getItem('userToken');
 
 
-if (!token || !username) {
+if (!token || !username || tokenExpirado(token)) {
+  alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+  localStorage.clear();
   window.location.href = 'index.html';
 }
+
 
 const bienvenidaEl = document.getElementById('bienvenida');
 if (bienvenidaEl && username) {
