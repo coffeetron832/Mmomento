@@ -20,19 +20,33 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #fff;
     }
 
     h2 {
+      font-size: 1.2rem;
+      font-weight: 500;
       margin-bottom: 20px;
-      font-weight: 600;
-      text-align: center;
+      color: #ccc;
     }
 
     input {
       padding: 10px 14px;
       margin: 10px 0;
-      width: 260px;
+      width: 100%;
       border: 1px solid #444;
       border-radius: 6px;
       background-color: #111;
@@ -50,6 +64,7 @@
       font-size: 15px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 100%;
     }
 
     button:hover {
@@ -61,20 +76,35 @@
       flex-direction: column;
       align-items: center;
     }
+
+    .description {
+      margin-top: 40px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
 
-  <h2>Ingresa tu correo para acceder al mural</h2>
+  <div class="container">
+    <h1>TheMural</h1>
+    <h2>Ingresa tu correo para acceder al mural</h2>
 
-  <div id="step1">
-    <input type="email" id="emailInput" placeholder="Correo electrónico" required>
-    <button onclick="sendVerificationCode()">Enviar código</button>
-  </div>
+    <div id="step1">
+      <input type="email" id="emailInput" placeholder="Correo electrónico" required>
+      <button onclick="sendVerificationCode()">Enviar código</button>
+    </div>
 
-  <div id="step2" style="display: none;">
-    <input type="text" id="codeInput" placeholder="Código recibido" required>
-    <button onclick="verifyCode()">Validar código</button>
+    <div id="step2" style="display: none;">
+      <input type="text" id="codeInput" placeholder="Código recibido" required>
+      <button onclick="verifyCode()">Validar código</button>
+    </div>
+
+    <div class="description">
+      <p><strong>TheMural</strong> es un espacio colaborativo para expresar ideas, reflexiones o mensajes de forma anónima o con cuenta. Aquí puedes aportar libremente, construir comunidad y dejar tu huella.</p>
+      <p><strong>No está permitido</strong> publicar contenido ofensivo, violento, discriminatorio o que atente contra otras personas. Este mural es de todos, y se construye con respeto.</p>
+    </div>
   </div>
 
   <script src="js/auth.js"></script>
