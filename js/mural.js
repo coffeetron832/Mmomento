@@ -35,7 +35,7 @@ if (!token || !username || tokenExpirado(token)) {
 
 const bienvenidaEl = document.getElementById('bienvenida');
 if (bienvenidaEl && username) {
-  bienvenidaEl.textContent = `👋 Bienvenido, ${username}`;
+  bienvenidaEl.textContent = ` ¡Hola!, ${username}`;
 }
 
 
