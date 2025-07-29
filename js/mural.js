@@ -53,30 +53,141 @@ async function cargarAportes() {
   container.innerHTML = '';
 
   data.forEach(aporte => {
-  const div = document.createElement('div');
-  div.className = 'aporte';
+    const div = document.createElement('div');
+    div.className = 'aporte';
 
-  const fecha = new Date(aporte.createdAt).toLocaleString('es-CO', {
-    dateStyle: 'medium',
-    timeStyle: 'short'
+    const fecha = new Date(aporte.createdAt).toLocaleString('es-CO', {
+      dateStyle: 'medium',
+      timeStyle: 'short'
+    });
+
+    div.innerHTML = `
+      <div class="autor">${aporte.username}</div>
+      <div class="fecha">${fecha}</div>
+      <div class="contenido">${aporte.texto}</div>
+      <div class="respuestas"></div>
+      <div class="acciones">
+        <button class="btn-responder">💬 Responder</button>
+      </div>
+      <form class="form-respuesta" style="display:none; margin-top:8px;">
+        <textarea rows="2" style="width:100%; background:#111; color:#fff; border:1px solid #555; padding:4px;"></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    `;
+
+    const x = Math.floor(Math.random() * 2000);
+    const y = Math.floor(Math.random() * 2000);
+    div.style.left = `${x}px`;
+    div.style.top = `${y}px`;
+
+    // Respuestas
+    const respuestasDiv = div.querySelector('.respuestas');
+    if (aporte.respuestas && aporte.respuestas.length > 0) {
+      aporte.respuestas.forEach(respuesta => {
+        const rDiv = document.createElement('div');
+        rDiv.className = 'respuesta';
+        rDiv.style.marginTop = '8px';
+        rDiv.style.marginLeft = '12px';
+        rDiv.style.padding = '8px';
+        rDiv.style.borderLeft = '2px solid #555';
+        rDiv.style.fontSize = '14px';
+
+        const rFecha = new Date(respuesta.createdAt).toLocaleString('es-CO', {
+          dateStyle: 'short',
+          timeStyle: 'short'
+        });
+
+        rDiv.innerHTML = `
+          <div><strong>${respuesta.username}</strong> <span style="color:#aaa;">${rFecha}</span></div>
+          <div class="texto-respuesta">${respuesta.texto}</div>
+        `;
+
+        // Editar/eliminar si es del usuario actual
+        if (respuesta.username === username) {
+          const botones = document.createElement('div');
+          botones.style.marginTop = '4px';
+
+          const btnEditar = document.createElement('button');
+          btnEditar.textContent = '✏️ Editar';
+          btnEditar.style.marginRight = '8px';
+
+          const btnEliminar = document.createElement('button');
+          btnEliminar.textContent = '🗑️ Eliminar';
+
+          botones.appendChild(btnEditar);
+          botones.appendChild(btnEliminar);
+          rDiv.appendChild(botones);
+
+          btnEditar.addEventListener('click', () => {
+            const nuevoTexto = prompt('Editar respuesta:', respuesta.texto);
+            if (!nuevoTexto) return;
+            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas/${respuesta._id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ texto: nuevoTexto })
+            }).then(r => {
+              if (r.ok) cargarAportes();
+              else alert('Error editando');
+            });
+          });
+
+          btnEliminar.addEventListener('click', () => {
+            if (!confirm('¿Eliminar esta respuesta?')) return;
+            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas/${respuesta._id}`, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            }).then(r => {
+              if (r.ok) cargarAportes();
+              else alert('Error eliminando');
+            });
+          });
+        }
+
+        respuestasDiv.appendChild(rDiv);
+      });
+    }
+
+    // Enviar respuesta
+    const form = div.querySelector('.form-respuesta');
+    const btnResponder = div.querySelector('.btn-responder');
+
+    btnResponder.addEventListener('click', () => {
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const textarea = form.querySelector('textarea');
+      const texto = textarea.value.trim();
+      if (!texto) return;
+
+      const res = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ texto })
+      });
+
+      if (res.ok) {
+        textarea.value = '';
+        form.style.display = 'none';
+        cargarAportes();
+      } else {
+        alert('Error enviando respuesta.');
+      }
+    });
+
+    container.appendChild(div);
   });
-
-  div.innerHTML = `
-    <div class="autor">${aporte.username}</div>
-    <div class="fecha">${fecha}</div>
-    <div class="contenido">${aporte.texto}</div>
-  `;
-
-  // Posición aleatoria dentro del lienzo
-  const x = Math.floor(Math.random() * 2000);
-  const y = Math.floor(Math.random() * 2000);
-  div.style.left = `${x}px`;
-  div.style.top = `${y}px`;
-
-  container.appendChild(div);
-});
-
 }
+
 
 cargarAportes();
 
