@@ -376,6 +376,22 @@ lienzo.addEventListener('touchend', () => {
 
 
 
+window.zoomIn = function () {
+  const center = {
+    clientX: lienzo.clientWidth / 2,
+    clientY: lienzo.clientHeight / 2
+  };
+  zoomAtCursor(center, zoomStep);
+};
+
+window.zoomOut = function () {
+  const center = {
+    clientX: lienzo.clientWidth / 2,
+    clientY: lienzo.clientHeight / 2
+  };
+  zoomAtCursor(center, -zoomStep);
+};
+
 
 
 // Mostrar/Ocultar formulario de aportes
