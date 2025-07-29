@@ -1,3 +1,13 @@
+import {
+  sanitize,
+  formatearFecha,
+  esTextoValido,
+  mostrarError,
+  mostrarExito
+} from './utils.js';
+
+
+
 const username = localStorage.getItem('username');
 const token = localStorage.getItem('userToken');
 
