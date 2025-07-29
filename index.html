@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bienvenido a TheMural</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Fuentes de Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Long+Cang&display=swap" rel="stylesheet">
+
+  <!-- Íconos Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -29,11 +35,15 @@
       padding: 20px;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 600;
-      margin-bottom: 10px;
+    .title {
+      font-family: 'Long Cang', cursive;
+      font-size: 3rem;
       color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 5px;
     }
 
     h2 {
@@ -77,18 +87,40 @@
       align-items: center;
     }
 
+    .divider {
+      height: 1px;
+      background: #333;
+      margin: 40px 0 20px;
+    }
+
     .description {
-      margin-top: 40px;
       font-size: 14px;
       line-height: 1.6;
       color: #aaa;
+      text-align: left;
+    }
+
+    .description p {
+      display: flex;
+      align-items: start;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .icon {
+      flex-shrink: 0;
+      color: #1e90ff;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>TheMural</h1>
+    <div class="title">
+      <i data-lucide="wall" class="icon" style="width: 28px; height: 28px;"></i>
+      TheMural
+    </div>
+
     <h2>Ingresa tu correo para acceder al mural</h2>
 
     <div id="step1">
@@ -101,12 +133,21 @@
       <button onclick="verifyCode()">Validar código</button>
     </div>
 
+    <div class="divider"></div>
+
     <div class="description">
-      <p><strong>TheMural</strong> es un espacio colaborativo para expresar ideas, reflexiones o mensajes de forma anónima o con cuenta. Aquí puedes aportar libremente, construir comunidad y dejar tu huella.</p>
-      <p><strong>No está permitido</strong> publicar contenido ofensivo, violento, discriminatorio o que atente contra otras personas. Este mural es de todos, y se construye con respeto.</p>
+      <p><i data-lucide="message-square" class="icon" style="width: 20px; height: 20px;"></i>
+        <span><strong>TheMural</strong> es un espacio colaborativo para compartir ideas, reflexiones y mensajes. Puedes aportar de forma anónima o usando tu cuenta.</span>
+      </p>
+      <p><i data-lucide="ban" class="icon" style="width: 20px; height: 20px;"></i>
+        <span><strong>No se permite</strong> contenido ofensivo, violento o que atente contra otros. Este mural se construye con respeto y responsabilidad.</span>
+      </p>
     </div>
   </div>
 
   <script src="js/auth.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>
