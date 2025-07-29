@@ -218,13 +218,22 @@ body, html {
   </style>
 </head>
 <body>
-  <div id="toolbar">
+  <!-- Toolbar -->
+<div id="toolbar">
   <span id="bienvenida">👋 Bienvenido</span>
-  <div class="toolbar-buttons">
+  <div id="toolbar-buttons">
     <button id="toggleFormBtn">✏️ Aportar</button>
+    <button id="toggleMisAportesBtn">📋 Mis aportes</button>
     <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
   </div>
 </div>
+
+<!-- Panel de Mis aportes (oculto inicialmente) -->
+<div id="misAportesPanel">
+  <h3>Tus aportes</h3>
+  <ul id="misAportesList"></ul>
+</div>
+
 
 
   <div id="formContainer">
