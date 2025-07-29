@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Mural Anónimo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -270,6 +271,42 @@ body, html {
   text-decoration: underline;
 }
 
+@media (max-width: 480px) {
+  #formularioFlotante,
+  #formContainer {
+    top: 100px;
+    left: 10px;
+    width: 90vw;
+    padding: 10px;
+    z-index: 9999;
+  }
+
+  #formularioFlotante textarea,
+  #formContainer textarea {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  #toolbar-buttons button,
+  #logoutBtn,
+  #toggleFormBtn {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  #misAportesPanel {
+    width: 90vw;
+    right: 5vw;
+  }
+
+  .aporte {
+    width: 80vw;
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+    
   </style>
 </head>
 <body>
