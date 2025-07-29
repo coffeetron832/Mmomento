@@ -373,25 +373,21 @@ async function cargarMisAportes() {
   tuyos.forEach(a => {
     const li = document.createElement('li');
     const fecha = new Date(a.createdAt).toLocaleString('es-CO', {
-      dateStyle: 'short',
-      timeStyle: 'short'
-    });
-
+  dateStyle: 'short',
+  timeStyle: 'short'
+});
     li.innerHTML = `
       <span>${fecha}</span>
       <button data-id="${a._id}" title="Eliminar">&#x1F5D1;</button>
     `;
-
     // Borrar al hacer click
     li.querySelector('button').addEventListener('click', async (e) => {
       const id = e.currentTarget.dataset.id;
       if (!confirm('¿Eliminar este aporte?')) return;
-
       const delRes = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
-
       if (delRes.ok) {
         cargarMisAportes();
         cargarAportes(); // refrescar el lienzo
@@ -399,7 +395,6 @@ async function cargarMisAportes() {
         alert('No se pudo eliminar.');
       }
     });
-
     misList.appendChild(li);
   });
 
@@ -407,5 +402,4 @@ async function cargarMisAportes() {
     misList.innerHTML = '<li>No tienes aportes.</li>';
   }
 }
-
 
