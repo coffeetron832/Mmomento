@@ -162,9 +162,12 @@ async function cargarMisAportes() {
 
 
 
-    // Enviar respuesta
+        // Botón para mostrar formulario de respuesta
     const form = div.querySelector('.form-respuesta');
-    const btnResponder = div.querySelector('.btn-responder');
+    const btnResponder = document.createElement('button');
+    btnResponder.textContent = '💬 Responder';
+    btnResponder.className = 'btn-responder';
+    btnResponder.style.marginTop = '6px';
 
     btnResponder.addEventListener('click', () => {
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
@@ -189,11 +192,13 @@ async function cargarMisAportes() {
         textarea.value = '';
         form.style.display = 'none';
         cargarAportes();
+        cargarMisAportes(); // actualizar también el panel
       } else {
         alert('Error enviando respuesta.');
       }
     });
 
+    div.appendChild(btnResponder);
     container.appendChild(div);
   });
 }
