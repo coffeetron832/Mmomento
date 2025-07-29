@@ -226,9 +226,10 @@ async function cargarMisAportes() {
 
   tuyos.forEach(a => {
     const li = document.createElement('li');
-    const fecha = new Date(a.createdAt).toLocaleDateString('es-CO', {
-      dateStyle: 'short', timeStyle: 'short'
-    });
+    const fecha = new Date(a.createdAt).toLocaleString('es-CO', {
+  dateStyle: 'short',
+  timeStyle: 'short'
+});
     li.innerHTML = `
       <span>${fecha}</span>
       <button data-id="${a._id}" title="Eliminar">&#x1F5D1;</button>
