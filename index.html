@@ -146,6 +146,43 @@
 
   <script src="js/auth.js"></script>
   <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const trailContainer = document.createElement("div")
+    trailContainer.style.position = "fixed"
+    trailContainer.style.top = "0"
+    trailContainer.style.left = "0"
+    trailContainer.style.width = "100%"
+    trailContainer.style.height = "100%"
+    trailContainer.style.pointerEvents = "none"
+    document.body.appendChild(trailContainer)
+
+    document.addEventListener("mousemove", (e) => {
+      const pixel = document.createElement("div")
+      pixel.style.position = "absolute"
+      pixel.style.width = "10px"
+      pixel.style.height = "10px"
+      pixel.style.backgroundColor = "white"
+      pixel.style.borderRadius = "2px"
+      pixel.style.left = `${e.clientX}px`
+      pixel.style.top = `${e.clientY}px`
+      pixel.style.opacity = "1"
+      pixel.style.transition = "opacity 0.4s ease-out, transform 0.4s ease-out"
+      pixel.style.transform = "translate(-50%, -50%)"
+      pixel.style.zIndex = "9999"
+      trailContainer.appendChild(pixel)
+
+      // Fade out and remove
+      requestAnimationFrame(() => {
+        pixel.style.opacity = "0"
+        pixel.style.transform = "translate(-50%, -50%) scale(0.6)"
+      })
+
+      setTimeout(() => {
+        pixel.remove()
+      }, 500)
+    })
+  })
+    
     lucide.createIcons();
   </script>
 </body>
