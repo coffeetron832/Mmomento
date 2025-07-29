@@ -45,82 +45,62 @@ document.getElementById('aporteForm').addEventListener('submit', async (e) => {
 
 
 // Cargar aportes
-async function cargarMisAportes() {
+// Mostrar aportes en el mural
+async function cargarAportes() {
   const res = await fetch('https://themural-backend-production.up.railway.app/api/aportes');
   const data = await res.json();
 
-  const tuyos = data.filter(a => a.username === username);
-  misList.innerHTML = '';
+  container.innerHTML = '';
 
-  if (tuyos.length === 0) {
-    misList.innerHTML = '<li>No tienes aportes.</li>';
-    return;
-  }
-
-  tuyos.forEach(a => {
-    const li = document.createElement('li');
-    li.style.marginBottom = '12px';
-    li.style.borderBottom = '1px solid #333';
-    li.style.paddingBottom = '8px';
-
-    const fecha = new Date(a.createdAt).toLocaleString('es-CO', {
-      dateStyle: 'short',
-      timeStyle: 'short'
-    });
-
-    li.innerHTML = `
-      <div><strong>${a.texto}</strong></div>
-      <div style="font-size: 12px; color: gray;">${fecha}</div>
-      <button data-id="${a._id}" title="Eliminar" style="margin-top:4px;">🗑️ Eliminar</button>
-      <div class="respuestasMis" style="margin-top: 10px; padding-left: 10px;"></div>
+  data.forEach(aporte => {
+    const div = document.createElement('div');
+    div.classList.add('aporte');
+    div.innerHTML = `
+      <div class="cabecera">
+        <span class="usuario">@${aporte.username}</span>
+        <span class="fecha">${formatearFecha(aporte.createdAt)}</span>
+      </div>
+      <div class="contenido">${sanitize(aporte.texto)}</div>
+      <button class="btn-responder">💬 Responder</button>
+      <form class="form-respuesta" style="display:none; margin-top:5px;">
+        <textarea placeholder="Escribe tu respuesta..." required style="width:100%; height:40px;"></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+      <div class="respuestas" style="margin-top:8px; padding-left:10px;"></div>
     `;
 
-    li.querySelector('button').addEventListener('click', async (e) => {
-      const id = e.currentTarget.dataset.id;
-      if (!confirm('¿Eliminar este aporte?')) return;
-      const delRes = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (delRes.ok) {
-        cargarMisAportes();
-        cargarAportes();
-      } else {
-        alert('No se pudo eliminar.');
-      }
-    });
+    const respuestasDiv = div.querySelector('.respuestas');
 
-    const respuestasMisDiv = li.querySelector('.respuestasMis');
+    if (aporte.respuestas && aporte.respuestas.length > 0) {
+      aporte.respuestas.forEach(respuesta => {
+        const r = document.createElement('div');
+        r.style.marginTop = '6px';
+        r.style.paddingLeft = '8px';
+        r.style.borderLeft = '2px solid #555';
+        r.style.fontSize = '13px';
 
-    if (a.respuestas && a.respuestas.length > 0) {
-      a.respuestas
-        .filter(r => r.username === username)
-        .forEach(respuesta => {
-          const r = document.createElement('div');
-          r.style.marginTop = '6px';
-          r.style.paddingLeft = '8px';
-          r.style.borderLeft = '2px solid #555';
-          r.style.fontSize = '13px';
+        const rFecha = new Date(respuesta.createdAt).toLocaleString('es-CO', {
+          dateStyle: 'short',
+          timeStyle: 'short'
+        });
 
-          const rFecha = new Date(respuesta.createdAt).toLocaleString('es-CO', {
-            dateStyle: 'short',
-            timeStyle: 'short'
-          });
-
-          r.innerHTML = `
-            <div><strong>${respuesta.username}</strong> <span style="color:#aaa;">${rFecha}</span></div>
-            <div class="texto-respuesta">${respuesta.texto}</div>
+        r.innerHTML = `
+          <div><strong>${respuesta.username}</strong> <span style="color:#aaa;">${rFecha}</span></div>
+          <div class="texto-respuesta">${sanitize(respuesta.texto)}</div>
+          ${respuesta.username === username ? `
             <button class="btnEditarRespuesta">✏️ Editar</button>
             <button class="btnEliminarRespuesta">🗑️ Eliminar</button>
-          `;
+          ` : ''}
+        `;
 
+        if (respuesta.username === username) {
           const btnEditar = r.querySelector('.btnEditarRespuesta');
           const btnEliminar = r.querySelector('.btnEliminarRespuesta');
 
           btnEditar.addEventListener('click', () => {
             const nuevoTexto = prompt('Editar respuesta:', respuesta.texto);
             if (!nuevoTexto) return;
-            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${a._id}/respuestas/${respuesta._id}`, {
+            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas/${respuesta._id}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -129,8 +109,8 @@ async function cargarMisAportes() {
               body: JSON.stringify({ texto: nuevoTexto })
             }).then(r => {
               if (r.ok) {
-                cargarMisAportes();
                 cargarAportes();
+                cargarMisAportes();
               } else {
                 alert('Error editando respuesta.');
               }
@@ -139,28 +119,23 @@ async function cargarMisAportes() {
 
           btnEliminar.addEventListener('click', () => {
             if (!confirm('¿Eliminar esta respuesta?')) return;
-            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${a._id}/respuestas/${respuesta._id}`, {
+            fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas/${respuesta._id}`, {
               method: 'DELETE',
               headers: { 'Authorization': `Bearer ${token}` }
             }).then(r => {
               if (r.ok) {
-                cargarMisAportes();
                 cargarAportes();
+                cargarMisAportes();
               } else {
                 alert('Error eliminando respuesta.');
               }
             });
           });
+        }
 
-          respuestasMisDiv.appendChild(r);
-        });
+        respuestasDiv.appendChild(r);
+      });
     }
-
-    misList.appendChild(li);
-  });
-}
-
-
 
     // Enviar respuesta
     const form = div.querySelector('.form-respuesta');
@@ -189,6 +164,7 @@ async function cargarMisAportes() {
         textarea.value = '';
         form.style.display = 'none';
         cargarAportes();
+        cargarMisAportes();
       } else {
         alert('Error enviando respuesta.');
       }
@@ -197,6 +173,7 @@ async function cargarMisAportes() {
     container.appendChild(div);
   });
 }
+
 
 
 cargarAportes();
