@@ -20,6 +20,31 @@ function tokenExpirado(token) {
   }
 }
 
+if (!token || !username || tokenExpirado(token)) {
+  alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+
+  // Intentar limpieza del backend si es un usuario temporal
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiraEn = payload.exp - payload.iat; // duración del token en segundos
+
+    // Si dura 3 horas (10800s), es temporal
+    if (expiraEn <= 10800) {
+      await fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('⚠️ No se pudo verificar si era temporal:', err);
+  }
+
+  localStorage.clear();
+  window.location.href = 'index.html';
+}
+
 
 
 const username = localStorage.getItem('username');
@@ -31,6 +56,8 @@ if (!token || !username || tokenExpirado(token)) {
   localStorage.clear();
   window.location.href = 'index.html';
 }
+
+iniciarTemporizadorDeSesion(token);
 
 
 const bienvenidaEl = document.getElementById('bienvenida');
@@ -235,6 +262,61 @@ async function logout() {
 }
 
 window.logout = logout;
+
+
+function iniciarTemporizadorDeSesion(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const tiempoExpiracion = payload.exp * 1000; // En ms
+    const ahora = Date.now();
+    const tiempoRestante = tiempoExpiracion - ahora;
+
+    if (tiempoRestante <= 0) {
+      cerrarSesionAutomatica();
+      return;
+    }
+
+    // Aviso 1 minuto antes
+    setTimeout(() => {
+      alert('⚠️ Tu sesión expira en 1 minuto.');
+    }, tiempoRestante - 60000); // 60,000 ms = 1 min
+
+    // Cierre automático
+    setTimeout(() => {
+      cerrarSesionAutomatica();
+    }, tiempoRestante);
+
+  } catch (err) {
+    console.warn('⚠️ Error al iniciar temporizador:', err);
+  }
+}
+
+function cerrarSesionAutomatica() {
+  const token = localStorage.getItem('userToken');
+  const username = localStorage.getItem('username');
+
+  if (!token || !username) return;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiraEn = payload.exp - payload.iat;
+
+    if (expiraEn <= 10800) {
+      fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+    }
+  } catch (err) {
+    console.warn('❌ Error al detectar expiración de sesión:', err);
+  }
+
+  localStorage.clear();
+  alert('Tu sesión ha expirado. Si eras un usuario temporal, tus aportes fueron eliminados.');
+  window.location.href = 'index.html';
+}
+
+
 
 
 const lienzo = document.getElementById('lienzo');
@@ -458,3 +540,5 @@ async function cargarMisAportes() {
     misList.innerHTML = '<li>No tienes aportes.</li>';
   }
 }
+
+
