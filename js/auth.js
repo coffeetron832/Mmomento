@@ -120,7 +120,7 @@ function iniciarSesion() {
     return;
   }
 
-  fetch("https://themural-backend-production.up.railway.app/api/auth/login", {
+  await fetch('https://themural-backend-production.up.railway.app/api/auth/login', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
