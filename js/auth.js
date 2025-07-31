@@ -10,7 +10,7 @@ async function sendVerificationCode() {
 
   userEmail = email;
 
-  const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/send-code', {
+  const res = await fetch(`${API_BASE}/send-code`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email })
@@ -29,7 +29,7 @@ async function sendVerificationCode() {
 async function verifyCode() {
   const code = document.getElementById('codeInput').value;
 
-  const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/verify-code', {
+  const res = await fetch(`${API_BASE}/verify-code`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: userEmail, code })
@@ -44,7 +44,6 @@ async function verifyCode() {
     localStorage.setItem('userToken', userToken);
     localStorage.setItem('username', username);
 
-    // Mostrar el nombre generado
     document.getElementById('step2').innerHTML = `
       <p>¡Bienvenido, <strong>${username}</strong>!</p>
       <button onclick="goToMural()">Entrar al mural</button>
@@ -54,11 +53,10 @@ async function verifyCode() {
   }
 }
 
-
 async function logout() {
   const token = localStorage.getItem('userToken');
 
-  await fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
+  await fetch(`${API_BASE}/logout`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -73,7 +71,6 @@ function goToMural() {
   window.location.href = 'mural.html';
 }
 
-
 async function registrarse() {
   const username = document.getElementById('usernameInput').value.trim();
   const email = document.getElementById('registroEmail').value.trim();
@@ -85,7 +82,7 @@ async function registrarse() {
   }
 
   try {
-    const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/register', {
+    const res = await fetch(`${API_BASE}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })
@@ -106,7 +103,9 @@ async function registrarse() {
   }
 }
 
-async function iniciarSesion() {
+async function iniciarSesion(event) {
+  event.preventDefault?.(); // ✅ Evita el GET automático del navegador
+
   const usernameInput = document.getElementById('loginUsername');
   const passwordInput = document.getElementById('loginPassword');
 
@@ -124,30 +123,27 @@ async function iniciarSesion() {
   }
 
   try {
-    const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/login', {
+    const res = await fetch(`${API_BASE}/login`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password })
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-  const mensaje = data.message || `Error (${res.status}) al iniciar sesión`;
-  if (res.status === 403) {
-    alert("Este usuario fue creado por código. Debes iniciar sesión usando tu correo y código.");
-  } else if (res.status === 404) {
-    alert("Usuario no encontrado");
-  } else if (res.status === 401) {
-    alert("Contraseña incorrecta");
-  } else {
-    alert(mensaje);
-  }
-  return;
-}
-
+      const mensaje = data.message || `Error (${res.status}) al iniciar sesión`;
+      if (res.status === 403) {
+        alert("Este usuario fue creado por código. Debes iniciar sesión usando tu correo y código.");
+      } else if (res.status === 404) {
+        alert("Usuario no encontrado");
+      } else if (res.status === 401) {
+        alert("Contraseña incorrecta");
+      } else {
+        alert(mensaje);
+      }
+      return;
+    }
 
     localStorage.setItem("userToken", data.token);
     localStorage.setItem("userType", data.userType);
@@ -159,7 +155,6 @@ async function iniciarSesion() {
   }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
   const btnEnviarCodigo = document.querySelector('#step1 button');
   const btnVerificarCodigo = document.querySelector('#step2 button');
@@ -169,7 +164,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnEnviarCodigo) btnEnviarCodigo.addEventListener('click', sendVerificationCode);
   if (btnVerificarCodigo) btnVerificarCodigo.addEventListener('click', verifyCode);
   if (btnRegistro) btnRegistro.addEventListener('click', registrarse);
-  if (btnLogin) btnLogin.addEventListener('click', iniciarSesion);
+  if (btnLogin) btnLogin.addEventListener('click', (e) => iniciarSesion(e)); // ✅ Pasar el evento correctamente
 });
-
-
