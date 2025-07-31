@@ -129,7 +129,7 @@ function iniciarSesion() {
     }
 
     // ✅ Guardamos el token y tipo
-    localStorage.setItem("token", data.token);
+    localStorage.setItem("userToken", data.token);
     localStorage.setItem("userType", data.userType); // temporal o permanente
 
     // ✅ Redirigimos
