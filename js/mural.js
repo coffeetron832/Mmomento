@@ -26,7 +26,6 @@ import {
 } from './utils.js';
 
 import {
-  iniciarTemporizadorDeSesion,
   logout
 } from './session.js'; // Aquí estás manejando la sesión, por eso no usamos auth.js directamente
 
