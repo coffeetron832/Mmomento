@@ -135,10 +135,19 @@ async function iniciarSesion() {
     const data = await res.json();
 
     if (!res.ok) {
-      console.error("❌ Error al iniciar sesión:", data);
-      alert(data.message || "Error al iniciar sesión");
-      return;
-    }
+  const mensaje = data.message || `Error (${res.status}) al iniciar sesión`;
+  if (res.status === 403) {
+    alert("Este usuario fue creado por código. Debes iniciar sesión usando tu correo y código.");
+  } else if (res.status === 404) {
+    alert("Usuario no encontrado");
+  } else if (res.status === 401) {
+    alert("Contraseña incorrecta");
+  } else {
+    alert(mensaje);
+  }
+  return;
+}
+
 
     localStorage.setItem("userToken", data.token);
     localStorage.setItem("userType", data.userType);
