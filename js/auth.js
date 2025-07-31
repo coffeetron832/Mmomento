@@ -104,35 +104,30 @@ async function registrarse() {
 }
 
 async function iniciarSesion() {
-  const username = document.getElementById('loginUsername').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
-
-  console.log('Intentando iniciar sesión con:', username, password);
-
-  if (!username || !password) {
-    alert('Por favor completa todos los campos.');
-    return;
-  }
+  const username = document.getElementById('loginUsername').value;
+  const password = document.getElementById('loginPassword').value;
 
   try {
-    const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/login', {
+    const response = await fetch('https://themural-backend-production.up.railway.app/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
 
-    const data = await res.json();
+    if (!response.ok) throw new Error('Falló el inicio de sesión');
 
-    if (res.ok) {
-      localStorage.setItem('userToken', data.token);
-      localStorage.setItem('username', data.username);
-      window.location.href = 'mural.html'; // ✅ Redirige al mural
-    } else {
-      alert(data.message || 'Error al iniciar sesión.');
-    }
-  } catch (err) {
-    console.error('❌ Error al iniciar sesión:', err);
-    alert('Ocurrió un error al intentar iniciar sesión.');
+    const data = await response.json();
+
+    // Guarda el token y tipo de usuario
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('isRegisteredUser', 'true');
+
+    // Redirige al mural
+    window.location.href = 'mural.html';
+  } catch (error) {
+    console.error('❌ Error al iniciar sesión:', error);
+    alert('Error al iniciar sesión. Revisa tus datos.');
   }
 }
+
 
