@@ -35,7 +35,7 @@
     }
 
     form {
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
 
     h2 {
@@ -74,6 +74,23 @@
     button:hover {
       background: #00cbb1;
     }
+
+    .switch {
+      text-align: center;
+      color: #aaa;
+      margin-top: 1rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .switch:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    #registerForm {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -81,6 +98,7 @@
     <h1>KabeFeel</h1>
 
     <section id="auth">
+      <!-- Login -->
       <form id="loginForm">
         <h2>Iniciar Sesión</h2>
         <input type="email" id="loginEmail" placeholder="Correo" required />
@@ -88,6 +106,7 @@
         <button type="submit">Entrar</button>
       </form>
 
+      <!-- Registro -->
       <form id="registerForm">
         <h2>Registrarse</h2>
         <input type="text" id="registerName" placeholder="Nombre" required />
@@ -95,9 +114,33 @@
         <input type="password" id="registerPassword" placeholder="Contraseña" required />
         <button type="submit">Crear cuenta</button>
       </form>
+
+      <!-- Toggle -->
+      <div id="toggleToRegister" class="switch">¿No tienes cuenta? Regístrate aquí</div>
+      <div id="toggleToLogin" class="switch" style="display:none;">¿Ya tienes cuenta? Inicia sesión aquí</div>
     </section>
   </main>
 
   <script src="js/auth.js"></script>
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const toggleToRegister = document.getElementById("toggleToRegister");
+    const toggleToLogin = document.getElementById("toggleToLogin");
+
+    toggleToRegister.addEventListener("click", () => {
+      loginForm.style.display = "none";
+      registerForm.style.display = "block";
+      toggleToRegister.style.display = "none";
+      toggleToLogin.style.display = "block";
+    });
+
+    toggleToLogin.addEventListener("click", () => {
+      loginForm.style.display = "block";
+      registerForm.style.display = "none";
+      toggleToRegister.style.display = "block";
+      toggleToLogin.style.display = "none";
+    });
+  </script>
 </body>
 </html>
