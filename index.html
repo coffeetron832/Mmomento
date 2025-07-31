@@ -148,99 +148,102 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="title">KabeFeel</div>
 
-    <div id="registroForm" style="margin-top: 30px;">
-      <h2>Regístrate</h2>
-      <input type="text" id="usernameInput" placeholder="Nombre de usuario" required>
-      <input type="email" id="registroEmail" placeholder="Correo electrónico" required>
-      <input type="password" id="passwordInput" placeholder="Contraseña" required>
-      <button id="registroBtn">Registrarse</button>
-    </div>
+<div class="container">
+  <div class="title">KabeFeel</div>
 
-    <div id="loginForm" style="display: none; margin-top: 30px;">
-      <h2>Iniciar sesión</h2>
-      <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
-      <input type="password" id="loginPassword" placeholder="Contraseña" required>
-      <button id="loginBtn">Iniciar sesión</button>
-    </div>
-
-    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 10px;">
-      <button onclick="mostrarLogin()">¿Ya tienes cuenta? Inicia sesión</button>
-      <button onclick="mostrarRegistro()">¿No tienes cuenta? Regístrate aquí</button>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="description">
-      <p><i data-lucide="message-square" class="icon" style="width: 20px; height: 20px;"></i>
-        <span>En <strong>KabeFeel</strong> vienes a desahogarte y a encontrar personas que te escuchan sin juzgar. Está hecho para compartir experiencias reales, recibir apoyo y sentir que no estás solo.</span>
-      </p>
-      <p><i data-lucide="ban" class="icon" style="width: 20px; height: 20px;"></i>
-        <span><strong>No se permite</strong> contenido ofensivo, violento o que atente contra otros. Este mural se construye con respeto y responsabilidad.</span>
-      </p>
-    </div>
+  <div id="loginForm">
+    <h2>Iniciar sesión</h2>
+    <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
+    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+    <button id="loginBtn">Iniciar sesión</button>
   </div>
 
-  <script type="module" src="js/mural.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Efecto de mouse
-      const trailContainer = document.createElement("div");
-      trailContainer.style.position = "fixed";
-      trailContainer.style.top = "0";
-      trailContainer.style.left = "0";
-      trailContainer.style.width = "100%";
-      trailContainer.style.height = "100%";
-      trailContainer.style.pointerEvents = "none";
-      document.body.appendChild(trailContainer);
+  <div id="registroForm" style="display: none; margin-top: 30px;">
+    <h2>Regístrate</h2>
+    <input type="text" id="usernameInput" placeholder="Nombre de usuario" required>
+    <input type="email" id="registroEmail" placeholder="Correo electrónico" required>
+    <input type="password" id="passwordInput" placeholder="Contraseña" required>
+    <button id="registroBtn">Registrarse</button>
+  </div>
 
-      document.addEventListener("mousemove", (e) => {
-        const pixel = document.createElement("div");
-        pixel.style.position = "absolute";
-        pixel.style.width = "10px";
-        pixel.style.height = "10px";
-        pixel.style.backgroundColor = "white";
-        pixel.style.borderRadius = "2px";
-        pixel.style.left = `${e.clientX}px`;
-        pixel.style.top = `${e.clientY}px`;
-        pixel.style.opacity = "1";
-        pixel.style.transition = "opacity 0.4s ease-out, transform 0.4s ease-out";
-        pixel.style.transform = "translate(-50%, -50%)";
-        pixel.style.zIndex = "9999";
-        trailContainer.appendChild(pixel);
+  <!-- Botones para alternar -->
+  <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 10px;">
+    <button onclick="mostrarRegistro()">¿No tienes cuenta? Regístrate aquí</button>
+    <button onclick="mostrarLogin()">¿Ya tienes cuenta? Inicia sesión</button>
+  </div>
 
-        requestAnimationFrame(() => {
-          pixel.style.opacity = "0";
-          pixel.style.transform = "translate(-50%, -50%) scale(0.6)";
-        });
+  <div class="divider"></div>
 
-        setTimeout(() => {
-          pixel.remove();
-        }, 500);
-      });
+  <div class="description">
+    <p><i data-lucide="message-square" class="icon" style="width: 20px; height: 20px;"></i>
+      <span>En <strong>KabeFeel</strong> vienes a desahogarte y a encontrar personas que te escuchan sin juzgar. Está hecho para compartir experiencias reales, recibir apoyo y sentir que no estás solo.</span>
+    </p>
+    <p><i data-lucide="ban" class="icon" style="width: 20px; height: 20px;"></i>
+      <span><strong>No se permite</strong> contenido ofensivo, violento o que atente contra otros. Este mural se construye con respeto y responsabilidad.</span>
+    </p>
+  </div>
+</div>
+
+<script type="module" src="js/auth.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const trailContainer = document.createElement("div")
+    trailContainer.style.position = "fixed"
+    trailContainer.style.top = "0"
+    trailContainer.style.left = "0"
+    trailContainer.style.width = "100%"
+    trailContainer.style.height = "100%"
+    trailContainer.style.pointerEvents = "none"
+    document.body.appendChild(trailContainer)
+
+    document.addEventListener("mousemove", (e) => {
+      const pixel = document.createElement("div")
+      pixel.style.position = "absolute"
+      pixel.style.width = "10px"
+      pixel.style.height = "10px"
+      pixel.style.backgroundColor = "white"
+      pixel.style.borderRadius = "2px"
+      pixel.style.left = `${e.clientX}px`
+      pixel.style.top = `${e.clientY}px`
+      pixel.style.opacity = "1"
+      pixel.style.transition = "opacity 0.4s ease-out, transform 0.4s ease-out"
+      pixel.style.transform = "translate(-50%, -50%)"
+      pixel.style.zIndex = "9999"
+      trailContainer.appendChild(pixel)
+
+      requestAnimationFrame(() => {
+        pixel.style.opacity = "0"
+        pixel.style.transform = "translate(-50%, -50%) scale(0.6)"
+      })
+
+      setTimeout(() => {
+        pixel.remove()
+      }, 500)
     });
+  });
 
-    function switchForm(hideId, showId) {
-      const hideEl = document.getElementById(hideId);
-      const showEl = document.getElementById(showId);
+  function switchForm(hideId, showId) {
+    const hideEl = document.getElementById(hideId);
+    const showEl = document.getElementById(showId);
 
-      if (hideEl && showEl) {
-        hideEl.style.display = 'none';
-        showEl.style.display = 'flex';
-      }
+    if (hideEl && showEl) {
+      hideEl.style.display = 'none';
+      showEl.style.display = 'block';
     }
+  }
 
-    function mostrarLogin() {
-      switchForm('registroForm', 'loginForm');
-    }
+  function mostrarLogin() {
+    switchForm('registroForm', 'loginForm');
+  }
 
-    function mostrarRegistro() {
-      switchForm('loginForm', 'registroForm');
-    }
+  function mostrarRegistro() {
+    switchForm('loginForm', 'registroForm');
+  }
 
-    lucide.createIcons();
-  </script>
+  lucide.createIcons();
+</script>
+
 </body>
 </html>
+
