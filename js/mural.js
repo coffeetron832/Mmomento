@@ -6,50 +6,35 @@ import {
   mostrarExito
 } from './utils.js';
 
+(async () => {
+  const token = localStorage.getItem('token'); // usa misma clave que auth.js
+  const username = localStorage.getItem('username');
 
+  if (!token || !username || tokenExpirado(token)) {
+    alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+    localStorage.clear();
+    return window.location.href = 'index.html';
+  }
 
-
-
-const username = localStorage.getItem('username');
-const token = localStorage.getItem('userToken');
-
-
-
-
-
-if (!token || tokenExpirado(token)) {
-  alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-  localStorage.clear();
-  window.location.href = 'index.html';
-} else {
-  // Verificamos en el backend si el token es válido
-  fetch('https://themural-backend-production.up.railway.app/api/auth/verificar', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (!data.valido) {
-        alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-        localStorage.clear();
-        window.location.href = 'index.html';
-      } else {
-        localStorage.setItem('username', data.usuario.username);
-        iniciarTemporizadorDeSesion(token);
-        const bienvenidaEl = document.getElementById('bienvenida');
-        if (bienvenidaEl) {
-          bienvenidaEl.textContent = ` ¡Hola! ${data.usuario.username}`;
-        }
-      }
-    })
-    .catch(err => {
-      console.error('⚠️ No se pudo verificar sesión con el backend:', err);
-      localStorage.clear();
-      window.location.href = 'index.html';
+  try {
+    const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/verificar', {
+      headers: { Authorization: `Bearer ${token}` },
     });
-}
+
+    if (!res.ok) throw new Error('Token inválido o expirado');
+    const data = await res.json();
+    const userFromBackend = data.username || data.usuario?.username;
+    if (!userFromBackend) throw new Error('No se pudo obtener el nombre de usuario');
+
+    localStorage.setItem('username', userFromBackend);
+    document.getElementById('bienvenida')?.textContent = `¡Hola! ${userFromBackend}`;
+    iniciarTemporizadorDeSesion(token);
+  } catch (err) {
+    console.warn('⚠️ Verificación fallida:', err);
+    alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+    localStorage.clear();
+    return window.location.href = 'index.html';
+  }
 
 
 // Manejar envío del formulario
