@@ -121,6 +121,30 @@
   align-items: center;
 }
 
+.fade-in {
+  opacity: 0;
+  display: flex !important;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-out {
+  opacity: 1;
+  animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+    
   </style>
 </head>
 <body>
@@ -151,6 +175,15 @@
   <p style="margin-top: 10px; font-size: 13px; color: #888;">Ya registrado? <a href="#" onclick="mostrarLogin()" style="color: #1e90ff;">Inicia sesión</a></p>
 </div>
 
+<div id="loginForm" style="display: none; margin-top: 30px;">
+  <h2>Iniciar sesión</h2>
+  <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
+  <input type="password" id="loginPassword" placeholder="Contraseña" required>
+  <button onclick="iniciarSesion()">Entrar</button>
+  <p style="margin-top: 10px; font-size: 13px; color: #888;">¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()" style="color: #1e90ff;">Regístrate aquí</a></p>
+</div>
+
+    
 <p style="font-size: 13px; color: #888;">
   ¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()" style="color: #1e90ff;">Regístrate aquí</a>
 </p>
@@ -207,28 +240,58 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
+function switchForm(hideId, showId) {
+  const hideEl = document.getElementById(hideId);
+  const showEl = document.getElementById(showId);
+
+  if (hideEl && showEl) {
+    hideEl.classList.remove('fade-in');
+    hideEl.classList.add('fade-out');
+
+    setTimeout(() => {
+      hideEl.style.display = 'none';
+      hideEl.classList.remove('fade-out');
+
+      showEl.style.display = 'flex';
+      showEl.classList.add('fade-in');
+    }, 300); // tiempo igual al de la animación
+  }
+}
+
+    
 function mostrarLogin() {
-  document.getElementById('registroForm').style.display = 'none';
-  document.getElementById('step1').style.display = 'flex';
+  switchForm('registroForm', 'loginForm');
+  document.getElementById('step1').style.display = 'none';
   document.getElementById('step2').style.display = 'none';
 
-  // Opcional: limpiar campos
+  // Limpiar campos
   document.getElementById('usernameInput').value = '';
   document.getElementById('registroEmail').value = '';
   document.getElementById('passwordInput').value = '';
 }
 
+
+
 function mostrarRegistro() {
+  switchForm('loginForm', 'registroForm');
   document.getElementById('step1').style.display = 'none';
   document.getElementById('step2').style.display = 'none';
-  document.getElementById('registroForm').style.display = 'flex';
 
-  // Opcional: limpiar campos
-  document.getElementById('emailInput').value = '';
-  document.getElementById('codeInput').value = '';
+  // Limpiar campos
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
 }
 
-          
+
+function iniciarSesion() {
+  const username = document.getElementById('loginUsername').value;
+  const password = document.getElementById('loginPassword').value;
+
+  // Aquí va la lógica para enviar los datos al backend y validar sesión
+  console.log("Intentando iniciar sesión con:", username, password);
+}
+
+    
     lucide.createIcons();
   </script>
 </body>
