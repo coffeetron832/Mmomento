@@ -1,3 +1,6 @@
+// URLs base
+const API_BASE = 'https://themural-backend-production.up.railway.app/api/auth';
+
 let userEmail = '';
 let userToken = '';
 
