@@ -7,56 +7,48 @@ import {
 } from './utils.js';
 
 
+
+
+
 const username = localStorage.getItem('username');
 const token = localStorage.getItem('userToken');
 
-function tokenExpirado(token) {
-  if (!token) return true;
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const ahora = Math.floor(Date.now() / 1000);
-    return payload.exp < ahora;
-  } catch (err) {
-    console.warn('Token inválido o corrupto');
-    return true;
-  }
-}
 
-// ✅ Ya puedes usar `token` y `username` aquí
-if (!token || !username || tokenExpirado(token)) {
+
+
+
+if (!token || tokenExpirado(token)) {
   alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const expiraEn = payload.exp - payload.iat;
-    if (expiraEn <= 10800) {
-      await fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+  localStorage.clear();
+  window.location.href = 'index.html';
+} else {
+  // Verificamos en el backend si el token es válido
+  fetch('https://themural-backend-production.up.railway.app/api/auth/verificar', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
-  } catch (err) {
-    console.warn('⚠️ No se pudo verificar si era temporal:', err);
-  }
-
-  localStorage.clear();
-  window.location.href = 'index.html';
-}
-
-
-
-if (!token || !username || tokenExpirado(token)) {
-  alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-  localStorage.clear();
-  window.location.href = 'index.html';
-}
-
-iniciarTemporizadorDeSesion(token);
-
-
-const bienvenidaEl = document.getElementById('bienvenida');
-if (bienvenidaEl && username) {
-  bienvenidaEl.textContent = ` ¡Hola! ${username}`;
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.valido) {
+        alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+        localStorage.clear();
+        window.location.href = 'index.html';
+      } else {
+        localStorage.setItem('username', data.usuario.username);
+        iniciarTemporizadorDeSesion(token);
+        const bienvenidaEl = document.getElementById('bienvenida');
+        if (bienvenidaEl) {
+          bienvenidaEl.textContent = ` ¡Hola! ${data.usuario.username}`;
+        }
+      }
+    })
+    .catch(err => {
+      console.error('⚠️ No se pudo verificar sesión con el backend:', err);
+      localStorage.clear();
+      window.location.href = 'index.html';
+    });
 }
 
 
