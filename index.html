@@ -200,7 +200,7 @@
 
 <script type="module" src="js/auth.js"></script>
   <script>
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const trailContainer = document.createElement("div")
     trailContainer.style.position = "fixed"
     trailContainer.style.top = "0"
@@ -234,51 +234,61 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         pixel.remove()
       }, 500)
-    })
-  })
+    });
 
-function switchForm(hideId, showId) {
-  const hideEl = document.getElementById(hideId);
-  const showEl = document.getElementById(showId);
+    // Agregar listeners para los botones de cambio de formulario
+    document.getElementById('mostrarLoginLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      mostrarLogin();
+    });
 
-  if (hideEl && showEl) {
-    hideEl.classList.remove('fade-in');
-    hideEl.classList.add('fade-out');
+    document.getElementById('mostrarRegistroLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      mostrarRegistro();
+    });
+  });
 
-    setTimeout(() => {
-      hideEl.style.display = 'none';
-      hideEl.classList.remove('fade-out');
+  function switchForm(hideId, showId) {
+    const hideEl = document.getElementById(hideId);
+    const showEl = document.getElementById(showId);
 
-      showEl.style.display = 'flex';
-      showEl.classList.add('fade-in');
-    }, 300); // tiempo igual al de la animación
+    if (hideEl && showEl) {
+      hideEl.classList.remove('fade-in');
+      hideEl.classList.add('fade-out');
+
+      setTimeout(() => {
+        hideEl.style.display = 'none';
+        hideEl.classList.remove('fade-out');
+
+        showEl.style.display = 'flex';
+        showEl.classList.add('fade-in');
+      }, 300); // tiempo igual al de la animación
+    }
   }
-}
 
-    
-function mostrarLogin() {
-  switchForm('registroForm', 'loginForm');
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'none';
+  function mostrarLogin() {
+    switchForm('registroForm', 'loginForm');
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'none';
 
-  // Limpiar campos
-  document.getElementById('usernameInput').value = '';
-  document.getElementById('registroEmail').value = '';
-  document.getElementById('passwordInput').value = '';
-}
+    // Limpiar campos
+    document.getElementById('usernameInput').value = '';
+    document.getElementById('registroEmail').value = '';
+    document.getElementById('passwordInput').value = '';
+  }
 
+  function mostrarRegistro() {
+    switchForm('loginForm', 'registroForm');
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'none';
 
+    // Limpiar campos
+    document.getElementById('loginUsername').value = '';
+    document.getElementById('loginPassword').value = '';
+  }
 
-function mostrarRegistro() {
-  switchForm('loginForm', 'registroForm');
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'none';
+  lucide.createIcons();
+</script>
 
-  // Limpiar campos
-  document.getElementById('loginUsername').value = '';
-  document.getElementById('loginPassword').value = '';
-}    
-    lucide.createIcons();
-  </script>
 </body>
 </html>
