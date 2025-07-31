@@ -148,5 +148,16 @@ async function iniciarSesion() {
 }
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  const btnEnviarCodigo = document.querySelector('#step1 button');
+  const btnVerificarCodigo = document.querySelector('#step2 button');
+  const btnRegistro = document.querySelector('#registroForm button');
+  const btnLogin = document.querySelector('#loginBtn');
+
+  if (btnEnviarCodigo) btnEnviarCodigo.addEventListener('click', sendVerificationCode);
+  if (btnVerificarCodigo) btnVerificarCodigo.addEventListener('click', verifyCode);
+  if (btnRegistro) btnRegistro.addEventListener('click', registrarse);
+  if (btnLogin) btnLogin.addEventListener('click', iniciarSesion);
+});
 
 
