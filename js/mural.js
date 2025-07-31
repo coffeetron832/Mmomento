@@ -7,36 +7,41 @@ import {
 } from './utils.js';
 
 (async () => {
-  const token = localStorage.getItem('token'); // usa misma clave que auth.js
-  const username = localStorage.getItem('username');
+  // —————— INICIO IIFE ——————
+  const token = localStorage.getItem('token');
+  let username = localStorage.getItem('username');
 
+  // Validación local rápida
   if (!token || !username || tokenExpirado(token)) {
     alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-localStorage.clear();
-window.location.href = 'index.html';
-return;
+    localStorage.clear();
+    window.location.href = 'index.html';
+    return;
   }
 
+  // Validación remota
   try {
     const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/verificar', {
       headers: { Authorization: `Bearer ${token}` },
     });
-
     if (!res.ok) throw new Error('Token inválido o expirado');
     const data = await res.json();
     const userFromBackend = data.username || data.usuario?.username;
     if (!userFromBackend) throw new Error('No se pudo obtener el nombre de usuario');
 
-    localStorage.setItem('username', userFromBackend);
-    document.getElementById('bienvenida')?.textContent = `¡Hola! ${userFromBackend}`;
+    // Actualiza username
+    username = userFromBackend;
+    localStorage.setItem('username', username);
+    document.getElementById('bienvenida')?.textContent = `¡Hola! ${username}`;
+
+    // Inicia temporizador
     iniciarTemporizadorDeSesion(token);
   } catch (err) {
     console.warn('⚠️ Verificación fallida:', err);
     alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-localStorage.clear();
-window.location.href = 'index.html';
-return;
-
+    localStorage.clear();
+    window.location.href = 'index.html';
+    return;
   }
 
 
@@ -515,4 +520,5 @@ async function cargarMisAportes() {
   }
 }
 
+})();
 
