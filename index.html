@@ -150,56 +150,53 @@
 <body>
 
   <div class="container">
-    <div class="title">
-      KabeFeel
-    </div>
+  <div class="title">KabeFeel</div>
 
-     <h2>Ingresa tu correo para acceder al mural</h2>
+  <h2>Ingresa tu correo para acceder al mural</h2>
 
-    <div id="step1">
-      <input type="email" id="emailInput" placeholder="Correo electrónico" required>
-      <button onclick="sendVerificationCode()">Enviar código</button>
-    </div>
-
-    <div id="step2" style="display: none;">
-      <input type="text" id="codeInput" placeholder="Código recibido" required>
-      <button onclick="verifyCode()">Validar código</button>
-    </div>
-
-    <div id="registroForm" style="display: none; margin-top: 30px;">
-  <h2>¿Prefieres registrarte?</h2>
-  <input type="text" id="usernameInput" placeholder="Nombre de usuario" required>
-  <input type="email" id="registroEmail" placeholder="Correo electrónico" required>
-  <input type="password" id="passwordInput" placeholder="Contraseña" required>
-  <button onclick="registrarse()">Registrarse</button>
-  <p style="margin-top: 10px; font-size: 13px; color: #888;">Ya registrado? <a href="#" onclick="mostrarLogin()" style="color: #1e90ff;">Inicia sesión</a></p>
-</div>
-
-<div id="loginForm" style="display: none; margin-top: 30px;">
-  <h2>Iniciar sesión</h2>
-  <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
-  <input type="password" id="loginPassword" placeholder="Contraseña" required>
-  <button onclick="iniciarSesion()">Entrar</button>
-  <p style="margin-top: 10px; font-size: 13px; color: #888;">¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()" style="color: #1e90ff;">Regístrate aquí</a></p>
-</div>
-
-    
-<p style="font-size: 13px; color: #888;">
-  ¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()" style="color: #1e90ff;">Regístrate aquí</a>
-</p>
-
-    
-    <div class="divider"></div>
-
-    <div class="description">
-      <p><i data-lucide="message-square" class="icon" style="width: 20px; height: 20px;"></i>
-        <span>En<strong> KabeFeel</strong> vienes a desahogarte y a encontrar personas que te escuchan sin juzgar. Está hecho para compartir experiencias reales, recibir apoyo y sentir que no estás solo.</span>
-      </p>
-      <p><i data-lucide="ban" class="icon" style="width: 20px; height: 20px;"></i>
-        <span><strong>No se permite</strong> contenido ofensivo, violento o que atente contra otros. Este mural se construye con respeto y responsabilidad.</span>
-      </p>
-    </div>
+  <div id="step1">
+    <input type="email" id="emailInput" placeholder="Correo electrónico" required>
+    <button id="sendCodeBtn">Enviar código</button>
   </div>
+
+  <div id="step2" style="display: none;">
+    <input type="text" id="codeInput" placeholder="Código recibido" required>
+    <button id="verifyCodeBtn">Validar código</button>
+  </div>
+
+  <div id="registroForm" style="display: none; margin-top: 30px;">
+    <h2>¿Prefieres registrarte?</h2>
+    <input type="text" id="usernameInput" placeholder="Nombre de usuario" required>
+    <input type="email" id="registroEmail" placeholder="Correo electrónico" required>
+    <input type="password" id="passwordInput" placeholder="Contraseña" required>
+    <button id="registroBtn">Registrarse</button>
+    <p style="margin-top: 10px; font-size: 13px; color: #888;">
+      Ya registrado? <a href="#" id="mostrarLoginLink" style="color: #1e90ff;">Inicia sesión</a>
+    </p>
+  </div>
+
+  <div id="loginForm" style="display: none; margin-top: 30px;">
+    <h2>Iniciar sesión</h2>
+    <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
+    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+    <button id="loginBtn">Iniciar sesión</button>
+    <p style="margin-top: 10px; font-size: 13px; color: #888;">
+      ¿No tienes cuenta? <a href="#" id="mostrarRegistroLink" style="color: #1e90ff;">Regístrate aquí</a>
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="description">
+    <p><i data-lucide="message-square" class="icon" style="width: 20px; height: 20px;"></i>
+      <span>En<strong> KabeFeel</strong> vienes a desahogarte y a encontrar personas que te escuchan sin juzgar. Está hecho para compartir experiencias reales, recibir apoyo y sentir que no estás solo.</span>
+    </p>
+    <p><i data-lucide="ban" class="icon" style="width: 20px; height: 20px;"></i>
+      <span><strong>No se permite</strong> contenido ofensivo, violento o que atente contra otros. Este mural se construye con respeto y responsabilidad.</span>
+    </p>
+  </div>
+</div>
+
 
 <script type="module" src="js/auth.js"></script>
   <script>
