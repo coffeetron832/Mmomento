@@ -218,6 +218,15 @@ function mostrarLogin() {
   document.getElementById('passwordInput').value = '';
 }
 
+function mostrarRegistro() {
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('registroForm').style.display = 'flex';
+
+  // Opcional: limpiar campos
+  document.getElementById('emailInput').value = '';
+  document.getElementById('codeInput').value = '';
+}
 
           
     lucide.createIcons();
