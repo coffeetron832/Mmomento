@@ -1,9 +1,13 @@
 import {
-  obtenerAportes,
   crearAporte,
   crearComentario,
-  eliminarAporte
+  eliminarAporte,
+  cargarAportes,
+  cargarMisAportes,
+  initAportesModulo,
+  initFormularioAporte
 } from './aportes.js';
+
 
 import {
   renderAportes
