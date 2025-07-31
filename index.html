@@ -207,16 +207,17 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
-function mostrarRegistro() {
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('registroForm').style.display = 'flex';
-}
-
 function mostrarLogin() {
   document.getElementById('registroForm').style.display = 'none';
   document.getElementById('step1').style.display = 'flex';
+  document.getElementById('step2').style.display = 'none';
+
+  // Opcional: limpiar campos
+  document.getElementById('usernameInput').value = '';
+  document.getElementById('registroEmail').value = '';
+  document.getElementById('passwordInput').value = '';
 }
+
 
           
     lucide.createIcons();
