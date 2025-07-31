@@ -70,3 +70,36 @@ function goToMural() {
   window.location.href = 'mural.html';
 }
 
+
+async function registrarse() {
+  const username = document.getElementById('usernameInput').value.trim();
+  const email = document.getElementById('registroEmail').value.trim();
+  const password = document.getElementById('passwordInput').value.trim();
+
+  if (!username || !email || !password) {
+    alert('Por favor completa todos los campos.');
+    return;
+  }
+
+  try {
+    const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem('userToken', data.token);
+      localStorage.setItem('username', data.username);
+      window.location.href = 'mural.html';
+    } else {
+      alert(data.message || 'Error al registrarse.');
+    }
+  } catch (err) {
+    console.error('❌ Error de registro:', err);
+    alert('Ocurrió un error al intentar registrarte.');
+  }
+}
+
