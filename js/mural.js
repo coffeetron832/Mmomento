@@ -7,9 +7,11 @@ import {
 } from './utils.js';
 
 
+const username = localStorage.getItem('username');
+const token = localStorage.getItem('userToken');
+
 function tokenExpirado(token) {
   if (!token) return true;
-
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const ahora = Math.floor(Date.now() / 1000);
@@ -20,21 +22,17 @@ function tokenExpirado(token) {
   }
 }
 
+// ✅ Ya puedes usar `token` y `username` aquí
 if (!token || !username || tokenExpirado(token)) {
   alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
 
-  // Intentar limpieza del backend si es un usuario temporal
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    const expiraEn = payload.exp - payload.iat; // duración del token en segundos
-
-    // Si dura 3 horas (10800s), es temporal
+    const expiraEn = payload.exp - payload.iat;
     if (expiraEn <= 10800) {
       await fetch('https://themural-backend-production.up.railway.app/api/auth/logout', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
     }
   } catch (err) {
@@ -45,10 +43,6 @@ if (!token || !username || tokenExpirado(token)) {
   window.location.href = 'index.html';
 }
 
-
-
-const username = localStorage.getItem('username');
-const token = localStorage.getItem('userToken');
 
 
 if (!token || !username || tokenExpirado(token)) {
