@@ -103,31 +103,42 @@ async function registrarse() {
   }
 }
 
-async function iniciarSesion() {
-  const username = document.getElementById('loginUsername').value;
+function iniciarSesion() {
+  const username = document.getElementById('loginUsername').value.trim();
   const password = document.getElementById('loginPassword').value;
 
-  try {
-    const response = await fetch('https://themural-backend-production.up.railway.app/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-
-    if (!response.ok) throw new Error('Falló el inicio de sesión');
-
-    const data = await response.json();
-
-    // Guarda el token y tipo de usuario
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('isRegisteredUser', 'true');
-
-    // Redirige al mural
-    window.location.href = 'mural.html';
-  } catch (error) {
-    console.error('❌ Error al iniciar sesión:', error);
-    alert('Error al iniciar sesión. Revisa tus datos.');
+  if (!username || !password) {
+    alert("Por favor ingresa usuario y contraseña");
+    return;
   }
+
+  fetch("https://themural-backend-production.up.railway.app/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, password })
+  })
+  .then(async res => {
+    const data = await res.json();
+    
+    if (!res.ok) {
+      console.error("❌ Error al iniciar sesión:", data);
+      alert(data.message || "Error al iniciar sesión");
+      return;
+    }
+
+    // ✅ Guardamos el token y tipo
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("userType", data.userType); // temporal o permanente
+
+    // ✅ Redirigimos
+    window.location.href = "mural.html";
+  })
+  .catch(error => {
+    console.error("❌ Error de red:", error);
+    alert("Error de red al iniciar sesión");
+  });
 }
 
 
