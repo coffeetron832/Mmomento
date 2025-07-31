@@ -12,8 +12,9 @@ import {
 
   if (!token || !username || tokenExpirado(token)) {
     alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-    localStorage.clear();
-    return window.location.href = 'index.html';
+localStorage.clear();
+window.location.href = 'index.html';
+return;
   }
 
   try {
@@ -32,8 +33,10 @@ import {
   } catch (err) {
     console.warn('⚠️ Verificación fallida:', err);
     alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-    localStorage.clear();
-    return window.location.href = 'index.html';
+localStorage.clear();
+window.location.href = 'index.html';
+return;
+
   }
 
 
