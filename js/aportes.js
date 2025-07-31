@@ -1,225 +1,146 @@
-// aportes.js
 import { sanitize, formatearFecha } from './utils.js';
 
-let token, username;
-let container, lienzo, misList;
+const API_URL = 'https://themural-backend-production.up.railway.app/api/aportes';
+const token = localStorage.getItem('token');
 
-export function initAportesModulo(context) {
-  token = context.token;
-  username = context.username;
-  container = document.getElementById('aportesContainer');
-  lienzo = document.getElementById('lienzo');
-  misList = document.getElementById('misAportesList');
-}
+// ———————————————— FUNCIONES INTERNAS ————————————————
 
-export async function cargarAportes() {
-  const res = await fetch('https://themural-backend-production.up.railway.app/api/aportes');
-  const data = await res.json();
+function crearElementoAporte(aporte, usernameActual) {
+  const div = document.createElement('div');
+  div.className = 'aporte';
 
-  container.innerHTML = '';
+  const autor = aporte.usuario?.username || 'Anónimo';
+  const esPropio = autor === usernameActual;
 
-  data.forEach(aporte => {
-    const div = document.createElement('div');
-    div.classList.add('aporte');
-    div.innerHTML = `
-      <div class="cabecera">
-        <span class="usuario">@${aporte.username}</span>
-        <span class="fecha">${formatearFecha(aporte.createdAt)}</span>
-      </div>
-      <div class="contenido">${sanitize(aporte.texto)}</div>
-      <button class="btn-responder">💬 Responder</button>
-      <form class="form-respuesta" style="display:none; margin-top:5px;">
-        <textarea placeholder="Escribe tu respuesta..." required style="width:100%; height:40px;"></textarea>
-        <button type="submit">Enviar</button>
-      </form>
-      <div class="respuestas" style="margin-top:8px; padding-left:10px;"></div>
-    `;
+  div.innerHTML = `
+    <p><strong>${sanitize(autor)}</strong> dijo:</p>
+    <p>${sanitize(aporte.texto)}</p>
+    <small>${formatearFecha(aporte.createdAt)}</small>
+    ${esPropio ? '<button class="eliminar-aporte">🗑️ Eliminar</button>' : ''}
+    <div class="comentarios"></div>
+    <form class="form-comentario">
+      <input type="text" name="comentario" placeholder="Escribe un comentario..." required>
+      <button type="submit">Comentar</button>
+    </form>
+  `;
 
-    agregarRespuestas(div, aporte);
-    agregarFormularioRespuesta(div, aporte);
-
-    const muralWidth = lienzo.clientWidth * 2;
-    const muralHeight = lienzo.clientHeight * 2;
-    const randomX = Math.floor(Math.random() * muralWidth) - lienzo.clientWidth / 2;
-    const randomY = Math.floor(Math.random() * muralHeight) - lienzo.clientHeight / 2;
-
-    div.style.position = 'absolute';
-    div.style.left = `${randomX}px`;
-    div.style.top = `${randomY}px`;
-
-    container.appendChild(div);
-  });
-}
-
-function agregarRespuestas(div, aporte) {
-  const respuestasDiv = div.querySelector('.respuestas');
-
-  (aporte.respuestas || []).forEach(respuesta => {
-    const r = document.createElement('div');
-    r.style.cssText = 'margin-top:6px; padding-left:8px; border-left:2px solid #555; font-size:13px;';
-
-    const rFecha = new Date(respuesta.createdAt).toLocaleString('es-CO', {
-      dateStyle: 'short',
-      timeStyle: 'short'
+  if (esPropio) {
+    div.querySelector('.eliminar-aporte').addEventListener('click', async () => {
+      await eliminarAporte(aporte._id);
+      div.remove();
     });
+  }
 
-    r.innerHTML = `
-      <div><strong>${respuesta.username}</strong> <span style="color:#aaa;">${rFecha}</span></div>
-      <div class="texto-respuesta">${sanitize(respuesta.texto)}</div>
-      ${respuesta.username === username ? `
-        <button class="btnEditarRespuesta">✏️ Editar</button>
-        <button class="btnEliminarRespuesta">🗑️ Eliminar</button>
-      ` : ''}
-    `;
+  const formComentario = div.querySelector('.form-comentario');
+  const comentariosDiv = div.querySelector('.comentarios');
 
-    if (respuesta.username === username) {
-      r.querySelector('.btnEditarRespuesta').addEventListener('click', () => editarRespuesta(aporte._id, respuesta));
-      r.querySelector('.btnEliminarRespuesta').addEventListener('click', () => eliminarRespuesta(aporte._id, respuesta._id));
+  if (aporte.respuestas?.length) {
+    for (const respuesta of aporte.respuestas) {
+      const r = document.createElement('p');
+      r.innerHTML = `<strong>${sanitize(respuesta.usuario?.username || 'Anónimo')}:</strong> ${sanitize(respuesta.texto)}`;
+      comentariosDiv.appendChild(r);
     }
+  }
 
-    respuestasDiv.appendChild(r);
-  });
-}
-
-function agregarFormularioRespuesta(div, aporte) {
-  const form = div.querySelector('.form-respuesta');
-  const btnResponder = div.querySelector('.btn-responder');
-
-  btnResponder.addEventListener('click', () => {
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-  });
-
-  form.addEventListener('submit', async (e) => {
+  formComentario.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const textarea = form.querySelector('textarea');
-    const texto = textarea.value.trim();
+    const texto = formComentario.comentario.value.trim();
     if (!texto) return;
-
-    const res = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporte._id}/respuestas`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ texto })
-    });
-
-    if (res.ok) {
-      textarea.value = '';
-      form.style.display = 'none';
-      cargarAportes();
-      cargarMisAportes();
-    } else {
-      alert('Error enviando respuesta.');
-    }
+    await crearComentario(aporte._id, texto);
+    formComentario.reset();
+    cargarAportes(); // Recarga
   });
+
+  return div;
 }
 
-function editarRespuesta(aporteId, respuesta) {
-  const nuevoTexto = prompt('Editar respuesta:', respuesta.texto);
-  if (!nuevoTexto) return;
+// ———————————————— EXPORTABLES ————————————————
 
-  fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporteId}/respuestas/${respuesta._id}`, {
-    method: 'PUT',
+export async function crearAporte(texto) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
-    body: JSON.stringify({ texto: nuevoTexto })
-  }).then(r => {
-    if (r.ok) {
-      cargarAportes();
-      cargarMisAportes();
-    } else {
-      alert('Error editando respuesta.');
-    }
+    body: JSON.stringify({ texto })
   });
+
+  if (!res.ok) throw new Error('No se pudo crear el aporte');
 }
 
-function eliminarRespuesta(aporteId, respuestaId) {
-  if (!confirm('¿Eliminar esta respuesta?')) return;
+export async function crearComentario(aporteId, texto) {
+  const res = await fetch(`${API_URL}/${aporteId}/respuestas`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ texto })
+  });
 
-  fetch(`https://themural-backend-production.up.railway.app/api/aportes/${aporteId}/respuestas/${respuestaId}`, {
+  if (!res.ok) throw new Error('No se pudo comentar');
+}
+
+export async function eliminarAporte(id) {
+  const res = await fetch(`${API_URL}/${id}`, {
     method: 'DELETE',
-    headers: { 'Authorization': `Bearer ${token}` }
-  }).then(r => {
-    if (r.ok) {
-      cargarAportes();
-      cargarMisAportes();
-    } else {
-      alert('Error eliminando respuesta.');
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
   });
+
+  if (!res.ok) throw new Error('No se pudo eliminar el aporte');
+}
+
+export async function cargarAportes() {
+  const contenedor = document.getElementById('contenedor-aportes');
+  contenedor.innerHTML = '';
+
+  const res = await fetch(API_URL);
+  const aportes = await res.json();
+
+  const username = localStorage.getItem('username');
+
+  for (const aporte of aportes) {
+    const el = crearElementoAporte(aporte, username);
+    contenedor.appendChild(el);
+  }
 }
 
 export async function cargarMisAportes() {
-  const res = await fetch('https://themural-backend-production.up.railway.app/api/aportes');
-  const data = await res.json();
+  const contenedor = document.getElementById('mis-aportes');
+  contenedor.innerHTML = '';
 
-  const tuyos = data.filter(a => a.username === username);
-  misList.innerHTML = '';
-
-  if (tuyos.length === 0) {
-    misList.innerHTML = '<li>No tienes aportes.</li>';
-    return;
-  }
-
-  tuyos.forEach(a => {
-    const li = document.createElement('li');
-    const fecha = new Date(a.createdAt).toLocaleString('es-CO', {
-      dateStyle: 'short',
-      timeStyle: 'short'
-    });
-
-    li.innerHTML = `
-      <span>${fecha}</span>
-      <button data-id="${a._id}" title="Eliminar">&#x1F5D1;</button>
-    `;
-
-    li.querySelector('button').addEventListener('click', async (e) => {
-      const id = e.currentTarget.dataset.id;
-      if (!confirm('¿Eliminar este aporte?')) return;
-
-      const delRes = await fetch(`https://themural-backend-production.up.railway.app/api/aportes/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      if (delRes.ok) {
-        cargarMisAportes();
-        cargarAportes();
-      } else {
-        alert('No se pudo eliminar.');
-      }
-    });
-
-    misList.appendChild(li);
+  const res = await fetch(API_URL, {
+    headers: { 'Authorization': `Bearer ${token}` }
   });
+  const aportes = await res.json();
+
+  const username = localStorage.getItem('username');
+
+  for (const aporte of aportes) {
+    if (aporte.usuario?.username === username) {
+      const el = crearElementoAporte(aporte, username);
+      contenedor.appendChild(el);
+    }
+  }
+}
+
+export function initAportesModulo() {
+  const tab = document.getElementById('tab-mis-aportes');
+  tab.addEventListener('click', cargarMisAportes);
 }
 
 export function initFormularioAporte() {
-  const form = document.getElementById('aporteForm');
-  const textarea = document.getElementById('textoAporte');
-
+  const form = document.getElementById('form-aporte');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const texto = textarea.value.trim();
+    const texto = form.texto.value.trim();
     if (!texto) return;
 
-    const res = await fetch('https://themural-backend-production.up.railway.app/api/aportes', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ texto })
-    });
-
-    if (res.ok) {
-      textarea.value = '';
-      cargarAportes();
-    } else {
-      alert('Error publicando el aporte.');
-    }
+    await crearAporte(texto);
+    form.reset();
+    cargarAportes();
   });
 }
