@@ -132,6 +132,20 @@
       <button onclick="verifyCode()">Validar código</button>
     </div>
 
+    <div id="registroForm" style="display: none; margin-top: 30px;">
+  <h2>¿Prefieres registrarte?</h2>
+  <input type="text" id="usernameInput" placeholder="Nombre de usuario" required>
+  <input type="email" id="registroEmail" placeholder="Correo electrónico" required>
+  <input type="password" id="passwordInput" placeholder="Contraseña" required>
+  <button onclick="registrarse()">Registrarse</button>
+  <p style="margin-top: 10px; font-size: 13px; color: #888;">Ya registrado? <a href="#" onclick="mostrarLogin()" style="color: #1e90ff;">Inicia sesión</a></p>
+</div>
+
+<p style="font-size: 13px; color: #888;">
+  ¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()" style="color: #1e90ff;">Regístrate aquí</a>
+</p>
+
+    
     <div class="divider"></div>
 
     <div class="description">
@@ -182,7 +196,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 500)
     })
   })
-    
+
+function mostrarRegistro() {
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('registroForm').style.display = 'flex';
+}
+
+function mostrarLogin() {
+  document.getElementById('registroForm').style.display = 'none';
+  document.getElementById('step1').style.display = 'flex';
+}
+
+          
     lucide.createIcons();
   </script>
 </body>
