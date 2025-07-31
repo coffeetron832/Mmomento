@@ -104,8 +104,16 @@ async function registrarse() {
 }
 
 function iniciarSesion() {
-  const username = document.getElementById('loginUsername').value.trim();
-  const password = document.getElementById('loginPassword').value;
+  const usernameInput = document.getElementById('loginUsername');
+  const passwordInput = document.getElementById('loginPassword');
+
+  if (!usernameInput || !passwordInput) {
+    alert("Primero muestra el formulario de login.");
+    return;
+  }
+
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
 
   if (!username || !password) {
     alert("Por favor ingresa usuario y contraseña");
@@ -128,11 +136,9 @@ function iniciarSesion() {
       return;
     }
 
-    // ✅ Guardamos el token y tipo
     localStorage.setItem("userToken", data.token);
-    localStorage.setItem("userType", data.userType); // temporal o permanente
+    localStorage.setItem("userType", data.userType);
 
-    // ✅ Redirigimos
     window.location.href = "mural.html";
   })
   .catch(error => {
@@ -140,5 +146,6 @@ function iniciarSesion() {
     alert("Error de red al iniciar sesión");
   });
 }
+
 
 
