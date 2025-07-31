@@ -5,44 +5,26 @@ import {
   mostrarError,
   mostrarExito
 } from './utils.js';
+import { verificarSesion } from './session.js';
 
-(async () => {
-  // —————— INICIO IIFE ——————
-  const token = localStorage.getItem('token');
-  let username = localStorage.getItem('username');
 
-  // Validación local rápida
-  if (!token || !username || tokenExpirado(token)) {
-    alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
-    localStorage.clear();
-    window.location.href = 'index.html';
-    return;
-  }
+let token, username;
 
-  // Validación remota
-  try {
-    const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/verificar', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) throw new Error('Token inválido o expirado');
-    const data = await res.json();
-    const userFromBackend = data.username || data.usuario?.username;
-    if (!userFromBackend) throw new Error('No se pudo obtener el nombre de usuario');
-
-    // Actualiza username
-    username = userFromBackend;
-    localStorage.setItem('username', username);
+// Verificar sesión antes de arrancar cualquier cosa
+verificarSesion()
+  .then(sess => {
+    token = sess.token;
+    username = sess.username;
     document.getElementById('bienvenida')?.textContent = `¡Hola! ${username}`;
-
-    // Inicia temporizador
     iniciarTemporizadorDeSesion(token);
-  } catch (err) {
-    console.warn('⚠️ Verificación fallida:', err);
+    arrancarMural();
+  })
+  .catch(() => {
     alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
     localStorage.clear();
     window.location.href = 'index.html';
-    return;
-  }
+  });
+
 
 
 // Manejar envío del formulario
@@ -519,6 +501,3 @@ async function cargarMisAportes() {
     misList.innerHTML = '<li>No tienes aportes.</li>';
   }
 }
-
-})();
-
