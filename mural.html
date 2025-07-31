@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TheMural - Lienzo</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #canvasContainer {
+      width: 100vw;
+      height: 100vh;
+      background: #fefefe;
+      cursor: grab;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #canvas {
+      width: 3000px;
+      height: 3000px;
+      background-image: radial-gradient(#ccc 1px, transparent 1px);
+      background-size: 50px 50px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: background-color 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvasContainer">
+    <div id="canvas"></div>
+  </div>
+
+  <script src="js/mural.js"></script>
+</body>
+</html>
