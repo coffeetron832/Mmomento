@@ -103,3 +103,9 @@ async function registrarse() {
   }
 }
 
+// Al final de js/auth.js
+window.mostrarRegistro = mostrarRegistro;
+window.mostrarLogin    = mostrarLogin;
+window.sendVerificationCode = sendVerificationCode;
+window.verifyCode = verifyCode;
+window.registrarse = registrarse;
