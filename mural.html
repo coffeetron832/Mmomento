@@ -10,6 +10,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      font-family: sans-serif;
     }
 
     #canvasContainer {
@@ -31,12 +32,62 @@
       left: 0;
       transition: background-color 0.2s;
     }
+
+    #topBar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    #topBar button {
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.8rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #topBar button:hover {
+      background: darkred;
+    }
   </style>
 </head>
 <body>
   <div id="canvasContainer">
+    <div id="topBar">
+      <span>Bienvenido, <strong id="username"></strong></span>
+      <button onclick="logout()">Cerrar sesión</button>
+    </div>
     <div id="canvas"></div>
   </div>
+
+  <script>
+    // Proteger acceso
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    if (!token || !user) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("username").textContent = user;
+    }
+
+    // Cerrar sesión
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    }
+  </script>
 
   <script src="js/mural.js"></script>
 </body>
