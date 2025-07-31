@@ -103,7 +103,7 @@ async function registrarse() {
   }
 }
 
-function iniciarSesion() {
+async function iniciarSesion() {
   const usernameInput = document.getElementById('loginUsername');
   const passwordInput = document.getElementById('loginPassword');
 
@@ -120,16 +120,17 @@ function iniciarSesion() {
     return;
   }
 
-  await fetch('https://themural-backend-production.up.railway.app/api/auth/login', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ username, password })
-  })
-  .then(async res => {
+  try {
+    const res = await fetch('https://themural-backend-production.up.railway.app/api/auth/login', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, password })
+    });
+
     const data = await res.json();
-    
+
     if (!res.ok) {
       console.error("❌ Error al iniciar sesión:", data);
       alert(data.message || "Error al iniciar sesión");
@@ -140,12 +141,12 @@ function iniciarSesion() {
     localStorage.setItem("userType", data.userType);
 
     window.location.href = "mural.html";
-  })
-  .catch(error => {
+  } catch (error) {
     console.error("❌ Error de red:", error);
     alert("Error de red al iniciar sesión");
-  });
+  }
 }
+
 
 
 
