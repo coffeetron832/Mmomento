@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KabeFeel - Ingreso</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Long+Cang&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     body {
       margin: 0;
@@ -90,6 +91,30 @@
     #registerForm {
       display: none;
     }
+
+    .info-section {
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #222;
+      color: #bbb;
+      font-size: 0.85rem;
+    }
+
+    .info-block {
+      display: flex;
+      align-items: start;
+      gap: 0.75rem;
+      margin-bottom: 1.4rem;
+      line-height: 1.4;
+    }
+
+    .info-block svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: #00ffd5;
+      margin-top: 0.2rem;
+    }
   </style>
 </head>
 <body>
@@ -118,10 +143,28 @@
       <div id="toggleToRegister" class="switch">¿No tienes cuenta? Regístrate aquí</div>
       <div id="toggleToLogin" class="switch" style="display:none;">¿Ya tienes cuenta? Inicia sesión aquí</div>
     </section>
+
+    <!-- Información -->
+    <section class="info-section">
+      <div class="info-block">
+        <i data-lucide="brush"></i>
+        <p>
+          <strong>KabeFeel</strong> es un lienzo digital donde puedes expresarte libremente con ideas, trazos o mensajes efímeros. Es simple, compartido y anónimo.
+        </p>
+      </div>
+      <div class="info-block">
+        <i data-lucide="shield-alert"></i>
+        <p>
+          No se permite contenido ofensivo, discriminatorio ni violento. KabeFeel es un espacio seguro para la libre expresión con respeto.
+        </p>
+      </div>
+    </section>
   </main>
 
   <script src="js/auth.js"></script>
   <script>
+    lucide.createIcons();
+
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
     const toggleToRegister = document.getElementById("toggleToRegister");
