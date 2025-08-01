@@ -66,15 +66,7 @@ body {
   will-change: transform;
 }
 
-/* Animación de flotación vertical lenta */
-@keyframes float {
-  0% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  100% {
-    transform: translateY(-25px) rotate(4deg);
-  }
-}
+
 
 /* Responsive */
 @media (max-width: 600px) {
