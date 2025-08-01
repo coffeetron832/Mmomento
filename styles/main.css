@@ -1,97 +1,77 @@
-:root {
-  --color-negro: #000;
-  --color-blanco: #fff;
-  --color-gris-claro: #f4f4f4;
-  --color-gris: #888;
-  --color-gris-medio: #8c8c8c;
-  --color-borde: #ccc;
-  --sombra: rgba(0, 0, 0, 0.1);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: var(--color-gris-claro);
-  color: var(--color-negro);
+  background-color: var(--color-negro); /* Cambiamos el fondo a negro */
+  color: var(--color-blanco);
+  overflow-x: hidden;
 }
 
-header {
+/* Sección de portada con imágenes flotantes */
+.floating-preview {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
   background-color: var(--color-negro);
-  color: var(--color-blanco);
-  padding: 1rem 0.5rem; /* Reducimos el padding vertical */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Logo centrado y eslogan */
+.floating-content {
+  position: relative;
+  z-index: 2;
   text-align: center;
 }
 
-.marca {
-  font-family: 'Cinzel', serif;
-  font-size: 1.8rem;
+.logo-central {
+  max-width: 200px;
+  height: auto;
   margin-bottom: 0.5rem;
-  letter-spacing: 1px;
 }
 
-.eslogan {
+.floating-content .eslogan {
   font-family: 'Cormorant', serif;
-  font-weight: 400;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--color-gris-medio);
 }
 
-
-footer {
-  background-color: var(--color-negro);
-  color: var(--color-blanco);
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
-}
-
-.grid-productos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  padding: 2rem;
-}
-
-.tarjeta-producto {
-  background-color: var(--color-blanco);
-  border: 1px solid var(--color-borde);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px var(--sombra);
-  transition: transform 0.2s;
-}
-
-.tarjeta-producto:hover {
-  transform: translateY(-5px);
-}
-
-.tarjeta-producto img {
+/* Contenedor de imágenes flotantes */
+.floating-images {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.tarjeta-producto .info {
-  padding: 1rem;
+.floating-images .float {
+  position: absolute;
+  width: 80px;
+  opacity: 0.7;
+  animation: float 10s infinite ease-in-out alternate;
 }
 
-.tarjeta-producto h3 {
-  margin-bottom: 0.5rem;
-  color: var(--color-negro);
+/* Animación de flotación lenta */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-30px) rotate(5deg);
+  }
 }
 
-.tarjeta-producto p {
-  font-weight: bold;
-  color: var(--color-gris);
-}
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .logo-central {
+    max-width: 150px;
+  }
 
-.marca-img {
-  max-width: 200px; /* Más compacto */
-  height: auto;
-  margin-bottom: 0.25rem;
+  .floating-content .eslogan {
+    font-size: 0.9rem;
+  }
 }
-
