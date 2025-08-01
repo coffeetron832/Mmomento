@@ -34,4 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     contenedor.appendChild(div);
   });
+
+document.querySelectorAll('.floating-images img.float').forEach(img => {
+  const top = Math.floor(Math.random() * 85); // hasta 85% para evitar desbordes
+  const left = Math.floor(Math.random() * 90);
+  img.style.top = `${top}%`;
+  img.style.left = `${left}%`;
+});
+
+  
 });
