@@ -58,7 +58,12 @@ function getNonOverlappingPosition(existingPositions, imgWidth = 80, imgHeight =
 }
 
 const placedPositions = [];
+
 document.querySelectorAll('.floating-images img.float').forEach(img => {
+  const size = 140 + Math.random() * 80; // entre 120 y 170px
+  img.style.width = `${size}px`;
+  img.style.height = 'auto';
+
   const pos = getNonOverlappingPosition(placedPositions);
   if (pos) {
     img.style.top = `${pos.top}%`;
@@ -66,6 +71,7 @@ document.querySelectorAll('.floating-images img.float').forEach(img => {
     placedPositions.push(pos);
   }
 });
+
 
 
   
