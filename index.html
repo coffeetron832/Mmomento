@@ -40,7 +40,21 @@
   <footer>
     <p>&copy; 2025 Charms Club. Todos los derechos reservados.</p>
   </footer>
+<script>
+  document.addEventListener("mousemove", (e) => {
+    const floats = document.querySelectorAll(".float");
+    const { innerWidth, innerHeight } = window;
+    const x = (e.clientX / innerWidth - 0.5) * 2;
+    const y = (e.clientY / innerHeight - 0.5) * 2;
 
+    floats.forEach((img) => {
+      const depth = parseFloat(img.dataset.depth) || 1;
+      const moveX = x * 20 * depth;
+      const moveY = y * 20 * depth;
+      img.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+  });
+</script>
   <script src="scripts/main.js"></script>
 </body>
 </html>
