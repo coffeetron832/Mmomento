@@ -35,12 +35,38 @@ document.addEventListener("DOMContentLoaded", () => {
     contenedor.appendChild(div);
   });
 
+function getNonOverlappingPosition(existingPositions, imgWidth = 80, imgHeight = 80, maxAttempts = 100) {
+  let attempts = 0;
+  while (attempts < maxAttempts) {
+    const top = Math.random() * (100 - 15); // Evita que se salgan por abajo
+    const left = Math.random() * (100 - 10); // Evita que se salgan por la derecha
+
+    const overlap = existingPositions.some(pos => {
+      const dx = Math.abs(pos.left - left);
+      const dy = Math.abs(pos.top - top);
+      return dx < 10 && dy < 10; // Espacio mínimo entre imágenes
+    });
+
+    if (!overlap) {
+      return { top, left };
+    }
+
+    attempts++;
+  }
+
+  return null; // Por si no encuentra lugar (muy raro)
+}
+
+const placedPositions = [];
 document.querySelectorAll('.floating-images img.float').forEach(img => {
-  const top = Math.floor(Math.random() * 85); // hasta 85% para evitar desbordes
-  const left = Math.floor(Math.random() * 90);
-  img.style.top = `${top}%`;
-  img.style.left = `${left}%`;
+  const pos = getNonOverlappingPosition(placedPositions);
+  if (pos) {
+    img.style.top = `${pos.top}%`;
+    img.style.left = `${pos.left}%`;
+    placedPositions.push(pos);
+  }
 });
+
 
   
 });
