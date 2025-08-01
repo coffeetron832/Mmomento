@@ -87,3 +87,10 @@ footer {
   font-weight: bold;
   color: var(--color-gris);
 }
+
+.marca-img {
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
