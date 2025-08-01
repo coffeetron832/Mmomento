@@ -35,11 +35,12 @@ header {
 }
 
 .eslogan {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Cormorant', serif;
   font-weight: 400;
   font-size: 1rem;
   color: var(--color-gris-medio);
 }
+
 
 footer {
   background-color: var(--color-negro);
