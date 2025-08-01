@@ -51,10 +51,12 @@ body {
 
 .floating-images .float {
   position: absolute;
-  width: 80px;
-  opacity: 0.7;
-  animation: float 10s infinite ease-in-out alternate;
+  width: 120px; /* Aumentamos el tamaño */
+  opacity: 0.8;
+  animation: float 12s infinite ease-in-out alternate;
+  transition: transform 0.3s ease;
 }
+
 
 /* Animación de flotación lenta */
 @keyframes float {
