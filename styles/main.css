@@ -51,7 +51,7 @@ body {
 
 .floating-images .float {
   position: absolute;
-  width: 200px; /* Aumentamos el tamaño */
+  width: 250px; /* Aumentamos el tamaño */
   opacity: 0.9;
   animation: float 12s infinite ease-in-out alternate;
   transition: transform 0.3s ease;
