@@ -44,7 +44,9 @@ body {
   font-family: 'Cormorant', serif;
   font-size: 1.4rem;
   color: var(--color-gris-medio);
+  margin-top: -0.5rem; /* Esto lo sube ligeramente */
 }
+
 
 /* Imágenes flotantes de fondo */
 .floating-images {
