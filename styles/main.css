@@ -34,7 +34,7 @@ body {
 }
 
 .logo-central {
-  width: 280px;
+  width: 285px;
   max-width: 80%;
   height: auto;
   margin-bottom: 0.5rem;
@@ -42,7 +42,7 @@ body {
 
 .floating-content .eslogan {
   font-family: 'Cormorant', serif;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   color: var(--color-gris-medio);
 }
 
