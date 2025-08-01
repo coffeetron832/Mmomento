@@ -1,9 +1,10 @@
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: var(--color-negro); /* Cambiamos el fondo a negro */
-  color: var(--color-blanco);
+  background-color: #000; /* Negro explícito */
+  color: #fff;            /* Blanco explícito */
   overflow-x: hidden;
 }
+
 
 /* Sección de portada con imágenes flotantes */
 .floating-preview {
