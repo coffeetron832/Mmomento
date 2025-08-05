@@ -59,6 +59,13 @@
     carrusel.style.transform = `rotateY(${angle}deg)`;
   };
 
+  // 🔧 Fuerza redibujo para corregir borrosidad
+  function forceRedraw(el) {
+    el.style.display = 'none';
+    el.offsetHeight; // fuerza reflow
+    el.style.display = '';
+  }
+
   // Mouse Events
   carrusel.addEventListener('mousedown', (e) => {
     isDragging = true;
@@ -75,6 +82,7 @@
 
   window.addEventListener('mouseup', () => {
     isDragging = false;
+    forceRedraw(carrusel); // 🔁 repintar
   });
 
   // Touch Events (para móviles)
@@ -87,6 +95,10 @@
     const deltaX = touchX - startX;
     rotateCarrusel(deltaX);
     startX = touchX;
+  });
+
+  carrusel.addEventListener('touchend', () => {
+    forceRedraw(carrusel); // 🔁 repintar en móvil
   });
 </script>
 </body>
