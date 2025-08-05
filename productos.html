@@ -2,104 +2,81 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Muestrario - CharmsClub</title>
-  <link rel="stylesheet" href="styles/orbita.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Productos en órbita</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+
+    .orbit-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      animation: rotate 20s linear infinite;
+    }
+
+    .orbit-item {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .orbit-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    .orbit-item:hover {
+      transform: scale(1.3);
+      z-index: 10;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Posiciones de los productos (se reparten en círculo) */
+    .orbit-item:nth-child(1) { top: 0%; left: 50%; transform: translate(-50%, -50%) rotate(0deg) translateY(-120px); }
+    .orbit-item:nth-child(2) { top: 25%; left: 85%; transform: translate(-50%, -50%) rotate(45deg) translateY(-120px); }
+    .orbit-item:nth-child(3) { top: 50%; left: 100%; transform: translate(-50%, -50%) rotate(90deg) translateY(-120px); }
+    .orbit-item:nth-child(4) { top: 75%; left: 85%; transform: translate(-50%, -50%) rotate(135deg) translateY(-120px); }
+    .orbit-item:nth-child(5) { top: 100%; left: 50%; transform: translate(-50%, -50%) rotate(180deg) translateY(-120px); }
+    .orbit-item:nth-child(6) { top: 75%; left: 15%; transform: translate(-50%, -50%) rotate(225deg) translateY(-120px); }
+    .orbit-item:nth-child(7) { top: 50%; left: 0%; transform: translate(-50%, -50%) rotate(270deg) translateY(-120px); }
+    .orbit-item:nth-child(8) { top: 25%; left: 15%; transform: translate(-50%, -50%) rotate(315deg) translateY(-120px); }
+
+  </style>
 </head>
 <body>
-  <div class="carrusel-container">
-    <div class="carrusel" id="carrusel">
-      <!-- Producto 1 -->
-      <div class="producto" style="--i:0">
-        <img src="images/prod1.PNG" alt="Producto 1" />
-        <div class="info">
-          <p class="nombre">Charm Estrella</p>
-          <p class="precio">$15.000</p>
-        </div>
-      </div>
-      <!-- Producto 2 -->
-      <div class="producto" style="--i:1">
-        <img src="images/prod2.PNG" alt="Producto 2" />
-        <div class="info">
-          <p class="nombre">Charm Luna</p>
-          <p class="precio">$18.000</p>
-        </div>
-      </div>
-      <!-- Producto 3 -->
-      <div class="producto" style="--i:2">
-        <img src="images/prod3.PNG" alt="Producto 3" />
-        <div class="info">
-          <p class="nombre">Pulsera Rosa</p>
-          <p class="precio">$25.000</p>
-        </div>
-      </div>
-      <!-- Producto 4 -->
-      <div class="producto" style="--i:3">
-        <img src="images/prod4.PNG" alt="Producto 4" />
-        <div class="info">
-          <p class="nombre">Charm Corazón</p>
-          <p class="precio">$12.000</p>
-        </div>
-      </div>
-    </div>
-
-  
+  <div class="orbit-container">
+    <div class="orbit-item"><img src="prod1.PNG" alt="Producto 1" /></div>
+    <div class="orbit-item"><img src="prod2.PNG" alt="Producto 2" /></div>
+    <div class="orbit-item"><img src="prod3.PNG" alt="Producto 3" /></div>
+    <div class="orbit-item"><img src="prod4.PNG" alt="Producto 4" /></div>
+    <div class="orbit-item"><img src="prod5.PNG" alt="Producto 5" /></div>
+    <div class="orbit-item"><img src="prod6.PNG" alt="Producto 6" /></div>
+    <div class="orbit-item"><img src="prod7.PNG" alt="Producto 7" /></div>
+    <div class="orbit-item"><img src="prod8.PNG" alt="Producto 8" /></div>
   </div>
-
-  <script>
-  const carrusel = document.querySelector('.carrusel');
-  let angle = 0;
-  let isDragging = false;
-  let startX = 0;
-  let currentX = 0;
-
-  const rotateCarrusel = (deltaX) => {
-    const rotationSpeed = 0.3; // menor = más lento
-    angle += deltaX * rotationSpeed;
-    carrusel.style.transform = `rotateY(${angle}deg)`;
-  };
-
-  // 🔧 Fuerza redibujo para corregir borrosidad
-  function forceRedraw(el) {
-    el.style.display = 'none';
-    el.offsetHeight; // fuerza reflow
-    el.style.display = '';
-  }
-
-  // Mouse Events
-  carrusel.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.clientX;
-  });
-
-  window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    currentX = e.clientX;
-    const deltaX = currentX - startX;
-    rotateCarrusel(deltaX);
-    startX = currentX;
-  });
-
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-    forceRedraw(carrusel); // 🔁 repintar
-  });
-
-  // Touch Events (para móviles)
-  carrusel.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-  });
-
-  carrusel.addEventListener('touchmove', (e) => {
-    const touchX = e.touches[0].clientX;
-    const deltaX = touchX - startX;
-    rotateCarrusel(deltaX);
-    startX = touchX;
-  });
-
-  carrusel.addEventListener('touchend', () => {
-    forceRedraw(carrusel); // 🔁 repintar en móvil
-  });
-</script>
 </body>
 </html>
