@@ -43,19 +43,51 @@
       </div>
     </div>
 
-    <button class="flecha izq" onclick="girar(-1)">⟵</button>
-    <button class="flecha der" onclick="girar(1)">⟶</button>
+  
   </div>
 
   <script>
-    let angulo = 0;
-    const carrusel = document.getElementById("carrusel");
+  const carrusel = document.querySelector('.carrusel');
+  let angle = 0;
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
 
-    function girar(direccion) {
-      const total = carrusel.children.length;
-      angulo += (360 / total) * direccion;
-      carrusel.style.transform = `rotateY(${angulo}deg)`;
-    }
-  </script>
+  const rotateCarrusel = (deltaX) => {
+    const rotationSpeed = 0.3; // menor = más lento
+    angle += deltaX * rotationSpeed;
+    carrusel.style.transform = `rotateY(${angle}deg)`;
+  };
+
+  // Mouse Events
+  carrusel.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    currentX = e.clientX;
+    const deltaX = currentX - startX;
+    rotateCarrusel(deltaX);
+    startX = currentX;
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  // Touch Events (para móviles)
+  carrusel.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  carrusel.addEventListener('touchmove', (e) => {
+    const touchX = e.touches[0].clientX;
+    const deltaX = touchX - startX;
+    rotateCarrusel(deltaX);
+    startX = touchX;
+  });
+</script>
 </body>
 </html>
