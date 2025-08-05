@@ -196,99 +196,105 @@
   </div>
 
   <script>
-    const orbitContainer = document.getElementById("orbit");
-    const items = orbitContainer.querySelectorAll(".orbit-item");
-    const itemCount = items.length;
-    let angle = 0;
-    let isHovered = false;
+  const orbitContainer = document.getElementById("orbit");
+  const items = orbitContainer.querySelectorAll(".orbit-item");
+  const itemCount = items.length;
+  let angle = 0;
+  let isHovered = false;
 
-    function getResponsiveRadius() {
-      const width = window.innerWidth;
-      if (width < 400) return 130;
-      if (width < 768) return 190;
-      return 320;
-    }
+  function getResponsiveRadius() {
+    const width = window.innerWidth;
+    if (width < 400) return 130;
+    if (width < 768) return 190;
+    return 320;
+  }
 
-    function positionItems() {
-      const radius = getResponsiveRadius();
-      items.forEach((item, index) => {
-        const theta = (index / itemCount) * 2 * Math.PI;
-        const x = Math.cos(theta + angle) * radius;
-        const y = Math.sin(theta + angle) * radius;
+  function positionItems() {
+    const radius = getResponsiveRadius();
+    items.forEach((item, index) => {
+      const theta = (index / itemCount) * 2 * Math.PI;
+      const x = Math.cos(theta + angle) * radius;
+      const y = Math.sin(theta + angle) * radius;
 
-        item.style.transform = `
-          translate(-50%, -50%)
-          translate(${x}px, ${y}px)
-        `;
-      });
-    }
-
-    items.forEach(item => {
-      item.addEventListener("mouseenter", () => isHovered = true);
-      item.addEventListener("mouseleave", () => isHovered = false);
-      item.addEventListener("click", () => mostrarModal(item));
+      item.style.transform = `
+        translate(-50%, -50%)
+        translate(${x}px, ${y}px)
+      `;
     });
+  }
 
-    function animate() {
-      if (!isHovered) {
-        angle += 0.01;
-        positionItems();
-      }
-      requestAnimationFrame(animate);
+  items.forEach(item => {
+    item.addEventListener("mouseenter", () => isHovered = true);
+    item.addEventListener("mouseleave", () => isHovered = false);
+    item.addEventListener("click", () => mostrarModal(item));
+    item.addEventListener("touchstart", () => isHovered = true);
+    item.addEventListener("touchend", () => isHovered = false);
+  });
+
+  function animate() {
+    if (!isHovered) {
+      angle += 0.01;
+      positionItems();
+    }
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", positionItems);
+
+  positionItems();
+  animate();
+
+  // Modal
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modal-img");
+  const modalName = document.getElementById("modal-name");
+  const modalPrice = document.getElementById("modal-price");
+  const modalDesc = document.getElementById("modal-desc");
+
+  let carrito = [];
+  let productoActual = null;
+
+  function mostrarModal(item) {
+    productoActual = {
+      name: item.dataset.name,
+      price: item.dataset.price,
+      desc: item.dataset.description,
+      img: item.querySelector("img").src
+    };
+
+    modalImg.src = productoActual.img;
+    modalName.textContent = productoActual.name;
+    modalPrice.textContent = productoActual.price;
+    modalDesc.textContent = productoActual.desc;
+    modal.style.display = "flex";
+  }
+
+  function cerrarModal() {
+    modal.style.display = "none";
+  }
+
+  function agregarAlCarrito() {
+    if (productoActual) {
+      carrito.push(productoActual);
+      document.getElementById("contador").textContent = `${carrito.length} producto(s)`;
+      cerrarModal();
+    }
+  }
+
+  function irAComprar() {
+    if (carrito.length === 0) {
+      alert("No has agregado productos.");
+      return;
     }
 
-    window.addEventListener("resize", positionItems);
+    const pedido = carrito
+      .map((p, i) => `${i + 1}. ${p.name} – ${p.price}`)
+      .join('\n');
 
-    positionItems();
-    animate();
-
-    // Modal
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("modal-img");
-    const modalName = document.getElementById("modal-name");
-    const modalPrice = document.getElementById("modal-price");
-    const modalDesc = document.getElementById("modal-desc");
-
-    let carrito = [];
-    let productoActual = null;
-
-    function mostrarModal(item) {
-      productoActual = {
-        name: item.dataset.name,
-        price: item.dataset.price,
-        desc: item.dataset.description,
-        img: item.querySelector("img").src
-      };
-
-      modalImg.src = productoActual.img;
-      modalName.textContent = productoActual.name;
-      modalPrice.textContent = productoActual.price;
-      modalDesc.textContent = productoActual.desc;
-      modal.style.display = "flex";
-    }
-
-    function cerrarModal() {
-      modal.style.display = "none";
-    }
-
-    function agregarAlCarrito() {
-      if (productoActual) {
-        carrito.push(productoActual);
-        document.getElementById("contador").textContent = `${carrito.length} producto(s)`;
-        cerrarModal();
-      }
-    }
-
-    function irAComprar() {
-      if (carrito.length === 0) {
-        alert("No has agregado productos.");
-        return;
-      }
-
-      const mensaje = carrito.map(p => `• ${p.name} - ${p.price}`).join('\n');
-const link = `https://wa.me/message/3WAZT4CPBMIQG1?text=${encodeURIComponent("Hola! Quiero comprar:\n" + mensaje)}`;
-window.open(link, "_blank");
-    }
-  </script>
+    const texto = `Hola! Quiero comprar:\n${pedido}`;
+    const link = `https://wa.me/message/3WAZT4CPBMIQG1?text=${encodeURIComponent(texto)}`;
+    window.open(link, "_blank");
+  }
+</script>
 </body>
 </html>
