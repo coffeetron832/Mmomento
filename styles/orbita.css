@@ -83,20 +83,17 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.08);
+  background: transparent;
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 1.5rem;
-  padding: 8px 12px;
+  font-size: 2rem;
+  padding: 4px 8px;
   cursor: pointer;
   z-index: 2;
-  border-radius: 50%;
-  transition: background 0.3s ease, transform 0.3s ease;
-  backdrop-filter: blur(4px);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .flecha:hover {
-  background: rgba(255, 255, 255, 0.15);
+  color: #ccc;
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -107,4 +104,5 @@ body {
 .flecha.der {
   right: 10px;
 }
+
 
