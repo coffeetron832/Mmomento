@@ -8,6 +8,36 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles/main.css" />
+
+  <style>
+    .btn-productos {
+      margin-top: 1rem;
+      padding: 0.7rem 1.5rem;
+      font-family: 'Cormorant', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #000;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-productos:hover {
+      background: #444;
+      transform: scale(1.05);
+    }
+
+    .floating-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <section class="floating-preview">
@@ -15,37 +45,26 @@
     <div class="floating-content">
       <img src="images/IMG_5719.PNG" alt="Charms Club logo" class="logo-central" />
       <p class="eslogan">🏹 charms que hablan de ti, brazaletes que cuentan tu historia</p>
+
+      <!-- Botón elegante -->
+      <a href="productos.html">
+        <button class="btn-productos">Ver productos</button>
+      </a>
     </div>
 
-  <!-- Imágenes flotantes de fondo -->
-<div class="floating-images">
-  <!-- Esquina superior izquierda -->
-  <img src="images/img1.PNG" class="float" data-depth="0.5" style="top: 6%; left: 6%;" />
-  
-  <!-- Cerca al centro arriba izquierda -->
-  <img src="images/img2.PNG" class="float" data-depth="1" style="top: 12%; left: 28%;" />
-  
-  <!-- Centro arriba derecha -->
-  <img src="images/img3.PNG" class="float" data-depth="2" style="top: 10%; left: 68%;" />
-  
-  <!-- Esquina superior derecha -->
-  <img src="images/img4.PNG" class="float" data-depth="1" style="top: 4%; left: 88%;" />
-  
-  <!-- Centro izquierda -->
-  <img src="images/img5.PNG" class="float" data-depth="1" style="top: 48%; left: 10%;" />
-  
-  <!-- Centro derecha -->
-  <img src="images/img6.PNG" class="float" data-depth="2" style="top: 52%; left: 82%;" />
-  
-  <!-- Parte baja izquierda -->
-  <img src="images/img7.PNG" class="float" data-depth="4" style="top: 78%; left: 24%;" />
-  
-  <!-- Parte baja derecha pero no tan extremo -->
-  <img src="images/img8.PNG" class="float" data-depth="1" style="top: 82%; left: 60%;" />
-</div>
-
-
+    <!-- Imágenes flotantes de fondo -->
+    <div class="floating-images">
+      <img src="images/img1.PNG" class="float" data-depth="0.5" style="top: 6%; left: 6%;" />
+      <img src="images/img2.PNG" class="float" data-depth="1" style="top: 12%; left: 28%;" />
+      <img src="images/img3.PNG" class="float" data-depth="2" style="top: 10%; left: 68%;" />
+      <img src="images/img4.PNG" class="float" data-depth="1" style="top: 4%; left: 88%;" />
+      <img src="images/img5.PNG" class="float" data-depth="1" style="top: 48%; left: 10%;" />
+      <img src="images/img6.PNG" class="float" data-depth="2" style="top: 52%; left: 82%;" />
+      <img src="images/img7.PNG" class="float" data-depth="4" style="top: 78%; left: 24%;" />
+      <img src="images/img8.PNG" class="float" data-depth="1" style="top: 82%; left: 60%;" />
+    </div>
   </section>
+
   <!-- Script efecto parallax -->
   <script>
     document.addEventListener("mousemove", (e) => {
