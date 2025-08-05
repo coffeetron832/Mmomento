@@ -26,6 +26,8 @@ body {
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
   cursor: grab;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .producto {
@@ -43,6 +45,10 @@ body {
   overflow: visible;
   background: transparent;
   backface-visibility: hidden;
+  image-rendering: optimizeQuality;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  will-change: transform;
   top: 50%;
   left: 50%;
 }
@@ -55,6 +61,7 @@ body {
   border-radius: 12px;
   transition: transform 0.5s ease;
   backface-visibility: hidden;
+  image-rendering: optimizeQuality;
 }
 
 .producto .info {
@@ -82,7 +89,7 @@ body {
   color: #ccc;
 }
 
-/* Flechas eliminadas, puedes borrar esto si ya no las usas */
+/* Flechas eliminadas */
 .flecha {
   display: none;
 }
