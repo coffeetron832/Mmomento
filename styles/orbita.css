@@ -70,7 +70,6 @@ body {
 
 .producto:hover .info {
   opacity: 1;
-  transform: translateY(0%);
 }
 
 .nombre {
