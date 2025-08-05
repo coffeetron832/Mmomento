@@ -22,13 +22,14 @@ body {
   height: 300px;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 1s ease;
+  transition: transform 0.2s ease;
+  cursor: grab;
 }
 
 .producto {
   position: absolute;
   width: 180px;
-  height: 240px; /* Aumentamos altura para dejar espacio a la info */
+  height: 240px;
   top: 40px;
   left: 60px;
   transform: rotateY(calc(var(--i) * 90deg)) translateZ(400px);
@@ -38,7 +39,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: visible; /* Importante para que se vea bien la info */
+  overflow: visible;
   background: transparent;
 }
 
@@ -55,6 +56,8 @@ body {
   margin-top: 6px;
   text-align: center;
   line-height: 1.2;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .producto:hover .info {
@@ -72,30 +75,4 @@ body {
   margin: 0;
   font-size: 0.9rem;
   color: #ccc;
-}
-
-.flecha {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  color: #fff;
-  font-size: 1rem;
-  padding: 2px 6px;
-  cursor: pointer;
-  z-index: 2;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.flecha:hover {
-  color: #ccc;
-  transform: translateY(-50%) scale(1.1);
-}
-
-.flecha.izq {
-  left: 10px;
-}
-
-.flecha.der {
-  right: 10px;
 }
