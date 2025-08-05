@@ -286,8 +286,8 @@
       }
 
       const mensaje = carrito.map(p => `• ${p.name} - ${p.price}`).join('\n');
-      const link = `https://wa.me/573001112233?text=Hola! Quiero comprar:\n${encodeURIComponent(mensaje)}`;
-      window.open(link, "_blank");
+const link = `https://wa.me/message/3WAZT4CPBMIQG1?text=${encodeURIComponent("Hola! Quiero comprar:\n" + mensaje)}`;
+window.open(link, "_blank");
     }
   </script>
 </body>
