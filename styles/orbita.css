@@ -35,12 +35,8 @@ body {
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.4s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
 }
-
 
 .producto img {
   width: 100%;
@@ -51,21 +47,21 @@ body {
   transition: transform 0.5s ease;
 }
 
-..producto .info {
+.producto .info {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 10px;
+  background: rgba(0, 0, 0, 0.75);
   opacity: 0;
   transition: opacity 0.4s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  padding: 10px;
 }
 
 .producto:hover .info {
@@ -110,5 +106,3 @@ body {
 .flecha.der {
   right: 10px;
 }
-
-
