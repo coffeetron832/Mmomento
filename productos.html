@@ -6,180 +6,289 @@
   <title>Productos en órbita</title>
   <style>
     body {
-  background: #000;
-  overflow: hidden;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: sans-serif;
-}
+      background: #000;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      color: white;
+    }
 
-.scene {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
+    .scene {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
 
-.orbit-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
+    .orbit-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
 
-.orbit-item {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 130px; 
-  height: 130px;
-  margin: -50px;
-  transform: translate(-50%, -50%);
-  transition: transform 0.3s ease;
-}
+    .orbit-item {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160px;
+      height: 160px;
+      transform: translate(-50%, -50%);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
 
-.orbit-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  pointer-events: none;
-}
+    .orbit-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      pointer-events: none;
+    }
 
-.orbit-item:hover {
-  transform: scale(1.2) translate(-50%, -50%);
-  z-index: 10;
-}
+    .orbit-item:hover {
+      transform: scale(1.2) translate(-50%, -50%);
+      z-index: 10;
+    }
 
-.orbit-info {
-  position: absolute;
-  bottom: -40px;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  text-align: center;
-  font-size: 13px;
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+    .orbit-info {
+      position: absolute;
+      bottom: -40px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-align: center;
+      font-size: 13px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-.orbit-item:hover .orbit-info {
-  opacity: 1;
-}
+    .orbit-item:hover .orbit-info {
+      opacity: 1;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .modal-content h2 {
+      margin: 10px 0 5px;
+    }
+
+    .modal-content p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 8px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .modal-buttons button:hover {
+      background: #555;
+    }
+
+    .carrito {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #111;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 14px;
+      z-index: 99;
+    }
+
+    .carrito button {
+      background: #0f0;
+      color: #000;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
     @media (max-width: 600px) {
-  .orbit-item {
-    width: 100px;
-    height: 100px;
-  }
-
-  .orbit-info {
-    font-size: 11px;
-    bottom: -30px;
-  }
-}
-
+      .orbit-item {
+        width: 110px;
+        height: 110px;
+      }
+      .orbit-info {
+        font-size: 11px;
+        bottom: -30px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="carrito">
+    <span id="contador">0 productos</span>
+    <button onclick="irAComprar()">Ir a comprar</button>
+  </div>
+
   <div class="scene">
     <div class="orbit-container" id="orbit">
-  <div class="orbit-item" data-name="Collar Luna" data-price="$35.000">
-    <img src="images/prod1.PNG" alt="Collar Luna" />
-    <div class="orbit-info">Collar Luna<br>$35.000</div>
+      <!-- Productos -->
+      <div class="orbit-item" data-name="Collar Luna" data-price="$35.000" data-description="Collar inspirado en la luna."><img src="images/prod1.PNG"/><div class="orbit-info">Collar Luna<br>$35.000</div></div>
+      <div class="orbit-item" data-name="Pulsera Estrella" data-price="$25.000" data-description="Pulsera delicada con forma de estrella."><img src="images/prod2.PNG"/><div class="orbit-info">Pulsera Estrella<br>$25.000</div></div>
+      <div class="orbit-item" data-name="Anillo Cosmos" data-price="$40.000" data-description="Anillo con detalles galácticos."><img src="images/prod3.PNG"/><div class="orbit-info">Anillo Cosmos<br>$40.000</div></div>
+      <div class="orbit-item" data-name="Aretes Sol" data-price="$30.000" data-description="Aretes radiantes como el sol."><img src="images/prod4.PNG"/><div class="orbit-info">Aretes Sol<br>$30.000</div></div>
+      <div class="orbit-item" data-name="Set Minimal" data-price="$50.000" data-description="Set de accesorios minimalistas."><img src="images/prod5.PNG"/><div class="orbit-info">Set Minimal<br>$50.000</div></div>
+      <div class="orbit-item" data-name="Charm Love" data-price="$20.000" data-description="Charm con mensaje de amor."><img src="images/prod6.PNG"/><div class="orbit-info">Charm Love<br>$20.000</div></div>
+      <div class="orbit-item" data-name="Broche Aura" data-price="$18.000" data-description="Broche con energía vibrante."><img src="images/prod7.PNG"/><div class="orbit-info">Broche Aura<br>$18.000</div></div>
+      <div class="orbit-item" data-name="Tobillera Zen" data-price="$22.000" data-description="Tobillera para una energía en calma."><img src="images/prod8.PNG"/><div class="orbit-info">Tobillera Zen<br>$22.000</div></div>
+      <div class="orbit-item" data-name="Pendiente Dúo" data-price="$28.000" data-description="Pendientes elegantes de par."><img src="images/prod9.PNG"/><div class="orbit-info">Pendiente Dúo<br>$28.000</div></div>
+      <div class="orbit-item" data-name="Charm Gema" data-price="$24.000" data-description="Charm brillante como una gema."><img src="images/prod10.PNG"/><div class="orbit-info">Charm Gema<br>$24.000</div></div>
+      <div class="orbit-item" data-name="Argolla Brisa" data-price="$27.000" data-description="Argolla ligera y fresca."><img src="images/prod11.PNG"/><div class="orbit-info">Argolla Brisa<br>$27.000</div></div>
+    </div>
   </div>
-  <div class="orbit-item" data-name="Pulsera Estrella" data-price="$25.000">
-    <img src="images/prod2.PNG" alt="Pulsera Estrella" />
-    <div class="orbit-info">Pulsera Estrella<br>$25.000</div>
-  </div>
-  <div class="orbit-item" data-name="Anillo Cosmos" data-price="$40.000">
-    <img src="images/prod3.PNG" alt="Anillo Cosmos" />
-    <div class="orbit-info">Anillo Cosmos<br>$40.000</div>
-  </div>
-  <div class="orbit-item" data-name="Aretes Sol" data-price="$30.000">
-    <img src="images/prod4.PNG" alt="Aretes Sol" />
-    <div class="orbit-info">Aretes Sol<br>$30.000</div>
-  </div>
-  <div class="orbit-item" data-name="Set Minimal" data-price="$50.000">
-    <img src="images/prod5.PNG" alt="Set Minimal" />
-    <div class="orbit-info">Set Minimal<br>$50.000</div>
-  </div>
-  <div class="orbit-item" data-name="Charm Love" data-price="$20.000">
-    <img src="images/prod6.PNG" alt="Charm Love" />
-    <div class="orbit-info">Charm Love<br>$20.000</div>
-  </div>
-  <div class="orbit-item" data-name="Broche Aura" data-price="$18.000">
-    <img src="images/prod7.PNG" alt="Broche Aura" />
-    <div class="orbit-info">Broche Aura<br>$18.000</div>
-  </div>
-  <div class="orbit-item" data-name="Tobillera Zen" data-price="$22.000">
-    <img src="images/prod8.PNG" alt="Tobillera Zen" />
-    <div class="orbit-info">Tobillera Zen<br>$22.000</div>
-  </div>
-  <div class="orbit-item" data-name="Pendiente Dúo" data-price="$28.000">
-    <img src="images/prod9.PNG" alt="Pendiente Dúo" />
-    <div class="orbit-info">Pendiente Dúo<br>$28.000</div>
-  </div>
-  <div class="orbit-item" data-name="Charm Gema" data-price="$24.000">
-    <img src="images/prod10.PNG" alt="Charm Gema" />
-    <div class="orbit-info">Charm Gema<br>$24.000</div>
-  </div>
-  <div class="orbit-item" data-name="Argolla Brisa" data-price="$27.000">
-    <img src="images/prod11.PNG" alt="Argolla Brisa" />
-    <div class="orbit-info">Argolla Brisa<br>$27.000</div>
-  </div>
-</div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <img id="modal-img" src="" alt="">
+      <h2 id="modal-name"></h2>
+      <p id="modal-price"></p>
+      <p id="modal-desc"></p>
+      <div class="modal-buttons">
+        <button onclick="cerrarModal()">Cerrar</button>
+        <button onclick="agregarAlCarrito()">Agregar al carrito</button>
+      </div>
+    </div>
   </div>
 
   <script>
-const orbitContainer = document.getElementById("orbit");
-const items = orbitContainer.querySelectorAll(".orbit-item");
-const itemCount = items.length;
-let angle = 0;
-let isHovered = false;
+    const orbitContainer = document.getElementById("orbit");
+    const items = orbitContainer.querySelectorAll(".orbit-item");
+    const itemCount = items.length;
+    let angle = 0;
+    let isHovered = false;
 
-function getResponsiveRadius() {
-  const width = window.innerWidth;
-  if (width < 400) return 100;
-  if (width < 768) return 160;
-  return 260; // escritorio
-}
+    function getResponsiveRadius() {
+      const width = window.innerWidth;
+      if (width < 400) return 130;
+      if (width < 768) return 190;
+      return 320;
+    }
 
-function positionItems() {
-  const radius = getResponsiveRadius();
-  items.forEach((item, index) => {
-    const theta = (index / itemCount) * 2 * Math.PI;
-    const x = Math.cos(theta + angle) * radius;
-    const y = Math.sin(theta + angle) * radius;
+    function positionItems() {
+      const radius = getResponsiveRadius();
+      items.forEach((item, index) => {
+        const theta = (index / itemCount) * 2 * Math.PI;
+        const x = Math.cos(theta + angle) * radius;
+        const y = Math.sin(theta + angle) * radius;
 
-    item.style.transform = `
-      translate(-50%, -50%)
-      translate(${x}px, ${y}px)
-      rotate(0deg)
-    `;
-  });
-}
+        item.style.transform = `
+          translate(-50%, -50%)
+          translate(${x}px, ${y}px)
+        `;
+      });
+    }
 
-items.forEach(item => {
-  item.addEventListener("mouseenter", () => isHovered = true);
-  item.addEventListener("mouseleave", () => isHovered = false);
-  item.addEventListener("touchstart", () => isHovered = true);
-  item.addEventListener("touchend", () => isHovered = false);
-});
+    items.forEach(item => {
+      item.addEventListener("mouseenter", () => isHovered = true);
+      item.addEventListener("mouseleave", () => isHovered = false);
+      item.addEventListener("click", () => mostrarModal(item));
+    });
 
-function animate() {
-  if (!isHovered) {
-    angle += 0.01;
+    function animate() {
+      if (!isHovered) {
+        angle += 0.01;
+        positionItems();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", positionItems);
+
     positionItems();
-  }
-  requestAnimationFrame(animate);
-}
+    animate();
 
-window.addEventListener("resize", positionItems);
+    // Modal
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    const modalName = document.getElementById("modal-name");
+    const modalPrice = document.getElementById("modal-price");
+    const modalDesc = document.getElementById("modal-desc");
 
-positionItems();
-animate();
-</script>
+    let carrito = [];
+    let productoActual = null;
+
+    function mostrarModal(item) {
+      productoActual = {
+        name: item.dataset.name,
+        price: item.dataset.price,
+        desc: item.dataset.description,
+        img: item.querySelector("img").src
+      };
+
+      modalImg.src = productoActual.img;
+      modalName.textContent = productoActual.name;
+      modalPrice.textContent = productoActual.price;
+      modalDesc.textContent = productoActual.desc;
+      modal.style.display = "flex";
+    }
+
+    function cerrarModal() {
+      modal.style.display = "none";
+    }
+
+    function agregarAlCarrito() {
+      if (productoActual) {
+        carrito.push(productoActual);
+        document.getElementById("contador").textContent = `${carrito.length} producto(s)`;
+        cerrarModal();
+      }
+    }
+
+    function irAComprar() {
+      if (carrito.length === 0) {
+        alert("No has agregado productos.");
+        return;
+      }
+
+      const mensaje = carrito.map(p => `• ${p.name} - ${p.price}`).join('\n');
+      const link = `https://wa.me/573001112233?text=Hola! Quiero comprar:\n${encodeURIComponent(mensaje)}`;
+      window.open(link, "_blank");
+    }
+  </script>
 </body>
 </html>
