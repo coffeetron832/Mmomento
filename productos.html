@@ -12,28 +12,36 @@
     }
 
     body {
-      background-color: #000;
+      background: #000;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: sans-serif;
     }
 
-    .orbit-container {
+    .scene {
+      width: 400px;
+      height: 400px;
       position: relative;
-      width: 300px;
-      height: 300px;
-      animation: rotate 20s linear infinite;
+      perspective: 1000px;
+    }
+
+    .orbit-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
     }
 
     .orbit-item {
       position: absolute;
+      top: 50%;
+      left: 50%;
       width: 80px;
       height: 80px;
-      border-radius: 50%;
-      overflow: hidden;
+      transform-origin: center center;
       transition: transform 0.3s ease;
     }
 
@@ -41,43 +49,95 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      border-radius: 8px;
       pointer-events: none;
     }
 
     .orbit-item:hover {
-      transform: scale(1.3);
+      transform: scale(1.3) translate(-50%, -50%) !important;
       z-index: 10;
     }
-
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Posiciones de los productos (se reparten en círculo) */
-    .orbit-item:nth-child(1) { top: 0%; left: 50%; transform: translate(-50%, -50%) rotate(0deg) translateY(-120px); }
-    .orbit-item:nth-child(2) { top: 25%; left: 85%; transform: translate(-50%, -50%) rotate(45deg) translateY(-120px); }
-    .orbit-item:nth-child(3) { top: 50%; left: 100%; transform: translate(-50%, -50%) rotate(90deg) translateY(-120px); }
-    .orbit-item:nth-child(4) { top: 75%; left: 85%; transform: translate(-50%, -50%) rotate(135deg) translateY(-120px); }
-    .orbit-item:nth-child(5) { top: 100%; left: 50%; transform: translate(-50%, -50%) rotate(180deg) translateY(-120px); }
-    .orbit-item:nth-child(6) { top: 75%; left: 15%; transform: translate(-50%, -50%) rotate(225deg) translateY(-120px); }
-    .orbit-item:nth-child(7) { top: 50%; left: 0%; transform: translate(-50%, -50%) rotate(270deg) translateY(-120px); }
-    .orbit-item:nth-child(8) { top: 25%; left: 15%; transform: translate(-50%, -50%) rotate(315deg) translateY(-120px); }
-
   </style>
 </head>
 <body>
- <div class="orbit-container">
-  <div class="orbit-item"><img src="images/prod1.PNG" alt="Producto 1" /></div>
-  <div class="orbit-item"><img src="images/prod2.PNG" alt="Producto 2" /></div>
-  <div class="orbit-item"><img src="images/prod3.PNG" alt="Producto 3" /></div>
-  <div class="orbit-item"><img src="images/prod4.PNG" alt="Producto 4" /></div>
-  <div class="orbit-item"><img src="images/prod5.PNG" alt="Producto 5" /></div>
-  <div class="orbit-item"><img src="images/prod6.PNG" alt="Producto 6" /></div>
-  <div class="orbit-item"><img src="images/prod7.PNG" alt="Producto 7" /></div>
-  <div class="orbit-item"><img src="images/prod8.PNG" alt="Producto 8" /></div>
+  <div class="scene">
+    <div class="orbit-container" id="orbit">
+  <div class="orbit-item" data-name="Collar Luna" data-price="$35.000">
+    <img src="images/prod1.PNG" alt="Collar Luna" />
+    <div class="orbit-info">Collar Luna<br>$35.000</div>
+  </div>
+  <div class="orbit-item" data-name="Pulsera Estrella" data-price="$25.000">
+    <img src="images/prod2.PNG" alt="Pulsera Estrella" />
+    <div class="orbit-info">Pulsera Estrella<br>$25.000</div>
+  </div>
+  <div class="orbit-item" data-name="Anillo Cosmos" data-price="$40.000">
+    <img src="images/prod3.PNG" alt="Anillo Cosmos" />
+    <div class="orbit-info">Anillo Cosmos<br>$40.000</div>
+  </div>
+  <div class="orbit-item" data-name="Aretes Sol" data-price="$30.000">
+    <img src="images/prod4.PNG" alt="Aretes Sol" />
+    <div class="orbit-info">Aretes Sol<br>$30.000</div>
+  </div>
+  <div class="orbit-item" data-name="Set Minimal" data-price="$50.000">
+    <img src="images/prod5.PNG" alt="Set Minimal" />
+    <div class="orbit-info">Set Minimal<br>$50.000</div>
+  </div>
+  <div class="orbit-item" data-name="Charm Love" data-price="$20.000">
+    <img src="images/prod6.PNG" alt="Charm Love" />
+    <div class="orbit-info">Charm Love<br>$20.000</div>
+  </div>
+  <div class="orbit-item" data-name="Broche Aura" data-price="$18.000">
+    <img src="images/prod7.PNG" alt="Broche Aura" />
+    <div class="orbit-info">Broche Aura<br>$18.000</div>
+  </div>
+  <div class="orbit-item" data-name="Tobillera Zen" data-price="$22.000">
+    <img src="images/prod8.PNG" alt="Tobillera Zen" />
+    <div class="orbit-info">Tobillera Zen<br>$22.000</div>
+  </div>
+  <div class="orbit-item" data-name="Pendiente Dúo" data-price="$28.000">
+    <img src="images/prod9.PNG" alt="Pendiente Dúo" />
+    <div class="orbit-info">Pendiente Dúo<br>$28.000</div>
+  </div>
+  <div class="orbit-item" data-name="Charm Gema" data-price="$24.000">
+    <img src="images/prod10.PNG" alt="Charm Gema" />
+    <div class="orbit-info">Charm Gema<br>$24.000</div>
+  </div>
+  <div class="orbit-item" data-name="Argolla Brisa" data-price="$27.000">
+    <img src="images/prod11.PNG" alt="Argolla Brisa" />
+    <div class="orbit-info">Argolla Brisa<br>$27.000</div>
+  </div>
 </div>
+  </div>
 
+  <script>
+    const orbitContainer = document.getElementById("orbit");
+    const items = orbitContainer.querySelectorAll(".orbit-item");
+    const itemCount = items.length;
+    const radius = 120;
+    let angle = 0;
+
+    function positionItems() {
+      items.forEach((item, index) => {
+        const theta = (index / itemCount) * 2 * Math.PI;
+        const x = Math.cos(theta + angle) * radius;
+        const y = Math.sin(theta + angle) * radius;
+
+        item.style.transform = `
+          translate(-50%, -50%)
+          translate(${x}px, ${y}px)
+          rotate(${-angle - theta}rad)
+        `;
+      });
+    }
+
+    function animate() {
+      angle += 0.01; // velocidad de rotación
+      positionItems();
+      requestAnimationFrame(animate);
+    }
+
+    positionItems();
+    animate();
+  </script>
 </body>
 </html>
