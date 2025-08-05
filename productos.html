@@ -120,11 +120,12 @@
   </div>
 
   <script>
-   const orbitContainer = document.getElementById("orbit");
+const orbitContainer = document.getElementById("orbit");
 const items = orbitContainer.querySelectorAll(".orbit-item");
 const itemCount = items.length;
-const radius = 260; // antes 120, ahora más separado
+const radius = 260;
 let angle = 0;
+let isHovered = false;
 
 function positionItems() {
   items.forEach((item, index) => {
@@ -135,19 +136,30 @@ function positionItems() {
     item.style.transform = `
       translate(-50%, -50%)
       translate(${x}px, ${y}px)
-      rotate(${-angle - theta}rad)
+      rotate(0deg)
     `;
   });
 }
 
+items.forEach(item => {
+  item.addEventListener("mouseenter", () => {
+    isHovered = true;
+  });
+  item.addEventListener("mouseleave", () => {
+    isHovered = false;
+  });
+});
+
 function animate() {
-  angle += 0.01;
-  positionItems();
+  if (!isHovered) {
+    angle += 0.01;
+    positionItems();
+  }
   requestAnimationFrame(animate);
 }
 
 positionItems();
 animate();
-  </script>
+</script>
 </body>
 </html>
