@@ -67,6 +67,19 @@
 .orbit-item:hover .orbit-info {
   opacity: 1;
 }
+
+    @media (max-width: 600px) {
+  .orbit-item {
+    width: 100px;
+    height: 100px;
+  }
+
+  .orbit-info {
+    font-size: 11px;
+    bottom: -30px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -123,11 +136,18 @@
 const orbitContainer = document.getElementById("orbit");
 const items = orbitContainer.querySelectorAll(".orbit-item");
 const itemCount = items.length;
-const radius = 260;
 let angle = 0;
 let isHovered = false;
 
+function getResponsiveRadius() {
+  const width = window.innerWidth;
+  if (width < 400) return 100;
+  if (width < 768) return 160;
+  return 260; // escritorio
+}
+
 function positionItems() {
+  const radius = getResponsiveRadius();
   items.forEach((item, index) => {
     const theta = (index / itemCount) * 2 * Math.PI;
     const x = Math.cos(theta + angle) * radius;
@@ -142,12 +162,10 @@ function positionItems() {
 }
 
 items.forEach(item => {
-  item.addEventListener("mouseenter", () => {
-    isHovered = true;
-  });
-  item.addEventListener("mouseleave", () => {
-    isHovered = false;
-  });
+  item.addEventListener("mouseenter", () => isHovered = true);
+  item.addEventListener("mouseleave", () => isHovered = false);
+  item.addEventListener("touchstart", () => isHovered = true);
+  item.addEventListener("touchend", () => isHovered = false);
 });
 
 function animate() {
@@ -157,6 +175,8 @@ function animate() {
   }
   requestAnimationFrame(animate);
 }
+
+window.addEventListener("resize", positionItems);
 
 positionItems();
 animate();
