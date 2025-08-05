@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muestrario Orbital - CharmsClub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/orbita.css" />
+</head>
+<body>
+  <div class="orbital-container">
+    <div class="center-label">🌟 CharmsClub 🌟</div>
+
+    <div class="orbit" id="orbit">
+      <!-- Producto ejemplo -->
+      <div class="product"><img src="images/prod1.png" alt="Producto 1" /></div>
+      <div class="product"><img src="images/prod2.png" alt="Producto 2" /></div>
+      <div class="product"><img src="images/prod3.png" alt="Producto 3" /></div>
+      <div class="product"><img src="images/prod4.png" alt="Producto 4" /></div>
+      <div class="product"><img src="images/prod5.png" alt="Producto 5" /></div>
+      <div class="product"><img src="images/prod6.png" alt="Producto 6" /></div>
+    </div>
+
+    <!-- Flechas de control -->
+    <button class="arrow left" onclick="rotate(-1)">←</button>
+    <button class="arrow right" onclick="rotate(1)">→</button>
+  </div>
+
+  <script>
+    let angle = 0;
+    const orbit = document.getElementById("orbit");
+    const products = orbit.querySelectorAll(".product");
+    const radius = 180;
+
+    function updatePositions() {
+      const total = products.length;
+      products.forEach((el, i) => {
+        const theta = ((i + angle) / total) * 2 * Math.PI;
+        const x = Math.cos(theta) * radius;
+        const y = Math.sin(theta) * radius;
+        el.style.transform = `translate(${x}px, ${y}px)`;
+      });
+    }
+
+    function rotate(dir) {
+      angle += dir;
+      updatePositions();
+    }
+
+    // Init
+    updatePositions();
+  </script>
+</body>
+</html>
