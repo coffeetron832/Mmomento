@@ -5,6 +5,8 @@ body {
   font-family: 'Cormorant', serif;
   color: white;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .carrusel-container {
@@ -22,7 +24,7 @@ body {
   height: 300px;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
   cursor: grab;
 }
 
@@ -30,17 +32,19 @@ body {
   position: absolute;
   width: 180px;
   height: 240px;
-  top: 40px;
-  left: 60px;
-  transform: rotateY(calc(var(--i) * 90deg)) translateZ(400px);
+  transform: rotateY(calc(var(--i) * 90deg)) translateZ(400px) translate(-50%, -50%);
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.4s;
+  transition: transform 0.4s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   overflow: visible;
   background: transparent;
+  backface-visibility: hidden;
+  top: 50%;
+  left: 50%;
 }
 
 .producto img {
@@ -50,6 +54,7 @@ body {
   display: block;
   border-radius: 12px;
   transition: transform 0.5s ease;
+  backface-visibility: hidden;
 }
 
 .producto .info {
@@ -75,4 +80,9 @@ body {
   margin: 0;
   font-size: 0.9rem;
   color: #ccc;
+}
+
+/* Flechas eliminadas, puedes borrar esto si ya no las usas */
+.flecha {
+  display: none;
 }
